@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Justo Docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/logo-white.svg",
+    "light": "/logo/logo-dark.svg"
   },
   "favicon": "/favicon.png",
   "colors": {
-    "primary": "#9563FF",
+    "primary": "#3b82f6",
     "light": "#AE87FF",
     "dark": "#0D001D",
     "background": {
@@ -15,68 +15,53 @@
     },
     "anchors": {
       "from": "#FF7F57",
-      "to": "#9563FF"
+      "to": "#3b82f6"
     }
+  },
+  "primaryTab": {
+    "name": "E-Commerce"
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Ayuda",
+      "url": "mailto:pedro.briceno@getjusto.com"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Justo",
+    "url": "https://getjusto.com"
   },
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
+      "name": "Crisp",
+      "url": "docs/crisp"
     },
     {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Delivery",
+      "url": "https://docs.getjusto.com/docs/methods/createDelivery.html"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "group": "Empezando",
+      "pages": ["introduction"]
     },
     {
-      "group": "Essentials",
-      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation"]
+      "group": "Pedidos Crisp",
+      "pages": ["docs/crisp/start"]
     },
     {
-      "group": "API Documentation",
-      "pages": ["api-reference/authentication"]
-    },
-    {
-      "group": "Endpoint Examples",
+      "group": "Endpoints",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/update",
-        "api-reference/endpoint/delete"
+        "docs/crisp/endpoint/get",
+        "docs/crisp/endpoint/create",
+        "docs/crisp/endpoint/update",
+        "docs/crisp/endpoint/delete"
       ]
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "github": "https://github.com/getjusto",
+    "linkedin": "https://www.linkedin.com/company/getjusto"
   }
 }
