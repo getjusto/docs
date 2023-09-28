@@ -18,6 +18,14 @@
       "to": "#3b82f6"
     }
   },
+  "api": {
+    "playground": {
+      "mode": "show"
+    }
+  },
+  "integrations": {
+    "intercom": "ohd982w5"
+  },
   "primaryTab": {
     "name": "E-Commerce"
   },
@@ -34,7 +42,7 @@
   "tabs": [
     {
       "name": "Crisp",
-      "url": "docs/crisp"
+      "url": "docs/crisp/orders"
     },
     {
       "name": "Delivery",
@@ -44,19 +52,29 @@
   "navigation": [
     {
       "group": "Empezando",
-      "pages": ["introduction"]
+      "pages": ["docs/introduction"]
     },
     {
-      "group": "Pedidos Crisp",
-      "pages": ["docs/crisp/start"]
-    },
-    {
-      "group": "Endpoints",
+      "group": "Integración de pedidos",
       "pages": [
-        "docs/crisp/endpoint/get",
-        "docs/crisp/endpoint/create",
-        "docs/crisp/endpoint/update",
-        "docs/crisp/endpoint/delete"
+        "docs/crisp/orders/introduction",
+        {
+          "group": "Endpoints",
+          "pages": [
+            "docs/crisp/orders/endpoints/inject-an-order",
+            "docs/crisp/orders/endpoints/complete-an-order",
+            "docs/crisp/orders/endpoints/cancel-an-order"
+          ]
+        },
+        {
+          "group": "Webhooks",
+          "pages": [
+            "docs/crisp/orders/webhooks/get-availability",
+            "docs/crisp/orders/webhooks/accept-order",
+            "docs/crisp/orders/webhooks/reject-order",
+            "docs/crisp/orders/webhooks/order-ready"
+          ]
+        }
       ]
     }
   ],

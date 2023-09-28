@@ -1,0 +1,283 @@
+openapi: 3.0.0
+info:
+  title: Order API
+  version: 1.0.0
+servers:
+  - url: https://tabs.service.getjusto.com
+    description: Production server
+paths:
+  /api/integration/custom/{salesChannelConfigId}/inject-order:
+    post:
+      summary: Crear pedido
+      description: Usa este método para inyectar un nuevo pedido a Crisp.
+      parameters:
+        - name: salesChannelConfigId
+          in: path
+          description: El ID de la configuración de canal de ventas.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InjectOrderParams'
+      responses:
+        200:
+          description: Order injected successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InjectOrderResult'
+
+  /api/integration/custom/{salesChannelConfigId}/cancel-order:
+    post:
+      summary: Cancelar pedido
+      description: Usa este método para cancelar un pedido en Crisp.
+      parameters:
+        - name: salesChannelConfigId
+          in: path
+          description: El ID de la configuración de canal de ventas.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelOrderParams'
+      responses:
+        200:
+          description: Order cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResult'
+
+  /api/integration/custom/{salesChannelConfigId}/complete-order:
+    post:
+      summary: Completar un pedido
+      description: Usa este método para completar un pedido en Crisp.
+      parameters:
+        - name: salesChannelConfigId
+          in: path
+          description: El ID de la configuración de canal de ventas.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteOrderParams'
+      responses:
+        200:
+          description: Order completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteOrderResult'
+
+components:
+  schemas:
+    CustomIntegrationOrder:
+      type: object
+      properties:
+        tabId:
+          description: El id de la cuenta de Crisp
+          type: string
+
+        integrationOrderId:
+          description: El id del pedido en el sistema externo
+          type: string
+
+    InjectOrderParamsProductModifier:
+      type: object
+      properties:
+        modifierQuantity:
+          type: integer
+          description: La cantidad de este modificador.
+        modifierGroupId:
+          type: string
+          description: El ID en el menú de Justo del grupo de modificadores.
+          nullable: true
+        modifierGroupName:
+          type: string
+          description: El nombre del grupo de modificadores.
+          nullable: true
+        modifierId:
+          type: string
+          description: El ID en el menú de Justo del modificador.
+          nullable: true
+        unitPrice:
+          type: number
+          description: El precio unitario del modificador.
+          nullable: true
+        modifierName:
+          type: string
+          description: El nombre del modificador.
+          nullable: true
+
+    InjectOrderParamsProduct:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: El ID del producto en el e-commerce de Justo. Sirve para descontar stock o asignar categorías.
+        unitPrice:
+          type: number
+          description: El precio unitario del producto.
+        name:
+          type: string
+          description: El nombre del producto.
+          nullable: true
+        amount:
+          type: integer
+          description: La cantidad de productos.
+        comment:
+          type: string
+          description: Comentarios del clientes sobre el producto.
+          nullable: true
+        modifiers:
+          type: array
+          description: Los modificadores del producto.
+          items:
+            $ref: '#/components/schemas/InjectOrderParamsProductModifier'
+
+    InjectOrderParamsClientData:
+      type: object
+      properties:
+        name:
+          description: Nombre del cliente
+          type: string
+          nullable: true
+        email:
+          description: Email
+          type: string
+          format: email
+          nullable: true
+        phone:
+          description: Teléfono
+          type: string
+          nullable: true
+        addressLine1:
+          description: Dirección
+          type: string
+          nullable: true
+        addressLine2:
+          description: Dpto, piso, etc
+          type: string
+          nullable: true
+        addressExtra:
+          description: Comuna, ciudad, etc
+          type: string
+          nullable: true
+
+    InjectOrderParams:
+      type: object
+      properties:
+        integrationOrderId:
+          type: string
+          description: El id del pedido en el sistema externo. Se usará para identificar el pedido en las otras llamadas. Cada ID debe ser único.
+        displayId:
+          type: string
+          description: El número de pedido que se usará para identificar este pedido. Es un ID corto.
+        deliveryType:
+          type: string
+          description: El tipo de entrega. Puede ser 'go' para pedidos de retiro o 'delivery' para pedidos con entrega al cliente.
+          enum: ['go', 'delivery']
+        deliveryFee:
+          type: number
+          description: El costo de entrega del pedido. Solo para pedidos de entrega.
+          nullable: true
+        comments:
+          type: string
+          description: Comentarios sobre el pedido. Se verán en el panel de Crisp.
+          nullable: true
+        clientData:
+          $ref: '#/components/schemas/InjectOrderParamsClientData'
+          description: Información del cliente. Se verá en el panel de Crisp. Es opcional.
+          nullable: true
+        integrationIsPending:
+          type: boolean
+          description: Si es verdadero, el pedido se marcará como pendiente en Crisp y se deberá aceptar. Si usas esta opción debes crear el webhook de aceptación de pedido.
+        mustBeReadyAt:
+          type: string
+          description: La fecha y hora en la que el pedido debe estar listo para ser recogido o entregado.
+          format: date-time
+        mustBeDeliveredAt:
+          type: string
+          description: La fecha y hora en la que el pedido debe ser entregado al cliente final.
+          format: date-time
+        paidAmount:
+          type: number
+          description: El monto pagado por el cliente. No incluye propina. Si es que no es especifica, se asume que aún no está pagado.
+          nullable: true
+        paidTipAmount:
+          type: number
+          description: El monto de propina pagado por el cliente. Si es que no es especifica, se asume que no se dejó propina.
+          nullable: true
+        discountAmount:
+          type: number
+          description: El monto de descuento aplicado al pedido. Si es que no es especifica, se asume que no hay descuento.
+          nullable: true
+        products:
+          type: array
+          description: Los productos del pedido.
+          items:
+            $ref: '#/components/schemas/InjectOrderParamsProduct'
+
+    InjectOrderResult:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/CustomIntegrationOrder'
+
+    CancelOrderParams:
+      type: object
+      properties:
+        integrationOrderId:
+          type: string
+        reason:
+          type: string
+          description: El motivo de la cancelación.
+          nullable: true
+
+    CancelOrderResult:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/CustomIntegrationOrder'
+
+    CompleteOrderParams:
+      type: object
+      properties:
+        integrationOrderId:
+          type: string
+
+    CompleteOrderResult:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/CustomIntegrationOrder'

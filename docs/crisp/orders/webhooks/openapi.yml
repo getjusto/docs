@@ -1,0 +1,155 @@
+openapi: 3.0.0
+info:
+  title: Sales Channel API
+  version: 1.0.0
+# servers:
+#   - url: https://example.com
+#     description: Production server
+paths:
+  /getAvailability:
+    post:
+      operationId: getAvailability
+      summary: Obtener disponibilidad
+      description: Se llamará constantemente este método para obtener la disponibilidad del canal de ventas y mostrarlo en la barra de estado de Crisp.
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAvailabilityResponse'
+  /acceptOrder:
+    post:
+      operationId: acceptOrder
+      summary: Aceptar pedido
+      description: 'Se llamará este método cuando se acepte el pedido desde Crisp. Si es que no se define este método, se tiene que injectar los pedidos con `integrationIsPending: false`'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptOrderParams'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptOrderResponse'
+  /rejectOrder:
+    post:
+      operationId: rejectOrder
+      summary: Rechazar pedido
+      description: 'Se llamará este método cuando se rechace el pedido desde Crisp.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectOrderParams'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RejectOrderResponse'
+  /orderReady:
+    post:
+      operationId: orderReady
+      summary: Marcar pedido preparado
+      description: 'Se llamará este método cuando se marque el pedido como preparado desde Crisp.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderReadyParams'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReadyResponse'
+components:
+  schemas:
+    CustomSalesChannelConfig:
+      type: object
+    GetAvailabilityParams:
+      type: object
+      properties:
+        params:
+          type: object
+    AcceptOrderParams:
+      type: object
+      properties:
+        params:
+          type: object
+          properties:
+            integrationOrderId:
+              type: string
+              description: El id del pedido en el sistema externo.
+    RejectOrderParams:
+      type: object
+      properties:
+        params:
+          type: object
+          properties:
+            integrationOrderId:
+              type: string
+              description: El id del pedido en el sistema externo.
+    OrderReadyParams:
+      type: object
+      properties:
+        params:
+          type: object
+          properties:
+            integrationOrderId:
+              type: string
+              description: El id del pedido en el sistema externo.
+    GetAvailabilityResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: El estado del canal de ventas.
+          enum: ['open', 'suspended', 'closed', 'unknown', 'error']
+        suspendedUntil:
+          type: string
+          description: Si es que el canal de ventas está suspendido, la fecha hasta la cual está suspendido.
+          format: date-time
+        closedUntil:
+          type: string
+          description: Si es que el canal de ventas está cerrado, la fecha hasta la cual está cerrado.
+          format: date-time
+    AcceptOrderResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Si es que el pedido fue aceptado correctamente.
+          enum: ['success', 'error']
+        message:
+          type: string
+          description: Solo si es que el pedido no fue aceptado correctamente, el mensaje de error.
+    RejectOrderResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Si es que el pedido fue rechazado correctamente.
+          enum: ['success', 'error']
+        message:
+          type: string
+          description: Solo si es que el pedido no fue rechazado correctamente, el mensaje de error.
+    OrderReadyResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Si es que el pedido fue marcado como listo correctamente.
+          enum: ['success', 'error']
+        message:
+          type: string
+          description: Solo si es que el pedido no fue marcado como listo correctamente, el mensaje de error.
