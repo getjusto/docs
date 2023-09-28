@@ -59,6 +59,7 @@
       "pages": [
         "docs/crisp/orders/introduction",
         "docs/crisp/orders/authentication",
+        "docs/crisp/orders/demo",
         {
           "group": "Endpoints",
           "pages": [
