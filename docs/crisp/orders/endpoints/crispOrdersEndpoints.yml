@@ -3,10 +3,10 @@ info:
   title: Orders Endpoint API
   version: 1.0.0
 servers:
-  - url: https://tabs.service.getjusto.com
+  - url: https://tabs.service.getjusto.com/api/integration/custom
     description: Production server
 paths:
-  /api/integration/custom/{salesChannelConfigId}/inject-order:
+  /{salesChannelConfigId}/inject-order:
     post:
       summary: Crear pedido
       description: Usa este método para inyectar un nuevo pedido a Crisp.
@@ -37,7 +37,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InjectOrderResult'
 
-  /api/integration/custom/{salesChannelConfigId}/cancel-order:
+  /{salesChannelConfigId}/cancel-order:
     post:
       summary: Cancelar pedido
       description: Usa este método para cancelar un pedido en Crisp.
@@ -68,7 +68,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CancelOrderResult'
 
-  /api/integration/custom/{salesChannelConfigId}/complete-order:
+  /{salesChannelConfigId}/complete-order:
     post:
       summary: Completar un pedido
       description: Usa este método para completar un pedido en Crisp.

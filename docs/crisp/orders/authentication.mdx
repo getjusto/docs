@@ -1,0 +1,55 @@
+---
+title: Autenticación
+description: ''
+---
+
+La autenticación es esencial para proteger los recursos de la API. Este sistema usa tokens definidos por el usuario en el panel de administración.
+
+El token lo debes crear desde la configuración del canal de ventas.
+
+## Uso del Token
+
+Las llamadas que hagas a los endpoints deben incluir el token en el header `Authorization` de su solicitud HTTP. Las llamadas que haga Crisp hacia el webhook también incluirán este token en el header `Authorization`.
+
+<CodeGroup>
+```bash cURL
+curl --request POST \
+  --url https://tabs.service.getjusto.com/api/integration/custom/{salesChannelConfigId}/complete-order \
+  --header 'Authorization: <authorization>' \
+  --header 'Content-Type: application/json'
+````
+
+```js Javascript
+const options = {
+  method: 'POST',
+  headers: {
+    Authorization: '<authorization>',
+    'Content-Type': 'application/json',
+  },
+};
+
+fetch(
+  'https://tabs.service.getjusto.com/api/integration/custom/{salesChannelConfigId}/complete-order',
+  options
+)
+  .then((response) => response.json())
+  .then((response) => console.log(response))
+  .catch((err) => console.error(err));
+```
+
+```python Python
+import requests
+
+url = "https://tabs.service.getjusto.com/api/integration/custom/{salesChannelConfigId}/complete-order"
+
+headers = {
+    "Authorization": "<authorization>",
+    "Content-Type": "application/json"
+}
+
+response = requests.request("POST", url, headers=headers)
+
+print(response.text)
+```
+
+</CodeGroup>

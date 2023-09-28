@@ -58,6 +58,7 @@
       "group": "Integración de pedidos",
       "pages": [
         "docs/crisp/orders/introduction",
+        "docs/crisp/orders/authentication",
         {
           "group": "Endpoints",
           "pages": [
