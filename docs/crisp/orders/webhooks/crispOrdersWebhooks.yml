@@ -19,7 +19,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAvailabilityResponse'
   /acceptOrder:
-    post:
+    put:
       operationId: acceptOrder
       summary: Aceptar pedido
       description: 'Se llamará este método cuando se acepte el pedido desde Crisp. Si es que no se define este método, se tiene que injectar los pedidos con `integrationIsPending: false`'
@@ -37,7 +37,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AcceptOrderResponse'
   /rejectOrder:
-    post:
+    put:
       operationId: rejectOrder
       summary: Rechazar pedido
       description: 'Se llamará este método cuando se rechace el pedido desde Crisp.'
@@ -55,7 +55,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RejectOrderResponse'
   /orderReady:
-    post:
+    put:
       operationId: orderReady
       summary: Marcar pedido preparado
       description: 'Se llamará este método cuando se marque el pedido como preparado desde Crisp.'
