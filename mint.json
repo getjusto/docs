@@ -20,7 +20,7 @@
   },
   "api": {
     "playground": {
-      "mode": "show"
+      "mode": "simple"
     }
   },
   "integrations": {
