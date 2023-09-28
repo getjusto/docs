@@ -7,7 +7,7 @@ info:
 #     description: Production server
 paths:
   /getAvailability:
-    post:
+    get:
       operationId: getAvailability
       summary: Obtener disponibilidad
       description: Se llamará constantemente este método para obtener la disponibilidad del canal de ventas y mostrarlo en la barra de estado de Crisp.

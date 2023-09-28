@@ -38,7 +38,7 @@ paths:
                 $ref: '#/components/schemas/InjectOrderResult'
 
   /{salesChannelConfigId}/cancel-order:
-    post:
+    put:
       summary: Cancelar pedido
       description: Usa este método para cancelar un pedido en Crisp.
       parameters:
@@ -69,7 +69,7 @@ paths:
                 $ref: '#/components/schemas/CancelOrderResult'
 
   /{salesChannelConfigId}/complete-order:
-    post:
+    put:
       summary: Completar un pedido
       description: Usa este método para completar un pedido en Crisp.
       parameters:
