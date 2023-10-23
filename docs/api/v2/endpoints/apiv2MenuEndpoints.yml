@@ -1,0 +1,388 @@
+openapi: 3.0.0
+info:
+  title: Orders Endpoint API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v2
+    description: Production server
+paths:
+  /menu/{id}:
+    get:
+      summary: Obtener un menú
+      description: Usa este método para obtener un menú con sus respectivos items
+      parameters:
+        - name: id
+          in: path
+          description: Corresponde al identificador interno que posea cada marca para su respectivo menú.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/menuResultGet'
+    post:
+      summary: Crear un menú
+      description: Usa este método para crear un menú
+      parameters:
+        - name: id
+          in: path
+          description: Corresponde al identificador interno que posea cada marca para su respectivo menú.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/menuParamsPost'
+      responses:
+        200:
+          description: success 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/menuResult'
+    patch:
+      summary: Actualizar parcialmente un menú
+      description: Usa este método para actualizar un menú
+      parameters:
+        - name: id
+          in: path
+          description: Corresponde al identificador interno que posea cada marca para su respectivo menú.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/menuParamsPost'
+      responses:
+        200:
+          description: success 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/menuResult'
+    put:
+      summary: Actualizar un menú
+      description: Usa este método para actualizar un menú
+      parameters:
+        - name: id
+          in: path
+          description: Corresponde al identificador interno que posea cada marca para su respectivo menú.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/menuParams'
+      responses:
+        200:
+          description: Order injected successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/menuResult'
+
+components:
+  schemas:
+    menuParams:
+      type: object
+      properties:
+        removeItemsNotIncluded:
+          description: Cuando se envía con valor `true` hará que todos los `products` y `options` se desvinculen o remuevan del menú en el cual se está trabajando, dejando solo activos los que vienen en el `body`. Esta opción NO afectará a `categories` ni a los `modifiers`, ya que son opciones globales que no dependen del menú.
+          type: boolean
+        data:
+          description: datos 
+          $ref: '#/components/schemas/dataParams'
+
+    menuParamsPost:
+      type: object
+      properties:
+        data:
+          description: datos 
+          $ref: '#/components/schemas/dataParams'
+
+    menuResult:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Resultado de la operación.
+        data:
+          description: Datos asociados a la operación
+          $ref: '#/components/schemas/dataResult'
+
+    menuResultGet:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Resultado de la operación.
+        data:
+          description: Datos asociados a la operación
+          $ref: '#/components/schemas/dataParams'
+
+
+    product:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del producto de cara al compradores.
+        description:
+          type: string
+          description: Descripción del producto en cuestión.
+        externalId:
+          type: string
+          description: ID externo del producto. 
+        priority:
+          type: string
+          description: Dice la prioridad que tiene este item versus el resto de los productos. Si tiene prioridad más alta sale primero en la lista de productos.
+        price: 
+          type: number
+          description: Precio normal del producto en este menú
+        discount: 
+          type: string
+          description: Precio con descuento de este producto. No es lo mismo 0 que null, ya que si el valor es 0, implica que el producto es gratis.
+        available: 
+          type: boolean
+          description: Si está disponible este producto en el menú
+        informativeStamps:
+          type: array
+          items:
+            type: string
+            description: Un arreglo con sellos informativos de productos. Este campo solo acepta como parámetros
+            enum: ['VEGAN','VEGETARIAN','GLUTEN_FREE','LACTOSE_FREE','SUGAR_FREE','CACAO_100','RECYCLABLE','SPICY','KETO','RECYCLED','HANDMADE','OLDER_THAN_18','CRUELTY_FREE']
+        categoriesExternalIds:
+          type: array
+          description: Un arreglo con los externalId de las categorías que tiene el producto.
+          items:
+            type: string
+        modifiersExternalIds:
+          type: array
+          description: Un arreglo con los externalId de los modificadores que tiene el producto. 
+          items:
+            type: string
+        images:
+          type: array
+          description: Arreglo con las URLs de las imágenes de este producto. Puedes usar cualquier URL externa y se va a subir la imagen a los servidores de Justo. El tamaño máximo para las imagenes es de 10mb. Si es que quieres dejar el producto sin imágenes, puedes enviar un arreglo vacío.
+          items:
+            type: string            
+
+    category:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del producto de cara al compradores.
+        externalId:
+          type: string
+          description: ID externo del producto. 
+        priority:
+          type: string
+          description: Dice la prioridad que tiene este item versus el resto de las categorías. Los primeros que se muestran son los que tienen una prioridad cercana a cero.
+
+    option:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la opción de cara al comprador.
+        internalName:
+          type: string
+          description: Un nombre interno que no ven los compradores. Sirve para diferenciar las opciones con el mismo nombre.
+        max:
+          type: number
+          description: Cuantas veces se puede escoger esta opción dentro del modificador
+        externalId:
+          type: string
+          description: ID externo de esta opción. 
+        price: 
+          type: number
+          description: Precio normal de la opción en este menú
+        discount: 
+          type: string
+          description: Precio con descuento de esta opción. No es lo mismo 0 que null, ya que si el valor es 0, implica que el producto es gratis.
+        available: 
+          type: boolean
+          description: Si está disponible esta opción en el menú
+
+    modifier:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del modificador
+        shortName:
+          type: string
+          description: El nombre corto del modificador
+        description:
+          type: string
+          description: Descripción del modificador
+        optional:
+          type: boolean
+          description: Señala si este modificador es opcional para los compradores.
+        min:
+          type: number
+          description: Mínimo de opciones a seleccionar. Si es que necesitas que sea requerido, el campo optional debe ser false
+        max:
+          type: number
+          description: Máximo de opciones a seleccionar.
+        
+        internalName:
+          type: string
+          description: Un nombre interno que no ven los compradores. Sirve para diferenciar modificadores con el mismo nombre y para asociar los modificadores a los productos.
+        externalId:
+          type: string
+          description: ID externo del modificador. 
+        optionIds:
+          type: array
+          description: Arreglo de Id's externos de opciones que operan con este modificador
+          items:
+            type: string
+
+
+    menu:
+      type: object
+      properties:
+        name:
+          type: string
+          description: El nombre del menú en cuestión. Es un valor que se usarás de manera interna, por lo que no te preocupes por tus compradores, ya que ellos nunca lo verán.
+        priority:
+          type: number
+          description: Dice la prioridad que tiene este versus el resto de los menú. Si tiene prioridad más alta y cumple con todas las condiciones, entonces es el que se muestra.
+        storesIds:
+          type: array
+          description: Utilizando el id de justo para cada tienda, se puede limitar en qué locales estará disponible este menú. Si quieres que esté en todos, basta con dejarlo vacío.
+          items:
+            type: string
+        externalId:
+          type: string
+          description: ID externo del modificador. 
+        channels:
+          type: array
+          items:
+            type: string
+            description: Son los tipos de pedidos que acepta este menú
+            enum: ['web-delivery','web-go','web-serve','orion-delivery','orion-go','orion-serve','app-delivery','app-go','app-serve']
+        daysBefore:
+          type: number
+          description: Días de anticipación se necesitan para activar este menú. Esta configuración es ideal para los negocios que tienen productos que se hacen a pedido. Ejemplo una pastelería.
+        schedule:
+          description: Este campo determina la disponibilidad del menú en función del tiempo.
+          $ref: '#/components/schemas/schedule'
+
+    schedule:
+      type: object
+      properties:
+        closedUntilDate:
+          type: array
+          description: Fecha en la que vuelve a estar disponible. (Solo si es que esta cerrado temporalmente)
+          items:
+            type: string
+            format: date-time
+        closedDays:
+          type: array
+          description: Fechas exactas cuando esta cerrado (por lo general se agregan los feriados)
+          items:
+            type: string
+            format: date-time
+        availableAtPeriods:
+          type: boolean
+          description: Si se envía como verdadero, la disponibilidad se aplica acorde a lo que está en el campo `openPeriods`. Si que es falso, siempre estará disponible el menú, independiente del día.
+        timezone:
+          type: string
+          description: Zona horaria en la que se opera.
+          enum: ['America/Santiago','America/Lima','America/Guayaquil','America/Argentina/Buenos_Aires','America/Bogota','America/Costa_Rica','America/Mexico_City']
+        openPeriods:
+          type: array
+          description: Este es un  arreglo de elementos en donde están los periodos de apertura.
+          items:
+            $ref: '#/components/schemas/openPeriod'
+
+    openPeriod:
+      type: object
+      properties:
+        daysOfWeek:
+          type: array
+          description: Arreglo con los días de la semana en que operará este menú. El Lunes es el valor 1 y domingo es 7.
+          items:
+            type: string
+            format: date-time
+        fromMinute:
+          type: number
+          description: Minutos desde las 00:00 hrs en que empieza este periodo. Ejemplo 720 significa que empezará a operar desde las 720/60 = 12 hrs.
+        toMinute:
+          type: number
+          description: Minutos desde las 00:00 hrs en que termina este periodo. Ejemplo 960 significa que terminará de operar a las 960/60 = 16 hrs.
+
+    dataResult:
+      type: object
+      properties:
+        errors:
+          type: array
+          description: Descripción de los errores que existen en la llamada
+          items:
+            type: string
+
+    dataParams:
+      type: object
+      properties:
+        menu:
+          description: El menú
+          $ref: '#/components/schemas/menu'
+        products:
+          type: array
+          description: Los productos.
+          items:
+            $ref: '#/components/schemas/product'
+        categories:
+          type: array
+          description: Las categorias.
+          items:
+            $ref: '#/components/schemas/category'
+        modifiers:
+          type: array
+          description: Los modificadores.
+          items:
+            $ref: '#/components/schemas/modifier'
+        options:
+          type: array
+          description: Las opciones.
+          items:
+            $ref: '#/components/schemas/option'

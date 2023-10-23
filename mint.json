@@ -45,6 +45,10 @@
       "url": "docs/crisp/orders"
     },
     {
+      "name": "API v2",
+      "url": "docs/api/v2"
+    },
+    {
       "name": "Delivery",
       "url": "https://docs.getjusto.com/docs/methods/createDelivery.html"
     }
@@ -75,6 +79,22 @@
             "docs/crisp/orders/webhooks/accept-order",
             "docs/crisp/orders/webhooks/reject-order",
             "docs/crisp/orders/webhooks/order-ready"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API V2",
+      "pages": [
+        "docs/api/v2/introduction",
+        "docs/api/v2/authentication",
+        {
+          "group": "Endpoints",
+          "pages": [
+            "docs/api/v2/endpoints/post",
+            "docs/api/v2/endpoints/put",
+            "docs/api/v2/endpoints/patch",
+            "docs/api/v2/endpoints/get"
           ]
         }
       ]
