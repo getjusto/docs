@@ -56,7 +56,9 @@
   "navigation": [
     {
       "group": "Empezando",
-      "pages": ["docs/introduction"]
+      "pages": [
+        "docs/introduction"
+      ]
     },
     {
       "group": "Integración de pedidos",
@@ -84,7 +86,7 @@
       ]
     },
     {
-      "group": "API V2",
+      "group": "API V2.2",
       "pages": [
         "docs/api/v2/introduction",
         "docs/api/v2/authentication",
