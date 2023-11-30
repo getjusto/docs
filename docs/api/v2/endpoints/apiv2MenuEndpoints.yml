@@ -5,11 +5,14 @@ info:
 servers:
   - url: https://api.getjusto.com/api/v2
     description: Production server
+tags:
+  - name: menu
+    description: Todo lo relacionado a operar con menús
 paths:
   /menu/{id}:
     get:
-      summary: Obtener un menú
-      description: Usa este método para obtener un menú con sus respectivos items
+      tags:
+        - menu
       parameters:
         - name: id
           in: path
@@ -31,8 +34,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/menuResultGet'
     post:
-      summary: Crear un menú
-      description: Usa este método para crear un menú
+      tags:
+        - menu
       parameters:
         - name: id
           in: path
@@ -60,8 +63,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/menuResult'
     patch:
-      summary: Actualizar parcialmente un menú
-      description: Usa este método para actualizar un menú
+      tags:
+        - menu
       parameters:
         - name: id
           in: path
@@ -89,8 +92,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/menuResult'
     put:
-      summary: Actualizar un menú
-      description: Usa este método para actualizar un menú
+      tags:
+        - menu
       parameters:
         - name: id
           in: path
@@ -117,7 +120,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/menuResult'
-
+    head:
+      tags:
+        - menu
+      parameters:
+        - name: id
+          in: path
+          description: Corresponde al identificador interno que posea cada marca para su respectivo menú.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token de autenticación.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/menuResult'
+        '422':
+          description: error
 components:
   schemas:
     menuParams:

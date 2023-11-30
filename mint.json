@@ -93,10 +93,11 @@
         {
           "group": "Endpoints",
           "pages": [
+            "docs/api/v2/endpoints/head",
+            "docs/api/v2/endpoints/get",
             "docs/api/v2/endpoints/post",
             "docs/api/v2/endpoints/put",
-            "docs/api/v2/endpoints/patch",
-            "docs/api/v2/endpoints/get"
+            "docs/api/v2/endpoints/patch"
           ]
         }
       ]
