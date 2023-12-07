@@ -46,7 +46,7 @@
   "tabs": [
     {
       "name": "Crisp",
-      "url": "docs/crisp/orders"
+      "url": "docs/crisp"
     }
   ],
   "anchors": [
@@ -61,16 +61,35 @@
       "group": "Empezando",
       "version": "v3",
       "pages": [
-        "docs/api-reference/introduction",
-        "docs/api-reference/authentication",
+        "docs/main/introduction",
+        "docs/main/authentication",
         {
           "group": "Endpoints generales",
-          "pages": ["docs/api-reference/endpoints/me"]
+          "pages": ["docs/main/endpoints/me"]
         }
       ]
     },
     {
-      "group": "Integración de pedidos",
+      "group": "API Endpoints",
+      "version": "v3",
+      "pages": [
+        {
+          "group": "Cuentas",
+          "pages": ["docs/crisp/endpoints/tabs/get-tab"]
+        },
+        {
+          "group": "Turnos",
+          "pages": ["docs/crisp/endpoints/shifts/get-active-shift"]
+        }
+      ]
+    },
+    {
+      "group": "Webhooks",
+      "version": "v3",
+      "pages": ["docs/crisp/webhooks/introduction"]
+    },
+    {
+      "group": "API de Canal de Ventas",
       "version": "v3",
       "pages": [
         "docs/crisp/orders/introduction",
