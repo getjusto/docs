@@ -282,7 +282,7 @@ components:
         externalId:
           type: string
           description: ID externo del modificador. 
-        optionIds:
+        optionExternalIds:
           type: array
           description: Arreglo de Id's externos de opciones que operan con este modificador
           items:
