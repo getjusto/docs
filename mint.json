@@ -1,6 +1,7 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Justo Docs",
+  "versions": ["v3", "v2"],
   "logo": {
     "dark": "/logo/logo-white.svg",
     "light": "/logo/logo-dark.svg"
@@ -19,6 +20,9 @@
     }
   },
   "api": {
+    "auth": {
+      "method": "bearer"
+    },
     "playground": {
       "mode": "show"
     }
@@ -27,7 +31,7 @@
     "intercom": "ohd982w5"
   },
   "primaryTab": {
-    "name": "E-Commerce"
+    "name": "Documentación"
   },
   "topbarLinks": [
     {
@@ -43,25 +47,31 @@
     {
       "name": "Crisp",
       "url": "docs/crisp/orders"
-    },
+    }
+  ],
+  "anchors": [
     {
-      "name": "API V2",
-      "url": "docs/api/v2"
-    },
-    {
-      "name": "Delivery",
-      "url": "https://docs.getjusto.com/docs/methods/createDelivery.html"
+      "name": "Developer Portal",
+      "icon": "code",
+      "url": "https://developers.getjusto.com"
     }
   ],
   "navigation": [
     {
       "group": "Empezando",
+      "version": "v3",
       "pages": [
-        "docs/introduction"
+        "docs/api-reference/introduction",
+        "docs/api-reference/authentication",
+        {
+          "group": "Endpoints generales",
+          "pages": ["docs/api-reference/endpoints/me"]
+        }
       ]
     },
     {
       "group": "Integración de pedidos",
+      "version": "v3",
       "pages": [
         "docs/crisp/orders/introduction",
         "docs/crisp/orders/authentication",
@@ -87,17 +97,18 @@
     },
     {
       "group": "API V2.2",
+      "version": "v2",
       "pages": [
-        "docs/api/v2/introduction",
-        "docs/api/v2/authentication",
+        "docs/old/v2/introduction",
+        "docs/old/v2/authentication",
         {
           "group": "Endpoints",
           "pages": [
-            "docs/api/v2/endpoints/head",
-            "docs/api/v2/endpoints/get",
-            "docs/api/v2/endpoints/post",
-            "docs/api/v2/endpoints/put",
-            "docs/api/v2/endpoints/patch"
+            "docs/old/v2/endpoints/head",
+            "docs/old/v2/endpoints/get",
+            "docs/old/v2/endpoints/post",
+            "docs/old/v2/endpoints/put",
+            "docs/old/v2/endpoints/patch"
           ]
         }
       ]

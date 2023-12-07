@@ -1,0 +1,43 @@
+---
+title: Autenticación
+description: 'Autenticación en el API V3 de Justo'
+---
+
+## Obtener un Token
+
+<Steps>
+  <Step title="Crear aplicación">
+    Entra a developers.getjusto.com y crea una nueva app
+  </Step>
+  <Step title="Crea una nueva autorización">
+    Despues de crear la aplicación debes crear una autorización para obtener
+    acceso a una marca. Debes seleccionar los permisos que necesitas para tu
+    aplicación. No se puede cambiar despues.
+  </Step>
+  <Step title="Solicita la autorización al cliente">
+    Enviale a la marca la URL que se indica en el portal para que te entregue el
+    acceso.
+  </Step>
+  <Step title="Obten el token">
+    Una vez que la marca te de acceso, puedes obtener el token de autenticación.
+    Este token solo lo podrás ver una vez asi que asegurate de guardarlo en un
+    lugar seguro. Los token no expiran pero puedes generar uno nuevo y el
+    anterior dejará de funcionar.
+  </Step>
+</Steps>
+
+## Autenticar Requests
+
+Para autenticar tus requests debes enviar el token en el header `Authorization` de la siguiente manera:
+
+<CodeGroup>
+
+```javascript test.js
+fetch('https://api.service.getjusto.com/v3/api/me', {
+  headers: {
+    Authorization: 'Bearer ' + token,
+  },
+});
+```
+
+</CodeGroup>
