@@ -86,7 +86,15 @@
     {
       "group": "Webhooks",
       "version": "v3",
-      "pages": ["docs/crisp/webhooks/introduction"]
+      "pages": [
+        {
+          "group": "Cuenta",
+          "pages": [
+            "docs/crisp/webhooks/tab/created",
+            "docs/crisp/webhooks/tab/ready"
+          ]
+        }
+      ]
     },
     {
       "group": "API de Canal de Ventas",

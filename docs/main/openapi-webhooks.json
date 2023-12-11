@@ -1,209 +1,118 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Justo API",
+    "title": "Justo API Webhooks",
     "version": "3.0.0"
   },
-  "servers": [
-    {
-      "url": "https://api.service.getjusto.com/v3",
-      "description": "Production server"
-    }
-  ],
   "paths": {
-    "/tabs/{storeId}/shifts/active": {
-      "get": {
-        "summary": "Active Shift",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "storeId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The OpenAPI spec",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/tabsShift"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Errors",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
+    "/tabs.tab.created": {
+      "post": {
+        "summary": "Creada",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook",
+                    "type": "string",
+                    "enum": [
+                      "tabs.tab.created"
+                    ],
+                    "const": "tabs.tab.created"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "tab": {
+                        "$ref": "#/components/schemas/tabsTab"
                       }
                     }
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "El ID de la marca"
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "El ID del local si es que corresponde"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "La fecha en que se generó el evento"
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "El ID del evento"
                   }
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
     },
-    "/tabs/{storeId}/tabs/{tabId}": {
-      "get": {
-        "summary": "Tab",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "storeId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "tabId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The OpenAPI spec",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/tabsTab"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Errors",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
+    "/tabs.tab.ready": {
+      "post": {
+        "summary": "Lista para entrega",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook",
+                    "type": "string",
+                    "enum": [
+                      "tabs.tab.ready"
+                    ],
+                    "const": "tabs.tab.ready"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "tab": {
+                        "$ref": "#/components/schemas/tabsTab"
                       }
                     }
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "El ID de la marca"
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "El ID del local si es que corresponde"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "La fecha en que se generó el evento"
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "El ID del evento"
                   }
                 }
               }
             }
           }
-        }
-      }
-    },
-    "/api/me": {
-      "get": {
-        "summary": "Token info",
-        "parameters": [],
+        },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/apiAuthorizationStatus"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Errors",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
