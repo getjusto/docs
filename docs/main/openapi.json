@@ -525,10 +525,7 @@
             "items": {
               "type": "string",
               "enum": [
-                "tabs.tabs.view",
-                "tabs.tabs.edit",
-                "tabs.inventory.view",
-                "tabs.inventory.edit"
+                "admin"
               ]
             }
           },
