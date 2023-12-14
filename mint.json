@@ -79,7 +79,10 @@
         },
         {
           "group": "Turnos",
-          "pages": ["docs/crisp/endpoints/shifts/get-active-shift"]
+          "pages": [
+            "docs/crisp/endpoints/shifts/get-active-shift",
+            "docs/crisp/endpoints/shifts/get-shift"
+          ]
         }
       ]
     },
@@ -91,7 +94,8 @@
           "group": "Cuenta",
           "pages": [
             "docs/crisp/webhooks/tab/created",
-            "docs/crisp/webhooks/tab/ready"
+            "docs/crisp/webhooks/tab/ready",
+            "docs/crisp/webhooks/tab/closed"
           ]
         }
       ]

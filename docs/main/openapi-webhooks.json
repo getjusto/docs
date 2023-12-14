@@ -116,6 +116,62 @@
           }
         }
       }
+    },
+    "/tabs.tab.closed": {
+      "post": {
+        "summary": "Cerrada",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook",
+                    "type": "string",
+                    "enum": [
+                      "tabs.tab.closed"
+                    ],
+                    "const": "tabs.tab.closed"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "tab": {
+                        "$ref": "#/components/schemas/tabsTab"
+                      }
+                    }
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "El ID de la marca"
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "El ID del local si es que corresponde"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "La fecha en que se generó el evento"
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "El ID del evento"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -407,6 +463,14 @@
           "_id": {
             "type": "string",
             "description": "Shift ID"
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local"
           },
           "startedAt": {
             "type": "string",

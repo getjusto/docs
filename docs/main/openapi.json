@@ -77,6 +77,80 @@
         }
       }
     },
+    "/tabs/{storeId}/shifts/{shiftId}": {
+      "get": {
+        "summary": "Shift",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "shiftId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/tabsShift"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tabs/{storeId}/tabs/{tabId}": {
       "get": {
         "summary": "Tab",
@@ -498,6 +572,14 @@
           "_id": {
             "type": "string",
             "description": "Shift ID"
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local"
           },
           "startedAt": {
             "type": "string",
