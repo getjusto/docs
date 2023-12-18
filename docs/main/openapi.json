@@ -388,6 +388,13 @@
             },
             "description": "IDs de las mesas asociadas a la cuenta."
           },
+          "sectorIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs de los sectores de las mesas asociadas a la cuenta."
+          },
           "reservationId": {
             "type": "string",
             "description": "ID de la reserva asociada a la cuenta."
