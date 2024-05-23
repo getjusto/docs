@@ -37,7 +37,6 @@
                       "example": true
                     },
                     "data": {
-                      "type": "object",
                       "$ref": "#/components/schemas/tabsShift"
                     }
                   }
@@ -111,7 +110,6 @@
                       "example": true
                     },
                     "data": {
-                      "type": "object",
                       "$ref": "#/components/schemas/tabsShift"
                     }
                   }
@@ -185,8 +183,201 @@
                       "example": true
                     },
                     "data": {
-                      "type": "object",
                       "$ref": "#/components/schemas/tabsTab"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tabs/{storeId}/tabs": {
+      "get": {
+        "summary": "List tabs",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "name",
+              "description": "Filtro de búsqueda. Puede ser el número de cuenta o el id de la boleta."
+            }
+          },
+          {
+            "in": "query",
+            "name": "shiftId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "name",
+              "description": "Id del turno."
+            }
+          },
+          {
+            "in": "query",
+            "name": "deliveryTypes",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "name",
+              "enum": [
+                "go",
+                "serve",
+                "delivery"
+              ],
+              "description": "Tipos de entrega."
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de inicio de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de fin de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt"
+              ],
+              "example": "createdAt",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"createdAt\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsTab"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
                     }
                   }
                 }
@@ -242,7 +433,6 @@
                       "example": true
                     },
                     "data": {
-                      "type": "object",
                       "$ref": "#/components/schemas/apiAuthorizationStatus"
                     }
                   }
@@ -388,6 +578,13 @@
             },
             "description": "IDs de las mesas asociadas a la cuenta."
           },
+          "tableNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Nombres de las mesas asociadas a la cuenta."
+          },
           "sectorIds": {
             "type": "array",
             "items": {
@@ -407,6 +604,14 @@
               "refunded",
               "partiallyPaid"
             ]
+          },
+          "statusLabel": {
+            "type": "string",
+            "description": "Estado de la cuenta."
+          },
+          "statusLabelForClient": {
+            "type": "string",
+            "description": "Estado de la cuenta visible para el cliente."
           },
           "totalPrice": {
             "type": "number",
@@ -477,13 +682,17 @@
             "description": "Origen de la cuenta.",
             "enum": [
               "pos",
+              "totem",
+              "clientView",
+              "messenger",
               "justo",
               "pedidosya",
               "rappi",
               "ubereats",
               "custom",
               "ordatic",
-              "hubster"
+              "hubster",
+              "didifood"
             ]
           },
           "salesChannelConfigId": {
@@ -570,6 +779,34 @@
           "externalInvoiceId": {
             "type": "string",
             "description": "ID de la factura externa."
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tabsTabPayment"
+            },
+            "description": "Pagos de la cuenta."
+          },
+          "invoices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tabsTabInvoice"
+            },
+            "description": "Facturas de la cuenta."
+          },
+          "discounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tabsTabDiscount"
+            },
+            "description": "Descuentos de la cuenta."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tabsTabItem"
+            },
+            "description": "Items de la cuenta."
           }
         }
       },
@@ -603,6 +840,369 @@
           "createdById": {
             "type": "string",
             "description": "ID del usuario que abrió el turno"
+          }
+        }
+      },
+      "tabsTabPayment": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del pago."
+          },
+          "code": {
+            "type": "string",
+            "example": "CJXEQZK",
+            "description": "Un código único para identificar el pago. Es único en Crisp."
+          },
+          "shiftId": {
+            "type": "string",
+            "example": "Li4eEa3W2hiuGGCFa",
+            "description": "El ID del turno al que pertenece el pago."
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del método de pago."
+          },
+          "paymentMethodName": {
+            "type": "string",
+            "example": "Efectivo",
+            "description": "El nombre del método de pago."
+          },
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "El monto del pago."
+          },
+          "tipAmount": {
+            "type": "number",
+            "example": 10,
+            "description": "El monto de la propina."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del pago."
+          },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de anulación del pago."
+          },
+          "shiftEndedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de cierre del turno."
+          },
+          "createdById": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del usuario que creó el pago."
+          },
+          "shouldMakeInvoice": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indica si se debe generar una factura para el pago."
+          },
+          "payerName": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "Nombre del pagador. Solo para JustoPay"
+          },
+          "payerUserId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del usuario que pagó la cuenta. Solo para JustoPay"
+          }
+        }
+      },
+      "tabsTabInvoice": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID de la factura."
+          },
+          "providerId": {
+            "type": "string",
+            "example": "openFactura",
+            "description": "El ID del proveedor al que pertenece la factura."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación de la factura."
+          },
+          "generatedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de generación de la factura."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "generated",
+              "error",
+              "voided"
+            ],
+            "description": "El estado de la factura. Valores posibles: 'pending', 'generated', 'error', 'voided'."
+          },
+          "externalInvoiceId": {
+            "type": "string",
+            "example": "123456",
+            "description": "El ID de la factura en el sistema externo."
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "Error al generar la factura.",
+            "description": "Mensaje de error al generar la factura."
+          },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de anulación de la factura."
+          },
+          "statusLabel": {
+            "type": "string",
+            "example": "Pendiente",
+            "description": "Etiqueta del estado de la factura."
+          },
+          "invoiceURL": {
+            "type": "string",
+            "example": "https://getjusto.com/invoice/123456",
+            "description": "URL de la factura."
+          }
+        }
+      },
+      "tabsTabDiscount": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del descuento."
+          },
+          "shiftId": {
+            "type": "string",
+            "example": "Li4eEa3W2hiuGGCFa",
+            "description": "El ID del turno al que pertenece el descuento."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del descuento."
+          },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de anulación del descuento."
+          },
+          "discountedAmount": {
+            "type": "number",
+            "example": 100,
+            "description": "El monto del descuento."
+          },
+          "discountMethodId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del método de descuento."
+          },
+          "discountMethodName": {
+            "type": "string",
+            "example": "Cupón",
+            "description": "El nombre del método de descuento."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "fixedAmount",
+              "openAmount",
+              "openPercentage",
+              "percentage",
+              "integration"
+            ],
+            "description": "El tipo de descuento."
+          },
+          "fixedAmount": {
+            "type": "number",
+            "example": 100,
+            "description": "Solo si es que el tipo de descuento es fijo"
+          },
+          "percentage": {
+            "type": "number",
+            "example": 10,
+            "description": "Solo si es que el tipo de descuento es porcentaje"
+          }
+        }
+      },
+      "tabsTabItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del item."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del item."
+          },
+          "amount": {
+            "type": "number",
+            "example": 2,
+            "description": "Cantidad de este item en la cuenta."
+          },
+          "price": {
+            "type": "number",
+            "example": 100,
+            "description": "Precio total del item, sin incluir modificadores."
+          },
+          "priceWithModifiers": {
+            "type": "number",
+            "example": 120,
+            "description": "Precio total del item, incluyendo modificadores."
+          },
+          "unitPrice": {
+            "type": "number",
+            "example": 50,
+            "description": "Precio unitario del item, sin incluir modificadores."
+          },
+          "productId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del producto."
+          },
+          "productName": {
+            "type": "string",
+            "example": "Café",
+            "description": "Nombre del producto."
+          },
+          "productInternalName": {
+            "type": "string",
+            "example": "Café",
+            "description": "Nombre interno del producto."
+          },
+          "productUnitItemsCount": {
+            "type": "number",
+            "example": 1,
+            "description": "Cantidad de unidades que contiene el producto. Por ejemplo un combo papas fritas + hamburguesa y bebida contiene 3 items o un 2x1 contiene 2 items."
+          },
+          "comment": {
+            "type": "string",
+            "example": "Sin azúcar",
+            "description": "Comentario del item."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "product",
+              "deliveryFee"
+            ],
+            "description": "Tipo de item."
+          },
+          "sentToKDSAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en la que se envió a cocina."
+          },
+          "addedByClientUserId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del cliente que agregó el item."
+          },
+          "addedByClientName": {
+            "type": "string",
+            "example": "Juan",
+            "description": "Nombre del cliente que agregó el item."
+          },
+          "eaterLabels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Etiquetas del comensal."
+          },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tabsTabItemModifier"
+            },
+            "description": "Modificadores del item."
+          }
+        }
+      },
+      "tabsTabItemModifier": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del modificador."
+          },
+          "modifierGroupId": {
+            "type": "string",
+            "example": "Li4eEa3W2hiuGGCFa",
+            "description": "El ID del grupo de modificador al que pertenece el modificador."
+          },
+          "modifierId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del modificador."
+          },
+          "amount": {
+            "type": "number",
+            "example": 2,
+            "description": "Cantidad de este modificador en la cuenta multiplicado por la cantidad de items a los que aplica."
+          },
+          "modifierQuantity": {
+            "type": "number",
+            "example": 1,
+            "description": "Cantidad de este modificador en la cuenta por cada item."
+          },
+          "price": {
+            "type": "number",
+            "example": 100,
+            "description": "Precio total del modificador."
+          },
+          "unitPrice": {
+            "type": "number",
+            "example": 50,
+            "description": "Precio unitario del modificador."
+          },
+          "modifierName": {
+            "type": "string",
+            "example": "Azúcar",
+            "description": "Nombre del modificador."
+          },
+          "modifierInternalName": {
+            "type": "string",
+            "example": "Azúcar",
+            "description": "Nombre interno del modificador."
+          },
+          "modifierGroupName": {
+            "type": "string",
+            "example": "Azúcar",
+            "description": "Nombre del grupo de modificador."
+          },
+          "modifierUnitItemsCount": {
+            "type": "number",
+            "example": 1,
+            "description": "Cantidad de unidades que contiene el modificador. Por ejemplo un combo papas fritas + hamburguesa y bebida contiene 3 items o un 2x1 contiene 2 items."
           }
         }
       },

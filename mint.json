@@ -75,7 +75,10 @@
       "pages": [
         {
           "group": "Cuentas",
-          "pages": ["docs/crisp/endpoints/tabs/get-tab"]
+          "pages": [
+            "docs/crisp/endpoints/tabs/get-tab",
+            "docs/crisp/endpoints/tabs/list-tabs"
+          ]
         },
         {
           "group": "Turnos",
