@@ -1,0 +1,8 @@
+{
+	"scripts": {
+		"start": "mintlify dev --port 2999"
+	},
+	"devDependencies": {
+		"mintlify": "^4.0.215"
+	}
+}

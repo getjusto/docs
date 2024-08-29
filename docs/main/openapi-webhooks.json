@@ -811,7 +811,8 @@
             "type": "string",
             "enum": [
               "product",
-              "deliveryFee"
+              "deliveryFee",
+              "serviceFee"
             ],
             "description": "Tipo de item."
           },
@@ -915,7 +916,8 @@
             "items": {
               "type": "string",
               "enum": [
-                "admin"
+                "admin",
+                "reservationsMarketplace"
               ]
             }
           },

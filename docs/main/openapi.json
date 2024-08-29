@@ -471,6 +471,77 @@
           }
         }
       }
+    },
+    "/reservations/match-store-profiles": {
+      "get": {
+        "summary": "Retorna una lista de locales que coinciden con la búsqueda",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Crudo sin censura",
+              "description": "El nombre de la marca"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/reservationsStoreProfile"
+                      },
+                      "description": "Perfiles que coinciden con la búsqueda"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1110,7 +1181,8 @@
             "type": "string",
             "enum": [
               "product",
-              "deliveryFee"
+              "deliveryFee",
+              "serviceFee"
             ],
             "description": "Tipo de item."
           },
@@ -1214,7 +1286,8 @@
             "items": {
               "type": "string",
               "enum": [
-                "admin"
+                "admin",
+                "reservationsMarketplace"
               ]
             }
           },
@@ -1272,6 +1345,21 @@
                 }
               }
             }
+          }
+        }
+      },
+      "reservationsStoreProfile": {
+        "type": "object",
+        "properties": {
+          "websiteId": {
+            "type": "string",
+            "example": "3omj3",
+            "description": "El ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "example": "3omj3",
+            "description": "El ID del local"
           }
         }
       }

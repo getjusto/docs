@@ -1,155 +1,166 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Justo Docs",
-  "versions": ["v3", "v2"],
-  "logo": {
-    "dark": "/logo/logo-white.svg",
-    "light": "/logo/logo-dark.svg"
-  },
-  "favicon": "/favicon.png",
-  "colors": {
-    "primary": "#3b82f6",
-    "light": "#AE87FF",
-    "dark": "#0D001D",
-    "background": {
-      "dark": "#090014"
-    },
-    "anchors": {
-      "from": "#FF7F57",
-      "to": "#3b82f6"
-    }
-  },
-  "api": {
-    "auth": {
-      "method": "bearer"
-    },
-    "playground": {
-      "mode": "show"
-    }
-  },
-  "integrations": {
-    "intercom": "ohd982w5"
-  },
-  "primaryTab": {
-    "name": "Documentación"
-  },
-  "topbarLinks": [
-    {
-      "name": "Ayuda",
-      "url": "mailto:pedro.briceno@getjusto.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Justo",
-    "url": "https://getjusto.com"
-  },
-  "tabs": [
-    {
-      "name": "Crisp",
-      "url": "docs/crisp"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Developer Portal",
-      "icon": "code",
-      "url": "https://developers.getjusto.com"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Empezando",
-      "version": "v3",
-      "pages": [
-        "docs/main/introduction",
-        "docs/main/authentication",
-        {
-          "group": "Endpoints generales",
-          "pages": ["docs/main/endpoints/me"]
-        }
-      ]
-    },
-    {
-      "group": "API Endpoints",
-      "version": "v3",
-      "pages": [
-        {
-          "group": "Cuentas",
-          "pages": [
-            "docs/crisp/endpoints/tabs/get-tab",
-            "docs/crisp/endpoints/tabs/list-tabs"
-          ]
-        },
-        {
-          "group": "Turnos",
-          "pages": [
-            "docs/crisp/endpoints/shifts/get-active-shift",
-            "docs/crisp/endpoints/shifts/get-shift"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Webhooks",
-      "version": "v3",
-      "pages": [
-        {
-          "group": "Cuenta",
-          "pages": [
-            "docs/crisp/webhooks/tab/created",
-            "docs/crisp/webhooks/tab/ready",
-            "docs/crisp/webhooks/tab/closed"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "API de Canal de Ventas",
-      "version": "v3",
-      "pages": [
-        "docs/crisp/orders/introduction",
-        "docs/crisp/orders/authentication",
-        "docs/crisp/orders/demo",
-        {
-          "group": "Endpoints",
-          "pages": [
-            "docs/crisp/orders/endpoints/inject-an-order",
-            "docs/crisp/orders/endpoints/complete-an-order",
-            "docs/crisp/orders/endpoints/cancel-an-order"
-          ]
-        },
-        {
-          "group": "Webhooks",
-          "pages": [
-            "docs/crisp/orders/webhooks/get-availability",
-            "docs/crisp/orders/webhooks/accept-order",
-            "docs/crisp/orders/webhooks/reject-order",
-            "docs/crisp/orders/webhooks/order-ready"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "API V2.2",
-      "version": "v2",
-      "pages": [
-        "docs/old/v2/introduction",
-        "docs/old/v2/authentication",
-        {
-          "group": "Endpoints",
-          "pages": [
-            "docs/old/v2/endpoints/head",
-            "docs/old/v2/endpoints/get",
-            "docs/old/v2/endpoints/post",
-            "docs/old/v2/endpoints/put",
-            "docs/old/v2/endpoints/patch"
-          ]
-        }
-      ]
-    }
-  ],
-  "footerSocials": {
-    "github": "https://github.com/getjusto",
-    "linkedin": "https://www.linkedin.com/company/getjusto"
-  }
+	"$schema": "https://mintlify.com/schema.json",
+	"name": "Justo Docs",
+	"versions": ["v3", "v2"],
+	"logo": {
+		"dark": "/logo/logo-white.svg",
+		"light": "/logo/logo-dark.svg"
+	},
+	"favicon": "/favicon.png",
+	"colors": {
+		"primary": "#3b82f6",
+		"light": "#AE87FF",
+		"dark": "#0D001D",
+		"background": {
+			"dark": "#090014"
+		},
+		"anchors": {
+			"from": "#FF7F57",
+			"to": "#3b82f6"
+		}
+	},
+	"api": {
+		"auth": {
+			"method": "bearer"
+		},
+		"playground": {
+			"mode": "show"
+		}
+	},
+	"integrations": {
+		"intercom": "ohd982w5"
+	},
+	"primaryTab": {
+		"name": "Documentación"
+	},
+	"topbarLinks": [
+		{
+			"name": "Ayuda",
+			"url": "mailto:pedro.briceno@getjusto.com"
+		}
+	],
+	"topbarCtaButton": {
+		"name": "Justo",
+		"url": "https://getjusto.com"
+	},
+	"tabs": [
+		{
+			"name": "PDV",
+			"url": "docs/crisp"
+		},
+		{
+			"name": "Reservas",
+			"url": "docs/reservations"
+		}
+	],
+	"anchors": [
+		{
+			"name": "Developer Portal",
+			"icon": "code",
+			"url": "https://developers.getjusto.com"
+		}
+	],
+	"navigation": [
+		{
+			"group": "Perfiles",
+			"version": "v3",
+			"pages": [
+				"docs/reservations/endpoints/storeProfiles/match-store-profiles"
+			]
+		},
+		{
+			"group": "Empezando",
+			"version": "v3",
+			"pages": [
+				"docs/main/introduction",
+				"docs/main/authentication",
+				{
+					"group": "Endpoints generales",
+					"pages": ["docs/main/endpoints/me"]
+				}
+			]
+		},
+		{
+			"group": "API Endpoints",
+			"version": "v3",
+			"pages": [
+				{
+					"group": "Cuentas",
+					"pages": [
+						"docs/crisp/endpoints/tabs/get-tab",
+						"docs/crisp/endpoints/tabs/list-tabs"
+					]
+				},
+				{
+					"group": "Turnos",
+					"pages": [
+						"docs/crisp/endpoints/shifts/get-active-shift",
+						"docs/crisp/endpoints/shifts/get-shift"
+					]
+				}
+			]
+		},
+		{
+			"group": "Webhooks",
+			"version": "v3",
+			"pages": [
+				{
+					"group": "Cuenta",
+					"pages": [
+						"docs/crisp/webhooks/tab/created",
+						"docs/crisp/webhooks/tab/ready",
+						"docs/crisp/webhooks/tab/closed"
+					]
+				}
+			]
+		},
+		{
+			"group": "API de Canal de Ventas",
+			"version": "v3",
+			"pages": [
+				"docs/crisp/orders/introduction",
+				"docs/crisp/orders/authentication",
+				"docs/crisp/orders/demo",
+				{
+					"group": "Endpoints",
+					"pages": [
+						"docs/crisp/orders/endpoints/inject-an-order",
+						"docs/crisp/orders/endpoints/complete-an-order",
+						"docs/crisp/orders/endpoints/cancel-an-order"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/crisp/orders/webhooks/get-availability",
+						"docs/crisp/orders/webhooks/accept-order",
+						"docs/crisp/orders/webhooks/reject-order",
+						"docs/crisp/orders/webhooks/order-ready"
+					]
+				}
+			]
+		},
+		{
+			"group": "API V2.2",
+			"version": "v2",
+			"pages": [
+				"docs/old/v2/introduction",
+				"docs/old/v2/authentication",
+				{
+					"group": "Endpoints",
+					"pages": [
+						"docs/old/v2/endpoints/head",
+						"docs/old/v2/endpoints/get",
+						"docs/old/v2/endpoints/post",
+						"docs/old/v2/endpoints/put",
+						"docs/old/v2/endpoints/patch"
+					]
+				}
+			]
+		}
+	],
+	"footerSocials": {
+		"github": "https://github.com/getjusto",
+		"linkedin": "https://www.linkedin.com/company/getjusto"
+	}
 }
