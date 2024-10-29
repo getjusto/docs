@@ -1,0 +1,38 @@
+name: Build and Deploy Mintlify Preview
+
+on:
+  pull_request:
+    branches:
+      - main  # Cambia esto según la rama que utilices como base
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install mintlify
+
+      # 4. Run Mintlify in dev mode to generate docs
+      # As Mintlify does not have a build command, we will run dev mode temporarily
+      - name: Run Mintlify dev
+        run: |
+          nohup npx mintlify dev & sleep 10
+        continue-on-error: true
+
+      # 5. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: "./docs/output"  # Asegúrate de que el contenido esté aquí
+          publish_branch: gh-pages
+          allow_empty_commit: true
