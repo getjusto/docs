@@ -542,6 +542,262 @@
           }
         }
       }
+    },
+    "/notifications/notify": {
+      "post": {
+        "summary": "Recibir el estado de un pedido",
+        "description": "Este endpoint debe ser implementado para que así desde Justo podamos notificar el estado de un pedido.",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "Tipo de notificación",
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "delivering",
+                      "done",
+                      "cancelled",
+                      "nearToFinish"
+                    ],
+                    "const": "pending"
+                  },
+                  "externalUserId": {
+                    "description": "Identificador del usuario externo que utiliza la Wallet en cuestión",
+                    "type": "string"
+                  },
+                  "requiresDeliveryVerificationCode": {
+                    "description": "String alfanumérico de largo 4 a 6 caracteres que se utiliza en algunos despachos para verificar que el cliente ha recibido el pedido. Si este valor existe es responsabilidad del integrador hacerle llegar el código al receptor del pedido.",
+                    "type": "string"
+                  },
+                  "websiteId": {
+                    "description": "Identificador de la marca a la cual pertenece el pedido",
+                    "type": "string"
+                  },
+                  "orderId": {
+                    "description": "Identificador de la orden a la cual pertenece el pedido",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/details/{externalUserId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Detalles de usuario",
+        "description": "Este endpoint debe ser implementado para que desde Justo podamos obtener los datos de cada uno de los usuarios. Un punto importante es que el email debe estar validado por el sistema, ya que es utilizado como llave primaria dentro de Justo",
+        "operationId": "getUserDetails",
+        "parameters": [
+          {
+            "name": "externalUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "email": {
+                      "description": "Email del usuario",
+                      "type": "string"
+                    },
+                    "phone": {
+                      "description": "Teléfono del usuario (opcional)",
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "description": "Nombre del usuario",
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "description": "Apellido del usuario",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/verify": {
+      "post": {
+        "summary": "Verificar un pago",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "description": "Monto de la transacción",
+                    "type": "string"
+                  },
+                  "currenty": {
+                    "description": "Tipo de moneda",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Descripción del cargo a efectuarse",
+                    "type": "string"
+                  },
+                  "transactionId": {
+                    "description": "Identificador de la transacción desde el lado de Justo",
+                    "type": "string"
+                  },
+                  "orderId": {
+                    "description": "Identificador de la orden desde el lado de Justo",
+                    "type": "string"
+                  },
+                  "externalUserId": {
+                    "description": "Identificador de usuario desde el lado del integrador",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "description": "Resultado de la verificación",
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "autorizationToken": {
+                      "description": "Token de autorización de la transacción",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/execute": {
+      "post": {
+        "summary": "Ejecutar un pago",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "autorizationToken": "Token de autorización de la transacción",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "description": "Resultado de la ejecución",
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "operation": {
+                      "description": "Código de la operación",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/refund": {
+      "post": {
+        "summary": "Reversar un pago",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amountToRefund": {
+                    "description": "Monto a reversar",
+                    "type": "string"
+                  },
+                  "currency": {
+                    "description": "Tipo de moneda",
+                    "type": "string"
+                  },
+                  "transactionId": {
+                    "description": "Identificación de la transacción",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "description": "Resultado de la ejecución",
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
     }
   },
   "components": {

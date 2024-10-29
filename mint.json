@@ -1,7 +1,10 @@
 {
 	"$schema": "https://mintlify.com/schema.json",
 	"name": "Justo Docs",
-	"versions": ["v3", "v2"],
+	"versions": [
+		"v3",
+		"v2"
+	],
 	"logo": {
 		"dark": "/logo/logo-white.svg",
 		"light": "/logo/logo-dark.svg"
@@ -36,7 +39,7 @@
 	"topbarLinks": [
 		{
 			"name": "Ayuda",
-			"url": "mailto:pedro.briceno@getjusto.com"
+			"url": "mailto:tecnologia@getjusto.com"
 		}
 	],
 	"topbarCtaButton": {
@@ -51,6 +54,10 @@
 		{
 			"name": "Reservas",
 			"url": "docs/reservations"
+		},
+		{
+			"name": "Embedded Ordering",
+			"url": "docs/embedded_ordering"
 		}
 	],
 	"anchors": [
@@ -69,6 +76,36 @@
 			]
 		},
 		{
+			"group": "Introducción",
+			"version": "v3",
+			"pages": [
+				"docs/embedded_ordering/introduction"
+			]
+		},
+		{
+			"group": "Onboarding",
+			"version": "v3",
+			"pages": [
+				"docs/embedded_ordering/endpoints/auth/details"
+			]
+		},
+		{
+			"group": "Pagos",
+			"version": "v3",
+			"pages": [
+				"docs/embedded_ordering/endpoints/payments/verify",
+				"docs/embedded_ordering/endpoints/payments/execute",
+				"docs/embedded_ordering/endpoints/payments/refund"
+			]
+		},
+		{
+			"group": "Notificaciones",
+			"version": "v3",
+			"pages": [
+				"docs/embedded_ordering/endpoints/notifications/notify"
+			]
+		},
+		{
 			"group": "Empezando",
 			"version": "v3",
 			"pages": [
@@ -76,7 +113,9 @@
 				"docs/main/authentication",
 				{
 					"group": "Endpoints generales",
-					"pages": ["docs/main/endpoints/me"]
+					"pages": [
+						"docs/main/endpoints/me"
+					]
 				}
 			]
 		},
