@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info:
+  title: Orders Endpoint API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v2
+    description: Production server
+tags:
+  - name: coupon
+    description: Todo lo relacionado a operar con cupon
+paths:
+  /coupon/{id}:
+    get:
+      tags:
+        - coupon
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Corresponde al identificador del cupón.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/couponResultGet'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    couponResultGet:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Resultado de la operación.
+        data:
+          description: Datos asociados a la operación
+          $ref: '#/components/schemas/dataParams'
+
+    dataParams:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Identificador del cupón
+        websiteId:
+          type: string
+          description: Identificador de la marca al que pertenece el cupón.
+        name:
+          type: string
+          description: Nombre del cupón usado
+        description:
+          type: string
+          description: Una descripción de qué descuento hace este cupón
+        type:
+          type: array
+          items:
+            description: Tipo de cupón
+            enum: ['percentage', 'percentageOnDiscount', 'fixed', 'fixedOnDelivery']
+        percentageOff:
+          type: number
+          description: "Porcentaje de descuento"
+        totalRedemptions:
+          type: number
+          description: "Total de canjes hasta el momento"
+        active:
+          type: boolean
+          description: Define el estado actual de tu cupón.
+        onlyForProductsWithoutDiscount:
+          type: boolean
+          description: No aplicable si algún producto en el carro tiene precio con descuento
+        requirePhoneVerification:
+          type: boolean
+          description: Se requiere teléfono verificado para utilizar cupón
+        dontApplyDiscountToOptions:
+          type: boolean
+          description: Aplicar el descuento sólo a los productos y no a las opciones
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha en que se creó el cupón
+        deletedAt:
+          type: string
+          format: date-time
+          description: Fecha en que se eliminó el cupón
+        isHidden:
+          type: boolean
+        useProductExternalIdAsReference:
+          type: boolean
+          description: Usar productos externos (solo para integraciones)
+        allowedEmails:
+          type: array
+          items:
+            type: string
+            description: Emails permitidos para canjear el cupón
+        discountAmount:
+          type: string
+          description: Monto del descuento
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha de término
+        fromDate:
+          type: string
+          format: date-time
+          description: Fecha de inicio
+        maxPercentageOffDiscount:
+          type: number
+          description: Monto máximo de descuento para cupones de porcentaje (opcional)
+        maxRedemptions:
+          type: number
+          description: Canjes máximos de cupones
+        maxRedemptionsPerUser:
+          type: number
+          description: Canjes máximos de cupones por usuarios
+        maxRedemptionsPerUserPerDay:
+          type: number
+          description: Canjes máximos de cupones por usuarios por día
+        maximumOrderPrice:
+          type: number
+          description: Monto máximo del cupón
+        minimumOrderPrice:
+          type: number
+          description: Monto mínimo del pedido
+        onlyForCertainCreditCard:
+          type: boolean
+        onlyForNewUsers:
+          type: string
+          description: Sólo para usuarios que nunca han pedido en la app de Justo
+        requireChannels:
+          type: array
+          items:
+            type: string
+            description: Canales que deben estar presentes en el carro para poder canjear el cupón
+        requiredBINs:
+          type: array
+          items:
+            type: string
+            description: Este cupón es válido solo para algunas tarjetas
+        requiresMenusIds:
+          type: array
+          items:
+            type: string
+            description: Los menús que deben estar presentes en el carro para poder canjear el cupón
+        requiresPaymentTypes:
+          type: array
+          items:
+            type: string
+            description: Tipos de pago que deben estar presentes en el carro para poder canjear el cupón
+        requiresStoresIds:
+          type: array
+          items:
+            type: string
+            description: Las tiendas que deben estar presentes en el carro para poder canjear el cupón
+
+        schedule:
+          description: Activo el cupón desde
+          $ref: '#/components/schemas/schedule'
+        scheduleAtUse:
+          description: Activo el cupón hasta
+          $ref: '#/components/schemas/schedule'
+
+    schedule:
+      type: object
+      properties:
+        closedUntilDate:
+          type: array
+          description: Fecha en la que vuelve a estar disponible. (Solo si es que esta cerrado temporalmente)
+          items:
+            type: string
+            format: date-time
+        closedDays:
+          type: array
+          description: Fechas exactas cuando esta cerrado (por lo general se agregan los feriados)
+          items:
+            type: string
+            format: date-time
+        availableAtPeriods:
+          type: boolean
+          description: Si se envía como verdadero, la disponibilidad se aplica acorde a lo que está en el campo `openPeriods`. Si que es falso, siempre estará disponible el menú, independiente del día.
+        timezone:
+          type: string
+          description: Zona horaria en la que se opera.
+          enum: ['America/Santiago','America/Lima','America/Guayaquil','America/Argentina/Buenos_Aires','America/Bogota','America/Costa_Rica','America/Mexico_City']
+        openPeriods:
+          type: array
+          description: Este es un  arreglo de elementos en donde están los periodos de apertura.
+          items:
+            $ref: '#/components/schemas/openPeriod'
+
+    openPeriod:
+      type: object
+      properties:
+        daysOfWeek:
+          type: array
+          description: Arreglo con los días de la semana en que operará este menú. El Lunes es el valor 1 y domingo es 7.
+          items:
+            type: string
+            format: date-time
+        fromMinute:
+          type: number
+          description: Minutos desde las 00:00 hrs en que empieza este periodo. Ejemplo 720 significa que empezará a operar desde las 720/60 = 12 hrs.
+        toMinute:
+          type: number
+          description: Minutos desde las 00:00 hrs en que termina este periodo. Ejemplo 960 significa que terminará de operar a las 960/60 = 16 hrs.
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid

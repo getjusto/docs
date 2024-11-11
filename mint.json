@@ -186,13 +186,19 @@
 				"docs/old/v2/introduction",
 				"docs/old/v2/authentication",
 				{
-					"group": "Endpoints",
+					"group": "Menú",
 					"pages": [
-						"docs/old/v2/endpoints/head",
-						"docs/old/v2/endpoints/get",
-						"docs/old/v2/endpoints/post",
-						"docs/old/v2/endpoints/put",
-						"docs/old/v2/endpoints/patch"
+						"docs/old/v2/endpoints/menu/head",
+						"docs/old/v2/endpoints/menu/get",
+						"docs/old/v2/endpoints/menu/post",
+						"docs/old/v2/endpoints/menu/put",
+						"docs/old/v2/endpoints/menu/patch"
+					]
+				},
+				{
+					"group": "Cupones",
+					"pages": [
+						"docs/old/v2/endpoints/coupon/get"
 					]
 				}
 			]
