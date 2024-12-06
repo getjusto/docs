@@ -136,6 +136,20 @@
 						"docs/crisp/endpoints/shifts/get-active-shift",
 						"docs/crisp/endpoints/shifts/get-shift"
 					]
+				},
+				{
+					"group": "Inventario",
+					"pages": [
+						"docs/crisp/endpoints/inventory/get-current-inventory",
+						"docs/crisp/endpoints/inventory/list-ingredients"
+					]
+				},
+				{
+					"group": "Contabilidad",
+					"pages": [
+						"docs/crisp/endpoints/accounting/get-accounting-movement",
+						"docs/crisp/endpoints/accounting/list-accounting-movements"
+					]
 				}
 			]
 		},
