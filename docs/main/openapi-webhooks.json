@@ -908,6 +908,243 @@
           }
         }
       },
+      "tabsIngredient": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del ingrediente."
+          },
+          "name": {
+            "type": "string",
+            "example": "Sal",
+            "description": "El nombre del ingrediente."
+          },
+          "unitOfMeasurement": {
+            "type": "string",
+            "example": "gr",
+            "description": "Unidad de medida del ingrediente"
+          },
+          "externalId": {
+            "type": "string",
+            "example": "ing_external_id",
+            "description": "Identificador externo del ingrediente"
+          },
+          "stockRoomIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": "t-sri-asdasd",
+            "description": "Identificador de la bodega"
+          },
+          "conversions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Conversiones",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "factor": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "tabsIngredientInventory": {
+        "type": "object",
+        "properties": {
+          "ingredientId": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del ingrediente."
+          },
+          "name": {
+            "type": "string",
+            "example": "Sal",
+            "description": "El nombre del ingrediente."
+          },
+          "quantity": {
+            "type": "number",
+            "example": 2,
+            "description": "Inentario de este ingrediente"
+          },
+          "unitOfMeasurement": {
+            "type": "string",
+            "example": "gr",
+            "description": "Unidad de medida del ingrediente"
+          },
+          "externalId": {
+            "type": "string",
+            "example": "ing_external_id",
+            "description": "Identificador externo del ingrediente"
+          },
+          "stockRoomId": {
+            "type": "string",
+            "example": "t-sri-asdasd",
+            "description": "Identificador de la bodega"
+          }
+        }
+      },
+      "tabsAccountingMovement": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID de la cuenta."
+          },
+          "code": {
+            "type": "string",
+            "example": "CJXEQZK",
+            "description": "Un código único para identificar la cuenta. Es único en Crisp."
+          },
+          "comments": {
+            "type": "string",
+            "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "description": "Comentarios de la cuenta."
+          },
+          "websiteId": {
+            "type": "string",
+            "example": "ErCkmcyCEovseJq5E",
+            "description": "El ID de la marca al que pertenece la cuenta."
+          },
+          "storeId": {
+            "type": "string",
+            "example": "Li4eEa3W2hiuGGCFa",
+            "description": "El ID de la tienda al que pertenece la cuenta."
+          },
+          "createdById": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del usuario que creó la cuenta."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del movimiento contable."
+          },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de cancelación del movimiento contable."
+          },
+          "paidAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de pago del movimiento contable."
+          },
+          "issueDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de emisión del movimiento contable."
+          },
+          "dueDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de vencimiento del movimiento contable."
+          },
+          "providerId": {
+            "type": "string",
+            "example": "fgfghh56dfhfgh",
+            "description": "El ID del proveedor"
+          },
+          "movementType": {
+            "type": "string",
+            "enum": [
+              "cashWithdrawals",
+              "inventory",
+              "manual"
+            ]
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "Precio total del movimiento contable."
+          },
+          "taxAmount": {
+            "type": "number",
+            "description": "Impuestos del movimiento contable."
+          },
+          "netAmount": {
+            "type": "number",
+            "description": "Valor neto del movimiento contable."
+          },
+          "invoiceId": {
+            "type": "string",
+            "example": "sdffdgd456dfgfh",
+            "description": "El ID de la factura"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Ingredientes",
+              "properties": {
+                "ingredientId": {
+                  "type": "string"
+                },
+                "ingredientName": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "totalCost": {
+                  "type": "number"
+                },
+                "totalNetCost": {
+                  "type": "number"
+                },
+                "totalTaxCost": {
+                  "type": "number"
+                },
+                "unitOfMeasurement": {
+                  "type": "string",
+                  "example": "gr"
+                },
+                "externalId": {
+                  "type": "string",
+                  "example": "gr"
+                }
+              }
+            }
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Items",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "totalCost": {
+                  "type": "number"
+                },
+                "totalNetCost": {
+                  "type": "number"
+                },
+                "totalTaxCost": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
       "apiAuthorizationStatus": {
         "type": "object",
         "properties": {
