@@ -51,6 +51,10 @@
 		{
 			"name": "Reservas",
 			"url": "docs/reservations"
+		},
+		{
+			"name": "Royalty",
+			"url": "docs/royalty"
 		}
 	],
 	"anchors": [
@@ -61,6 +65,15 @@
 		}
 	],
 	"navigation": [
+		{
+			"group": "Códigos de canje",
+			"version": "v3",
+			"pages": [
+				"docs/royalty/endpoints/coinsRedeemCodes/get-redeem-code",
+				"docs/royalty/endpoints/coinsRedeemCodes/post-redeem-code",
+				"docs/royalty/endpoints/coinsRedeemCodes/delete-redeem-code"
+			]
+		},
 		{
 			"group": "Perfiles",
 			"version": "v3",
