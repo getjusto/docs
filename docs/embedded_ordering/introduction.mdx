@@ -1,0 +1,23 @@
+---
+title: Introducción
+description: 'Propuesta de Webhooks para la integración de Justo con otros sistemas'
+sidebar_position: 1
+---
+
+Mediante el presente documento damos los lineamientos generales de los webhooks que tenemos, los cuales servirán para la integración de Justo con otros sistemas.
+
+Cabe destacar que el presente documento es una propuesta y no es un estándar. Por lo tanto, los webhooks que se describen en este documento pueden adaptarse a los requerimientos de cada sistema.
+
+## Seguridad de la conexión
+
+Todas las llamadas a estos webhooks deben ser realizadas sobre una conexión segura, es decir, utilizando el protocolo HTTPS, además se debe utilizar un certificado SSL válido. 
+
+También deberá contar con un mecanismo de autorización con token de acceso, que se generará en base a la información de la cuenta de usuario. Este mecanismo es flexible y ajustable a las necesidades de cada sistema.
+
+## Formato de los datos
+
+Todos los datos que se envían a estos webhooks deben ser en formato JSON.
+
+## Estados de respuesta
+
+Los webhooks deben devolver un código de estado HTTP 200 en caso de éxito y un código de estado HTTP 400 en caso de error de validación, el cual se detallarán en cada webhook/endpoint.
