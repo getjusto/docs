@@ -928,7 +928,7 @@
     },
     "/reservations/match-store-profiles": {
       "get": {
-        "summary": "Retorna una lista de locales que coinciden con la búsqueda",
+        "summary": "Buscar locales",
         "parameters": [
           {
             "in": "query",
@@ -997,69 +997,13 @@
         }
       }
     },
-    "/notifications/notify": {
-      "post": {
-        "summary": "Recibir el estado de un pedido",
-        "description": "Este endpoint debe ser implementado para que así desde Justo podamos notificar el estado de un pedido.",
-        "requestBody": {
-          "description": "Webhook Payload",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "description": "Tipo de notificación",
-                    "type": "string",
-                    "enum": [
-                      "pending",
-                      "delivering",
-                      "done",
-                      "cancelled",
-                      "nearToFinish"
-                    ],
-                    "const": "pending"
-                  },
-                  "externalUserId": {
-                    "description": "Identificador del usuario externo que utiliza la Wallet en cuestión",
-                    "type": "string"
-                  },
-                  "requiresDeliveryVerificationCode": {
-                    "description": "String alfanumérico de largo 4 a 6 caracteres que se utiliza en algunos despachos para verificar que el cliente ha recibido el pedido. Si este valor existe es responsabilidad del integrador hacerle llegar el código al receptor del pedido.",
-                    "type": "string"
-                  },
-                  "websiteId": {
-                    "description": "Identificador de la marca a la cual pertenece el pedido",
-                    "type": "string"
-                  },
-                  "orderId": {
-                    "description": "Identificador de la orden a la cual pertenece el pedido",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/users/details/{externalUserId}": {
+    "/royalty/coins-redeem-codes/{coinsRedeemCodeId}": {
       "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Detalles de usuario",
-        "description": "Este endpoint debe ser implementado para que desde Justo podamos obtener los datos de cada uno de los usuarios. Un punto importante es que el email debe estar validado por el sistema, ya que es utilizado como llave primaria dentro de Justo",
-        "operationId": "getUserDetails",
+        "summary": "Redeem Code",
         "parameters": [
           {
-            "name": "externalUserId",
             "in": "path",
+            "name": "coinsRedeemCodeId",
             "required": true,
             "schema": {
               "type": "string"
@@ -1068,26 +1012,110 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "The OpenAPI spec",
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
-                    "email": {
-                      "description": "Email del usuario",
-                      "type": "string"
+                    "success": {
+                      "type": "boolean",
+                      "example": true
                     },
-                    "phone": {
-                      "description": "Teléfono del usuario (opcional)",
-                      "type": "string"
+                    "data": {
+                      "$ref": "#/components/schemas/royaltyCoinsRedeemCode"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
                     },
-                    "firstName": {
-                      "description": "Nombre del usuario",
-                      "type": "string"
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Redeem Code",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "coinsRedeemCodeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
                     },
-                    "lastName": {
-                      "description": "Apellido del usuario",
-                      "type": "string"
+                    "data": {
+                      "$ref": "#/components/schemas/royaltyCoinsRedeemCode"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
                     }
                   }
                 }
@@ -1097,59 +1125,89 @@
         }
       }
     },
-    "/payments/verify": {
+    "/royalty/coins-redeem-codes": {
       "post": {
-        "summary": "Verificar un pago",
+        "summary": "Redeem Code",
         "requestBody": {
+          "description": "Redeem Code Payload",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "amount": {
-                    "description": "Monto de la transacción",
-                    "type": "string"
-                  },
-                  "currenty": {
-                    "description": "Tipo de moneda",
-                    "type": "string"
-                  },
                   "description": {
-                    "description": "Descripción del cargo a efectuarse",
-                    "type": "string"
+                    "type": "string",
+                    "example": "Promo 1",
+                    "description": "Descripción del código"
                   },
-                  "transactionId": {
-                    "description": "Identificador de la transacción desde el lado de Justo",
-                    "type": "string"
+                  "code": {
+                    "type": "string",
+                    "example": "CJXEQZK",
+                    "description": "El código para redimir"
                   },
-                  "orderId": {
-                    "description": "Identificador de la orden desde el lado de Justo",
-                    "type": "string"
+                  "amount": {
+                    "type": "number",
+                    "example": 100,
+                    "description": "Monto del código"
                   },
-                  "externalUserId": {
-                    "description": "Identificador de usuario desde el lado del integrador",
-                    "type": "string"
+                  "expirationDate": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "Fecha de expiración del código"
                   }
-                }
+                },
+                "required": [
+                  "description",
+                  "amount"
+                ]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "The OpenAPI spec",
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
-                    "status": {
-                      "description": "Resultado de la verificación",
-                      "type": "string",
-                      "example": "OK"
+                    "success": {
+                      "type": "boolean",
+                      "example": true
                     },
-                    "autorizationToken": {
-                      "description": "Token de autorización de la transacción",
-                      "type": "string"
+                    "data": {
+                      "$ref": "#/components/schemas/royaltyCoinsRedeemCode"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
                     }
                   }
                 }
@@ -1157,100 +1215,6 @@
             }
           }
         }
-      }
-    },
-    "/payments/execute": {
-      "post": {
-        "summary": "Ejecutar un pago",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "amount": {
-                    "autorizationToken": "Token de autorización de la transacción",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status": {
-                      "description": "Resultado de la ejecución",
-                      "type": "string",
-                      "example": "OK"
-                    },
-                    "operation": {
-                      "description": "Código de la operación",
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Payments"
-        ]
-      }
-    },
-    "/payments/refund": {
-      "post": {
-        "summary": "Reversar un pago",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "amountToRefund": {
-                    "description": "Monto a reversar",
-                    "type": "string"
-                  },
-                  "currency": {
-                    "description": "Tipo de moneda",
-                    "type": "string"
-                  },
-                  "transactionId": {
-                    "description": "Identificación de la transacción",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status": {
-                      "description": "Resultado de la ejecución",
-                      "type": "string",
-                      "example": "OK"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Payments"
-        ]
       }
     }
   },
@@ -2307,6 +2271,90 @@
             "type": "string",
             "example": "3omj3",
             "description": "El ID del local"
+          }
+        }
+      },
+      "royaltyCoinsRedeemCode": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del código"
+          },
+          "websiteId": {
+            "type": "string",
+            "example": "3omj3",
+            "description": "El ID de la marca"
+          },
+          "code": {
+            "type": "string",
+            "example": "CJXEQZK",
+            "description": "El código para redimir"
+          },
+          "description": {
+            "type": "string",
+            "example": "Justo C#16699-02",
+            "description": "Descripción del código"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "api",
+              "admin",
+              "giftCard"
+            ],
+            "example": "api",
+            "description": "Origen del código"
+          },
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "Monto del código"
+          },
+          "expirationDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de expiración del código"
+          },
+          "isRedeemed": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indica si el código ha sido redimido"
+          },
+          "redeemedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de redención del código"
+          },
+          "redeemedById": {
+            "type": "string",
+            "example": "3omj3",
+            "description": "ID del usuario que redimió el código"
+          },
+          "redeemedByEmail": {
+            "type": "string",
+            "example": "example@email.com",
+            "description": "Email del usuario que redimió el código"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del código"
+          },
+          "createdById": {
+            "type": "string",
+            "example": "3omj3",
+            "description": "ID del usuario que creó el código"
+          },
+          "deletedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de eliminación del código, si es que esta eliminado"
           }
         }
       }
