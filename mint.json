@@ -150,6 +150,12 @@
 						"docs/crisp/endpoints/accounting/get-accounting-movement",
 						"docs/crisp/endpoints/accounting/list-accounting-movements"
 					]
+				},
+				{
+					"group": "Pagos",
+					"pages": [
+						"docs/crisp/endpoints/tabPayments/list-tab-payments"
+					]
 				}
 			]
 		},
