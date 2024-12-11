@@ -450,6 +450,22 @@
                             "$ref": "#/components/schemas/tabsIngredient"
                           },
                           "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
                         }
                       }
                     }
@@ -812,6 +828,165 @@
                           "type": "array",
                           "items": {
                             "$ref": "#/components/schemas/tabsAccountingMovement"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tabs/{storeId}/tab-payments": {
+      "get": {
+        "summary": "List tab payments",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de inicio de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de fin de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt"
+              ],
+              "example": "createdAt",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"createdAt\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsTabPayment"
                           },
                           "description": "Items de la lista."
                         },
