@@ -1,76 +1,53 @@
 openapi: 3.0.0
 info:
-  title: Orders Endpoint API
+  title: Authentication API
   version: 1.0.0
 servers:
   - url: https://api.getjusto.com/api/v2
     description: Production server
 tags:
-  - name: me
-    description: Todo lo relacionado con la autenticacion
+  - name: authentication
+    description: Authentication related operations
 paths:
   /me:
     get:
       tags:
-        - me
-      summary: Obtener datos de autenticación
-      description: Devuelve los datos de autenticación relacionados con el usuario.
+        - authentication
       security:
         - bearerAuth: []
+      summary: Get authentication data
+      description: Use this endpoint to retrieve authentication data
       responses:
         '200':
-          description: Operación exitosa
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/meResultGet'
-              examples:
-                example-1:
-                  summary: Ejemplo de respuesta exitosa
-                  value:
-                    status: "ok"
-                    data:
-                      websiteId: "ErCkmcyCEovseJq53"
-                      name: "Orion Burger"
-        '401':
-          description: Unauthorized
+          description: Authentication data retrieved successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  status:
                     type: string
-                    example: Access token is missing or invalid
+                    description: Operation result status
+                  data:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                        description: Authenticated user ID
+                      email:
+                        type: string
+                        description: User email
+                      roles:
+                        type: array
+                        items:
+                          type: string
+                        description: User roles
 components:
   securitySchemes:
-      bearerAuth:
-        type: http
-        scheme: bearer
-        bearerFormat: JWT
-  schemas:
-    meResultGet:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Estado de la empresa
-        data:
-          type: object 
-          description: Datos de la empresa
-          properties:
-            websiteId: 
-              type: string
-              description: ID de la marca
-            name: 
-              type: string
-              description: Nombre de la marca
-responses:
-    description: success
-    content:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/meResultGet'
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
 
 
