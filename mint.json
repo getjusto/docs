@@ -220,6 +220,12 @@
 				{
 					"group": "Cupones",
 					"pages": ["docs/old/v2/endpoints/coupon/get"]
+				},
+				{
+					"group": "Me",
+					"pages": [
+						"docs/old/v2/endpoints/me/get"
+					]
 				}
 			]
 		}

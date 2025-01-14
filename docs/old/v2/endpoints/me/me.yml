@@ -1,0 +1,77 @@
+openapi: 3.0.0
+info:
+  title: Orders Endpoint API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v2
+    description: Production server
+tags:
+  - name: me
+    description: Todo lo relacionado con la autenticacion
+paths:
+  /me:
+    get:
+      tags:
+        - me
+      summary: Obtener datos de autenticación
+      description: Devuelve los datos de autenticación relacionados con el usuario.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/meResultGet'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta exitosa
+                  value:
+                    status: "ok"
+                    data:
+                      websiteId: "ErCkmcyCEovseJq53"
+                      name: "Orion Burger"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Access token is missing or invalid
+components:
+  securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+  schemas:
+    meResultGet:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Estado de la empresa
+        data:
+          type: object 
+          description: Datos de la empresa
+          properties:
+            websiteId: 
+              type: string
+              description: ID de la marca
+            name: 
+              type: string
+              description: Nombre de la marca
+responses:
+    description: success
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/meResultGet'
+
+
+
+
