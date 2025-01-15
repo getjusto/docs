@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: Delivery API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: Consultar informacion despacho
+    description: Manejo de consultas del despacho
+paths:
+  /consultarinfo/{id}:
+    post:
+      tags:
+        - Delivery
+      security:
+        - bearerAuth: []
+      summary: Consultar informacion de despacho
+      description: Este endpoint permite consultar la informacion del despacho.
+      parameters:
+        - name: id
+          in: path
+          description: ID unico del delivery
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/informacion'
+      responses:
+        '200':
+          description: Operacion exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resultado'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    informacion:
+      type: object
+      properties:
+        deliveryId:
+          type: number
+          description: ID del delivery
+    Resultado:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Resultado operacion
+        data: 
+          type: object
+          description: Informacion sobre el estado del delivery
+          properties:
+            deliveryId:
+              type: number
+              description: ID del delivery
+  responses:
+    unauthorizedError:
+      description: Access token is missing or invalid

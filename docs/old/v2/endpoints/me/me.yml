@@ -3,7 +3,7 @@ info:
   title: Authentication API
   version: 1.0.0
 servers:
-  - url: https://api.getjusto.com/api/v2
+  - url: https://api.getjusto.com/api/v1
     description: Production server
 tags:
   - name: authentication

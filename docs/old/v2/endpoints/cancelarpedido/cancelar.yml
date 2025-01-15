@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: Delivery API
+  version: 1.0.0
+server:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: Cancelar pedido
+    description: Cancelaciones de despachos
+paths:
+  /cancelarpedido/{id}:
+    post:
+      tags:
+        - Delivery
+      security:
+        - bearerAuth: []
+      summary: Permite cancelar un despacho
+      description: Este endpoint permite cancelar el despacho del pedido
+      parameters:
+        - name: id
+          in: path
+          description: ID del despacho
+          required: true
+          schema:
+            type: string
+      requesBody:
+        requiered: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cancelar'
+      responses:
+        '200':
+          description: Operacion exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resultado'
+        '400':
+          description: Error de validación o regla de negocio
+          content:
+            application/json:
+              example:
+                status: "error"
+                error: "El pedido no se puede cancelar porque está activo"
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    cancelar:
+      type: object
+      properties:
+        deliveryId:
+          type: number
+          description: ID del despacho
+        externalId:
+          type: number
+          description: ID externo del despacho.
+    Resultado:
+      type: object
+      properties:
+        status: 
+          type: string
+          description: Resultado de la operacion.
+        data:
+          type: object
+          description: Informacion del pedido cancelado
+          properties:
+            CanceledDelivery:
+              type: number
+              description: ID del pedido cancelado
+  responses:
+    unauthorizedError:
+      description: Access token is missing or invalid

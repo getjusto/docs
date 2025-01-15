@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: Delivery API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: Solicitudes de reparto especial
+    description: Manejo de entregas y despachos especiales
+paths:
+  /creaciondespacho/{id}:
+    post:
+      tags:
+        - Delivery
+      security:
+        - bearerAuth: []
+      summary: Crear una solicitud de reparto especial
+      description: Este endpoint permite crear una solicitud de despacho especial con información detallada sobre la entrega.
+        Los parámetros incluyen direcciones, ID de ubicaciones y configuraciones adicionales como propinas y preferencias de despacho.
+      parameters:
+        - name: id
+          in: path
+          description: ID unico del despacho.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Solicitud'
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultadoSolicitud'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Solicitud:
+      type: object
+      properties:
+        storeId:
+          type: number
+          Description: ID del local
+        instructions:
+          type: string
+          description: Instrucciones de entrega.
+        externalId:
+          type: string
+          description: Código de idempotencia para identificar únicamente el pedido.
+        tipAmount:
+          type: number
+          description: Monto de propina.
+        placeId:
+          type: string
+          description: ID de Google Maps de la ubicación de entrega.
+        latitude:
+          type: string
+          description: Latitud de la dirección de entrega.
+        longitude:
+          type: string
+          description: Longitud de la dirección de entrega.
+        preferCoordinates:
+          type: boolean
+          description: Indica si se prefiere usar coordenadas para obtener la dirección más cercana.
+        maxDistance:
+          type: number
+          description: Distancia máxima permitida para calcular la ubicación.
+        addressLine1:
+          type: string
+          description: Calle y número de la dirección de entrega.
+        addressLine2:
+          type: string
+          description: Información adicional de la dirección de entrega.
+        placeName:
+          type: string
+          description: Nombre del lugar de entrega.
+        placePhone:
+          type: string
+          description: Teléfono del lugar de entrega (incluye código de país).
+        isToStore:
+          type: boolean
+          description: Indica si el pedido se recoge en el local.
+        isRoundTrip:
+          type: boolean
+          description: Indica si el reparto debe ser de ida y vuelta.
+        expectedDate:
+          type: string
+          format: date-time
+          description: Fecha y hora esperada de la entrega.
+        contents:
+          type: array
+          description: Lista de artículos incluidos en la entrega.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nombre del producto.
+              quantity:
+                type: integer
+                description: Cantidad del producto.
+              description:
+                type: string
+                description: Descripción del producto.
+              unitPrice:
+                type: number
+                description: Precio unitario del producto.
+        avoidDuplication:
+          type: boolean
+          description: Activa el uso de externalId para evitar duplicados.
+    ResultadoSolicitud:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Resultado de la operación.
+        data:
+          type: object
+          description: Información sobre el despacho generado.
+          properties:
+            delivery:
+              type: number
+              description: ID del despacho generado.
+  responses:
+    unauthorizedError:
+      description: Access token is missing or invalid

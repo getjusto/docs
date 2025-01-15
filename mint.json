@@ -226,6 +226,15 @@
 					"pages": [
 						"docs/old/v2/endpoints/me/get"
 					]
+				},
+				{
+					"group": "Ultima milla",
+					"pages": [
+						"docs/old/v2/endpoints/creaciondespacho/post",
+						"docs/old/v2/endpoints/consultarinfo/post",
+						"docs/old/v2/endpoints/cancelarpedido/post",
+						"docs/old/v2/endpoints/externo/post"
+					]
 				}
 			]
 		}
