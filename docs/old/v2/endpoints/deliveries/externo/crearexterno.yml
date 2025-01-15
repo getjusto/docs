@@ -29,15 +29,15 @@ paths:
         content:
           application/json:
             schema:
-             $ref: '#/components/schemas/SolicitudExterno'
+             $ref: '#/components/schemas/solicitudExterno'
       responses:
         '200':
           description: Operacion existosa
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultadoExterno'
-        '401'
+                $ref: '#/components/schemas/resultadoExterno'
+        '401':
           $ref: '#/components/responses/unauthorizedError'
 components:
   securitySchemes:
@@ -46,12 +46,12 @@ components:
       scheme: bearer 
       bearerFormat: JWT
   schemas:
-    SolicitudExterno:
+    solicitudExterno:
       type: string
       properties:
         storeId:
           type: number
-          Description: ID del local
+          description: ID del local
         instructions:
           type: string
           description: Instrucciones de entrega.
@@ -142,7 +142,7 @@ components:
         avoidDuplication:
           type: boolean
           description: Activa el uso de ecternalId para evitar duplicados.
-    ResultadoExterno:
+    resultadoExterno:
       type: object
       properties:
         status:

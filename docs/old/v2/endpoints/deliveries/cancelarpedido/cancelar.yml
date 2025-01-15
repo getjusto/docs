@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Delivery API
   version: 1.0.0
-server:
+servers:
   - url: https://api.getjusto.com/api/v1
     description: Production server
 tags:
@@ -24,8 +24,8 @@ paths:
           required: true
           schema:
             type: string
-      requesBody:
-        requiered: true
+      requestBody:
+        required: true
         content:
           application/json:
             schema:

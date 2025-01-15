@@ -9,7 +9,7 @@ tags:
   - name: Solicitudes de reparto especial
     description: Manejo de entregas y despachos especiales
 paths:
-  /creaciondespacho/{id}:
+  /createDelivery/{id}:
     post:
       tags:
         - Delivery
@@ -30,14 +30,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Solicitud'
+              $ref: '#/components/schemas/solicitud'
       responses:
         '200':
           description: Operación exitosa
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultadoSolicitud'
+                $ref: '#/components/schemas/resultadoSolicitud'
         '401':
           $ref: '#/components/responses/unauthorizedError'
 components:
@@ -47,12 +47,12 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    Solicitud:
+    solicitud:
       type: object
       properties:
         storeId:
           type: number
-          Description: ID del local
+          description: ID del local
         instructions:
           type: string
           description: Instrucciones de entrega.
@@ -120,7 +120,7 @@ components:
         avoidDuplication:
           type: boolean
           description: Activa el uso de externalId para evitar duplicados.
-    ResultadoSolicitud:
+    resultadoSolicitud:
       type: object
       properties:
         status:

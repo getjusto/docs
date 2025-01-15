@@ -230,10 +230,10 @@
 				{
 					"group": "Ultima milla",
 					"pages": [
-						"docs/old/v2/endpoints/creaciondespacho/post",
-						"docs/old/v2/endpoints/consultarinfo/post",
-						"docs/old/v2/endpoints/cancelarpedido/post",
-						"docs/old/v2/endpoints/externo/post"
+						"docs/old/v2/endpoints/deliveries/createDelivery/post",
+						"docs/old/v2/endpoints/deliveries/consultarinfo/post",
+						"docs/old/v2/endpoints/deliveries/cancelarpedido/post",
+						"docs/old/v2/endpoints/deliveries/externo/post"
 					]
 				}
 			]
