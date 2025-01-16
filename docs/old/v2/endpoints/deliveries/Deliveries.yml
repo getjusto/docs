@@ -42,10 +42,12 @@ paths:
                   type: number
                   format: float
                   description: Latitud de la dirección de entrega.
+                  example: -33.4489
                 longitude:
                   type: number
                   format: float
                   description: Longitud de la dirección de entrega.
+                  example: -70.6693
                 preferCoordinates:
                   type: boolean
                   description: Indica si se prefiere usar coordenadas para obtener la dirección más cercana.
@@ -75,26 +77,24 @@ paths:
                   format: date-time
                   description: Fecha y hora esperada de la entrega.
                 contents:
-                  type: array
+                  type: object
                   description: Lista de artículos incluidos en la entrega.
-                  items:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: Nombre del producto.
-                      quantity:
-                        type: integer
-                        description: Cantidad del producto.
-                      description:
-                        type: string
-                        description: Descripción del producto.
-                      unitPrice:
-                        type: number
-                        description: Precio unitario del producto.
+                  properties:
+                    name:
+                      type: string
+                      description: Nombre del producto.
+                    quantity:
+                      type: integer
+                      description: Cantidad del producto.
+                    description:
+                      type: string
+                      description: Descripción del producto.
+                    unitPrice:
+                      type: number
+                      description: Precio unitario del producto.
                 avoidDuplication:
                   type: boolean
-                  description: Activa el uso de externalId para evitar duplicados.
+                  description: Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo.
               required: 
                 - storeId
                 - contents
@@ -183,55 +183,55 @@ paths:
                   type: number
                   description: Monto de propina.
                 originAddress:
-                  type: array
+                  type: object
                   description: Objeto que contiene la información del punto de origen del viaje.
-                  items:
-                    type: object
-                    properties:
-                      latitude:
-                        type: number
-                        format: float
-                        description: Latitud de la dirección de entrega.
-                      longitude:
-                        type: number
-                        format: float
-                        description: Longitud de la dirección de entrega.
-                      addressLine1:
-                        type: string
-                        description: Calle y número de la dirección de entrega.
-                      addressLine2:
-                        type: string
-                        description: Información adicional de la dirección de entrega.
-                      placePhone:
-                        type: string
-                        description: Teléfono del lugar de entrega (incluye código de país).
-                      placeName:
-                        type: string
-                        description: Nombre del lugar de entrega.
-                destinationAddress:
-                  type: array
-                  description:  Objeto que contiene la información del punto de reparto. 
-                  items:
-                    type: object
-                    properties:
-                      latitude:
-                        type: string
-                        description: Latitud de la dirección de entrega.
-                      longitude:
-                        type: string
-                        description: Longitud de la dirección de entrega.
-                      addressLine1:
-                        type: string
-                        description: Calle y número de la dirección de entrega.
-                      addressLine2:
-                        type: string
-                        description: Información adicional de la dirección de entrega.
-                      placePhone:
-                        type: string
-                        description: Teléfono del lugar de entrega (incluye código de país).
-                      placeName:
-                        type: string
-                        description: Nombre del lugar de entrega.
+                  properties:
+                    latitude:
+                      type: number
+                      format: float
+                      description: Latitud de la dirección de entrega.
+                      example: -33.4489
+                    longitude:
+                      type: number
+                      format: float
+                      description: Longitud de la dirección de entrega.
+                      example: -70.6693
+                    addressLine1:
+                      type: string
+                      description: Calle y número de la dirección de entrega.
+                    addressLine2:
+                      type: string
+                      description: Información adicional de la dirección de entrega.
+                    placePhone:
+                      type: string
+                      description: Teléfono del lugar de entrega (incluye código de país).
+                    placeName:
+                      type: string
+                      description: Nombre del lugar de entrega.
+                destinationAddress: 
+                  type: object
+                  description:  Objeto que contiene la información del punto de reparto.
+                  properties:
+                    latitude:
+                      type: string
+                      description: Latitud de la dirección de entrega.
+                      example: -33.4489
+                    longitude:
+                      type: string
+                      description: Longitud de la dirección de entrega.
+                      example: -70.6693
+                    addressLine1:
+                      type: string
+                      description: Calle y número de la dirección de entrega.
+                    addressLine2:
+                      type: string
+                      description: Información adicional de la dirección de entrega.
+                    placePhone:
+                      type: string
+                      description: Teléfono del lugar de entrega (incluye código de país).
+                    placeName:
+                      type: string
+                      description: Nombre del lugar de entrega.
                 maxDistance: 
                   type: number
                   description: Distancia máxima permitida para calcular la ubicación.
@@ -245,26 +245,24 @@ paths:
                   type: number
                   description: Fecha de retiro en el primer punto.
                 contents:
-                  type: array
+                  type: object
                   description: Lista de artículos incluidos en la entrega.
-                  items:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: Nombre del producto.
-                      quantity:
-                        type: integer
-                        description: Cantidad del producto.
-                      description:
-                        type: string
-                        description: Descripción del producto.
-                      unitPrice:
-                        type: number
-                        description: Precio unitario del producto.
+                  properties:
+                    name:
+                      type: string
+                      description: Nombre del producto.
+                    quantity:
+                      type: integer
+                      description: Cantidad del producto.
+                    description:
+                      type: string
+                      description: Descripción del producto.
+                    unitPrice:
+                      type: number
+                      description: Precio unitario del producto.
                 avoidDuplication:
                   type: boolean
-                  description: Activa el uso de ecternalId para evitar duplicados.
+                  description: Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo.
               required:
                 - storeId
                 - originAddress 
@@ -373,10 +371,12 @@ components:
               type: number
               format: float
               description: Latitude del lugar
+              example: -33.4489
             lng:
               type: number
               format: float
               description: Longitud del lugar
+              example: -70.6693
         toLocation:
           type: object
           properties:
@@ -393,10 +393,12 @@ components:
               type: number
               format: float
               description: Latitude del lugar
+              example: -33.4489
             lng:
               type: number
               format: float
               description: Longitud del lugar
+              example: -70.6693
         receiveProofImage:
           type: string
           format: uri
