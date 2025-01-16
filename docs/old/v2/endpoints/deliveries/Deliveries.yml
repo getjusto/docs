@@ -1,0 +1,490 @@
+openapi: 3.0.0
+info:
+  title: Delivery API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: Solicitudes de reparto especial
+    description: Manejo de entregas y despachos especiales
+paths:
+  /createDelivery:
+    post:
+      tags:
+        - createDelivery
+      summary: Crear una solicitud de reparto especial
+      description: Este endpoint permite crear una solicitud de despacho especial con información detallada sobre la entrega.
+        Los parámetros incluyen direcciones, ID de ubicaciones y configuraciones adicionales como propinas y preferencias de despacho.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeId:
+                  type: string
+                  description: ID del local
+                instructions:
+                  type: string
+                  description: Instrucciones de entrega.
+                externalId:
+                  type: string
+                  description: Código de idempotencia para identificar únicamente el pedido.
+                tipAmount:
+                  type: number
+                  description: Monto de propina.
+                placeId:
+                  type: string
+                  description: ID de GoogleMaps del lugar de reparto.
+                latitude:
+                  type: number
+                  format: float
+                  description: Latitud de la dirección de entrega.
+                longitude:
+                  type: number
+                  format: float
+                  description: Longitud de la dirección de entrega.
+                preferCoordinates:
+                  type: boolean
+                  description: Indica si se prefiere usar coordenadas para obtener la dirección más cercana.
+                maxDistance:
+                  type: number
+                  description: Distancia máxima permitida para calcular la ubicación.
+                addressLine1:
+                  type: string
+                  description: Calle y número de la dirección de entrega.
+                addressLine2:
+                  type: string
+                  description: Información adicional de la dirección de entrega.
+                placeName:
+                  type: string
+                  description: Nombre del lugar de entrega.
+                placePhone:
+                  type: string
+                  description: Teléfono del lugar de entrega (incluye código de país).
+                isToStore:
+                  type: boolean
+                  description: Indica si el pedido se recoge en el local.
+                isRoundTrip:
+                  type: boolean
+                  description: Indica si el reparto debe ser de ida y vuelta.
+                expectedDate:
+                  type: string
+                  format: date-time
+                  description: Fecha y hora esperada de la entrega.
+                contents:
+                  type: array
+                  description: Lista de artículos incluidos en la entrega.
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Nombre del producto.
+                      quantity:
+                        type: integer
+                        description: Cantidad del producto.
+                      description:
+                        type: string
+                        description: Descripción del producto.
+                      unitPrice:
+                        type: number
+                        description: Precio unitario del producto.
+                avoidDuplication:
+                  type: boolean
+                  description: Activa el uso de externalId para evitar duplicados.
+              required: 
+                - storeId
+                - contents
+                - expectedDate
+                - placePhone
+                - placeName
+              oneOf:
+                - required: ["placeId"]
+                - required: ["latitude", "longitude", "maxDistance", "addressLine1"]
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación.
+                  data:
+                    $ref: '#/components/schemas/delivery'
+        '400':
+          description: Access token is missing or invalid 
+
+  /cancelDelivery:
+    post:
+      tags:
+        - cancelDelivery
+      summary: Permite cancelar un despacho
+      description: Este endpoint permite cancelar el despacho del pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deliveryId:
+                  type: string
+                  description: ID del despacho
+                externalId:
+                  type: string
+                  description: ID externo del despacho.
+              required:
+                - deliveryId
+      responses:
+        '200':
+          description: Operacion exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    description: Resultado de la operacion.
+                  data:
+                    $ref: '#/components/schemas/delivery'
+        '400':
+          description: Access token is missing or invalid 
+
+  /createExternalDelivery:
+    post:
+      tags:
+       - createExternalDelivery
+      summary: Crear una solicitud de despacho externo
+      description: Este endpoint permite crear una solicitud de despacho externo.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeId:
+                  type: string
+                  description: ID del local
+                instructions:
+                  type: string
+                  description: Instrucciones de entrega.
+                externalId:
+                  type: string
+                  description: Código de idempotencia para identificar únicamente el pedido.
+                tipAmount:
+                  type: number
+                  description: Monto de propina.
+                originAddress:
+                  type: array
+                  description: Objeto que contiene la información del punto de origen del viaje.
+                  items:
+                    type: object
+                    properties:
+                      latitude:
+                        type: number
+                        format: float
+                        description: Latitud de la dirección de entrega.
+                      longitude:
+                        type: number
+                        format: float
+                        description: Longitud de la dirección de entrega.
+                      addressLine1:
+                        type: string
+                        description: Calle y número de la dirección de entrega.
+                      addressLine2:
+                        type: string
+                        description: Información adicional de la dirección de entrega.
+                      placePhone:
+                        type: string
+                        description: Teléfono del lugar de entrega (incluye código de país).
+                      placeName:
+                        type: string
+                        description: Nombre del lugar de entrega.
+                destinationAddress:
+                  type: array
+                  description:  Objeto que contiene la información del punto de reparto. 
+                  items:
+                    type: object
+                    properties:
+                      latitude:
+                        type: string
+                        description: Latitud de la dirección de entrega.
+                      longitude:
+                        type: string
+                        description: Longitud de la dirección de entrega.
+                      addressLine1:
+                        type: string
+                        description: Calle y número de la dirección de entrega.
+                      addressLine2:
+                        type: string
+                        description: Información adicional de la dirección de entrega.
+                      placePhone:
+                        type: string
+                        description: Teléfono del lugar de entrega (incluye código de país).
+                      placeName:
+                        type: string
+                        description: Nombre del lugar de entrega.
+                maxDistance: 
+                  type: number
+                  description: Distancia máxima permitida para calcular la ubicación.
+                isRoundTrip: 
+                  type: boolean
+                  description: Indica si el reparto debe ser de ida y vuelta.
+                requiredVehicleType: 
+                  type: string
+                  description: Definir el tipo de vehículo necesario para el delivery especial. 
+                expectedDate:
+                  type: number
+                  description: Fecha de retiro en el primer punto.
+                contents:
+                  type: array
+                  description: Lista de artículos incluidos en la entrega.
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Nombre del producto.
+                      quantity:
+                        type: integer
+                        description: Cantidad del producto.
+                      description:
+                        type: string
+                        description: Descripción del producto.
+                      unitPrice:
+                        type: number
+                        description: Precio unitario del producto.
+                avoidDuplication:
+                  type: boolean
+                  description: Activa el uso de ecternalId para evitar duplicados.
+              required:
+                - storeId
+                - originAddress 
+                - destinationAddress
+                - contents
+      responses:
+        '200':
+          description: Operacion existosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operacion
+                  data:
+                    $ref: '#/components/schemas/delivery'
+        '401':
+          description: Access token is missing or invalid
+
+  /delivery:
+    post:
+      tags:
+        - Delivery
+      summary: Consultar informacion de despacho
+      description: Este endpoint permite consultar la informacion del despacho.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deliveryId:
+                  type: string
+                  description: ID del delivery
+              required:
+                - deliveryId
+      responses:
+        '200':
+          description: Operacion exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado operacion
+                  data: 
+                    $ref: '#/components/schemas/delivery'                      
+        '400':
+          description: Access token is missing or invalid
+components:
+  schemas:
+    delivery:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del pedido.
+        price:
+          type: number
+          description: Costo del delivery, incluye IVA
+        status:
+          type: string
+          description: |
+            Estado del pedido. Puede tomar los siguientes valores:
+            - `canceled`: Pedido cancelado.
+            - `pending`: Pedido pendiente.
+            - `scheduled`: Pedido programado.
+            - `active`: Pedido activo.
+            - `delivering`: En proceso de entrega.
+            - `done`: Pedido completado.
+            - `Dispatch not completed`: El despacho no se completó.
+            - `error`: Error en el pedido.
+          enum:
+            - canceled
+            - pending
+            - scheduled
+            - active
+            - delivering
+            - done
+            - Dispatch not completed
+            - error
+        placeName:
+          type: string
+          description: Quién recibe el pedido.
+        isCash:
+          type: boolean
+          description:  Si el pedido require efectivo o no
+        fromLocation:
+          type: object
+          properties:
+            address:
+              type: string
+              description:  Dirección del lugar donde comienza el pedido.
+            addressSecondary:
+              type: string
+              description:  Información extra de la dirección.
+            storeName:
+              type: string
+              description:  Nombre del local donde comienza el pedido.
+            lat:
+              type: number
+              format: float
+              description: Latitude del lugar
+            lng:
+              type: number
+              format: float
+              description: Longitud del lugar
+        toLocation:
+          type: object
+          properties:
+            address:
+              type: string
+              description:  Dirección del lugar donde comienza el pedido.
+            addressSecondary:
+              type: string
+              description:  Información extra de la dirección.
+            storeName:
+              type: string
+              description:  Nombre del local donde comienza el pedido.
+            lat:
+              type: number
+              format: float
+              description: Latitude del lugar
+            lng:
+              type: number
+              format: float
+              description: Longitud del lugar
+        receiveProofImage:
+          type: string
+          format: uri
+          description: La URL de la imagen que toma el repartidor al recibir el pedido.
+        deliverProofImage:
+          type: string
+          format: uri
+          description: La URL de la imagen de la entrega.
+        driverPassword:
+          type: string
+          description: La contraseña asociada al pedido. Puede cambiar si es que cambia el repartidor.
+        activatesAt:
+          type: string
+          format: date-time
+          description: Fecha cuando se comienza a buscar un repartidor.
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha en la que se generó el delivery.
+        forDate:
+          type: string
+          format: date-time
+          description: Fecha para la cual se solicitó que el repartidor llegue al punto 1
+        completedAt:
+          type: string
+          format: date-time
+          description: Fecha en la que se completó el pedido.
+        canceledAt:
+          type: string
+          format: date-time
+          description: Fecha en la que se canceló el pedido.
+        nearStoreAt:
+          type: string
+          format: date-time
+          description: Fecha en que la que el repartidor llegó al punto 1
+        nearClientAt:
+          type: string
+          format: date-time
+          description: Fecha en que la que el repartidor llegó al punto 2
+        deliveryExpectedAt:
+          type: string
+          format: date-time
+          description: Fecha prometida del despacho.
+        driverReceivedAt:
+          type: string
+          format: date-time
+          description: Fecha en que el repartidor retiró el pedido desde el local para llevarlo a cliente final
+        trackingURL:
+          type: string
+          format: uri
+          description: La URL para que el que recibe la entrega pueda ver donde va
+        deliveryInformation:
+          type: string
+          description: Texto ingresado por el repartidor donde especifica a quien le entregó el pedido
+        driverInformation:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Código del repartidor.
+            type:
+              type: string
+              description: Tipo de vehículo.
+            phone:
+              type: string
+              description: Teléfono.
+            name:
+              type: string
+              description: Nombre.
+            categoryId:
+              type: string
+              description: Categoría interna del repartidor.
+            image:
+              type: string
+              format: uri
+              description: La URL de una foto de la cara del repartidor.
+        instructions:
+          type: string
+          description: Instrucciones para el repartidor.
+        specialCode:
+          type: string
+          description: Número único asignado al pedido.
+        externalId:
+          type: string
+          description: ID externo del pedido.
+        orderId:
+          type: string
+          description: ID de la orden asociada al pedido.
+        uncompletedReason:
+          type: string
+          description: Motivo del despacho frustrado (si aplica).

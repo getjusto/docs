@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  title: Delivery API
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/api/v1
+    description: Servidor de producción
+tags:
+  - name: Productos Agotados
+    description: Manejo de productos agotados y su reposición
+paths:
+  /Delivery:
+    get:
+      tags:
+        - Delivery
+      summary: Delivery
+      description: Este endpoint devuelve la informacion compelta de un pedido a delivery.
+      parameters:
+        - name: _id
+          in: query
+          required: true
+          description: Id del pedido de delivery a consultar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: informacion del delivery
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: Id del pedido.
+                  price:
+                    type: number
+                    description: Costo del delivery, incluye IVA
+                  status:
+                    type: string
+                    description: Estado del pedido. Puede ser
+                    enum: ['canceled','pending','scheduled','active','delivering','done','Dispatch not completed','error']
+                  placeName:
+                    type: string
+                    description: Quién recibe el pedido.
+                  isCash:
+                    type: boolean
+                    description:  Si el pedido require efectivo o no
+                  fromLocation:
+                    type: object
+                    properties:
+                      addres:
+                        type: string
+                        description:  Dirección del lugar donde comienza el pedido.
+                      addressSecondary:
+                        type: string
+                        description:  Información extra de la dirección.
+                      storeName:
+                        type: string
+                        description:  Nombre del local donde comienza el pedido.
+                      lat:
+                        type: number
+                        format: float
+                        description: Latitude del lugar
+                      lng:
+                        type: number
+                        format: float
+                        description: Longitud del lugar
+                  toLocation:
+                    type: object
+                    properties:
+                      addres:
+                        type: string
+                        description:  Dirección del lugar donde comienza el pedido.
+                      addressSecondary:
+                        type: string
+                        description:  Información extra de la dirección.
+                      storeName:
+                        type: string
+                        description:  Nombre del local donde comienza el pedido.
+                      lat:
+                        type: number
+                        format: float
+                        description: Latitude del lugar
+                      lng:
+                        type: number
+                        format: float
+                        description: Longitud del lugar
+                  receiveProofImage:
+                    type: string
+                    format: uri
+                    description: La URL de la imagen que toma el repartidor al recibir el pedido.
+                  deliverProofImage:
+                    type: string
+                    format: uri
+                    description: La URL de la imagen de la entrega.
+                  driverPassword:
+                    type: string
+                    description: La contraseña asociada al pedido. Puede cambiar si es que cambia el repartidor.
+                  activatesAt:
+                    type: string
+                    format: date-time
+                    description: Fecha cuando se comienza a buscar un repartidor.
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: Fecha en la que se generó el delivery.
+                  forDate:
+                    type: string
+                    format: date-time
+                    description: Fecha para la cual se solicitó que el repartidor llegue al punto 1
+                  completedAt:
+                    type: string
+                    format: date-time
+                    description: Fecha en la que se completó el pedido.
+                  canceledAt:
+                    type: string
+                    format: date-time
+                    description: Fecha en la que se canceló el pedido.
+                  nearStoreAt:
+                    type: string
+                    format: date-time
+                    description: Fecha en que la que el repartidor llegó al punto 1
+                  nearClientAt:
+                    type: string
+                    format: date-time
+                    description: Fecha en que la que el repartidor llegó al punto 2
+                  deliveryExpectedAt:
+                    type: string
+                    format: date-time
+                    description: Fecha prometida del despacho.
+                  driverReceivedAt:
+                    type: string
+                    format: date-time
+                    description: Fecha en que el repartidor retiró el pedido desde el local para llevarlo a cliente final
+                  trackingURL:
+                    type: string
+                    format: uri
+                    description: La URL para que el que recibe la entrega pueda ver donde va
+                  deliveryInformation:
+                    type: string
+                    description: Texto ingresado por el repartidor donde especifica a quien le entregó el pedido
+                  driverInformation:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Código del repartidor.
+                      type:
+                        type: string
+                        description: Tipo de vehículo.
+                      phone:
+                        type: string
+                        description: Teléfono.
+                      name:
+                        type: string
+                        description: Nombre.
+                      categoryId:
+                        type: string
+                        description: Categoría interna del repartidor.
+                      image:
+                        type: string
+                        format: uri
+                        description: La URL de una foto de la cara del repartidor.
+                  instructions:
+                    type: string
+                    description: Instrucciones para el repartidor.
+                  specialCode:
+                    type: string
+                    description: Número único asignado al pedido.
+                  externalId:
+                    type: string
+                    description: ID externo del pedido.
+                  orderId:
+                    type: string
+                    description: ID de la orden asociada al pedido.
+                  uncompletedReason:
+                    type: string
+                    description: Motivo del despacho frustrado (si aplica).
+        '404':
+          description: Pedido no encontrado
+        '401':
+          description: Access token is missing or invalid
