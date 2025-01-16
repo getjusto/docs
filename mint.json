@@ -222,33 +222,12 @@
 					"pages": ["docs/old/v2/endpoints/coupon/get"]
 				},
 				{
-					"group": "Me",
-					"pages": [
-						"docs/old/v2/endpoints/me/get"
-					]
-				},
-				{
 					"group": "Ultima milla",
 					"pages": [
 						"docs/old/v2/endpoints/deliveries/createDelivery",
 						"docs/old/v2/endpoints/deliveries/delivery",
 						"docs/old/v2/endpoints/deliveries/cancelDelivery",
 						"docs/old/v2/endpoints/deliveries/createExternalDelivery"
-					]
-				},
-				{
-					"group": "Metodos de stock",
-					"pages": [
-						"docs/old/v2/endpoints/StockMethods/addOutOfStockItem/post",
-						"docs/old/v2/endpoints/StockMethods/deleteOutOfStockItem/post",
-						"docs/old/v2/endpoints/StockMethods/outOfStockItems/post",
-						"docs/old/v2/endpoints/StockMethods/setOutOfStockItems/post"
-					]
-				},
-				{
-					"group": "Delivery",
-					"pages": [
-						"docs/old/v2/endpoints/Delivery/get"
 					]
 				}
 			]

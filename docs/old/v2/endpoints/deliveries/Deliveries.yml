@@ -38,7 +38,7 @@ paths:
                 placeId:
                   type: string
                   description: ID de GoogleMaps del lugar de reparto.
-                latitude:
+                git :
                   type: number
                   format: float
                   description: Latitud de la dirección de entrega.
