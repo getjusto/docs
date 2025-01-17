@@ -3,3 +3,25 @@ title: "Cancelar despacho"
 description: "Usa este metodo para cancelar el despacho"
 openapi: Post /cancelDelivery
 ---
+
+
+# Ejemplo
+
+**Endpoint:**  
+`POST /cancelDelivery`
+
+```json
+{
+  "deliveryId": "gAMR9R63yaRd5xmBK",
+  "externalId": "P13G3-extra"
+}
+```
+ ### Respuesta
+```json
+{
+  "status": "ok",
+  "data": {
+    <canceledDeliveries>
+  }
+}
+```

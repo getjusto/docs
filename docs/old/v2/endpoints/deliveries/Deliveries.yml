@@ -50,7 +50,7 @@ paths:
                   example: -70.6693
                 preferCoordinates:
                   type: boolean
-                  description: Cuando este flag está activo, en lugar de usar primero la direcciónLine1 y las coordenadas como respaldo, solo usaremos las coordenadas, y con ellas obtendremos el placeId más cercano (puede estar a 10 o 15 metros de distancia. Pueden surgir casos más extremos). en zonas más rurales o en países con menor densidad de población). Si se especifica el argumento maxDistance y es diferente de 300 metros, se usa; de lo contrario, usaremos una distancia máxima de 5000 metros. Valor predeterminado, falso.
+                  description: Cuando este flag está activo, en lugar de usar primero la addressLine1 y las coordenadas como respaldo, solo usaremos las coordenadas, y con ellas obtendremos el placeId más cercano (puede estar a 10 o 15 metros de distancia. Pueden surgir casos más extremos). en zonas más rurales o en países con menor densidad de población). Si se especifica el argumento maxDistance y es diferente de 300 metros, se usa; de lo contrario, usaremos una distancia máxima de 5000 metros. Valor predeterminado, falso.
                   default: false
                 maxDistance:
                   type: number
