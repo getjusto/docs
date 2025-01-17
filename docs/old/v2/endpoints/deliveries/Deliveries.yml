@@ -25,60 +25,72 @@ paths:
               properties:
                 storeId:
                   type: string
-                  description: ID del local
+                  description: ID del local.
                 instructions:
                   type: string
-                  description: Instrucciones de entrega.
+                  description: Instrucciones de entrega. Opcional
                 externalId:
                   type: string
-                  description: Código de idempotencia para identificar únicamente el pedido.
+                  description:  Un código para identificar este pedido en el punto de retiro. Si avoidDuplication es true, este campo se utilizará este valor como identificador de idempotencia de un pedido. Opcional, solo obligatorio si avoidDuplication es true.
                 tipAmount:
                   type: number
-                  description: Monto de propina.
+                  description: Monto de propina. Opcional
                 placeId:
                   type: string
-                  description: ID de GoogleMaps del lugar de reparto.
-                git :
+                  description: ID de GoogleMaps del lugar de reparto. Opcional por latitude, longitude y addressLine1.
+                latitude:
                   type: number
                   format: float
-                  description: Latitud de la dirección de entrega.
+                  description: Latitud de la dirección de entrega. Opcional, solo necesario si no se especifica placeId.
                   example: -33.4489
                 longitude:
                   type: number
                   format: float
-                  description: Longitud de la dirección de entrega.
+                  description: Longitud de la dirección de entrega. Opcional, solo necesario si no se especifica placeId.
                   example: -70.6693
                 preferCoordinates:
                   type: boolean
-                  description: Indica si se prefiere usar coordenadas para obtener la dirección más cercana.
+                  description: Cuando este flag está activo, en lugar de usar primero la direcciónLine1 y las coordenadas como respaldo, solo usaremos las coordenadas, y con ellas obtendremos el placeId más cercano (puede estar a 10 o 15 metros de distancia. Pueden surgir casos más extremos). en zonas más rurales o en países con menor densidad de población). Si se especifica el argumento maxDistance y es diferente de 300 metros, se usa; de lo contrario, usaremos una distancia máxima de 5000 metros. Valor predeterminado, falso.
+                  default: false
                 maxDistance:
                   type: number
-                  description: Distancia máxima permitida para calcular la ubicación.
+                  description: Cuando no se usa un placeId, tenemos que buscar una ubicación para el despacho. Se intenta utilizando el addressLine1 y los resultados que se obtienen se ordenan por distancia al punto [latitude,longitude] y se retorna el más cercano. Si la distancia de todos los resultados es superior a maxDistance (ó 300mt si el parámetro no se especifica), se descartan todos y se busca la ubicación más cercana al punto. Si se hacen dos llamadas con el mismo addressLine1, latitude y longitude, la ubicación del despacho será la misma, aunque tengan diferencias en maxDistance. Si se necesita forzar un cambio, sugerimos hacer un cambio menor de la latitud o longitud para forzar el recalculo. Opcional, solo necesario si no se especifica placeId. Si no se especifica, se usarán 300mt como distancia máxima.
                 addressLine1:
                   type: string
-                  description: Calle y número de la dirección de entrega.
+                  description: Calle y número de dirección de reparto. Opcional, solo necesario si no se especifica placeId.
                 addressLine2:
                   type: string
-                  description: Información adicional de la dirección de entrega.
+                  description: Información adición de la dirección. (Dpto 102, Casa A, etc...). Opcional
                 placeName:
                   type: string
-                  description: Nombre del lugar de entrega.
+                  description: Nombre del lugar de entrega. Generalmente es el nombre del cliente.
                 placePhone:
                   type: string
-                  description: Teléfono del lugar de entrega (incluye código de país).
+                  description: Teléfono para llamar en el punto de entrega. Incluír el + y el código de país.
                 isToStore:
                   type: boolean
-                  description: Indica si el pedido se recoge en el local.
+                  description: El reparto comienza en el lugar de reparto en dirección a el local. Opcional (defecto false)
+                  default: false
                 isRoundTrip:
                   type: boolean
-                  description: Indica si el reparto debe ser de ida y vuelta.
+                  description: El repartidor debe cobrar / el viaje debe ser ida y vuelta. Opcional (defecto false)
+                  default: false
+                requiredVehicleType:
+                  type: string
+                  description: Definir el tipo de vehículo necesario para delivery special. El definir el tipo de vehículo puede afectar los tiempos de despacho. Esta opción está disponible por marca. Los valores posibles son walk, bike, ebike, moto, car. Opcional.
+                  enum: 
+                    - walk
+                    - bike
+                    - ebike
+                    - moto
+                    - car
                 expectedDate:
                   type: string
                   format: date-time
-                  description: Fecha y hora esperada de la entrega.
+                  description: Fecha de retiro en el primer punto. Opcional. Formato ISO_8601. Si es para lo antes posible no enviar nada en este campo.
                 contents:
                   type: object
-                  description: Lista de artículos incluidos en la entrega.
+                  description: El contenido de la entrega. Sirve para que los repartidores no se confundan con el contenido del paquete y realicen la entrega correctamente.
                   properties:
                     name:
                       type: string
@@ -88,13 +100,14 @@ paths:
                       description: Cantidad del producto.
                     description:
                       type: string
-                      description: Descripción del producto.
+                      description: Alguna descripción del producto. Puede ser el contenido o los modificadores.
                     unitPrice:
                       type: number
                       description: Precio unitario del producto.
                 avoidDuplication:
                   type: boolean
-                  description: Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo.
+                  description: Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo. Esto significa que se podrá generar un y sólo un delivery con el mismo externalId. Si este flag se encuentra activo y se intenta generar un nuevo delivery con un externalId que ya había sido utilizado previamente, se retornará la información del delivery anteriormente generado y no creará uno nuevo. Opcional (defecto false).
+                  default: false
               required: 
                 - storeId
                 - contents
@@ -116,7 +129,7 @@ paths:
                     type: string
                     description: Resultado de la operación.
                   data:
-                    $ref: '#/components/schemas/delivery'
+                    $ref: '#/components/schemas/result'
         '400':
           description: Access token is missing or invalid 
 
@@ -138,7 +151,7 @@ paths:
                   description: ID del despacho
                 externalId:
                   type: string
-                  description: ID externo del despacho.
+                  description: ID externo del despacho. Opcional
               required:
                 - deliveryId
       responses:
@@ -153,7 +166,7 @@ paths:
                     type: string
                     description: Resultado de la operacion.
                   data:
-                    $ref: '#/components/schemas/delivery'
+                    $ref: '#/components/schemas/result'
         '400':
           description: Access token is missing or invalid 
 
@@ -178,75 +191,82 @@ paths:
                   description: Instrucciones de entrega.
                 externalId:
                   type: string
-                  description: Código de idempotencia para identificar únicamente el pedido.
+                  description: Un código para identificar este pedido en el punto de retiro. Si avoidDuplication es true, este campo se utilizará este valor como identificador de idempotencia de un pedido. Opcional, solo obligatorio si avoidDuplication es true.
                 tipAmount:
                   type: number
-                  description: Monto de propina.
+                  description: Monto de propina. Opcional
                 originAddress:
                   type: object
-                  description: Objeto que contiene la información del punto de origen del viaje.
+                  description: Objeto que contiene la información del punto de origen del viaje. Esta compuesto con los siguientes parametros.
                   properties:
                     latitude:
                       type: number
                       format: float
-                      description: Latitud de la dirección de entrega.
+                      description: Latitud de dirección de origen.
                       example: -33.4489
                     longitude:
                       type: number
                       format: float
-                      description: Longitud de la dirección de entrega.
+                      description: Longitud de dirección de origen.
                       example: -70.6693
                     addressLine1:
                       type: string
-                      description: Calle y número de la dirección de entrega.
+                      description: Calle y número de dirección de origen.
                     addressLine2:
                       type: string
-                      description: Información adicional de la dirección de entrega.
+                      description: Información adicional de la dirección. (Dpto 102, Casa A, etc...) Opcional
                     placePhone:
                       type: string
-                      description: Teléfono del lugar de entrega (incluye código de país).
+                      description: Teléfono para llamar en el punto de origen. Incluir el + y el código de país.
                     placeName:
                       type: string
-                      description: Nombre del lugar de entrega.
+                      description: Nombre del punto de origen. Generalmente es el nombre de quien entrega el paquete.
                 destinationAddress: 
                   type: object
-                  description:  Objeto que contiene la información del punto de reparto.
+                  description:  Objeto que contiene la información del punto de reparto. Esta compuesto por los siguientes parametros.
                   properties:
                     latitude:
                       type: string
-                      description: Latitud de la dirección de entrega.
+                      description: Latitud de dirección de reparto.
                       example: -33.4489
                     longitude:
                       type: string
-                      description: Longitud de la dirección de entrega.
+                      description: Longitud de dirección de reparto.
                       example: -70.6693
                     addressLine1:
                       type: string
-                      description: Calle y número de la dirección de entrega.
+                      description: Calle y número de dirección de reparto.
                     addressLine2:
                       type: string
-                      description: Información adicional de la dirección de entrega.
+                      description: Información adicional de la dirección. (Dpto 102, Casa A, etc...) Opcional
                     placePhone:
                       type: string
-                      description: Teléfono del lugar de entrega (incluye código de país).
+                      description: Teléfono para llamar en el punto de entrega. Incluir el + y el código de país.
                     placeName:
                       type: string
-                      description: Nombre del lugar de entrega.
+                      description: Nombre del lugar de entrega. Generalmente es el nombre de quien recibe el paquete.
                 maxDistance: 
                   type: number
-                  description: Distancia máxima permitida para calcular la ubicación.
+                  description: Se obtienen resultados de direcciones utilizando el addressLine1. Los resultados obtenidos se ordenan por distancia al punto correspondiente [latitude,longitude] y se retorna el más cercano. Si la distancia de todos los resultados es superior a maxDistance (o 300 metros si el parámetro no se especifica), se descartan todos y se busca la ubicación más cercana al punto correspondiente. Si se hacen dos llamadas con el mismo addressLine1, latitude y longitude, la ubicación del punto será la misma, aunque tengan diferencias en maxDistance. Si se necesita forzar un cambio, sugerimos hacer un cambio menor de la latitud o longitud para forzar el recálculo. Opcional, Si no se especifica, se usarán 300 metros como distancia máxima.
                 isRoundTrip: 
                   type: boolean
-                  description: Indica si el reparto debe ser de ida y vuelta.
+                  description: El repartidor debe cobrar / el viaje debe ser ida y vuelta. Opcional (defecto false)
+                  default: false
                 requiredVehicleType: 
                   type: string
-                  description: Definir el tipo de vehículo necesario para el delivery especial. 
+                  description: Definir el tipo de vehículo necesario para el delivery especial. Definir el tipo de vehículo puede afectar los tiempos de despacho. Esta opción está disponible por marca.
+                  enum:
+                    - walk
+                    - bike
+                    - ebike
+                    - moto
+                    - car 
                 expectedDate:
                   type: number
-                  description: Fecha de retiro en el primer punto.
+                  description: Fecha de retiro en el primer punto. Opcional. Formato ISO_8601. Si es para lo antes posible, enviar el campo vacío
                 contents:
                   type: object
-                  description: Lista de artículos incluidos en la entrega.
+                  description: El contenido de la entrega. Sirve para que los repartidores no se confundan con el contenido del paquete y realicen la entrega correctamente.
                   properties:
                     name:
                       type: string
@@ -256,13 +276,14 @@ paths:
                       description: Cantidad del producto.
                     description:
                       type: string
-                      description: Descripción del producto.
+                      description: Alguna descripción del producto. Puede ser el contenido o los modificadores.
                     unitPrice:
                       type: number
                       description: Precio unitario del producto.
                 avoidDuplication:
                   type: boolean
-                  description: Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo.
+                  description:  Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo. Esto significa que se podrá generar un y sólo un delivery con el mismo externalId. Si este flag se encuentra activo y se intenta generar un nuevo delivery con un externalId que ya había sido utilizado previamente, se retornará la información del delivery anteriormente generado y no creará uno nuevo. Opcional (defecto false)
+                  default: false
               required:
                 - storeId
                 - originAddress 
@@ -280,7 +301,7 @@ paths:
                     type: string
                     description: Resultado de la operacion
                   data:
-                    $ref: '#/components/schemas/delivery'
+                    $ref: '#/components/schemas/result'
         '401':
           description: Access token is missing or invalid
 
@@ -314,17 +335,17 @@ paths:
                     type: string
                     description: Resultado operacion
                   data: 
-                    $ref: '#/components/schemas/delivery'                      
+                    $ref: '#/components/schemas/result'                      
         '400':
           description: Access token is missing or invalid
 components:
   schemas:
-    delivery:
+    result:
       type: object
       properties:
         _id:
           type: string
-          description: Id del pedido.
+          description: ID del pedido.
         price:
           type: number
           description: Costo del delivery, incluye IVA
@@ -335,10 +356,10 @@ components:
             - `canceled`: Pedido cancelado.
             - `pending`: Pedido pendiente.
             - `scheduled`: Pedido programado.
-            - `active`: Pedido activo.
+            - `active`: En camino a buscar el pedido.
             - `delivering`: En proceso de entrega.
             - `done`: Pedido completado.
-            - `Dispatch not completed`: El despacho no se completó.
+            - `Dispatch not completed`: No se pudo completar el pedido. En el campo uncompletedReason podrá encontrar el motivo porque no se pudo completar la entrega.
             - `error`: Error en el pedido.
           enum:
             - canceled
@@ -353,51 +374,53 @@ components:
           type: string
           description: Quién recibe el pedido.
         isCash:
-          type: boolean
-          description:  Si el pedido require efectivo o no
+          type: string
+          description: Si el pedido require efectivo o no.
         fromLocation:
           type: object
+          description: Lugar desde donde inicia el pedido(origen), si es un local se agrega el nombre [].
           properties:
             address:
               type: string
-              description:  Dirección del lugar donde comienza el pedido.
+              description: Dirección del lugar donde comienza el pedido.
             addressSecondary:
               type: string
-              description:  Información extra de la dirección.
+              description: Información extra de la dirección (comuna, ciudad, país, etc).
             storeName:
               type: string
-              description:  Nombre del local donde comienza el pedido.
+              description:  Nombre del local donde comienza el pedido (si corresponde).
             lat:
               type: number
               format: float
-              description: Latitude del lugar
+              description: Latitude del lugar.
               example: -33.4489
             lng:
               type: number
               format: float
-              description: Longitud del lugar
+              description: Longitud del lugar.
               example: -70.6693
         toLocation:
           type: object
+          description: Lugar donde finaliza el pedido(destino), si es un local se agrega el nombre [].
           properties:
             address:
               type: string
               description:  Dirección del lugar donde comienza el pedido.
             addressSecondary:
               type: string
-              description:  Información extra de la dirección.
+              description:  Información extra de la dirección (comuna, ciudad, país, etc).
             storeName:
               type: string
-              description:  Nombre del local donde comienza el pedido.
+              description:  Nombre del local donde comienza el pedido (si corresponde).
             lat:
               type: number
               format: float
-              description: Latitude del lugar
+              description: Latitude del lugar.
               example: -33.4489
             lng:
               type: number
               format: float
-              description: Longitud del lugar
+              description: Longitud del lugar.
               example: -70.6693
         receiveProofImage:
           type: string
@@ -421,7 +444,7 @@ components:
         forDate:
           type: string
           format: date-time
-          description: Fecha para la cual se solicitó que el repartidor llegue al punto 1
+          description: Fecha para la cual se solicitó que el repartidor llegue al punto 1.
         completedAt:
           type: string
           format: date-time
@@ -429,30 +452,30 @@ components:
         canceledAt:
           type: string
           format: date-time
-          description: Fecha en la que se canceló el pedido.
+          description: Fecha en la que se canceló el pedido (si corresponde).
         nearStoreAt:
           type: string
           format: date-time
-          description: Fecha en que la que el repartidor llegó al punto 1
+          description: Fecha en que la que el repartidor llegó al punto 1.
         nearClientAt:
           type: string
           format: date-time
-          description: Fecha en que la que el repartidor llegó al punto 2
+          description: Fecha en que la que el repartidor llegó al punto 2.
         deliveryExpectedAt:
           type: string
           format: date-time
-          description: Fecha prometida del despacho.
+          description: Fecha prometida del despacho (que se complete).
         driverReceivedAt:
           type: string
           format: date-time
-          description: Fecha en que el repartidor retiró el pedido desde el local para llevarlo a cliente final
+          description: Fecha en que el repartidor retiró el pedido desde el local para llevarlo a cliente final.
         trackingURL:
           type: string
           format: uri
-          description: La URL para que el que recibe la entrega pueda ver donde va
+          description: La URL para que el que recibe la entrega pueda ver donde va.
         deliveryInformation:
           type: string
-          description: Texto ingresado por el repartidor donde especifica a quien le entregó el pedido
+          description: Texto ingresado por el repartidor donde especifica a quien le entregó el pedido.
         driverInformation:
           type: object
           properties:
@@ -489,4 +512,4 @@ components:
           description: ID de la orden asociada al pedido.
         uncompletedReason:
           type: string
-          description: Motivo del despacho frustrado (si aplica).
+          description: String opcional que contiene un motivo por el que un despacho se vio frustrado. Si este valor existe, los productos no pudieron ser entregados al cliente final.
