@@ -1,0 +1,93 @@
+---
+title: "Crear solicitud de despacho"
+description: "Usa este metodo para crear una solicitud de despacho"
+openapi: "Post /createDelivery"
+---
+
+# Nota al margen
+
+Los pedidos especiales no están limitados en los horarios de venta que establezca la marca, siendo de exclusiva responsabilidad del solicitante el verificar si pueden despachar el producto en cuestión.
+
+
+# Ejemplo con placeId
+
+**Endpoint:**  
+`POST /createDelivery`
+
+### Descripción
+Este endpoint muestra un ejemplo de crear un delivery con placeId
+
+### Respuesta
+```json
+{
+  "placeId": "Ch43134gggXP5g5g5RPWmn-5gg35",
+  "addressLine2": "Dpto 144",
+  "storeId": "Li4eEa3W2hiuGGCFa",
+  "isToStore": false,
+  "isRoundTrip": false,
+  "externalId": "P13G3",
+  "tipAmount": 1000,
+  "placeName": "Javier Perez",
+  "placePhone": "+56956385416",
+  "expectedDate": "2020-04-17T22:15:26Z",
+  "contents": [
+    {
+      "quantity": 1,
+      "name": "Pizza",
+      "description": "Extras: Bebida 1.5lt",
+      "unitPrice": 1000
+    }
+  ]
+}
+```
+ ### Respuesta
+```json
+{
+  "status": "ok",
+  "data": {
+    <Delivery>
+  }
+}
+```
+# Ejemplo sin placeId
+
+**Endpoint:**  
+`POST /createDelivery`
+
+### Descripción
+Este endpoint muestra un ejemplo de crear un delivery con placeId
+
+### Respuesta
+```json
+{
+  "latitude": "-33.4421928",
+  "longitude": "-70.665261",
+  "addressLine1": "Concha y Toro 33",
+  "addressLine2": "Dpto 144",
+  "storeId": "Li4eEa3W2hiuGGCFa",
+  "isToStore": false,
+  "isRoundTrip": false,
+  "externalId": "P13G3",
+  "tipAmount": 1000,
+  "placeName": "Javier Perez",
+  "placePhone": "+56956385416",
+  "expectedDate": "2020-04-17T22:15:26Z",
+  "contents": [
+    {
+      "quantity": 1,
+      "name": "Pizza",
+      "description": "Extras: Bebida 1.5lt",
+      "unitPrice": 1000
+    }
+  ]
+}
+```
+ ### Respuesta
+```json
+{
+  "status": "ok",
+  "data": {
+    <Delivery>
+  }
+}
+```

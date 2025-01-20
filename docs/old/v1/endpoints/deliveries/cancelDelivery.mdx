@@ -1,0 +1,35 @@
+---
+title: "Cancelar despacho"
+description: "Usa este metodo para cancelar el despacho"
+openapi: Post /cancelDelivery
+---
+
+# Nota 
+Solamente se pueden cancelar despachos que no estén activos o que no hayan completado el punto 1. En caso contrario, el método devolverá un error
+```json
+{
+    "status": "error",
+    "error": "El pedido no se puede cancelar porque esta activo"
+}
+```
+
+## Ejemplo
+
+**Endpoint:**  
+`POST /cancelDelivery`
+
+```json
+{
+  "deliveryId": "gAMR9R63yaRd5xmBK",
+  "externalId": "P13G3-extra"
+}
+```
+### Respuesta
+```json
+{
+  "status": "ok",
+  "data": {
+    <canceledDeliveries>
+  }
+}
+```
