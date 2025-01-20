@@ -237,6 +237,13 @@
 						"docs/old/v1/endpoints/deliveries/cancelDelivery",
 						"docs/old/v1/endpoints/deliveries/createExternalDelivery"
 					]
+				},
+				{
+					"group": "Metodos de stock",
+					"pages": [
+						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem/post",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem/post"
+					]
 				}
 			]
 		}
