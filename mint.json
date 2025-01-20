@@ -224,7 +224,7 @@
 			]
 		},
 		{
-			"group": "API V1.2",
+			"group": "API V1",
 			"version": "v1",
 			"pages": [
 				"docs/old/v1/introduction",
@@ -236,13 +236,6 @@
 						"docs/old/v1/endpoints/deliveries/delivery",
 						"docs/old/v1/endpoints/deliveries/cancelDelivery",
 						"docs/old/v1/endpoints/deliveries/createExternalDelivery"
-					]
-				},
-				{
-					"group": "Metodos de stock",
-					"pages": [
-						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem/post",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem/post"
 					]
 				}
 			]
