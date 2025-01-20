@@ -87,7 +87,7 @@ paths:
                 expectedDate:
                   type: string
                   format: date-time
-                  description: Fecha de retiro en el primer punto. Opcional. Formato ISO_8601. Si es para lo antes posible no enviar nada en este campo.
+                  description: Fecha de retiro en el primer punto. Opcional. Formato [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601). Si es para lo antes posible no enviar nada en este campo.
                 contents:
                   type: object
                   description: El contenido de la entrega. Sirve para que los repartidores no se confundan con el contenido del paquete y realicen la entrega correctamente.
@@ -166,7 +166,14 @@ paths:
                     type: string
                     description: Resultado de la operacion.
                   data:
-                    $ref: '#/components/schemas/result'
+                    type: object
+                    properties:
+                      deliveryId:
+                        type: string
+                        description: ID del despacho cancelado.
+                      externarId:
+                        type: string
+                        description: ID externo del despacho cancelado.
         '400':
           description: Access token is missing or invalid 
 
@@ -263,7 +270,7 @@ paths:
                     - car 
                 expectedDate:
                   type: number
-                  description: Fecha de retiro en el primer punto. Opcional. Formato ISO_8601. Si es para lo antes posible, enviar el campo vacío
+                  description: Fecha de retiro en el primer punto. Opcional. Formato [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601). Si es para lo antes posible, enviar el campo vacío
                 contents:
                   type: object
                   description: El contenido de la entrega. Sirve para que los repartidores no se confundan con el contenido del paquete y realicen la entrega correctamente.

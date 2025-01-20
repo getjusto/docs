@@ -5,10 +5,15 @@ openapi: Post /cancelDelivery
 ---
 
 # Nota 
-Solamente se pueden cancelar despachos que no estén activos o que no hayan completado el punto 1. En caso contrario, el método devolverá un error.
+Solamente se pueden cancelar despachos que no estén activos o que no hayan completado el punto 1. En caso contrario, el método devolverá un error
+```json
+{
+    "status": "error",
+    "error": "El pedido no se puede cancelar porque esta activo"
+}
+```
 
-
-# Ejemplo
+## Ejemplo
 
 **Endpoint:**  
 `POST /cancelDelivery`
@@ -19,7 +24,7 @@ Solamente se pueden cancelar despachos que no estén activos o que no hayan comp
   "externalId": "P13G3-extra"
 }
 ```
- ### Respuesta
+### Respuesta
 ```json
 {
   "status": "ok",
