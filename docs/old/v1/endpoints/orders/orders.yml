@@ -1,0 +1,2023 @@
+openapi: 3.0.0
+info:
+  title: orders API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: Rechazar un pedido
+    description: Rechazar un pedido pendiente.
+paths:
+  /rejectOrder:
+    post:
+      tags:
+        - orders
+      summary: Rechazar un pedido
+      description: Rechazar un pedido pendiente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+                reasonMessage:
+                  type: string
+                  description: Texto de explicación del rechazo. Lo verá el cliente. 
+                category:
+                  type: string
+                  description: Categoría del rechazo. Si no esta definido, su valor por defecto será API. Usado para categorizar las devoluciones a clientes. Opcional.
+                reason:
+                  type: string
+                  description:  Razón del rechazo. Solo uso interno, no será expuesto al cliente. Si no esta definido, su valor por defecto será Rejected by integration through API. Usado para categorizar las devoluciones a clientes. Opcional.  
+              required:
+              - orderId
+              - reasonMessage
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: ID del item.
+                      orderStatus:
+                        type: string
+                        description: Estado del pedido. Puede ser.
+                        enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                      isScheduled:
+                        type: boolean
+                        description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                      websiteId:
+                        type: string
+                        description: ID de la marca.
+                      code:
+                        type: string
+                        description: Código del pedido. Único para toda la plataforma de justo.
+                      fullCode:
+                        type: string
+                        description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                      userId:
+                        type: string
+                        description: ID del usuario.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha de creación del pedido.
+                      address:
+                        type: string
+                        description: Dirección de entrega. Address
+                      directions:
+                        type: string
+                        description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                      menuId:
+                        type: string
+                        description: ID del menú
+                      deliveryType:
+                        type: string
+                        description:  Tipo de entrega. Puede ser
+                        enum: ["delivery", "go", "serve"]
+                      deliverAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                      timeText:
+                        type: string
+                        format: date-time
+                        description: Fecha de entrega al cliente en texto.
+                      paymentType:
+                        type: string
+                        description: Tipo de medio de pago. Puede ser 
+                        enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                      otherPaymentType:
+                        type: string
+                        description: Medio de pago, si es que es "other"
+                      tipAmount:
+                        type: number
+                        description: Monto entregado en propina.
+                      deliveryFee:
+                        type: number
+                        description: Precio del despacho.
+                      itemsPrice:
+                        type: number
+                        description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                      baseItemsPrice:
+                        type: string
+                        description: itemsPrice antes de los descuentos.
+                      baseTotalPrice:
+                        type: string
+                        description: totalPrice antes de los descuentos.
+                      totalPrice:
+                        type: number
+                        description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                      amountToPay:
+                        type: number
+                        description: Monto a pagar por el cliente incluyendo la propina.
+                      amountFinancedByJusto:
+                        type: number
+                        description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                      couponName:
+                        type: string
+                        description: Nombre del cupón usado.
+                      couponCode:
+                        type: string
+                        description: Código del cupón.
+                      couponDiscount:
+                        type: number
+                        description: Monto del descuento del cupón.
+                      websiteCoinsDiscount:
+                        type: number
+                        description: Monto descuento de programa de lealtad.
+                      itemsPriceBeforeDiscountsAfterProductDiscount: 
+                        type: number
+                        description: Precio de los items con descuento tachado.
+                      expectedPreparationDuration:
+                        type: string
+                        format: date-time
+                        description: Tiempo estimado de preparación (no incluye delivery).
+                      deliveryDuration:
+                        type: string
+                        description: Tiempo estimado de delivery
+                      cashAmount:
+                        type: string
+                        description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                      cardId:
+                        type: string
+                        description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                      channel: 
+                        type: string
+                        description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                        enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                      source:
+                        type: string
+                        description: Origen del pedido. puede tomar los valores
+                        enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                      buyerName:
+                        type: string
+                        description: Nombre del cliente.
+                      phone:
+                        type: string
+                        description: Teléfono del cliente
+                      email:
+                        type: string
+                        description: Email del cliente
+                      tableName:
+                        type: string
+                        description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                      flagColor:
+                        type: string
+                        description: Color de la bandera en el POS.
+                        pattern: '^#[0-9A-Fa-f]{6}$'
+                      items:
+                        type: string
+                        description: Detalle del pedido. Item
+                      transaction:
+                        type: string
+                        description: Información de la transacción asociada a este pedido. Transaction
+                      deliveries:
+                        type: string
+                        description: Información los repartos asociados a este pedido. Delivery
+                      devolutions:
+                        type: string
+                        description: Información las devoluciones asociadas a este pedido. Devolution
+                      charges:
+                        type: string
+                        description: Resumen de los cobros asociados a este pedido.
+                      clonedOrder:
+                        type: string
+                        description: Id de la orden clonada/repetida (si corresponde).
+                      parentOrder:
+                        type: string
+                        description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                      hasManagedDelivery:
+                        type: string
+                        description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                      loyaltyTransaction:
+                        type: string
+                        description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                      billing:
+                        type: string
+                        description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                      cancellationInfo:
+                        type: object
+                        description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                        properties: 
+                          reason:
+                            type: string 
+                            description: Razón del rechazo. Solo uso interno.
+                          reasonMessage:
+                            type: string 
+                            description: Texto de explicación de la cancelación.
+                          category:
+                            type: string 
+                            description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+
+
+  /acceptOrder:
+    post:
+      tags:
+        - orders
+      summary: Aceptar un pedido
+      description: Acepta un pedido pendiente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+              required:
+              - orderId
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: ID del item.
+                      orderStatus:
+                        type: string
+                        description: Estado del pedido. Puede ser.
+                        enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                      isScheduled:
+                        type: boolean
+                        description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                      websiteId:
+                        type: string
+                        description: ID de la marca.
+                      code:
+                        type: string
+                        description: Código del pedido. Único para toda la plataforma de justo.
+                      fullCode:
+                        type: string
+                        description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                      userId:
+                        type: string
+                        description: ID del usuario.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha de creación del pedido.
+                      address:
+                        type: string
+                        description: Dirección de entrega. Address
+                      directions:
+                        type: string
+                        description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                      menuId:
+                        type: string
+                        description: ID del menú
+                      deliveryType:
+                        type: string
+                        description:  Tipo de entrega. Puede ser
+                        enum: ["delivery", "go", "serve"]
+                      deliverAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                      timeText:
+                        type: string
+                        format: date-time
+                        description: Fecha de entrega al cliente en texto.
+                      paymentType:
+                        type: string
+                        description: Tipo de medio de pago. Puede ser 
+                        enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                      otherPaymentType:
+                        type: string
+                        description: Medio de pago, si es que es "other"
+                      tipAmount:
+                        type: number
+                        description: Monto entregado en propina.
+                      deliveryFee:
+                        type: number
+                        description: Precio del despacho.
+                      itemsPrice:
+                        type: number
+                        description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                      baseItemsPrice:
+                        type: string
+                        description: itemsPrice antes de los descuentos.
+                      baseTotalPrice:
+                        type: string
+                        description: totalPrice antes de los descuentos.
+                      totalPrice:
+                        type: number
+                        description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                      amountToPay:
+                        type: number
+                        description: Monto a pagar por el cliente incluyendo la propina.
+                      amountFinancedByJusto:
+                        type: number
+                        description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                      couponName:
+                        type: string
+                        description: Nombre del cupón usado.
+                      couponCode:
+                        type: string
+                        description: Código del cupón.
+                      couponDiscount:
+                        type: number
+                        description: Monto del descuento del cupón.
+                      websiteCoinsDiscount:
+                        type: number
+                        description: Monto descuento de programa de lealtad.
+                      itemsPriceBeforeDiscountsAfterProductDiscount: 
+                        type: number
+                        description: Precio de los items con descuento tachado.
+                      expectedPreparationDuration:
+                        type: string
+                        format: date-time
+                        description: Tiempo estimado de preparación (no incluye delivery).
+                      deliveryDuration:
+                        type: string
+                        description: Tiempo estimado de delivery
+                      cashAmount:
+                        type: string
+                        description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                      cardId:
+                        type: string
+                        description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                      channel: 
+                        type: string
+                        description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                        enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                      source:
+                        type: string
+                        description: Origen del pedido. puede tomar los valores
+                        enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                      buyerName:
+                        type: string
+                        description: Nombre del cliente.
+                      phone:
+                        type: string
+                        description: Teléfono del cliente
+                      email:
+                        type: string
+                        description: Email del cliente
+                      tableName:
+                        type: string
+                        description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                      flagColor:
+                        type: string
+                        description: Color de la bandera en el POS.
+                        pattern: '^#[0-9A-Fa-f]{6}$'
+                      items:
+                        type: string
+                        description: Detalle del pedido. Item
+                      transaction:
+                        type: string
+                        description: Información de la transacción asociada a este pedido. Transaction
+                      deliveries:
+                        type: string
+                        description: Información los repartos asociados a este pedido. Delivery
+                      devolutions:
+                        type: string
+                        description: Información las devoluciones asociadas a este pedido. Devolution
+                      charges:
+                        type: string
+                        description: Resumen de los cobros asociados a este pedido.
+                      clonedOrder:
+                        type: string
+                        description: Id de la orden clonada/repetida (si corresponde).
+                      parentOrder:
+                        type: string
+                        description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                      hasManagedDelivery:
+                        type: string
+                        description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                      loyaltyTransaction:
+                        type: string
+                        description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                      billing:
+                        type: string
+                        description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                      cancellationInfo:
+                        type: object
+                        description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                        properties: 
+                          reason:
+                            type: string 
+                            description: Razón del rechazo. Solo uso interno.
+                          reasonMessage:
+                            type: string 
+                            description: Texto de explicación de la cancelación.
+                          category:
+                            type: string 
+                            description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+
+
+  /activateDelivery:
+    post:
+      tags:
+        - orders
+      summary: Activar delivery
+      description: Activar delivery antes de tiempo.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+              required:
+              - orderId
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      __id:
+                        type: string
+                        description: ID del pedido.
+                      price:
+                        type: number
+                        description: Costo del delivery, incluye IVA
+                      status:
+                        type: string
+                        description: |
+                          Estado del pedido. Puede tomar los siguientes valores:
+                          - `canceled`: Pedido cancelado.
+                          - `pending`: Pedido pendiente.
+                          - `scheduled`: Pedido programado.
+                          - `active`: En camino a buscar el pedido.
+                          - `delivering`: En proceso de entrega.
+                          - `done`: Pedido completado.
+                          - `Dispatch not completed`: No se pudo completar el pedido. En el campo uncompletedReason podrá encontrar el motivo porque no se pudo completar la entrega.
+                          - `error`: Error en el pedido.
+                        enum:
+                          - canceled
+                          - pending
+                          - scheduled
+                          - active
+                          - delivering
+                          - done
+                          - Dispatch not completed
+                          - error
+                      placeName:
+                        type: string
+                        description: Quién recibe el pedido.
+                      isCash:
+                        type: string
+                        description: Si el pedido require efectivo o no.
+                      fromLocation:
+                        type: object
+                        description: Lugar desde donde inicia el pedido(origen), si es un local se agrega el nombre [].
+                        properties:
+                          address:
+                            type: string
+                            description: Dirección del lugar donde comienza el pedido.
+                          addressSecondary:
+                            type: string
+                            description: Información extra de la dirección (comuna, ciudad, país, etc).
+                          storeName:
+                            type: string
+                            description:  Nombre del local donde comienza el pedido (si corresponde).
+                          lat:
+                            type: number
+                            format: float
+                            description: Latitude del lugar.
+                            example: -33.4489
+                          lng:
+                            type: number
+                            format: float
+                            description: Longitud del lugar.
+                            example: -70.6693
+                      toLocation:
+                        type: object
+                        description: Lugar donde finaliza el pedido(destino), si es un local se agrega el nombre [].
+                        properties:
+                          address:
+                            type: string
+                            description:  Dirección del lugar donde comienza el pedido.
+                          addressSecondary:
+                            type: string
+                            description:  Información extra de la dirección (comuna, ciudad, país, etc).
+                          storeName:
+                            type: string
+                            description:  Nombre del local donde comienza el pedido (si corresponde).
+                          lat:
+                            type: number
+                            format: float
+                            description: Latitude del lugar.
+                            example: -33.4489
+                          lng:
+                            type: number
+                            format: float
+                            description: Longitud del lugar.
+                            example: -70.6693
+                      receiveProofImage:
+                        type: string
+                        format: uri
+                        description: La URL de la imagen que toma el repartidor al recibir el pedido.
+                      deliverProofImage:
+                        type: string
+                        format: uri
+                        description: La URL de la imagen de la entrega.
+                      driverPassword:
+                        type: string
+                        description: La contraseña asociada al pedido. Puede cambiar si es que cambia el repartidor.
+                      activatesAt:
+                        type: string
+                        format: date-time
+                        description: Fecha cuando se comienza a buscar un repartidor.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que se generó el delivery.
+                      forDate:
+                        type: string
+                        format: date-time
+                        description: Fecha para la cual se solicitó que el repartidor llegue al punto 1.
+                      completedAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que se completó el pedido.
+                      canceledAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que se canceló el pedido (si corresponde).
+                      nearStoreAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en que la que el repartidor llegó al punto 1.
+                      nearClientAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en que la que el repartidor llegó al punto 2.
+                      deliveryExpectedAt:
+                        type: string
+                        format: date-time
+                        description: Fecha prometida del despacho (que se complete).
+                      driverReceivedAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en que el repartidor retiró el pedido desde el local para llevarlo a cliente final.
+                      trackingURL:
+                        type: string
+                        format: uri
+                        description: La URL para que el que recibe la entrega pueda ver donde va.
+                      deliveryInformation:
+                        type: string
+                        description: Texto ingresado por el repartidor donde especifica a quien le entregó el pedido.
+                      driverInformation:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            description: Código del repartidor.
+                          type:
+                            type: string
+                            description: Tipo de vehículo.
+                          phone:
+                            type: string
+                            description: Teléfono.
+                          name:
+                            type: string
+                            description: Nombre.
+                          categoryId:
+                            type: string
+                            description: Categoría interna del repartidor.
+                          image:
+                            type: string
+                            format: uri
+                            description: La URL de una foto de la cara del repartidor.
+                      instructions:
+                        type: string
+                        description: Instrucciones para el repartidor.
+                      specialCode:
+                        type: string
+                        description: Número único asignado al pedido.
+                      externalId:
+                        type: string
+                        description: ID externo del pedido.
+                      orderId:
+                        type: string
+                        description: ID de la orden asociada al pedido.
+                      uncompletedReason:
+                        type: string
+                        description: String opcional que contiene un motivo por el que un despacho se vio frustrado. Si este valor existe, los productos no pudieron ser entregados al cliente final.                    
+        '401':
+          description: Access token is missing or invalid
+
+
+  /order:
+    post:
+      tags:
+        - orders
+      summary: Obtener un pedido
+      description: Entrega la información de un pedido por el id o el código.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+                code:
+                  type: string
+                  description: Código del pedido
+              required:
+              - orderId
+              - code
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: ID del item.
+                      orderStatus:
+                        type: string
+                        description: Estado del pedido. Puede ser.
+                        enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                      isScheduled:
+                        type: boolean
+                        description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                      websiteId:
+                        type: string
+                        description: ID de la marca.
+                      code:
+                        type: string
+                        description: Código del pedido. Único para toda la plataforma de justo.
+                      fullCode:
+                        type: string
+                        description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                      userId:
+                        type: string
+                        description: ID del usuario.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha de creación del pedido.
+                      address:
+                        type: string
+                        description: Dirección de entrega. Address
+                      directions:
+                        type: string
+                        description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                      menuId:
+                        type: string
+                        description: ID del menú
+                      deliveryType:
+                        type: string
+                        description:  Tipo de entrega. Puede ser
+                        enum: ["delivery", "go", "serve"]
+                      deliverAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                      timeText:
+                        type: string
+                        format: date-time
+                        description: Fecha de entrega al cliente en texto.
+                      paymentType:
+                        type: string
+                        description: Tipo de medio de pago. Puede ser 
+                        enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                      otherPaymentType:
+                        type: string
+                        description: Medio de pago, si es que es "other"
+                      tipAmount:
+                        type: number
+                        description: Monto entregado en propina.
+                      deliveryFee:
+                        type: number
+                        description: Precio del despacho.
+                      itemsPrice:
+                        type: number
+                        description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                      baseItemsPrice:
+                        type: string
+                        description: itemsPrice antes de los descuentos.
+                      baseTotalPrice:
+                        type: string
+                        description: totalPrice antes de los descuentos.
+                      totalPrice:
+                        type: number
+                        description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                      amountToPay:
+                        type: number
+                        description: Monto a pagar por el cliente incluyendo la propina.
+                      amountFinancedByJusto:
+                        type: number
+                        description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                      couponName:
+                        type: string
+                        description: Nombre del cupón usado.
+                      couponCode:
+                        type: string
+                        description: Código del cupón.
+                      couponDiscount:
+                        type: number
+                        description: Monto del descuento del cupón.
+                      websiteCoinsDiscount:
+                        type: number
+                        description: Monto descuento de programa de lealtad.
+                      itemsPriceBeforeDiscountsAfterProductDiscount: 
+                        type: number
+                        description: Precio de los items con descuento tachado.
+                      expectedPreparationDuration:
+                        type: string
+                        format: date-time
+                        description: Tiempo estimado de preparación (no incluye delivery).
+                      deliveryDuration:
+                        type: string
+                        description: Tiempo estimado de delivery
+                      cashAmount:
+                        type: string
+                        description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                      cardId:
+                        type: string
+                        description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                      channel: 
+                        type: string
+                        description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                        enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                      source:
+                        type: string
+                        description: Origen del pedido. puede tomar los valores
+                        enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                      buyerName:
+                        type: string
+                        description: Nombre del cliente.
+                      phone:
+                        type: string
+                        description: Teléfono del cliente
+                      email:
+                        type: string
+                        description: Email del cliente
+                      tableName:
+                        type: string
+                        description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                      flagColor:
+                        type: string
+                        description: Color de la bandera en el POS.
+                        pattern: '^#[0-9A-Fa-f]{6}$'
+                      items:
+                        type: string
+                        description: Detalle del pedido. Item
+                      transaction:
+                        type: string
+                        description: Información de la transacción asociada a este pedido. Transaction
+                      deliveries:
+                        type: string
+                        description: Información los repartos asociados a este pedido. Delivery
+                      devolutions:
+                        type: string
+                        description: Información las devoluciones asociadas a este pedido. Devolution
+                      charges:
+                        type: string
+                        description: Resumen de los cobros asociados a este pedido.
+                      clonedOrder:
+                        type: string
+                        description: Id de la orden clonada/repetida (si corresponde).
+                      parentOrder:
+                        type: string
+                        description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                      hasManagedDelivery:
+                        type: string
+                        description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                      loyaltyTransaction:
+                        type: string
+                        description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                      billing:
+                        type: string
+                        description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                      cancellationInfo:
+                        type: object
+                        description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                        properties: 
+                          reason:
+                            type: string 
+                            description: Razón del rechazo. Solo uso interno.
+                          reasonMessage:
+                            type: string 
+                            description: Texto de explicación de la cancelación.
+                          category:
+                            type: string 
+                            description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+
+
+  /setOrderFlagColor:
+    post:
+      tags:
+        - orders
+      summary: Editar un pedido
+      description: Editar el color de la bandera del pedido.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+                flagColor:
+                  type: string
+                  description: El color de la bandera en formato hex (#aabbcc).
+                  pattern: '^#[0-9A-Fa-f]{6}$'
+              required:
+              - orderId
+              - flagColor
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: ID del item.
+                      orderStatus:
+                        type: string
+                        description: Estado del pedido. Puede ser.
+                        enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                      isScheduled:
+                        type: boolean
+                        description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                      websiteId:
+                        type: string
+                        description: ID de la marca.
+                      code:
+                        type: string
+                        description: Código del pedido. Único para toda la plataforma de justo.
+                      fullCode:
+                        type: string
+                        description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                      userId:
+                        type: string
+                        description: ID del usuario.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha de creación del pedido.
+                      address:
+                        type: string
+                        description: Dirección de entrega. Address
+                      directions:
+                        type: string
+                        description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                      menuId:
+                        type: string
+                        description: ID del menú
+                      deliveryType:
+                        type: string
+                        description:  Tipo de entrega. Puede ser
+                        enum: ["delivery", "go", "serve"]
+                      deliverAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                      timeText:
+                        type: string
+                        format: date-time
+                        description: Fecha de entrega al cliente en texto.
+                      paymentType:
+                        type: string
+                        description: Tipo de medio de pago. Puede ser 
+                        enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                      otherPaymentType:
+                        type: string
+                        description: Medio de pago, si es que es "other"
+                      tipAmount:
+                        type: number
+                        description: Monto entregado en propina.
+                      deliveryFee:
+                        type: number
+                        description: Precio del despacho.
+                      itemsPrice:
+                        type: number
+                        description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                      baseItemsPrice:
+                        type: string
+                        description: itemsPrice antes de los descuentos.
+                      baseTotalPrice:
+                        type: string
+                        description: totalPrice antes de los descuentos.
+                      totalPrice:
+                        type: number
+                        description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                      amountToPay:
+                        type: number
+                        description: Monto a pagar por el cliente incluyendo la propina.
+                      amountFinancedByJusto:
+                        type: number
+                        description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                      couponName:
+                        type: string
+                        description: Nombre del cupón usado.
+                      couponCode:
+                        type: string
+                        description: Código del cupón.
+                      couponDiscount:
+                        type: number
+                        description: Monto del descuento del cupón.
+                      websiteCoinsDiscount:
+                        type: number
+                        description: Monto descuento de programa de lealtad.
+                      itemsPriceBeforeDiscountsAfterProductDiscount: 
+                        type: number
+                        description: Precio de los items con descuento tachado.
+                      expectedPreparationDuration:
+                        type: string
+                        format: date-time
+                        description: Tiempo estimado de preparación (no incluye delivery).
+                      deliveryDuration:
+                        type: string
+                        description: Tiempo estimado de delivery
+                      cashAmount:
+                        type: string
+                        description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                      cardId:
+                        type: string
+                        description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                      channel: 
+                        type: string
+                        description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                        enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                      source:
+                        type: string
+                        description: Origen del pedido. puede tomar los valores
+                        enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                      buyerName:
+                        type: string
+                        description: Nombre del cliente.
+                      phone:
+                        type: string
+                        description: Teléfono del cliente
+                      email:
+                        type: string
+                        description: Email del cliente
+                      tableName:
+                        type: string
+                        description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                      flagColor:
+                        type: string
+                        description: Color de la bandera en el POS.
+                        pattern: '^#[0-9A-Fa-f]{6}$'
+                      items:
+                        type: string
+                        description: Detalle del pedido. Item
+                      transaction:
+                        type: string
+                        description: Información de la transacción asociada a este pedido. Transaction
+                      deliveries:
+                        type: string
+                        description: Información los repartos asociados a este pedido. Delivery
+                      devolutions:
+                        type: string
+                        description: Información las devoluciones asociadas a este pedido. Devolution
+                      charges:
+                        type: string
+                        description: Resumen de los cobros asociados a este pedido.
+                      clonedOrder:
+                        type: string
+                        description: Id de la orden clonada/repetida (si corresponde).
+                      parentOrder:
+                        type: string
+                        description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                      hasManagedDelivery:
+                        type: string
+                        description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                      loyaltyTransaction:
+                        type: string
+                        description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                      billing:
+                        type: string
+                        description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                      cancellationInfo:
+                        type: object
+                        description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                        properties: 
+                          reason:
+                            type: string 
+                            description: Razón del rechazo. Solo uso interno.
+                          reasonMessage:
+                            type: string 
+                            description: Texto de explicación de la cancelación.
+                          category:
+                            type: string 
+                            description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+
+  /setOrderManagedDelivery:
+    post:
+      tags:
+        - orders
+      summary: tipo de despacho
+      description: Seleccionar el tipo de despacho.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+                hasManagedDelivery:
+                  type: boolean
+                  description: boolean. true-> Manejado por Justo. false-> Manejado por el local. Cancela delivery si aún no esta asignado
+              required:
+              - orderId
+              - hasManagedDelivery
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: ID del item.
+                      orderStatus:
+                        type: string
+                        description: Estado del pedido. Puede ser.
+                        enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                      isScheduled:
+                        type: boolean
+                        description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                      websiteId:
+                        type: string
+                        description: ID de la marca.
+                      code:
+                        type: string
+                        description: Código del pedido. Único para toda la plataforma de justo.
+                      fullCode:
+                        type: string
+                        description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                      userId:
+                        type: string
+                        description: ID del usuario.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha de creación del pedido.
+                      address:
+                        type: string
+                        description: Dirección de entrega. Address
+                      directions:
+                        type: string
+                        description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                      menuId:
+                        type: string
+                        description: ID del menú
+                      deliveryType:
+                        type: string
+                        description:  Tipo de entrega. Puede ser
+                        enum: ["delivery", "go", "serve"]
+                      deliverAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                      timeText:
+                        type: string
+                        format: date-time
+                        description: Fecha de entrega al cliente en texto.
+                      paymentType:
+                        type: string
+                        description: Tipo de medio de pago. Puede ser 
+                        enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                      otherPaymentType:
+                        type: string
+                        description: Medio de pago, si es que es "other"
+                      tipAmount:
+                        type: number
+                        description: Monto entregado en propina.
+                      deliveryFee:
+                        type: number
+                        description: Precio del despacho.
+                      itemsPrice:
+                        type: number
+                        description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                      baseItemsPrice:
+                        type: string
+                        description: itemsPrice antes de los descuentos.
+                      baseTotalPrice:
+                        type: string
+                        description: totalPrice antes de los descuentos.
+                      totalPrice:
+                        type: number
+                        description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                      amountToPay:
+                        type: number
+                        description: Monto a pagar por el cliente incluyendo la propina.
+                      amountFinancedByJusto:
+                        type: number
+                        description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                      couponName:
+                        type: string
+                        description: Nombre del cupón usado.
+                      couponCode:
+                        type: string
+                        description: Código del cupón.
+                      couponDiscount:
+                        type: number
+                        description: Monto del descuento del cupón.
+                      websiteCoinsDiscount:
+                        type: number
+                        description: Monto descuento de programa de lealtad.
+                      itemsPriceBeforeDiscountsAfterProductDiscount: 
+                        type: number
+                        description: Precio de los items con descuento tachado.
+                      expectedPreparationDuration:
+                        type: string
+                        format: date-time
+                        description: Tiempo estimado de preparación (no incluye delivery).
+                      deliveryDuration:
+                        type: string
+                        description: Tiempo estimado de delivery
+                      cashAmount:
+                        type: string
+                        description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                      cardId:
+                        type: string
+                        description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                      channel: 
+                        type: string
+                        description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                        enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                      source:
+                        type: string
+                        description: Origen del pedido. puede tomar los valores
+                        enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                      buyerName:
+                        type: string
+                        description: Nombre del cliente.
+                      phone:
+                        type: string
+                        description: Teléfono del cliente
+                      email:
+                        type: string
+                        description: Email del cliente
+                      tableName:
+                        type: string
+                        description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                      flagColor:
+                        type: string
+                        description: Color de la bandera en el POS.
+                        pattern: '^#[0-9A-Fa-f]{6}$'
+                      items:
+                        type: string
+                        description: Detalle del pedido. Item
+                      transaction:
+                        type: string
+                        description: Información de la transacción asociada a este pedido. Transaction
+                      deliveries:
+                        type: string
+                        description: Información los repartos asociados a este pedido. Delivery
+                      devolutions:
+                        type: string
+                        description: Información las devoluciones asociadas a este pedido. Devolution
+                      charges:
+                        type: string
+                        description: Resumen de los cobros asociados a este pedido.
+                      clonedOrder:
+                        type: string
+                        description: Id de la orden clonada/repetida (si corresponde).
+                      parentOrder:
+                        type: string
+                        description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                      hasManagedDelivery:
+                        type: string
+                        description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                      loyaltyTransaction:
+                        type: string
+                        description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                      billing:
+                        type: string
+                        description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                      cancellationInfo:
+                        type: object
+                        description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                        properties: 
+                          reason:
+                            type: string 
+                            description: Razón del rechazo. Solo uso interno.
+                          reasonMessage:
+                            type: string 
+                            description: Texto de explicación de la cancelación.
+                          category:
+                            type: string 
+                            description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+
+  /updateOrderStatus:
+    post:
+      tags:
+        - orders
+      summary: Cambiar el estado de un pedido
+      description: Le cambia el estado a un pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+                orderStatus:
+                  type: string
+                  description:  El nuevo estado del pedido. Puede ser
+                  enum: ["delivering", "done", "cancelled"]
+                reasonMessage: 
+                  type: string
+                  description: Texto de explicación de la cancelación. Lo verá el cliente y será considerado solo si `orderStatus` es `cancelled`. Si no está definido, su valor por defecto será-> `El pedido fue cancelado por el local.`. Opcional
+                category:
+                  type: string
+                  description: Categoría del rechazo. Si no está definido, su valor por defecto será `API`. Usado para categorizar las devoluciones a clientes y será considerado solo si `orderStatus` es `cancelled`. Opcional
+                  default: API 
+                reason:
+                  type: string
+                  description: Razón del rechazo. Solo uso interno, no será expuesto al cliente. Si no está definido, su valor por defecto será `Rejected by integration through API`. Usado para categorizar las devoluciones a clientes y será considerado solo si `orderStatus` es `cancelled`. Opcional
+                  default: Rejected by integration through API
+              required:
+              - orderId
+              - orderStatus
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: ID del item.
+                      orderStatus:
+                        type: string
+                        description: Estado del pedido. Puede ser.
+                        enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                      isScheduled:
+                        type: boolean
+                        description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                      websiteId:
+                        type: string
+                        description: ID de la marca.
+                      code:
+                        type: string
+                        description: Código del pedido. Único para toda la plataforma de justo.
+                      fullCode:
+                        type: string
+                        description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                      userId:
+                        type: string
+                        description: ID del usuario.
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Fecha de creación del pedido.
+                      address:
+                        type: string
+                        description: Dirección de entrega. Address
+                      directions:
+                        type: string
+                        description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                      menuId:
+                        type: string
+                        description: ID del menú
+                      deliveryType:
+                        type: string
+                        description:  Tipo de entrega. Puede ser
+                        enum: ["delivery", "go", "serve"]
+                      deliverAt:
+                        type: string
+                        format: date-time
+                        description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                      timeText:
+                        type: string
+                        format: date-time
+                        description: Fecha de entrega al cliente en texto.
+                      paymentType:
+                        type: string
+                        description: Tipo de medio de pago. Puede ser 
+                        enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                      otherPaymentType:
+                        type: string
+                        description: Medio de pago, si es que es "other"
+                      tipAmount:
+                        type: number
+                        description: Monto entregado en propina.
+                      deliveryFee:
+                        type: number
+                        description: Precio del despacho.
+                      itemsPrice:
+                        type: number
+                        description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                      baseItemsPrice:
+                        type: string
+                        description: itemsPrice antes de los descuentos.
+                      baseTotalPrice:
+                        type: string
+                        description: totalPrice antes de los descuentos.
+                      totalPrice:
+                        type: number
+                        description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                      amountToPay:
+                        type: number
+                        description: Monto a pagar por el cliente incluyendo la propina.
+                      amountFinancedByJusto:
+                        type: number
+                        description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                      couponName:
+                        type: string
+                        description: Nombre del cupón usado.
+                      couponCode:
+                        type: string
+                        description: Código del cupón.
+                      couponDiscount:
+                        type: number
+                        description: Monto del descuento del cupón.
+                      websiteCoinsDiscount:
+                        type: number
+                        description: Monto descuento de programa de lealtad.
+                      itemsPriceBeforeDiscountsAfterProductDiscount: 
+                        type: number
+                        description: Precio de los items con descuento tachado.
+                      expectedPreparationDuration:
+                        type: string
+                        format: date-time
+                        description: Tiempo estimado de preparación (no incluye delivery).
+                      deliveryDuration:
+                        type: string
+                        description: Tiempo estimado de delivery
+                      cashAmount:
+                        type: string
+                        description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                      cardId:
+                        type: string
+                        description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                      channel: 
+                        type: string
+                        description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                        enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                      source:
+                        type: string
+                        description: Origen del pedido. puede tomar los valores
+                        enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                      buyerName:
+                        type: string
+                        description: Nombre del cliente.
+                      phone:
+                        type: string
+                        description: Teléfono del cliente
+                      email:
+                        type: string
+                        description: Email del cliente
+                      tableName:
+                        type: string
+                        description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                      flagColor:
+                        type: string
+                        description: Color de la bandera en el POS.
+                        pattern: '^#[0-9A-Fa-f]{6}$'
+                      items:
+                        type: string
+                        description: Detalle del pedido. Item
+                      transaction:
+                        type: string
+                        description: Información de la transacción asociada a este pedido. Transaction
+                      deliveries:
+                        type: string
+                        description: Información los repartos asociados a este pedido. Delivery
+                      devolutions:
+                        type: string
+                        description: Información las devoluciones asociadas a este pedido. Devolution
+                      charges:
+                        type: string
+                        description: Resumen de los cobros asociados a este pedido.
+                      clonedOrder:
+                        type: string
+                        description: Id de la orden clonada/repetida (si corresponde).
+                      parentOrder:
+                        type: string
+                        description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                      hasManagedDelivery:
+                        type: string
+                        description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                      loyaltyTransaction:
+                        type: string
+                        description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                      billing:
+                        type: string
+                        description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                      cancellationInfo:
+                        type: object
+                        description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                        properties: 
+                          reason:
+                            type: string 
+                            description: Razón del rechazo. Solo uso interno.
+                          reasonMessage:
+                            type: string 
+                            description: Texto de explicación de la cancelación.
+                          category:
+                            type: string 
+                            description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+    
+  /pendingOrders:
+    post:
+      tags:
+        - orders
+      summary: Listar pedidos pendientes
+      description: Lista los pedidos pendientes y programados de los locales
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storesIds:
+                  type: array
+                  items:
+                    type: string
+                    description: Un arreglo con el ID o ID externo de los locales.
+              required:
+              - storesIds
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                  data:
+                    type: array
+                    items:
+                      type: object                        
+                      properties:
+                        _id: 
+                          type: string
+                          description: ID del item.
+                        orderStatus:
+                          type: string
+                          description: Estado del pedido. Puede ser.
+                          enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                        isScheduled:
+                          type: boolean
+                          description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                        websiteId:
+                          type: string
+                          description: ID de la marca.
+                        code:
+                          type: string
+                          description: Código del pedido. Único para toda la plataforma de justo.
+                        fullCode:
+                          type: string
+                          description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                        userId:
+                          type: string
+                          description: ID del usuario.
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Fecha de creación del pedido.
+                        address:
+                          type: string
+                          description: Dirección de entrega. Address
+                        directions:
+                          type: string
+                          description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                        menuId:
+                          type: string
+                          description: ID del menú
+                        deliveryType:
+                          type: string
+                          description:  Tipo de entrega. Puede ser
+                          enum: ["delivery", "go", "serve"]
+                        deliverAt:
+                          type: string
+                          format: date-time
+                          description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                        timeText:
+                          type: string
+                          format: date-time
+                          description: Fecha de entrega al cliente en texto.
+                        paymentType:
+                          type: string
+                          description: Tipo de medio de pago. Puede ser 
+                          enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                        otherPaymentType:
+                          type: string
+                          description: Medio de pago, si es que es "other"
+                        tipAmount:
+                          type: number
+                          description: Monto entregado en propina.
+                        deliveryFee:
+                          type: number
+                          description: Precio del despacho.
+                        itemsPrice:
+                          type: number
+                          description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                        baseItemsPrice:
+                          type: string
+                          description: itemsPrice antes de los descuentos.
+                        baseTotalPrice:
+                          type: string
+                          description: totalPrice antes de los descuentos.
+                        totalPrice:
+                          type: number
+                          description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                        amountToPay:
+                          type: number
+                          description: Monto a pagar por el cliente incluyendo la propina.
+                        amountFinancedByJusto:
+                          type: number
+                          description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                        couponName:
+                          type: string
+                          description: Nombre del cupón usado.
+                        couponCode:
+                          type: string
+                          description: Código del cupón.
+                        couponDiscount:
+                          type: number
+                          description: Monto del descuento del cupón.
+                        websiteCoinsDiscount:
+                          type: number
+                          description: Monto descuento de programa de lealtad.
+                        itemsPriceBeforeDiscountsAfterProductDiscount: 
+                          type: number
+                          description: Precio de los items con descuento tachado.
+                        expectedPreparationDuration:
+                          type: string
+                          format: date-time
+                          description: Tiempo estimado de preparación (no incluye delivery).
+                        deliveryDuration:
+                          type: string
+                          description: Tiempo estimado de delivery
+                        cashAmount:
+                          type: string
+                          description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                        cardId:
+                          type: string
+                          description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                        channel: 
+                          type: string
+                          description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                          enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                        source:
+                          type: string
+                          description: Origen del pedido. puede tomar los valores
+                          enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                        buyerName:
+                          type: string
+                          description: Nombre del cliente.
+                        phone:
+                          type: string
+                          description: Teléfono del cliente
+                        email:
+                          type: string
+                          description: Email del cliente
+                        tableName:
+                          type: string
+                          description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                        flagColor:
+                          type: string
+                          description: Color de la bandera en el POS.
+                          pattern: '^#[0-9A-Fa-f]{6}$'
+                        items:
+                          type: string
+                          description: Detalle del pedido. Item
+                        transaction:
+                          type: string
+                          description: Información de la transacción asociada a este pedido. Transaction
+                        deliveries:
+                          type: string
+                          description: Información los repartos asociados a este pedido. Delivery
+                        devolutions:
+                          type: string
+                          description: Información las devoluciones asociadas a este pedido. Devolution
+                        charges:
+                          type: string
+                          description: Resumen de los cobros asociados a este pedido.
+                        clonedOrder:
+                          type: string
+                          description: Id de la orden clonada/repetida (si corresponde).
+                        parentOrder:
+                          type: string
+                          description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                        hasManagedDelivery:
+                          type: string
+                          description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                        loyaltyTransaction:
+                          type: string
+                          description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                        billing:
+                          type: string
+                          description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                        cancellationInfo:
+                          type: object
+                          description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                          properties: 
+                            reason:
+                              type: string 
+                              description: Razón del rechazo. Solo uso interno.
+                            reasonMessage:
+                              type: string 
+                              description: Texto de explicación de la cancelación.
+                            category:
+                              type: string 
+                              description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+
+  /orders:
+    post:
+      tags:
+        - orders
+      summary: Listar pedidos
+      description: Lista todos los pedidos de la marca.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: string
+                  description: Un texto que se usa para filtrar por código de pedido o nombre del comprador.
+                storesIds:
+                  type: array
+                  items:
+                    type: string
+                    description: Un arreglo con el ID o ID externo de los locales.
+                fromDate:
+                  type: string
+                  format: date-time
+                  description: Incluír pedidos desde alguna fecha. Si no se incluye se toman todos los pedidos
+                toDate:
+                  type: string
+                  format: date-time
+                  description:  Incluír pedidos hasta que fecha. Si no se incluye se toman todos los pedidos
+                orderStatuses:
+                  type: array
+                  items:
+                    type: string
+                    description: Un arreglo, opcional. Muestra los pedidos que tengan estos estados.
+                    enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "scheduled"]
+                useDeliverAt:
+                  type: boolean
+                  description: Verdadero o falso. Si es que se deja verdadero se van a ordenar y filtrar los pedidos por fecha de entrega, sino por fecha de creación.
+                includeNotPaid:
+                  type: boolean
+                  description: Verdadero o falso. Si es verdadero se incluyen los pedidos con pago no completado (`paymentStatus` no `done`).
+                page:
+                  type: string
+                  description: Página de los resultados.
+              required:
+              - filter
+              - storesIds
+              - fromDate
+              - toDate
+              - useDeliverAt
+              - includeNotPaid
+              - page
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PaginatedResult:
+                    type: object
+                    description: Los pedidos pendientes.
+                    properties:
+                      totalCount:
+                        type: number
+                        description: Número de resultados en total.
+                      totalPages:
+                        type: number
+                        description: Número de páginas. Son 20 resultados por página
+                      hasNextPage:
+                        type: boolean
+                        description: Si es que hay una página siguiente de resultados
+                      hasPreviousPage:
+                        type: boolean
+                        description: Si es que hay una página anterior de resultados
+                      items: 
+                        type: array
+                        items:
+                          type: object                        
+                          properties:
+                            _id: 
+                              type: string
+                              description: ID del item.
+                            orderStatus:
+                              type: string
+                              description: Estado del pedido. Puede ser.
+                              enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "Dispatch not completed"]
+                            isScheduled:
+                              type: boolean
+                              description: Si el pedido es programado (true = pedido programado, false = pedido normal).
+                            websiteId:
+                              type: string
+                              description: ID de la marca.
+                            code:
+                              type: string
+                              description: Código del pedido. Único para toda la plataforma de justo.
+                            fullCode:
+                              type: string
+                              description: Código del pedido incluyendo el código diario de la marca (número de pedido por local, por día).
+                            userId:
+                              type: string
+                              description: ID del usuario.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: Fecha de creación del pedido.
+                            address:
+                              type: string
+                              description: Dirección de entrega. Address
+                            directions:
+                              type: string
+                              description: Información del viaje. Un objeto que incluye la duración en minutos y la distancia recorrida en metros.
+                            menuId:
+                              type: string
+                              description: ID del menú
+                            deliveryType:
+                              type: string
+                              description:  Tipo de entrega. Puede ser
+                              enum: ["delivery", "go", "serve"]
+                            deliverAt:
+                              type: string
+                              format: date-time
+                              description: Fecha en la que el pedido debe ser entregado al repartidor o al cliente si es que no es delivery
+                            timeText:
+                              type: string
+                              format: date-time
+                              description: Fecha de entrega al cliente en texto.
+                            paymentType:
+                              type: string
+                              description: Tipo de medio de pago. Puede ser 
+                              enum: ["webpayOneClick", "inStore", "khipu", "cash", "transbank", "other"]
+                            otherPaymentType:
+                              type: string
+                              description: Medio de pago, si es que es "other"
+                            tipAmount:
+                              type: number
+                              description: Monto entregado en propina.
+                            deliveryFee:
+                              type: number
+                              description: Precio del despacho.
+                            itemsPrice:
+                              type: number
+                              description: Precio del pedido sin incluír propina ni precio del despacho, solo el precio de los productos.
+                            baseItemsPrice:
+                              type: string
+                              description: itemsPrice antes de los descuentos.
+                            baseTotalPrice:
+                              type: string
+                              description: totalPrice antes de los descuentos.
+                            totalPrice:
+                              type: number
+                              description: Monto del pedido sin incluír propina. La boleta a generar debe ser de este monto.
+                            amountToPay:
+                              type: number
+                              description: Monto a pagar por el cliente incluyendo la propina.
+                            amountFinancedByJusto:
+                              type: number
+                              description: En caso que hubiera, monto que Justo financia del pedido. El descuento es visible para el cliente final pero no afecta los montos de las boletas (totalPrice).
+                            couponName:
+                              type: string
+                              description: Nombre del cupón usado.
+                            couponCode:
+                              type: string
+                              description: Código del cupón.
+                            couponDiscount:
+                              type: number
+                              description: Monto del descuento del cupón.
+                            websiteCoinsDiscount:
+                              type: number
+                              description: Monto descuento de programa de lealtad.
+                            itemsPriceBeforeDiscountsAfterProductDiscount: 
+                              type: number
+                              description: Precio de los items con descuento tachado.
+                            expectedPreparationDuration:
+                              type: string
+                              format: date-time
+                              description: Tiempo estimado de preparación (no incluye delivery).
+                            deliveryDuration:
+                              type: string
+                              description: Tiempo estimado de delivery
+                            cashAmount:
+                              type: string
+                              description: Si es que el medio de pago es "cash", el monto que el cliente indica que va a pagar.
+                            cardId:
+                              type: string
+                              description: ID de la tarjeta de crédito si es que el medio de pago es "webpayOneClick"
+                            channel: 
+                              type: string
+                              description: Canal. Es compuesto por <deliveryType>-<canal>. Y canal puede ser
+                              enum: ["web (página web de la marca)", "orion (app agregadora de Justo)", "app (app propia de la marca)."]
+                            source:
+                              type: string
+                              description: Origen del pedido. puede tomar los valores
+                              enum: ["web", "app", "justoApp", "pide", "chat", "commander", "commanderManaged" , "commanderMarketplace"]
+                            buyerName:
+                              type: string
+                              description: Nombre del cliente.
+                            phone:
+                              type: string
+                              description: Teléfono del cliente
+                            email:
+                              type: string
+                              description: Email del cliente
+                            tableName:
+                              type: string
+                              description: Nombre de la mesa. Solo para pedidos deliveryType serve
+                            flagColor:
+                              type: string
+                              description: Color de la bandera en el POS.
+                              pattern: '^#[0-9A-Fa-f]{6}$'
+                            items:
+                              type: string
+                              description: Detalle del pedido. Item
+                            transaction:
+                              type: string
+                              description: Información de la transacción asociada a este pedido. Transaction
+                            deliveries:
+                              type: string
+                              description: Información los repartos asociados a este pedido. Delivery
+                            devolutions:
+                              type: string
+                              description: Información las devoluciones asociadas a este pedido. Devolution
+                            charges:
+                              type: string
+                              description: Resumen de los cobros asociados a este pedido.
+                            clonedOrder:
+                              type: string
+                              description: Id de la orden clonada/repetida (si corresponde).
+                            parentOrder:
+                              type: string
+                              description: Id de la orden de la cual fue clonada/repetida (si corresponde).
+                            hasManagedDelivery:
+                              type: string
+                              description: boolean. true - pedido manejado por Justo. false - pedido manejado por el local.
+                            loyaltyTransaction:
+                              type: string
+                              description: Información de la transacción de pago con puntos de lealtad asociada a este pedido. LoyaltyTransaction.
+                            billing:
+                              type: string
+                              description:  Información de facturación del cliente para el pedido. La estructura de este atributo dependerá del país. Más detalles en Billing.
+                            cancellationInfo:
+                              type: object
+                              description: Objeto que contiene información de las razones de la cancelación de un pedido.
+                              properties: 
+                                reason:
+                                  type: string 
+                                  description: Razón del rechazo. Solo uso interno.
+                                reasonMessage:
+                                  type: string 
+                                  description: Texto de explicación de la cancelación.
+                                category:
+                                  type: string 
+                                  description: Categoría del rechazo.                    
+        '401':
+          description: Access token is missing or invalid
+  
+  /deliveryVerificationCode:
+    post:
+      tags:
+        - orders
+      summary: Definir código de verificación
+      description: Este endpoint permite definir un código de verificación que se entregara al repartidor al recibir la orden
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  description: ID del pedido.
+                deliveryVerificationCode:
+                  type: string
+                  description: Código alfanumérico (A-Z 0-9) de mínimo 4 caracteres y máximo 6. Los caracteres alfabéticos se transformarán automáticamente a mayúsculas.
+              required:
+                - orderId
+                - deliveryVerificationCode
+      responses:
+        '200':
+          description: Operacion exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    description: Resultado de la operacion.
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        description: Avisa que el código de verificación fue entregado correctamente.
+                      orderId:
+                        type: string
+                        description: ID del pedido.
+                      deliveryVerificationCode:
+                        type: string 
+                        description: Código alfanumérico (A-Z 0-9) de mínimo 4 caracteres y máximo 6. Los caracteres alfabéticos se transformarán automáticamente a mayúsculas.
+        '400':
+          description: Access token is missing or invalid

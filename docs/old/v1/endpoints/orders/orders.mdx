@@ -1,0 +1,41 @@
+---
+title: "Listar pedidos"
+description: "Usa este metodo para listar los pedidos de la marca"
+openapi: Post /Orders
+---
+
+## Descripción
+
+Lista todos los pedidos de la marca. Ordenados por el valor del atributo useDeliverAt(Ver parámetros más abajo)
+
+### Ejemplo
+
+Llamada
+
+**Endpoint:**  
+`POST /orders` 
+
+`Content-Type: application/json`
+
+```json 
+{
+  "storesIds": ["Li4eEa3W2hiuGGCFa"],
+  "page": 1
+}
+```
+
+Respuesta
+
+```json 
+{
+  "totalCount": 36,
+  "totalPages": 2,
+  "hasNextPage": false,
+  "hasPreviousPage": true,
+  "items": [
+    <Order>,
+    <Order>,
+    ...
+  ]
+}
+```

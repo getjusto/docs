@@ -1,0 +1,37 @@
+---
+title: "Listar pedidos pendientes"
+description: "Usa este metodo para listar los pedidos pendientes y programados de los locales"
+openapi: Post /pendingOrders
+---
+
+## Descripción
+
+Lista los pedidos pendientes y programados de los locales
+
+### Ejemplo
+
+Llamada
+
+**Endpoint:**  
+`POST /pendingOrders ` 
+
+`Content-Type: application/json`
+
+```json 
+{
+  "storesIds": ["Li4eEa3W2hiuGGCFa"]
+}
+```
+
+Respuesta
+
+```json 
+{
+  "status": "ok",
+  "data": [
+    <Order>,
+    <Order>,
+    ...
+  ]
+}
+```

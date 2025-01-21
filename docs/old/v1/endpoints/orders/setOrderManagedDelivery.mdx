@@ -1,0 +1,36 @@
+---
+title: "Seleccionar el tipo de despacho"
+description: "Usa este metodo para seleccionar el tipo de despacho"
+openapi: Post /setOrderManagedDelivery
+---
+
+## Descripción
+
+Permite seleccionar el tipo de despacho. Puede ser manejado por Justo o por el local.
+
+### Ejemplo
+
+Llamada
+
+**Endpoint:**  
+`POST /setOrderManagedDelivery` 
+
+`Content-Type: application/json`
+
+```json 
+{
+  "orderId": "uaDvLGp8wr8ustqQK",
+  "hasManagedDelivery": false
+}
+```
+
+Respuesta
+
+```json 
+{
+  "status": "ok",
+  "data": {
+    <Order>
+  }
+}
+```

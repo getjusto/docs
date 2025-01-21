@@ -1,0 +1,37 @@
+---
+title: "Editar un pedido"
+description: "Usa este metodo para editar el color de la bandera del pedido"
+openapi: Post /setOrderFlagColor
+---
+
+## Descripción
+
+Editar el color de la bandera del pedido
+
+
+### Ejemplo
+
+Llamada
+
+**Endpoint:**  
+`POST /setOrderFlagColor` 
+
+`Content-Type: application/json`
+
+```json 
+{
+  "orderId": "LWfpAeNQR2grFPHuR",
+  "flagColor": "#2866ff"
+}
+```
+
+Respuesta
+
+```json 
+{
+  "status": "ok",
+  "data": {
+    <Order>
+  }
+}
+```

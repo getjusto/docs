@@ -1,0 +1,56 @@
+---
+title: "Seleccionar el tipo de despacho"
+description: "Usa este metodo para seleccionar el tipo de despacho"
+openapi: Post /updateOrderStatus
+---
+
+## Descripción
+
+Le cambia el estado a un pedido.
+
+#### NOTA 1: 
+Si se cancela un pedido, el sistema generará una devolución automatica siempre y cuando el medio de pago lo permita. Los pedidos con entrega en el local o con pago en efectivo no generan devoluciones.
+
+#### NOTA 2: 
+Se podrán ver los campos `reason`, `reasonMessage` y `category` en el objeto `cancellationInfo` de los pedidos cancelados, tanto para aquellos que no generen devoluciones, como para aquellos pedidos cancelados que si generen devoluciones.
+
+#### NOTA 3: 
+Se podrán ver los campos `amount`, `reason`, `reasonMessage` y `category` de los pedidos cancelados con devoluciones en la lista `devolutions`.
+
+#### NOTA 4: 
+Si se cancela un pedido, este **NO** debe tener despachos activos. Si esto ocurre la petición será rechazada con el siguiente error:
+
+```json
+{
+    "status": "error",
+    "error": "El pedido no se puede cancelar porque esta activo"
+}
+```
+
+
+### Ejemplo
+
+Llamada
+
+**Endpoint:**  
+`POST /updateOrderStatus` 
+
+`Content-Type: application/json`
+
+```json 
+{
+  "orderId": "xabAso2p3pKkLMTuz",
+  "orderStatus": "delivering"
+}
+```
+
+Respuesta
+
+```json 
+{
+  "status": "ok",
+  "data": {
+    <Order>
+  }
+}
+```
