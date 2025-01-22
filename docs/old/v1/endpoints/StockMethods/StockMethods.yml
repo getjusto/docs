@@ -59,18 +59,31 @@ paths:
                 properties:
                   status:
                     type: string
+                    description: Estado operacion
+                    example: ok
                   data:
                     type: object
                     properties:
                       _id: 
                         type: string
                         description: ID del item.
-                      type: 
-                        type: string
-                        description: Tipo de item.
-                      websiteId: 
-                        type: string
-                        description: ID del website.
+                        example: erCB5SjdcopHCLTfk
+                      store:
+                          type: object
+                          description: Modificador.
+                          properties:
+                            _id:
+                              type: string
+                              description: ID del item.
+                              example: Li4eEa3W2hiuGGCFa
+                            name:
+                              type: string
+                              description: Nombre del Modificador.
+                              example: Colón
+                            externalId:
+                              type: string
+                              description: ID externo indicado en la información del Modificador.
+                              example: pupi
                       modifier:
                         type: object
                         description: Modificador.
@@ -78,12 +91,15 @@ paths:
                           _id:
                             type: string
                             description: ID del item.
+                            example: XS3wWdedwKRRYrZZt
                           name:
                             type: string
                             description: Nombre del Modificador.
+                            example: ¿Necesitas ayuda para los palitos?
                           externalId:
                             type: string
                             description: ID externo indicado en la información del Modificador.
+                            example: null
                       modifierOption:
                         type: object
                         description: Modificador.
@@ -91,29 +107,37 @@ paths:
                           _id:
                             type: string
                             description: ID del item.
+                            example: Na4Ha7ShFbDsvcRKg
                           name:
                             type: string
                             description: Nombre del Modificador.
+                            example: Si
                           externalId:
                             type: string
                             description: ID externo indicado en la información del Modificador.
-                      store:
-                        type: object
-                        description: Modificador.
-                        properties:
-                          _id:
-                            type: string
-                            description: ID del item.
-                          name:
-                            type: string
-                            description: Nombre del Modificador.
-                          externalId:
-                            type: string
-                            description: ID externo indicado en la información del Modificador.
+                            example: null
+                      type: 
+                        type: string
+                        description: Tipo de item.
+                        example: modifier
+                      until:
+                        type: string
+                        description: Dia De cuando llega el pedido.
+                        example: tomorrow
                       untilDate:
                         type: string 
                         format: date-time
                         description: Fecha máxima en que el producto estará vencido.    
+                        example: 2020-07-30T10:00:00.000Z
+                      websiteId: 
+                        type: string
+                        description: ID del website.
+                        example: ErCkmcyCEovseJq5E
+                      createdAt:
+                        type: string 
+                        format: date-time
+                        description: Fecha en la que se creo el pedido.    
+                        example: 2020-07-29T14:14:33.347Z
         '401':
           description: Access token is missing or invalid
 
