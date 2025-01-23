@@ -25,15 +25,19 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: xabAso2p3pKkLMTuz
                 reasonMessage:
                   type: string
                   description: Texto de explicación del rechazo. Lo verá el cliente. 
+                  example: Esto es una prueba
                 category:
                   type: string
                   description: Categoría del rechazo. Si no esta definido, su valor por defecto será API. Usado para categorizar las devoluciones a clientes. Opcional.
+                  example: TEST
                 reason:
                   type: string
                   description:  Razón del rechazo. Solo uso interno, no será expuesto al cliente. Si no esta definido, su valor por defecto será Rejected by integration through API. Usado para categorizar las devoluciones a clientes. Opcional.  
+                  example: Rechazado por falta de stock
               required:
               - orderId
               - reasonMessage
@@ -71,6 +75,7 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: xabAso2p3pKkLMTuz
               required:
               - orderId
       responses:
@@ -107,6 +112,7 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: xabAso2p3pKkLMTuz
               required:
               - orderId
       responses:
@@ -318,12 +324,13 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: xabAso2p3pKkLMTuz
                 code:
                   type: string
                   description: Código del pedido
+                  example: "null"
               required:
               - orderId
-              - code
       responses:
         '200':
           description: Operación exitosa
@@ -358,10 +365,12 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: LWfpAeNQR2grFPHuR
                 flagColor:
                   type: string
                   description: El color de la bandera en formato hex (#aabbcc).
                   pattern: '^#[0-9A-Fa-f]{6}$'
+                  example: "#2866ff"
               required:
               - orderId
               - flagColor
@@ -398,9 +407,11 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: uaDvLGp8wr8ustqQK
                 hasManagedDelivery:
                   type: boolean
                   description: boolean. true-> Manejado por Justo. false-> Manejado por el local. Cancela delivery si aún no esta asignado
+                  example: false
               required:
               - orderId
               - hasManagedDelivery
@@ -437,21 +448,26 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: xabAso2p3pKkLMTuz
                 orderStatus:
                   type: string
                   description:  El nuevo estado del pedido. Puede ser
                   enum: ["delivering", "done", "cancelled"]
+                  example: delivering
                 reasonMessage: 
                   type: string
                   description: Texto de explicación de la cancelación. Lo verá el cliente y será considerado solo si `orderStatus` es `cancelled`. Si no está definido, su valor por defecto será-> `El pedido fue cancelado por el local.`. Opcional
+                  example: "null"
                 category:
                   type: string
                   description: Categoría del rechazo. Si no está definido, su valor por defecto será `API`. Usado para categorizar las devoluciones a clientes y será considerado solo si `orderStatus` es `cancelled`. Opcional
                   default: API 
+                  example: "null"                
                 reason:
                   type: string
                   description: Razón del rechazo. Solo uso interno, no será expuesto al cliente. Si no está definido, su valor por defecto será `Rejected by integration through API`. Usado para categorizar las devoluciones a clientes y será considerado solo si `orderStatus` es `cancelled`. Opcional
                   default: Rejected by integration through API
+                  example: "null"                
               required:
               - orderId
               - orderStatus
@@ -490,6 +506,7 @@ paths:
                   items:
                     type: string
                     description: Un arreglo con el ID o ID externo de los locales.
+                    example: Li4eEa3W2hiuGGCFa
               required:
               - storesIds
       responses:
@@ -530,6 +547,7 @@ paths:
                   items:
                     type: string
                     description: Un arreglo con el ID o ID externo de los locales.
+                    example: Li4eEa3W2hiuGGCFa
                 fromDate:
                   type: string
                   format: date-time
@@ -551,15 +569,11 @@ paths:
                   type: boolean
                   description: Verdadero o falso. Si es verdadero se incluyen los pedidos con pago no completado (`paymentStatus` no `done`).
                 page:
-                  type: string
+                  type: number
                   description: Página de los resultados.
+                  example: 1
               required:
-              - filter
               - storesIds
-              - fromDate
-              - toDate
-              - useDeliverAt
-              - includeNotPaid
               - page
       responses:
         '200':
@@ -608,9 +622,11 @@ paths:
                 orderId:
                   type: string
                   description: ID del pedido.
+                  example: vsYr9ou4ew3RhA4X3
                 deliveryVerificationCode:
                   type: string
                   description: Código alfanumérico (A-Z 0-9) de mínimo 4 caracteres y máximo 6. Los caracteres alfabéticos se transformarán automáticamente a mayúsculas.
+                  example "PERRO"
               required:
                 - orderId
                 - deliveryVerificationCode
