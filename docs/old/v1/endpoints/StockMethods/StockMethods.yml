@@ -259,6 +259,10 @@ paths:
                   items:
                     type: string
                   description: Requerido si `storeId` no está definido. Arreglo de strings con los IDs de los locales o con los nombres de los locales
+                  example:
+                  - xKoiiqdtKGaRA2ve4
+                  - dq3Ts2vq8a2bPMThm
+                  - fhZxHDCXRwgyoXRDn
               oneOf:
                 - required: ["storeId"]
                 - required: ["storeIds"]
@@ -272,6 +276,7 @@ paths:
                 properties:
                   status:
                     type: string
+                    example: ok
                   data:
                     type: array
                     items:
@@ -306,6 +311,19 @@ paths:
                           type: string
                           format: date-time
                           description: Fecha hasta la que se encontrara agotado 
+                    example:
+                       "_id": "ehfcgbM3yoEgn5TqY"
+                       "type": "product"
+                       "websiteId": "ErCkmcyCEovseJq5E"
+                       "productId": "tqE6f6ryH7ZruT38v"
+                       "productExternalId": "cebiche-x1"
+                       "storeId": "xKoiiqdtKGaRA2ve4"
+                       "createdAt": "2021-07-12T00:15:54.164Z"
+                       "until": "tomorrow"
+                       "untilDate": "2021-07-12T10:00:00.000Z"
+                      
+                     
+                    
         '401':
           description: Access token is missing or invalid
 
