@@ -28,7 +28,9 @@ paths:
                     description: Resultado de la operacion.
                     example: ok
                   data:
-                    $ref: '#/components/schemas/resultStore'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/resultStore'
         '400':
           description: Access token is missing or invalid
   
@@ -69,7 +71,7 @@ paths:
           description: Access token is missing or invalid
 
   /updateStoreInformation:
-    put:
+    post:
       tags:
         - stores
       requestBody:
@@ -123,7 +125,7 @@ paths:
           description: Access token is missing or invalid
 
   /temporaryCloseStore:
-    patch:
+    post:
         tags:
           - stores
         requestBody:
@@ -161,7 +163,7 @@ paths:
             description: Access token is missing or invalid
 
   /updateStoreSchedule:
-    patch:
+    post:
         tags:
           - stores
         requestBody:
@@ -234,7 +236,7 @@ paths:
             description: Access token is missing or invalid
 
   /setStoreCurrentPreparationDuration:
-    patch:
+    post:
         tags:
           - stores
         requestBody:
@@ -315,7 +317,7 @@ components:
         phone:
           type: string
           description: Teléfono de el local.
-          example: null
+          example: "null"
         address:
           type: object
           description: La dirección.
@@ -366,7 +368,7 @@ components:
               description: Fechas exactas cuando esta cerrado (como feriados)
               items:
                 type: string
-                format: date
+                format: date-time
             availableAtPeriods:
               type: boolean
               description: Si es que es verdadero, se usan periodos de apertura. Si que es falso, esta disponible siempre

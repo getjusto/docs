@@ -1,45 +1,6 @@
 ---
-title: "Listar locales"
+title: "Obtener multiples locales"
 description: "Usa este método para listar los locales de la marca"
 openapi: "Get /stores"
 ---
 
-Lista los locales de la marca
-
-### Ejemplo
-
-#### Llamada 
-```json
-{}
-```
-
-#### Respuesta
-
-```json 
-{
-  "status": "ok",
-  "data": [
-    {
-      "_id": "Li4eEa3W2hiuGGCFa",
-      "websiteId": "ErCkmcyCEovseJq5E",
-      "name": "Colón",
-      "acceptDelivery": true,
-      "acceptServe": false,
-      "acceptGo": true,
-      "currentPreparationDuration": 10,
-      "currentDeliveryDuration": 10,
-      "phone": "+56932131123",
-      "address": {
-        "placeId": "ChIJjTIDvOLOYpYRX-5Ivi_6UF4",
-        "address": "Vasco Núñez de Balboa 1233",
-        "addressSecondary": "Las Condes, Chile",
-        "location": {
-          "lat": -33.42161910000001,
-          "lng": -70.5729473
-        }
-      }
-    },
-    ...
-  ]
-}
-```
