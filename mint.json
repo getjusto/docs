@@ -237,6 +237,17 @@
 						"docs/old/v1/endpoints/deliveries/cancelDelivery",
 						"docs/old/v1/endpoints/deliveries/createExternalDelivery"
 					]
+				},
+				{
+					"group": "Stores",
+					"pages": [
+						"docs/old/v1/endpoints/stores/store",
+						"docs/old/v1/endpoints/stores/stores",
+						"docs/old/v1/endpoints/stores/updateStoreInformation",
+						"docs/old/v1/endpoints/stores/temporaryCloseStore",
+						"docs/old/v1/endpoints/stores/updateStoreSchedule",
+						"docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
+					]
 				}
 			]
 		}

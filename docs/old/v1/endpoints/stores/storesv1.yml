@@ -1,0 +1,397 @@
+openapi: 3.0.0
+info:
+  title: stores API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: stores
+    description: locales
+paths:
+  /stores:
+    get:
+      tags:
+        - stores
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: success 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operacion.
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/resultStore'
+        '400':
+          description: Access token is missing or invalid
+  
+
+  /store: 
+    post:
+      tags:
+        - stores
+      summary: Obtener un local
+      description: Este endpoint permite obtener la información de un local
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeId:
+                  type: string
+                  description: El local Store
+              required:
+              - storeId
+      responses:
+        '200':
+          description: success 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operacion.
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/resultStore'
+        '400':
+          description: Access token is missing or invalid
+
+  /updateStoreInformation:
+    put:
+      tags:
+        - stores
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeId:
+                  type: string
+                  description: ID del local. Puede ser el ID de Justo o el ID externo.
+                name:
+                  type: string
+                  description: Nombre del local.
+                acceptDelivery:
+                  type: boolean
+                  description: Indica si acepta pedidos para delivery.
+                acceptGo:
+                  type: boolean
+                  description: Indica si acepta pedidos para llevar.
+                acceptServe:
+                  type: boolean
+                  description: Indica si acepta pedidos para servir en el local.
+                externalId:
+                  type: string
+                  description: ID externo del local.
+              required:
+              - storeId
+              - name
+              - acceptDelivery
+              - acceptGo
+              - acceptServe
+              - externalId
+
+      responses:
+        '200':
+          description: Información del local actualizada con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación.
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/resultStore'
+        '400':
+          description: Access token is missing or invalid
+
+  /temporaryCloseStore:
+    patch:
+        tags:
+          - stores
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  storeId:
+                    type: string
+                    description: ID de el local. Funciona el ID Justo y el ID externo
+                  scheclosedUntilDate:
+                    type: string
+                    format: date
+                    description:  Fecha hasta cuando esta cerrado el local. null para cancelar el cierre temporal
+                required:
+                - storeId
+                - scheclosedUntilDate
+        responses:
+          '200':
+            description: success 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: Estado de la operación.
+                      example: ok
+                    data:
+                      $ref: '#/components/schemas/resultStore'
+          '400':
+            description: Access token is missing or invalid
+
+  /updateStoreSchedule:
+    patch:
+        tags:
+          - stores
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  storeId:
+                    type: string
+                    description: ID de el local. Funciona el ID Justo y el ID externo
+                  schedule:
+                    type: object
+                    description: Información del horario del local. En el mismo formato que se recibe
+                    properties:
+                      closedUntilDate:
+                        type: string
+                        format: date-time
+                        description:  Fecha en la que vuelve a estar disponible. (Solo si es que esta cerrado temporalmente)
+                        example: null
+                      closedDays:
+                        type: array
+                        description: Fechas exactas cuando esta cerrado (como feriados)
+                        items:
+                          type: string
+                          format: date
+                      availableAtPeriods:
+                        type: boolean
+                        description: Si es que es verdadero, se usan periodos de apertura. Si que es falso, esta disponible siempre
+                        example: false
+                      openPeriods:
+                        type: array
+                        description: Un arreglo con los periodos de apertura
+                        items:
+                          type: object
+                          properties:
+                            daysOfWeek:
+                              type: array
+                              description:  Un arreglo con los días de la semana en que este periodo aplica. Lunes es 1 y domingo es 7
+                              items:
+                                type: number
+                              example: [1, 2, 3, 4, 5, 6, 7]
+                            fromMinute:
+                              type: number
+                              description: Minutos desde las 12 de la mañana en que empieza este periodo
+                              example: 480
+                            toMinute:
+                              type: number
+                              description: Minutos desde las 12 de la mañana en que termina este periodo
+                              example: 1200
+                required:
+                - storeId
+                - schedule
+        responses:
+          '200':
+            description: success 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: Estado de la operación.
+                      example: ok
+                    data:
+                      $ref: '#/components/schemas/resultStore'
+          '400':
+            description: Access token is missing or invalid
+
+  /setStoreCurrentPreparationDuration:
+    patch:
+        tags:
+          - stores
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  storeId:
+                    type: string
+                    description: ID de el local. Funciona el ID Justo y el ID externo.
+                  currentPreparationDuration:
+                    type: number
+                    description: En minutos, cuanto tiempo se demora en preparar un nuevo pedido.
+                required:
+                - storeId
+                - currentPreparationDuration
+        responses:
+          '200':
+            description: success 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: Estado de la operación.
+                      example: ok
+                    data:
+                      $ref: '#/components/schemas/resultStore'
+          '400':
+            description: Access token is missing or invalid
+            
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    resultStore:
+      type: object
+      properties: 
+        _id:
+          type: string
+          description: ID del local.
+          example: xKoiiqdtKGaRA2ve4
+        externalId:
+          type: string
+          description: ID externo indicado en la información de el local.
+          example: 2345
+        websiteId:
+          type: string
+          description:  ID de la marca.
+          example: ErCkmcyCEovseJq5E
+        name:
+          type: string
+          description: Nombre del local.
+          example: Peña
+        acceptDelivery:
+          type: boolean
+          description: Si es que acepta pedidos por delivery.
+          example: true
+        acceptServe:
+          type: boolean
+          description: Si es que acepta pedidos para servir en el local.
+          example: true
+        acceptGo:
+          type: boolean
+          description: Si es que acepta pedidos para llevar.
+          example: true
+        currentPreparationDuration:
+          type: number
+          description: Tiempo actualiza de preparación (sólo cocina) en minutos.
+          example: 10
+        phone:
+          type: string
+          description: Teléfono de el local.
+          example: null
+        address:
+          type: object
+          description: La dirección.
+          properties:
+            placeId:
+              type: string
+              description:  Place ID de Google Maps
+              example: EihBdmVuaWRhIEhvbGFuZGEgMTYwNSwgUHJvdmlkZW5jaWEsIENoaWxlIjESLwoUChIJCfBr63TPYpYRguPJ8LiSNSgQxQwqFAoSCbELmxJ1z2KWEdvDHqTQ
+            address:
+              type: string
+              description: Calle y número.
+              example: Avenida Holanda 1605
+            addressLine2:
+              type: number 
+              description: Número de departamento.
+              example: 1234
+            addressSecondary:
+              type: string
+              description: Localidad.
+              example: Providencia, Chile
+            comment:
+              type: string
+              description: Comentarios.
+              example: Dejar con el conserje
+            location:
+              type: object
+              description: La dirección.
+              properties:
+                lat:
+                  type: number
+                  description: La dirección.
+                  example: -33.4334297
+                lng:
+                  type: number
+                  description: La dirección.
+                  example: -70.59966380000002
+        schedule:
+          type: object
+          description: Información de horarios del local. Schedule.
+          properties:
+            closedUntilDate:
+              type: string
+              format: date-time
+              description:  Fecha en la que vuelve a estar disponible. (Solo si es que esta cerrado temporalmente)
+              example: null
+            closedDays:
+              type: array
+              description: Fechas exactas cuando esta cerrado (como feriados)
+              items:
+                type: string
+                format: date
+            availableAtPeriods:
+              type: boolean
+              description: Si es que es verdadero, se usan periodos de apertura. Si que es falso, esta disponible siempre
+              example: false
+            openPeriods:
+              type: array
+              description: Un arreglo con los periodos de apertura
+              items:
+                type: object
+                properties:
+                  daysOfWeek:
+                    type: array
+                    description:  Un arreglo con los días de la semana en que este periodo aplica. Lunes es 1 y domingo es 7
+                    items:
+                      type: number
+                    example: [1, 2, 3, 4, 5, 6, 7]
+                  fromMinute:
+                    type: number
+                    description: Minutos desde las 12 de la mañana en que empieza este periodo
+                    example: 480
+                  toMinute:
+                    type: number
+                    description: Minutos desde las 12 de la mañana en que termina este periodo
+                    example: 1200
+            timezone:
+              type: string
+              description: Zona horaria
+              example: America/Santiago
