@@ -110,22 +110,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: Email del cliente al que se le quieren agregar puntos. Requerido si `clientId` no está presente.
-                clientId:
-                  type: string
-                  description: ID del cliente al que se le quieren agregar puntos. Requerido si `email` no está presente.
-                amount:
-                  type: number
-                  description: Monto equivalente en dinero que se le quiere agregar al cliente. Por ejemplo, $1 CLP equivale a 1 punto.
-              required:
-                - amount
               oneOf:
-                - required: ["email"]
-                - required: ["clientId"]
+                - $ref: '#/components/schemas/requiredemail'
+                - $ref: '#/components/schemas/requiredclient'
                 
       responses:
         '200':
@@ -183,6 +170,31 @@ paths:
           description: Access token is missing or invalid 
 components:
   schemas:
+    requiredemail:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del cliente al que se le quieren agregar puntos.
+        amount:
+          type: number
+          description: Monto equivalente en dinero que se le quiere agregar al cliente.
+      required:
+        - email
+        - amount
+
+    requiredclient:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: ID del cliente al que se le quieren agregar puntos.
+        amount:
+          type: number
+          description: Monto equivalente en dinero que se le quiere agregar al cliente.
+      required:
+        - clientId
+        - amount
     resultClient:
       type: object
       properties:
