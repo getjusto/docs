@@ -237,6 +237,17 @@
 						"docs/old/v1/endpoints/deliveries/cancelDelivery",
 						"docs/old/v1/endpoints/deliveries/createExternalDelivery"
 					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/old/v1/endpoints/webhooks/introduction",
+						"docs/old/v1/endpoints/webhooks/newOrder",
+						"docs/old/v1/endpoints/webhooks/orderStatusUpdated",
+						"docs/old/v1/endpoints/webhooks/orderItemsUpdated",
+						"docs/old/v1/endpoints/webhooks/deliveryUpdated",
+						"docs/old/v1/endpoints/webhooks/processStatusUpdated"
+					]
 				}
 			]
 		}
