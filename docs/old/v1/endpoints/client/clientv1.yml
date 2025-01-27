@@ -75,34 +75,27 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: string
-                    description: Resultado de la operación.
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      totalCount:
-                        type: number
-                        description: Número de resultados en total.
-                        example: 36
-                      totalPages:
-                        type: number
-                        description: Número de páginas. Son 20 resultados por página.
-                        example: 2
-                      hasNextPage:
-                        type: boolean
-                        description: Si es que hay una página siguiente de resultados.
-                        example: false
-                      hasPreviousPage:
-                        type: number
-                        description:  Si es que hay una página anterior de resultados.
-                        example: false
-                      items:
-                        type: array
-                        description: Un arreglo con todos los resultados de la consulta.
-                        items:
-                          $ref: '#/components/schemas/resultClient'
+                  totalCount:
+                    type: number
+                    description: Número de resultados en total.
+                    example: 36
+                  totalPages:
+                    type: number
+                    description: Número de páginas. Son 20 resultados por página.
+                    example: 2
+                  hasNextPage:
+                    type: boolean
+                    description: Si es que hay una página siguiente de resultados.
+                    example: false
+                  hasPreviousPage:
+                    type: number
+                    description:  Si es que hay una página anterior de resultados.
+                    example: false
+                  items:
+                    type: array
+                    description: Un arreglo con todos los resultados de la consulta.
+                    items:
+                      $ref: '#/components/schemas/resultClient'
         '400':
           description: Access token is missing or invalid 
 
@@ -121,10 +114,10 @@ paths:
               properties:
                 email:
                   type: string
-                  description: email del cliente al que se le quieren agregar puntos. Requerido si `clientId` no está presente.
+                  description: Email del cliente al que se le quieren agregar puntos. Requerido si `clientId` no está presente.
                 clientId:
                   type: string
-                  description: id del cliente al que se le quieren agregar puntos. Requerido si `email` no está presente.
+                  description: ID del cliente al que se le quieren agregar puntos. Requerido si `email` no está presente.
                 amount:
                   type: number
                   description: Monto equivalente en dinero que se le quiere agregar al cliente. Por ejemplo, $1 CLP equivale a 1 punto.
