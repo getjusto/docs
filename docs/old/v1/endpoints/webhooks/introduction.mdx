@@ -1,0 +1,228 @@
+---
+title: "Introducción"
+---
+
+Puedes crear Webhooks para le avisemos a tu servidor cuando pase algo, por ejemplo, un nuevo pedido.
+
+En la pestaña Webhooks de la sección API de tu panel de administración puedes crear un Webhook.
+
+Los datos enviados se enviarán en una llamada `POST` en un `JSON payload` con formato:
+
+```json 
+{
+  "data": {
+    "order": {
+        "_id": "xabAso2p3pKkLMTuz",
+        "orderStatus": "pending",
+        "isScheduled": false,
+        "websiteId": "ErCkmcyCEovseJq5E",
+        "code": "15244",
+        "fullCode": "#15244-05",
+        "userId": "T4wMX9CjX3zpkPxb3",
+        "createdAt": "2019-10-11T15:07:50.106Z",
+        "address": {
+            "placeId": "EihBdmVuaWRhIEhvbGFuZGEgMTYwNSwgUHJvdmlkZW5jaWEsIENoaWxlIjESLwoUChIJCfBr63TPYpYRguPJ8LiSNSgQxQwqFAoSCbELmxJ1z2KWEdvDHqTQ-XrU",
+            "address": "Avenida Holanda 1605",
+            "addressSecondary": "Providencia, Chile",
+            "location": {
+            "lat": -33.4334297,
+            "lng": -70.59966380000002
+            },
+            "addressLine2": "1234",
+            "comment": "Dejar con el conserje"
+        },
+        "menuId": "kH2qLySHZ6CdHopNC",
+        "deliveryType": "delivery",
+        "deliverAt": "2019-10-11T15:24:19.816Z",
+        "timeText": "12:34 pm - 12:49 pm",
+        "paymentType": "other",
+        "otherPaymentType": "Junaeb",
+        "tipAmount": 0,
+        "amountToPay": 5000,
+        "deliveryFee": 2000,
+        "itemsPrice": 3000,
+        "totalPrice": 5000,
+        "baseItemsPrice": 11000,
+        "baseTotalPrice": 13000,
+        "amountFinancedByJusto": 0,
+        "expectedPreparationDuration": 10,
+        "deliveryDuration": 10,
+        "cashAmount": null,
+        "cardId": null,
+        "channel": "web-delivery",
+        "buyerName": "Nicolás López",
+        "phone": "+56979761851",
+        "email": "email@example.com",
+        "couponName": null,
+        "couponDiscount": null,
+        "websiteCoinsDiscount": null,
+        "itemsPriceBeforeDiscountsAfterProductDiscount": null,
+        "store": {
+            "_id": "Li4eEa3W2hiuGGCFa",
+            "websiteId": "ErCkmcyCEovseJq5E",
+            "name": "Colón",
+            "acceptDelivery": true,
+            "acceptServe": false,
+            "acceptGo": true,
+            "currentPreparationDuration": 10,
+            "currentDeliveryDuration": 10,
+            "phone": "+56979761851",
+            "address": {
+            "placeId": "ChIJjTIDvOLOYpYRX-5Ivi_6UF4",
+            "address": "Vasco Núñez de Balboa 1233",
+            "addressSecondary": "Las Condes, Chile",
+            "location": {
+                "lat": -33.42161910000001,
+                "lng": -70.5729473
+            }
+            }
+        },
+        "items": [
+            {
+        "product": {
+            "_id": "XBHxxGehwFya28dPq",
+            "name": "Cebiche de Camarones",
+            "externalId": "cebiche-x1"
+        },
+        "unitPrice": 3000,
+        "baseUnitPrice": 11000,
+        "amount": 1,
+        "comment": "Instrucciones especiales",
+        "modifiers": [
+            {
+            "modifierId": "rkhrzjMYnrR4oJgvK",
+            "externalId": "b13",
+            "name": "Eleige la bebida",
+            "shortName": "Papas fritas",
+            "description": "Coca Zero",
+            "countById": {
+                "ghALK6yqmMYKyBLTr": 1
+            },
+            "countByExternalId": {
+                "zero1": 1
+            },
+            "options": [
+                {
+                "_id": "ghALK6yqmMYKyBLTr",
+                "name": "Coca Zero",
+                "price": 0,
+                "externalId": "zero1"
+                }
+            ]
+            }
+        ]
+        }
+        ],
+        "transaction": {
+            "_id": "AJubbn679CTmgyb6k",
+            "totalPrice": 13500,
+            "paymentType": "webpayTest",
+            "cardType": "credit",
+            "cardLast4": "4242",
+            "status": "paid",
+            "fee": 375,
+            "feeWithoutTax": 315
+        },
+        "deliveries": [
+            {
+        "_id": "QCevLRgMJfTgSJxhS",
+        "price": 1999,
+        "status": "done",
+        "driverPassword": "5818",
+        "activatesAt": "2021-07-20T16:26:00.000Z",
+        "createdAt": "2021-07-20T16:12:14.822Z",
+        "forDate": "2021-07-20T16:41:43.164Z",
+        "fromLocation": {
+            "address": "Avenida Vitacura 6345",
+            "addressSecondary": "Vitacura, Chile",
+            "storeName": "NOMBRE MARCA' Vitacura 6345 (Rotonda Irene Frei)",
+            "lat": -33.3902738,
+            "lng": -70.5701148
+        },
+        "toLocation": {
+            "address": "Avenida Providencia 1302",
+            "addressSecondary": "Providencia, Chile",
+            "lat": -33.4286681,
+            "lng": -70.6203024
+        },
+        "nearStoreAt": "2021-07-20T16:16:14.202Z",
+        "nearClientAt": "2021-07-20T16:17:32.852Z",
+        "completedAt": "2021-07-20T16:18:31.332Z",
+        "canceledAt": null,
+        "deliveryExpectedAt": "2021-07-20T17:12:00.000Z",
+        "driverReceivedAt": "2021-07-20T16:16:32.230Z",
+        "deliverProofImage": <URL>,
+        "receiveProofImage": <URL>,
+        "deliveryInformation": "Maria Soto - Recepción",
+        "driverInformation": {
+            "type": "moto",
+            "phone": "+56999999999",
+            "name": "Peter",
+            "image": <URL>
+        },
+        "trackingURL": <URL>,
+        "orderId": "wtZnef2Ks7xTfRJ8X",
+        "placeName": "Miguel Piedrafitas",
+        "instructions": "Dejar el pedido en conserjeria",
+        "isCash": true,
+        "specialCode": "369",
+        "externalId": "ID_EXTERNO",
+        "uncompletedReason": "Repartidor sufrió accidente"
+        }
+        ],
+        "devolutions": [
+            {
+        "_id": "SqmBcwNjv5gqZ2yEm",
+        "amount": 7285,
+        "category": "Repartidor",
+        "reason": "Pedido no entregado por driver",
+        "message": "Lo sentimos, no pudimos realizar la entrega de tu producto.",
+        "createdAt": "2021-03-02T14:01:51.608Z"
+        }
+        ],
+        "charges": {
+            <Resumen de cobros>
+        },
+        "clonedOrder": null,
+        "parentOrder": null,
+        "hasManagedDelivery": false,
+        "loyaltyTransaction": null,
+        "billing:": null,
+        "cancellationInfo": {
+            "reason": "Sin productos suficientes",
+            "reasonMessage": "Lamentamos tener que cancelar tu pedido, pero en estos momentos tenemos problemas para poder ofrecerte el pedido",
+            "category": "Productos"
+        }
+        }
+  },
+  "date": "2020-01-06T15:36:50.145Z",
+  "type": "newOrder"
+}
+```
+
+# Seguridad
+
+Al crear un Webhook debes entrar un clave, que le llamamos secreto. Todas las llamadas que hagamos a tu `url` van a ser firmadas con esta clave. Así puedes verificar que son datos reales enviados por Justo. La firma es un hash `sha-1` del body (en antes de convertir el JSON a objeto) y viene en el `header` `X-Orion-Signature`
+
+Para verificar la firma debes hacer lo siguiente:
+
+```json
+import JSSHA from 'jssha'
+
+const mySecret = '12345'
+
+// para comprobar que la firma es correcta debemos generarla de nuevo y ver si coincide con la entregada en el request
+const checkSignature = (body, passedSignature) => {
+  const shaObj = new JSSHA('SHA-1', 'TEXT')
+  // usamos la clave que le ingresamos al webhook
+  shaObj.setHMACKey(mySecret, 'TEXT')
+  // generamos el hash del body
+  shaObj.update(body)
+  const signature = shaObj.getHMAC('HEX')
+
+  // si son iguales significa que esta verificado
+  return passedSignature === calculatedSignature
+}
+
+checkSignature(request.body, headers['x-orion-signature'])
+```
