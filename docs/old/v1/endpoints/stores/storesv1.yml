@@ -33,7 +33,6 @@ paths:
                       $ref: '#/components/schemas/resultStore'
         '400':
           description: Access token is missing or invalid
-  
 
   /store: 
     post:
@@ -50,7 +49,7 @@ paths:
               properties:
                 storeId:
                   type: string
-                  description: El local Store
+                  description: La ID del local
               required:
               - storeId
       responses:
@@ -137,7 +136,7 @@ paths:
                 properties:
                   storeId:
                     type: string
-                    description: ID de el local. Funciona el ID Justo y el ID externo
+                    description: ID del local. Funciona el ID Justo y el ID externo
                   scheclosedUntilDate:
                     type: string
                     format: date
@@ -175,7 +174,7 @@ paths:
                 properties:
                   storeId:
                     type: string
-                    description: ID de el local. Funciona el ID Justo y el ID externo
+                    description: ID del local. Funciona el ID Justo y el ID externo
                   schedule:
                     type: object
                     description: Información del horario del local. En el mismo formato que se recibe
@@ -183,7 +182,7 @@ paths:
                       closedUntilDate:
                         type: string
                         format: date-time
-                        description:  Fecha en la que vuelve a estar disponible. (Solo si es que esta cerrado temporalmente)
+                        description: Fecha en la que vuelve a estar disponible. (Solo si es que esta cerrado temporalmente)
                         example: null
                       closedDays:
                         type: array
@@ -203,7 +202,7 @@ paths:
                           properties:
                             daysOfWeek:
                               type: array
-                              description:  Un arreglo con los días de la semana en que este periodo aplica. Lunes es 1 y domingo es 7
+                              description: Un arreglo con los días de la semana en que este periodo aplica. Lunes es 1 y domingo es 7
                               items:
                                 type: number
                               example: [1, 2, 3, 4, 5, 6, 7]
@@ -248,7 +247,7 @@ paths:
                 properties:
                   storeId:
                     type: string
-                    description: ID de el local. Funciona el ID Justo y el ID externo.
+                    description: ID del local. Funciona el ID Justo y el ID externo.
                   currentPreparationDuration:
                     type: number
                     description: En minutos, cuanto tiempo se demora en preparar un nuevo pedido.
@@ -288,11 +287,11 @@ components:
           example: xKoiiqdtKGaRA2ve4
         externalId:
           type: string
-          description: ID externo indicado en la información de el local.
+          description: ID externo indicado en la información del local.
           example: 2345
         websiteId:
           type: string
-          description:  ID de la marca.
+          description: ID de la marca.
           example: ErCkmcyCEovseJq5E
         name:
           type: string
@@ -316,7 +315,7 @@ components:
           example: 10
         phone:
           type: string
-          description: Teléfono de el local.
+          description: Teléfono del local.
           example: "null"
         address:
           type: object
@@ -324,7 +323,7 @@ components:
           properties:
             placeId:
               type: string
-              description:  Place ID de Google Maps
+              description: Place ID de Google Maps
               example: EihBdmVuaWRhIEhvbGFuZGEgMTYwNSwgUHJvdmlkZW5jaWEsIENoaWxlIjESLwoUChIJCfBr63TPYpYRguPJ8LiSNSgQxQwqFAoSCbELmxJ1z2KWEdvDHqTQ
             address:
               type: string
@@ -332,7 +331,7 @@ components:
               example: Avenida Holanda 1605
             addressLine2:
               type: number 
-              description: Número de departamento.
+              description: Número del departamento.
               example: 1234
             addressSecondary:
               type: string
@@ -344,15 +343,15 @@ components:
               example: Dejar con el conserje
             location:
               type: object
-              description: La dirección.
+              description: Latitud y longitud 
               properties:
                 lat:
                   type: number
-                  description: La dirección.
+                  description: Latitud.
                   example: -33.4334297
                 lng:
                   type: number
-                  description: La dirección.
+                  description: longitud.
                   example: -70.59966380000002
         schedule:
           type: object
