@@ -1,0 +1,50 @@
+---
+title: "Actualización de estado de procesos"
+---
+
+El webhook de tipo `processStatusUpdated` se activa cuando se inicia o termina una actualización de procesos
+
+### Estructura
+
+El webhook envía dos respuestas luego de la petición hacia la API de Justo
+
+#### 1) Respuesta de proceso iniciado
+
+Esta primera respuesta solo indica que se inicia el proceso de actualización de los datos. Se puede identificar por el `processId: "p2rwWKqh49TxXszRz"` el cual es el mismo indicado en la respuesta de la API. La identificación del estado se encuentra en el campo `status: "RUNNING"`
+
+#### 2) Respuesta de proceso completado
+
+La segunda respuesta indica que el proceso de actualización de los datos ha sido completado. Se puede identificar por el `processId: "p2rwWKqh49TxXszRz"` el cual es el mismo indicado en la respuesta de la API. La identificación del estado se encuentra en el campo `status: "FINISHED"`
+
+Se enviará la información de actualización con el siguiente formato:
+
+```json
+{
+  "data": {
+    "status": "FINISHED",
+    "processId": "gos75YA63pZY2MCe4",
+    "processedItems": [
+      {
+        "type": "product",
+        "productId": "ZPbTsuJzRFSNvFoT7",
+        "modifierId": null,
+        "modifierOptionId": null,
+        "productExternalId": "1007193",
+        "modifierExternalId": null,
+        "modifierOptionExternalId": null,
+        "storeId": "dq3Ts2vq8a2bPMThm",
+        "until": null,
+        "untilDate": null,
+        "websiteId": "EjKfjv3RYEXX9Puqa",
+        "createdAt": "2023-01-18T19:20:22.857Z",
+        "stock": 23,
+        "_id": "x2kjojcpGkgcj8J9b"
+      }
+    ]
+  },
+  "date": "2023-01-18T19:20:26.520Z",
+  "type": "processStatusUpdated"
+}
+``` 
+
+En donde el campo `processedItems` es un arreglo que contiene la lista de todos los cambios realizados.

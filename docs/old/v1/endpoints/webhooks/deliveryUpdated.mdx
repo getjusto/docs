@@ -1,0 +1,43 @@
+---
+title: "Cambio de estado de un despacho"
+---
+
+El webhook de tipo `deliveryUpdated` se activa cuando un despacho cambia
+
+### Estructura
+
+Se enviará la información del despacho con el formato Delivery.
+
+```json
+{
+  "data": {
+    "delivery": {
+      "_id": "MNyqGPs3BthoQ7xq9",
+      "price": 1190,
+      "status": "done",
+      "driverPassword": "8838",
+      "activatesAt": "2021-08-09T14:08:52.626Z",
+      "comment": null,
+      "createdAt": "2021-08-09T14:08:52.733Z",
+      "forDate": "2021-08-09T13:47:31.781Z",
+      "nearStoreAt": "2021-08-09T14:35:21.444Z",
+      "completedAt": "2021-08-09T14:36:36.080Z",
+      "canceledAt": null,
+      "deliveryExpectedAt": "2021-08-09T14:54:00.000Z",
+      "driverReceivedAt": "2021-08-09T14:36:05.924Z",
+      "deliverProofImage": "https://s3.amazonaws.com/justo-tests/delivery-morph3o%2FC3J5W5vcAjPdwPSRG-picture.jpg",
+      "receiveProofImage": "https://s3.amazonaws.com/justo-tests/delivery-morph3o%2FggXD7bxdrh3FpCG3p-picture.jpg",
+      "deliveryInformation": "Hghjvhj - Jhbjj",
+      "driverInformation": {
+        "type": "bike",
+        "phone": "+56911111111",
+        "name": "Hector",
+        "image": "https://s3.amazonaws.com/justo-tests/delivery-morph3o%2FggXD7bxdrh3FpCG3p-picture.jpg"
+      },
+      "orderId": "6XfWFoCoa8ebjsG22"
+    }
+  },
+  "date": "2021-08-09T14:36:41.032Z",
+  "type": "deliveryUpdated"
+}
+```
