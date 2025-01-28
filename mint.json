@@ -248,6 +248,14 @@
 						"docs/old/v1/endpoints/stores/updateStoreSchedule",
 						"docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
 					]
+				},
+				{
+					"group": "Clientes",
+					"pages": [
+						"docs/old/v1/endpoints/client/client",
+						"docs/old/v1/endpoints/client/clients",
+						"docs/old/v1/endpoints/client/addPoints"
+					]
 				}
 			]
 		}
