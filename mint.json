@@ -239,7 +239,7 @@
 					]
 				},
 				{
-					"group": "Stores",
+					"group": "Locales",
 					"pages": [
 						"docs/old/v1/endpoints/stores/store",
 						"docs/old/v1/endpoints/stores/stores",
