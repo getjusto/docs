@@ -239,6 +239,17 @@
 					]
 				},
 				{
+					"group": "Stores",
+					"pages": [
+						"docs/old/v1/endpoints/stores/store",
+						"docs/old/v1/endpoints/stores/stores",
+						"docs/old/v1/endpoints/stores/updateStoreInformation",
+						"docs/old/v1/endpoints/stores/temporaryCloseStore",
+						"docs/old/v1/endpoints/stores/updateStoreSchedule",
+						"docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
+					]
+				},
+				{
 					"group": "Clientes",
 					"pages": [
 						"docs/old/v1/endpoints/client/client",
