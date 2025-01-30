@@ -28,7 +28,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 
 ### Ejemplo para definir stock de dos productos simultáneamente.
 
-El siguiente request define con `stock = 9` al producto con ID `r5RZaWcBzzWz3WAnp` y con `stock = 45` al producto con ID `h67Hkjhusdf54JnaK`
+El siguiente request define con `stock = 9` al producto con ID `r5RZaWcBzzWz3WAnp` y con `stock = 45` al producto con ID `h67Hkjhusdf54JnaK`.
 
 ```json
 curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
@@ -68,7 +68,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 
 ### Ejemplo para definir stock de la opción de dos modificadores simultáneamente
 
-El siguiente request define con `stock = 23` a la opción con ID `PG68HFqD7rGz6XGBe` del modificador con ID `gSnnm7XEWqKbNqNKd` y define con `stock = 50` a la opción con ID `Jhjk987lJklnAdxf9` del modificador con ID `pqMan54HyrC537Nn`
+El siguiente request define con `stock = 23` a la opción con ID `PG68HFqD7rGz6XGBe` del modificador con ID `gSnnm7XEWqKbNqNKd` y define con `stock = 50` a la opción con ID `Jhjk987lJklnAdxf9` del modificador con ID `pqMan54HyrC537Nn`.
 
 ```json
 curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
@@ -143,7 +143,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 
 ### Respuesta a solicitud sin errores
 - Response:
-    - `status_code: 200 ok`
+    - `status_code: 200 ok`.
 - Parámetros:
     - `status`: Indicador de la solicitud con el valor `ok`.
     - `data`: Arreglo de Object que contiene el resumen de la información solicitada y los ids de elementos guardados o modificados.
@@ -223,7 +223,7 @@ Siempre se intentará procesar todos aquellos ítems que no contengan errores, p
 La respuesta en tales casos mostrará un resumen de todos los ítems procesados y un resumen de todos los errores encontrados.
 
 - Response:
-    - `status_code: 207 Multi-Status`
+    - `status_code: 207 Multi-Status`.
 - Parámetros:
     - `status`: Indicador de la solicitud con el valor `"Multi-Status"`.
     - `data`:
@@ -305,12 +305,12 @@ La respuesta en tales casos mostrará un resumen de todos los ítems procesados 
 
 ### Respuesta a solicitud sin errores
 
-En caso de que no pueda procesarse ninguno de los ítems del cuerpo del mensaje, se responde la petición con un error.\
+En caso de que no pueda procesarse ninguno de los ítems del cuerpo del mensaje, se responde la petición con un error.
 
 La respuesta en tales casos mostrará un resumen de todos los errores encontrados.
 
 - Response:
-    - `status_code: 400 Bad Request`
+    - `status_code: 400 Bad Request`.
 - Parámetros:
     - `status`: Indicador de la solicitud con el valor `"error"`.
     - `error`: Indicador de la razón del error es: `"Validations errors"`.

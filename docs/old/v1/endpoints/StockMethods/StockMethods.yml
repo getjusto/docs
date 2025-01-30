@@ -33,7 +33,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: Estado operacion
+                    description: Estado operacion.
                     example: ok
                   data:
                     type: object
@@ -111,7 +111,7 @@ paths:
                       createAt:
                         type: string
                         format: date-time
-                        description: Fecha de creacion
+                        description: Fecha de creacion.
                         example: 2020-07-29T14:14:33.347Z
         '401':
           description: Access token is missing or invalid
@@ -145,11 +145,11 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: Estado de la operación
+                    description: Estado de la operación.
                     example: ok
                   data:
                     type: boolean
-                    description: Resultado de la operación (true si se eliminó con éxito)
+                    description: Resultado de la operación (true si se eliminó con éxito).
                     example: true
         '401':
           description: Access token is missing or invalid
@@ -175,7 +175,7 @@ paths:
                     properties:
                       outOfStockItemId:
                         type: string
-                        description: ID retornado por los métodos addOutOfStockItems o addOutOfStockItem
+                        description: ID retornado por los métodos addOutOfStockItems o addOutOfStockItem.
               example:
                 - outOfStockItemId: Li4eEa3W2hiuGGCFa
                 - outOfStockItemId: poh4y2tm7DM3SaQdu
@@ -200,19 +200,19 @@ paths:
                           description: ID del producto procesado.
                         result:
                           type: boolean
-                          description: Estado del producto
+                          description: Estado del producto.
                   errors:
                     type: array
-                    description: Lista de errores que ocurrieron durante la operación
+                    description: Lista de errores que ocurrieron durante la operación.
                     items:
                       type: object
                       properties:
                         outOfStockItemId:
                           type: string
-                          description: ID del producto relacionado con el error
+                          description: ID del producto relacionado con el error.
                         message:
                           type: string
-                          description: Mensaje de error
+                          description: Mensaje de error.
         '401':
           description: Access token is missing or invalid
 
@@ -248,13 +248,13 @@ paths:
                       properties:
                         _id:
                           type: string 
-                          description: Id del producto agotado.
+                          description: ID del producto agotado.
                         type:
                           type: string
-                          description: Tipo del item agotado
+                          description: Tipo del item agotado.
                         websiteId:
                           type: string
-                          description: Id del sitio asociado
+                          description: ID del sitio asociado.
                         productId:
                           type: string
                           description: ID del producto.
@@ -263,11 +263,11 @@ paths:
                           description: ID externo del producto.
                         storeId: 
                           type: string
-                          description: Id del locar donde se encuentra agotado el producto
+                          description: ID del locar donde se encuentra agotado el producto.
                         createdAt: 
                           type: string
                           format: date-time
-                          description: Fecha de creacion
+                          description: Fecha de creacion.
                         until:
                           type: string
                           format: date-time
@@ -275,7 +275,7 @@ paths:
                         untilDate: 
                           type: string
                           format: date-time
-                          description: Fecha hasta la que se encontrara agotado 
+                          description: Fecha hasta la que se encontrara agotado.
                     example:
                       - "_id": "ehfcgbM3yoEgn5TqY"
                         "type": "product"
@@ -315,7 +315,7 @@ paths:
                 properties:
                   status: 
                     type: string
-                    description: Estado de la operacion
+                    description: Estado de la operacion.
                   data:
                     type: array
                     items:
@@ -382,7 +382,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: Indicador de la solicitud con el valor
+                    description: Indicador de la solicitud con el valor.
                   data:
                     type: array
                     items:
@@ -437,11 +437,10 @@ paths:
                 properties:
                   status:
                     type: string
-                    description:  Indicador de la solicitud con el valor.
+                    description: Indicador de la solicitud con el valor.
                   error:
                     type: string
                     description: Indicador de la razón del error.
-                    example: Validations errors
                   data:
                     type: object
                     properties:
@@ -503,15 +502,15 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: Estado de la operacion
+                    description: Estado de la operacion.
                   data:
                     type: object
                     properties:
                       processId:
                         type: string
-                        description: ID del item
+                        description: ID del item.
         '400':
-          description: Error en la solititud.
+          description: Error en la solicitud.
           content:
             application/json:
               schema:
@@ -519,10 +518,10 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: Estado de la operacion.
+                    description: Estado de la operación.
                   error:
                     type: string
-                    description: Reason for the error.
+                    description: Razón del error.
                   data:
                     type: object
                     properties:
@@ -532,26 +531,9 @@ paths:
                           type: object
                           properties:
                             item:
-                              type: object
-                              properties:
-                                storeId:
-                                  type: string
-                                  description: ID de la tienda asociada
-                                productId:
-                                  type: string
-                                  description: ID del producto.
-                                modifierId:
-                                  type: string
-                                  description: Id del modificador.
-                                modifierOptionId:
-                                  type: string
-                                  description: ID de la opcion de modificador.
-                                type:
-                                  type: string
-                                  description: Tipo del producto.
-                                stock:
-                                  type: integer
-                                  description: Cantidad de stock
+                              oneOf: 
+                                - $ref: '#/components/schemas/updatestockproduct'
+                                - $ref: '#/components/schemas/updatestockmodifier'
                             errors:
                               type: array
                               items:
@@ -696,10 +678,11 @@ components:
           enum: ["product"]
         stock:
           type: integer
-          description: Valor numérico del stock. Requerido si `deleteItem` no está definido
+          description: Valor numérico del stock. Requerido si `deleteItem` no está definido.
+          example: 1
         deleteItem:
           type: boolean
-          description: Valor boleano, solo en caso de que se quiera desagotar un producto o modificador. Requerido si `stock` no está definido
+          description: Valor boleano, solo en caso de que se quiera desagotar un producto o modificador. Requerido si `stock` no está definido.
       required:
         - storeId
         - productId
@@ -723,10 +706,10 @@ components:
           enum: [ "modifier"]
         stock:
           type: integer
-          description: Valor numérico del stock. Requerido si `deleteItem` no está definido
+          description: Valor numérico del stock. Requerido si `deleteItem` no está definido.
         deleteItem:
           type: boolean
-          description: Valor boleano, solo en caso de que se quiera desagotar un producto o modificador. Requerido si `stock` no está definido
+          description: Valor boleano, solo en caso de que se quiera desagotar un producto o modificador. Requerido si `stock` no está definido.
       required:
         - storeId
         - modifierId

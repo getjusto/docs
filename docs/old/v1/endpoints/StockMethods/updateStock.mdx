@@ -12,7 +12,7 @@ Este método tiene como finalidad definir, de manera unitaria o múltiple, el st
 
 Este método de la API de Justo retorna una respuesta síncrona indicando los errores encontrados en el cuerpo del mensaje. O en caso de no encontrarse, retorna una respuesta indicando el ID del proceso que asíncronamente empezará a ejecutar. De esta forma, hace uso de un webhook para indicar el estado del proceso.
 
-Como precondición, se debe configurar el webhook [Actualización de estado de procesos](http://localhost:2999/docs/old/v1/endpoints/WebHooks/processStatusUpdated)
+Como precondición, se debe configurar el webhook [Actualización de estado de procesos](http://localhost:2999/docs/old/v1/endpoints/WebHooks/processStatusUpdated).
 
 ### Ejemplo para definir stock de un producto
  
@@ -32,7 +32,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/updateStock' \
 
 ### Ejemplo para definir stock de dos productos simultáneamente
 
-El siguiente request define con `stock = 9` al producto con ID `r5RZaWcBzzWz3WAnp` y con `stock = 45` al producto con ID `h67Hkjhusdf54JnaK`
+El siguiente request define con `stock = 9` al producto con ID `r5RZaWcBzzWz3WAnp` y con `stock = 45` al producto con ID `h67Hkjhusdf54JnaK`.
 
 ```json
 curl --location --request POST 'https://api.getjusto.com/api/v1/updateStock' \
@@ -161,21 +161,21 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/updateStock' \
 
 - Cada vez que se ingrese una nueva orden que incorpore alguno de los stocks definidos, se descontará del stock, hasta que quede el contador en 0. Cuando eso ocurra, se mostrará el stock de ese producto como agotado.
 
-- Para dejar de que un producto o modificador dependa de un stock y aparezca siempre disponible, se debe incluir el parámetro `deleteItem` con el valor `true`
+- Para dejar de que un producto o modificador dependa de un stock y aparezca siempre disponible, se debe incluir el parámetro `deleteItem` con el valor `true`.
 
 ### Respuestas
 
-El estatus de la respuesta es informada mediante webhook
+El estatus de la respuesta es informada mediante webhook.
 
 ### Respuesta a solicitud sin errores
 
 Cuando la solicitud no tiene errores, la respuesta tiene la siguiente estructura:
 
 - Response:
-    `status_code: 200 OK`
+    `status_code: 200 OK`.
 - Parámetros:
    -  `status`: Indicador de la solicitud con el valor `"ok"`.
-   -  `data`: Indica el id del proceso que inicia el el tratamiento del stock. Este id es el que se enviará en el webhook
+   -  `data`: Indica el id del proceso que inicia el el tratamiento del stock. Este id es el que se enviará en el webhook.
 
 ```json 
 {
@@ -188,7 +188,7 @@ Cuando la solicitud no tiene errores, la respuesta tiene la siguiente estructura
 
 ##Respuestas del webhook
 
-El webhook envía dos respuestas luego de la petición hacia la API de Justo
+El webhook envía dos respuestas luego de la petición hacia la API de Justo.
 
 ### 1. Respuesta de proceso iniciado
 
@@ -242,12 +242,12 @@ El campo `processedItems` es un arreglo que contiene la lista de todos los cambi
 ```
 ### Respuesta a solicitud con errores
 
-En caso de encontrarse errores en el cuerpo del mensaje, ningún dato será procesado y ninguna información adicional será enviada mediante webhooks
+En caso de encontrarse errores en el cuerpo del mensaje, ningún dato será procesado y ninguna información adicional será enviada mediante webhooks.
 
 La respuesta en tales casos mostrará un resumen de todos los errores encontrados.
 
 - Response:
-    - `status_code: 400 Bad Request`
+    - `status_code: 400 Bad Request`.
 - Parámetros:
     - `status`: Indicador de la solicitud con el valor `"error"`.
     - `error`: Indicador de la razón del error es: `"Validations errors"`.
