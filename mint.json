@@ -239,14 +239,22 @@
 					]
 				},
 				{
-					"group": "Metodos de stock",
+					"group": "Locales",
 					"pages": [
-						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOdStockItem",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOdStockItems",
-						"docs/old/v1/endpoints/StockMethods/outOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/updateStock"
+						"docs/old/v1/endpoints/stores/store",
+						"docs/old/v1/endpoints/stores/stores",
+						"docs/old/v1/endpoints/stores/updateStoreInformation",
+						"docs/old/v1/endpoints/stores/temporaryCloseStore",
+						"docs/old/v1/endpoints/stores/updateStoreSchedule",
+						"docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
+					]
+				},
+				{
+					"group": "Clientes",
+					"pages": [
+						"docs/old/v1/endpoints/client/client",
+						"docs/old/v1/endpoints/client/clients",
+						"docs/old/v1/endpoints/client/addPoints"
 					]
 				},
 				{

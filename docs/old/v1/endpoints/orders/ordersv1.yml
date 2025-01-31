@@ -32,15 +32,15 @@ paths:
                   example: Esto es una prueba
                 category:
                   type: string
-                  description: Categoría del rechazo. Si no esta definido, su valor por defecto será API. Usado para categorizar las devoluciones a clientes. Opcional.
+                  description: Categoría del rechazo. Si no esta definido, su valor por defecto será API. Usado para categorizar las devoluciones a clientes. Opcional
                   example: TEST
                 reason:
                   type: string
-                  description:  Razón del rechazo. Solo uso interno, no será expuesto al cliente. Si no esta definido, su valor por defecto será Rejected by integration through API. Usado para categorizar las devoluciones a clientes. Opcional.  
+                  description:  Razón del rechazo. Solo uso interno, no será expuesto al cliente. Si no esta definido, su valor por defecto será Rejected by integration through API. Usado para categorizar las devoluciones a clientes. Opcional  
                   example: Rechazado por falta de stock
               required:
-              - orderId
-              - reasonMessage
+                - orderId
+                - reasonMessage
       responses:
         '200':
           description: Operación exitosa
@@ -55,9 +55,8 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/result'               
-        '401':
+        '400':
           description: Access token is missing or invalid
-
 
   /acceptOrder:
     post:
@@ -92,9 +91,8 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/result'                    
-        '401':
+        '400':
           description: Access token is missing or invalid
-
 
   /activateDelivery:
     post:
@@ -114,7 +112,7 @@ paths:
                   description: ID del pedido.
                   example: xabAso2p3pKkLMTuz
               required:
-              - orderId
+                - orderId
       responses:
         '200':
           description: Operación exitosa
@@ -128,185 +126,9 @@ paths:
                     description: Estado de la operacion.
                     example: ok
                   data:
-                    type: object
-                    properties:
-                      _id:
-                        type: string
-                        description: ID único de la entrega.
-                        example: QCevLRgMJfTgSJxhS
-                      price:
-                        type: number
-                        description: Precio de la entrega.
-                        example: 1999
-                      status:
-                        type: string
-                        description: Estado actual de la entrega.
-                        enum: ["canceled", "pending", "scheduled", "active", "delivering","done", "Dispatch not completed","error" ]
-                        example: done
-                      driverPassword:
-                        type: string
-                        description: Código de seguridad del repartidor.
-                        example: 5818
-                      activatesAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora en que se activa la entrega.
-                        example: 2021-07-20T16:26:00.000Z
-                      createdAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora de creación de la entrega.
-                        example: 2021-07-20T16:12:14.822Z
-                      forDate:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora programada para la entrega.
-                        example: 2021-07-20T16:41:43.164Z
-                      fromLocation:
-                        type: object
-                        description: Información sobre el lugar de origen de la entrega.
-                        properties:
-                          address:
-                            type: string
-                            description: Dirección de origen.
-                            example: Avenida Vitacura 6345
-                          addressSecondary:
-                            type: string
-                            description: Detalles adicionales sobre la dirección de origen.
-                            example: Vitacura, Chile
-                          storeName:
-                            type: string
-                            description: Nombre de la tienda o punto de origen.
-                            example: NOMBRE MARCA' Vitacura 6345 (Rotonda Irene Frei)
-                          lat:
-                            type: number
-                            description: Latitud del lugar de origen.
-                            example: -33.3902738
-                          lng:
-                            type: number
-                            description: Longitud del lugar de origen.
-                            example: -70.5701148
-                      toLocation:
-                        type: object
-                        description: Información sobre el lugar de destino de la entrega.
-                        properties:
-                          address:
-                            type: string
-                            description: Dirección de destino.
-                            example: Avenida Providencia 1302
-                          addressSecondary:
-                            type: string
-                            description: Detalles adicionales sobre la dirección de destino.
-                            example: Providencia, Chile
-                          lat:
-                            type: number
-                            description: Latitud del lugar de destino.
-                            example: -33.4286681
-                          lng:
-                            type: number
-                            description: Longitud del lugar de destino.
-                            example: -70.6203024
-                      nearStoreAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora en que el repartidor llegó cerca de la tienda.
-                        example: 2021-07-20T16:16:14.202Z
-                      nearClientAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora en que el repartidor llegó cerca del cliente.
-                        example: 2021-07-20T16:17:32.852Z
-                      completedAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora en que se completó la entrega.
-                        example: 2021-07-20T16:18:31.332Z
-                      canceledAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora en que se canceló la entrega.
-                        example: null
-                      deliveryExpectedAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora esperada de la entrega.
-                        example: 2021-07-20T17:12:00.000Z
-                      driverReceivedAt:
-                        type: string
-                        format: date-time
-                        description: Fecha y hora en que el repartidor recibió el pedido.
-                        example: 2021-07-20T16:16:32.230Z
-                      deliverProofImage:
-                        type: string
-                        format: uri
-                        description: URL de la imagen de confirmación de entrega.
-                        example: <URL>
-                      receiveProofImage:
-                        type: string
-                        format: uri
-                        description: URL de la imagen de confirmación de recepción.
-                        example: <URL>
-                      deliveryInformation:
-                        type: string
-                        description: Información adicional sobre la entrega.
-                        example: Maria Soto - Recepción
-                      driverInformation:
-                        type: object
-                        description: Información sobre el repartidor.
-                        properties:
-                          type:
-                            type: string
-                            description: Tipo de vehículo utilizado por el repartidor.
-                            example: moto
-                          phone:
-                            type: string
-                            description: Teléfono del repartidor.
-                            example: +56999999999
-                          name:
-                            type: string
-                            description: Nombre del repartidor.
-                            example: Peter
-                          image:
-                            type: string
-                            format: uri
-                            description: URL de la imagen del repartidor.
-                            example: <URL>
-                      trackingURL:
-                        type: string
-                        format: uri
-                        description: URL para el seguimiento de la entrega.
-                        example: <URL>
-                      orderId:
-                        type: string
-                        description: ID del pedido asociado.
-                        example: wtZnef2Ks7xTfRJ8X
-                      placeName:
-                        type: string
-                        description: Nombre del lugar de entrega.
-                        example: Miguel Piedrafitas
-                      instructions:
-                        type: string
-                        description: Instrucciones especiales para la entrega.
-                        example: Dejar el pedido en conserjeria
-                      isCash:
-                        type: boolean
-                        description: Indica si el pago es en efectivo.
-                        example: true
-                      specialCode:
-                        type: string
-                        description: Código especial relacionado con la entrega.
-                        example: 369
-                      externalId:
-                        type: string
-                        description: ID externo asociado con la entrega.
-                        example: ID_EXTERNO
-                      uncompletedReason:
-                        type: string
-                        description: Razón por la cual la entrega no se completó.
-                        example: Repartidor sufrió accidente                    
-        '401':
+                    $ref: '#/components/schemas/deliveries'                    
+        '400':
           description: Access token is missing or invalid
-
 
   /order:
     post:
@@ -327,7 +149,7 @@ paths:
                   example: xabAso2p3pKkLMTuz
                 code:
                   type: string
-                  description: Código del pedido
+                  description: Código del pedido.
                   example: "null"
               required:
               - orderId
@@ -345,9 +167,8 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/result'                    
-        '401':
+        '400':
           description: Access token is missing or invalid
-
 
   /setOrderFlagColor:
     post:
@@ -388,7 +209,7 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/result'                    
-        '401':
+        '400':
           description: Access token is missing or invalid
 
   /setOrderManagedDelivery:
@@ -410,8 +231,8 @@ paths:
                   example: uaDvLGp8wr8ustqQK
                 hasManagedDelivery:
                   type: boolean
-                  description: boolean. true-> Manejado por Justo. false-> Manejado por el local. Cancela delivery si aún no esta asignado
-                  example: false
+                  description: Boolean. true-> Manejado por Justo. false-> Manejado por el local. Cancela delivery si aún no esta asignado.
+                  example: "false"
               required:
               - orderId
               - hasManagedDelivery
@@ -429,7 +250,7 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/result'                  
-        '401':
+        '400':
           description: Access token is missing or invalid
 
   /updateOrderStatus:
@@ -485,9 +306,9 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/result'                    
-        '401':
+        '400':
           description: Access token is missing or invalid
-    
+
   /pendingOrders:
     post:
       tags:
@@ -503,6 +324,7 @@ paths:
               properties:
                 storesIds:
                   type: array
+                  description: Un arreglo con el ID o ID externo de los locales.
                   items:
                     type: string
                     description: Un arreglo con el ID o ID externo de los locales.
@@ -522,8 +344,10 @@ paths:
                     description: Estado de la operacion.
                     example: ok
                   data:
-                    $ref: '#/components/schemas/result'   
-        '401':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/result'   
+        '400':
           description: Access token is missing or invalid
 
   /orders:
@@ -542,6 +366,7 @@ paths:
                 filter:
                   type: string
                   description: Un texto que se usa para filtrar por código de pedido o nombre del comprador.
+                  example: "null"
                 storesIds:
                   type: array
                   items:
@@ -551,23 +376,28 @@ paths:
                 fromDate:
                   type: string
                   format: date-time
-                  description: Incluír pedidos desde alguna fecha. Si no se incluye se toman todos los pedidos
+                  description: Incluír pedidos desde alguna fecha. Si no se incluye se toman todos los pedidos.
+                  example: "null"
                 toDate:
                   type: string
                   format: date-time
-                  description:  Incluír pedidos hasta que fecha. Si no se incluye se toman todos los pedidos
+                  description:  Incluír pedidos hasta que fecha. Si no se incluye se toman todos los pedidos.
+                  example: "null"
                 orderStatuses:
                   type: array
                   items:
                     type: string
                     description: Un arreglo, opcional. Muestra los pedidos que tengan estos estados.
                     enum: ["pending", "waiting", "preparing", "delivering", "done", "cancelled", "scheduled"]
+                    example: "null"
                 useDeliverAt:
                   type: boolean
                   description: Verdadero o falso. Si es que se deja verdadero se van a ordenar y filtrar los pedidos por fecha de entrega, sino por fecha de creación.
+                  example: "null"
                 includeNotPaid:
                   type: boolean
                   description: Verdadero o falso. Si es verdadero se incluyen los pedidos con pago no completado (`paymentStatus` no `done`).
+                  example: "null"
                 page:
                   type: number
                   description: Página de los resultados.
@@ -590,22 +420,26 @@ paths:
                       totalCount:
                         type: number
                         description: Número de resultados en total.
+                        example: 36
                       totalPages:
                         type: number
                         description: Número de páginas. Son 20 resultados por página
+                        example: 2
                       hasNextPage:
                         type: boolean
                         description: Si es que hay una página siguiente de resultados
+                        example: "false"
                       hasPreviousPage:
                         type: boolean
                         description: Si es que hay una página anterior de resultados
+                        example: "true"
                       items: 
                         type: array
                         items:
                           $ref: '#/components/schemas/result'               
         '400':
           description: Access token is missing or invalid
-  
+
   /deliveryVerificationCode:
     post:
       tags:
@@ -626,7 +460,7 @@ paths:
                 deliveryVerificationCode:
                   type: string
                   description: Código alfanumérico (A-Z 0-9) de mínimo 4 caracteres y máximo 6. Los caracteres alfabéticos se transformarán automáticamente a mayúsculas.
-                  example "PERRO"
+                  example: "PERRO"
               required:
                 - orderId
                 - deliveryVerificationCode
@@ -662,6 +496,184 @@ paths:
 
 components:
   schemas:
+    deliveries:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único de la entrega.
+          example: QCevLRgMJfTgSJxhS
+        price:
+          type: number
+          description: Precio de la entrega.
+          example: 1999
+        status:
+          type: string
+          description: Estado actual de la entrega.
+          enum: ["canceled", "pending", "scheduled", "active", "delivering","done", "Dispatch not completed","error" ]
+          example: done
+        driverPassword:
+          type: string
+          description: Código de seguridad del repartidor.
+          example: 5818
+        activatesAt:
+          type: string
+          format: date-time
+          description: Fecha y hora en que se activa la entrega.
+          example: 2021-07-20T16:26:00.000Z
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha y hora de creación de la entrega.
+          example: 2021-07-20T16:12:14.822Z
+        forDate:
+          type: string
+          format: date-time
+          description: Fecha y hora programada para la entrega.
+          example: 2021-07-20T16:41:43.164Z
+        fromLocation:
+          type: object
+          description: Información sobre el lugar de origen de la entrega.
+          properties:
+            address:
+              type: string
+              description: Dirección de origen.
+              example: Avenida Vitacura 6345
+            addressSecondary:
+              type: string
+              description: Detalles adicionales sobre la dirección de origen.
+              example: Vitacura, Chile
+            storeName:
+              type: string
+              description: Nombre de la tienda o punto de origen.
+              example: NOMBRE MARCA' Vitacura 6345 (Rotonda Irene Frei)
+            lat:
+              type: number
+              description: Latitud del lugar de origen.
+              example: -33.3902738
+            lng:
+              type: number
+              description: Longitud del lugar de origen.
+              example: -70.5701148
+        toLocation:
+          type: object
+          description: Información sobre el lugar de destino de la entrega.
+          properties:
+            address:
+              type: string
+              description: Dirección de destino.
+              example: Avenida Providencia 1302
+            addressSecondary:
+              type: string
+              description: Detalles adicionales sobre la dirección de destino.
+              example: Providencia, Chile
+            lat:
+              type: number
+              description: Latitud del lugar de destino.
+              example: -33.4286681
+            lng:
+              type: number
+              description: Longitud del lugar de destino.
+              example: -70.6203024
+        nearStoreAt:
+          type: string
+          format: date-time
+          description: Fecha y hora en que el repartidor llegó cerca de la tienda.
+          example: 2021-07-20T16:16:14.202Z
+        nearClientAt:
+          type: string
+          format: date-time
+          description: Fecha y hora en que el repartidor llegó cerca del cliente.
+          example: 2021-07-20T16:17:32.852Z
+        completedAt:
+          type: string
+          format: date-time
+          description: Fecha y hora en que se completó la entrega.
+          example: 2021-07-20T16:18:31.332Z
+        canceledAt:
+          type: string
+          format: date-time
+          description: Fecha y hora en que se canceló la entrega.
+          example: null
+        deliveryExpectedAt:
+          type: string
+          format: date-time
+          description: Fecha y hora esperada de la entrega.
+          example: 2021-07-20T17:12:00.000Z
+        driverReceivedAt:
+          type: string
+          format: date-time
+          description: Fecha y hora en que el repartidor recibió el pedido.
+          example: 2021-07-20T16:16:32.230Z
+        deliverProofImage:
+          type: string
+          format: uri
+          description: URL de la imagen de confirmación de entrega.
+          example: <URL>
+        receiveProofImage:
+          type: string
+          format: uri
+          description: URL de la imagen de confirmación de recepción.
+          example: <URL>
+        deliveryInformation:
+          type: string
+          description: Información adicional sobre la entrega.
+          example: Maria Soto - Recepción
+        driverInformation:
+          type: object
+          description: Información sobre el repartidor.
+          properties:
+            type:
+              type: string
+              description: Tipo de vehículo utilizado por el repartidor.
+              example: moto
+            phone:
+              type: string
+              description: Teléfono del repartidor.
+              example: +56999999999
+            name:
+              type: string
+              description: Nombre del repartidor.
+              example: Peter
+            image:
+              type: string
+              format: uri
+              description: URL de la imagen del repartidor.
+              example: <URL>
+        trackingURL:
+          type: string
+          format: uri
+          description: URL para el seguimiento de la entrega.
+          example: <URL>
+        orderId:
+          type: string
+          description: ID del pedido asociado.
+          example: wtZnef2Ks7xTfRJ8X
+        placeName:
+          type: string
+          description: Nombre del lugar de entrega.
+          example: Miguel Piedrafitas
+        instructions:
+          type: string
+          description: Instrucciones especiales para la entrega.
+          example: Dejar el pedido en conserjeria
+        isCash:
+          type: boolean
+          description: Indica si el pago es en efectivo.
+          example: true
+        specialCode:
+          type: string
+          description: Código especial relacionado con la entrega.
+          example: 369
+        externalId:
+          type: string
+          description: ID externo asociado con la entrega.
+          example: ID_EXTERNO
+        uncompletedReason:
+          type: string
+          description: Razón por la cual la entrega no se completó.
+          example: Repartidor sufrió accidente 
+    
     result:
       type: object
       properties:
@@ -677,7 +689,7 @@ components:
         isScheduled:
           type: boolean
           description: Indica si el pedido es programado (true) o normal (false).
-          example: false
+          example: "false"
         websiteId:
           type: string
           description: ID de la marca asociada.
@@ -805,11 +817,11 @@ components:
         cashAmount:
           type: number
           description: Monto en efectivo proporcionado por el cliente (si aplica).
-          example: null
+          example: "null"
         cardId:
           type: string
           description: ID de la tarjeta de crédito usada.
-          example: null
+          example: "null"
         channel:
           type: string
           description: Canal del pedido.
@@ -821,27 +833,27 @@ components:
         phone:
           type: string
           description: Teléfono del comprador.
-          example: +56979761851
+          example: "+56979761851"
         email:
           type: string
           description: Correo electrónico del comprador.
           example: email@example.com
         couponName: 
           type: string
-          description: Nombre del cupón usado
-          example: null
+          description: Nombre del cupón usado.
+          example: "null"
         couponDiscount: 
           type: number
-          description: Monto del descuento del cupón
-          example: null
+          description: Monto del descuento del cupón.
+          example: "null"
         websiteCoinsDiscount:
           type: number
-          description: Monto descuento de programa de lealtad
-          example: null
+          description: Monto descuento de programa de lealtad.
+          example: "null"
         itemsPriceBeforeDiscountsAfterProductDiscount:
           type: string
-          description: Tiempo estimado de preparación (no incluye delivery)
-          example: null
+          description: Tiempo estimado de preparación (no incluye delivery).
+          example: "null"
         store:
           type: object
           description: Información de la tienda.
@@ -861,15 +873,15 @@ components:
             acceptDelivery:
               type: boolean
               description: Indica si la tienda acepta entregas.
-              example: true
+              example: "true"
             acceptServe:
               type: boolean
               description: Indica si la tienda acepta pedidos para servir.
-              example: false
+              example: "false"
             acceptGo:
               type: boolean
               description: Indica si la tienda acepta recogida en local.
-              example: true
+              example: "true"
             currentPreparationDuration:
               type: number
               description: Tiempo estimado de preparación.
@@ -881,7 +893,7 @@ components:
             phone:
               type: string
               description: Teléfono de la tienda.
-              example: +56979761851
+              example: "+56979761851"
             address:
               type: object
               description: Dirección de la tienda.
@@ -1049,7 +1061,7 @@ components:
               example: 315
         deliveries:
           type: object
-          description: Información los repartos asociados a este pedido
+          description: Información los repartos asociados a este pedido.
           properties:
             _id:
               type: string
@@ -1181,7 +1193,7 @@ components:
                 phone:
                   type: string
                   description: Teléfono del repartidor.
-                  example: +56999999999
+                  example: "+56999999999"
                 name:
                   type: string
                   description: Nombre del repartidor.
@@ -1211,7 +1223,7 @@ components:
             isCash:
               type: boolean
               description: Indica si el pago es en efectivo.
-              example: true
+              example: "true"
             specialCode:
               type: string
               description: Código especial relacionado con la entrega.
@@ -1260,29 +1272,29 @@ components:
         clonedOrder:
           type: string
           description: Id de la orden clonada/repetida (si corresponde).
-          example: null
+          example: "null"
         parentOrder:
           type: string
           description:  Id de la orden de la cual fue clonada/repetida (si corresponde).
-          example: null
+          example: "null"
         hasManagedDelivery:
           type: boolean
           description: boolean. true-> pedido manejado por Justo. false-> pedido manejado por el local.
-          example: false
+          example: "false"
         loyaltyTransaction:
           type: object
           description: Información de la transacción de pago con puntos de lealtad.
           additionalProperties:
             type: integer
             description: Cantidad seleccionada para un ID externo.
-          example: null
+          example: "null"
         billing:
           type: object
           description: Información de facturación del cliente para el pedido.
           additionalProperties:
             type: integer
             description: Cantidad seleccionada para un ID externo.
-          example: null
+          example: "null"
         cancellationInfo:
           type: object
           description: Información sobre la cancelación del pedido.

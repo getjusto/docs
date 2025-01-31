@@ -1,0 +1,248 @@
+openapi: 3.0.0
+info:
+  title: client API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v1
+    description: Production server
+tags:
+  - name: Solicitudes de reparto especial
+    description: Manejo de entregas y despachos especiales
+paths:
+  /client:
+    post:
+      tags:
+        - client
+      summary: Obtener un cliente
+      description: Este endpoint permite obtener la información de un cliente 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  description: ID del cliente.
+              required:
+              - clientId
+                
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación.
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/resultClient'
+        '400':
+          description: Access token is missing or invalid 
+  /clients:
+    post:
+      tags:
+        - client
+      summary: Listar clientes
+      description: Este endpoint permite ordenar a los clientes de mayor a menor seugn la cantidad de pedidos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: string
+                  description: Un texto que se usa para filtrar por email del cliente
+                page:
+                  type: number
+                  description: Página de los resultados
+              required:
+              - filter
+              - page
+                
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalCount:
+                    type: number
+                    description: Número de resultados en total.
+                    example: 36
+                  totalPages:
+                    type: number
+                    description: Número de páginas. Son 20 resultados por página.
+                    example: 2
+                  hasNextPage:
+                    type: boolean
+                    description: Si es que hay una página siguiente de resultados.
+                    example: false
+                  hasPreviousPage:
+                    type: number
+                    description:  Si es que hay una página anterior de resultados.
+                    example: false
+                  items:
+                    type: array
+                    description: Un arreglo con todos los resultados de la consulta.
+                    items:
+                      $ref: '#/components/schemas/resultClient'
+        '400':
+          description: Access token is missing or invalid 
+
+  /addPoints:
+    post:
+      tags:
+        - client
+      summary: Agregar puntos a cliente
+      description: Este endpoint permite agregar puntos a un cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/requiredemail'
+                - $ref: '#/components/schemas/requiredclient'
+                
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación.
+                    example: ok
+                  data:
+                    type: object
+                    properties:
+                      amount:
+                        type: number
+                        description: Monto de puntos que se cargaron al cliente en la última transacción.
+                        example: 1000
+                      websiteId:
+                        type: string
+                        description: Id del sitio web.
+                        example: ErCkmcyCEovseJq5E
+                      date:
+                        type: string
+                        format: date-time
+                        description: Fecha de la última transacción.
+                        example: 2022-03-01T13:18:59.381Z
+                      balance:
+                        type: number
+                        description: Balance de puntos actual del cliente.
+                        example: 5026
+                      user:
+                        type: object
+                        description: Información del usuario al que se le realizó la última transacción.
+                        properties:
+                          clientId:
+                            type: string
+                            description: ID del cliente.
+                            example: YdhZfJzvD2atjXeED
+                          email:
+                            type: string
+                            description: Email del cliente.
+                            example: pdivasto@gmail.com
+                          fullName:
+                            type: string
+                            description: Nombre del cliente.
+                            example: Piero Divasto
+                          phone:
+                            type: string
+                            description: Teléfono del cliente.
+                            example: "+573143015597"
+        '400':
+          description: Access token is missing or invalid 
+components:
+  schemas:
+    requiredemail:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del cliente al que se le quieren agregar puntos.
+        amount:
+          type: number
+          description: Monto equivalente en dinero que se le quiere agregar al cliente.
+      required:
+        - email
+        - amount
+
+    requiredclient:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: ID del cliente al que se le quieren agregar puntos.
+        amount:
+          type: number
+          description: Monto equivalente en dinero que se le quiere agregar al cliente.
+      required:
+        - clientId
+        - amount
+    resultClient:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del cliente.
+          example: Px7yRRfbojEv55KAf
+        name:
+          type: string
+          description: Nombre completo del cliente.
+          example: Nicolás López
+        email:
+          type: string
+          description: Email del cliente.
+          example: user_email@me.com
+        phone:
+          type: string
+          description: Teléfono del cliente.
+          example: "+56912345678"
+        firstLogin:
+          type: string
+          format: date-time
+          description:  Primera vez que el cliente hizo login (fecha de registro).
+          example: 2020-08-12T14:24:35.161Z
+        lastLogin:
+          type: string
+          format: date-time
+          description:  Última vez que el cliente hizo login.
+          example: 2020-08-31T14:08:04.474Z
+        ordersCount:
+          type: number
+          description: Cantidad de pedidos del cliente.
+          example: 10
+        firstOrder:
+          type: string
+          format: date-time
+          description: Fecha de la primer pedido del cliente.
+          example: 2020-08-31T14:08:04.428Z
+        lastOrder:
+          type: string
+          format: date-time
+          description: Fecha de la último pedido del cliente.
+          example: 2020-08-31T14:08:04.428Z
+        pointsBalance:
+          type: number
+          description: Puntos del cliente.
+          example: 700
+        marketingEmailEnabled:
+          type: boolean
+          description: Si el cliente acepta campañas de marketing por email. Verdadero (acepta) o Falso (rechaza).
+          example: true
