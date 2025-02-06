@@ -6,7 +6,9 @@ openapi: Post /updateStock
 
 ### Descripción
 
-Este método tiene como finalidad definir, de manera unitaria o múltiple, el stock de productos o modificadores.
+Este método permite actualizar el stock de productos y modificadores en una tienda, ya sea de forma individual o múltiple. Puedes establecer una nueva cantidad de stock para un producto o modificador, o simplemente eliminar la restricción de stock para que siempre esté disponible.
+
+El proceso de actualización se realiza de manera asíncrona, lo que significa que cuando envías la solicitud, la API te devuelve un processId, indicando que la actualización ha comenzado. Luego, a través de un webhook, recibirás notificaciones con el estado del proceso hasta que finalice.
 
 ### Webhook
 

@@ -260,12 +260,12 @@
 				{
 					"group": "Metodos de stock",
 					"pages": [
-						"docs/old/v1/endpoints/stockMethods/addOutOfStockItem",
-						"docs/old/v1/endpoints/stockMethods/deleteOutOfStockItem",
-						"docs/old/v1/endpoints/stockMethods/deleteOutOfStockItems",
-						"docs/old/v1/endpoints/stockMethods/outOfStockItems",
-						"docs/old/v1/endpoints/stockMethods/setOutOfStockItems",
-						"docs/old/v1/endpoints/stockMethods/updateStock"
+						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/outOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/updateStock"
 					]
 				}
 			]

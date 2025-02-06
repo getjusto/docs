@@ -21,8 +21,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/outOfStockProduct'
-                - $ref: '#/components/schemas/outOfStockModifier'
+                - $ref: '#/components/schemas/outOfStockModifier' 
+                - $ref: '#/components/schemas/outOfStockProduct' 
       responses:
         '200':
           description: Operación exitosa
@@ -30,10 +30,10 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
+                properties: 
                   status:
                     type: string
-                    description: Estado operacion.
+                    description: Estado operación.
                     example: ok
                   data:
                     type: object
@@ -84,38 +84,38 @@ paths:
                             example: "null"
                       modifierOption:
                         type: object
-                        description: Opcion del modificador.
+                        description: Opción del modificador.
                         properties:
                           _id:
                             type: string
-                            description: ID de la opcion de modificador.
+                            description: ID de la opción de modificador.
                             example: Na4Ha7ShFbDsvcRKg
                           name:
                             type: string
-                            description: Nombre de la opcion de modificador.
+                            description: Nombre de la opción de modificador.
                             example: Si
                           externalId:
                             type: string
-                            description: ID externo de la opcion de Modificador.
+                            description: ID externo de la opción de Modificador.
                             example: "null"
                       until:
                         type: string
-                        description: Dia De cuando llega el pedido.
+                        description: Día en que llega el pedido.
                         enum: ["none", "tomorrow"]
                         example: tomorrow
                       untilDate:
                         type: string 
                         format: date-time
-                        description: Fecha máxima en que el producto estará vencido.    
+                        description: Fecha máxima en que el producto estará agotado.    
                         example: 2020-07-30T10:00:00.000Z
                       createAt:
                         type: string
                         format: date-time
-                        description: Fecha de creacion.
+                        description: Fecha de creación.
                         example: 2020-07-29T14:14:33.347Z
         '401':
           description: Access token is missing or invalid
-  
+
   /deleteOutOfStockItem:
     post:
       tags:
@@ -551,7 +551,7 @@ components:
         type:
           type: string
           description: Tipo de producto. Debe ser `product`.
-          enum: ['product']
+          enum: ['product', 'modifier']
         untilDate:
           type: string
           format: date-time
@@ -573,7 +573,7 @@ components:
         type:
           type: string
           description: Tipo de producto. Debe ser `modifier`.
-          enum: ['modifier']
+          enum: ['product', 'modifier']
         untilDate:
           type: string
           format: date-time
@@ -584,6 +584,12 @@ components:
         modifierOptionId:
           type: string
           description: ID de la opción del Modificador. Se puede utilizar el `externalId`.
+      example:
+        "storeId": "Li4eEa3W2hiuGGCFa"
+        "modifierId": "XS3wWdedwKRRYrZZt"
+        "modifierOptionId": "Na4Ha7ShFbDsvcRKg"
+        "untilDate": "Thu Jul 30 2020 10:11:45 GMT-0400 (hora estándar de Chile)"
+        "type": "modifier"
       required:
         - storeId
         - type
@@ -624,7 +630,7 @@ components:
         type:
           type: string
           description: Tipo de producto. Debe ser `product`.
-          enum: ['product']
+          enum: ['product', 'modifier']
         productId:
           type: string
           description: ID del Producto. Se puede utilizar el `externalId`.
@@ -646,7 +652,7 @@ components:
         type:
           type: string
           description: Tipo de producto. Debe ser `modifier`.
-          enum: ['modifier']
+          enum: ['product','modifier']
         modifierId:
           type: string
           description: ID del Modificador. Se puede utilizar el `externalId`.
@@ -675,7 +681,7 @@ components:
         type:
           type: string
           description: Tipo de producto a agotar.
-          enum: ["product"]
+          enum: ['product', 'modifier']
         stock:
           type: integer
           description: Valor numérico del stock. Requerido si `deleteItem` no está definido.
@@ -703,7 +709,7 @@ components:
         type:
           type: string
           description: Tipo de producto a agotar.
-          enum: [ "modifier"]
+          enum: [ 'product' ,'modifier']
         stock:
           type: integer
           description: Valor numérico del stock. Requerido si `deleteItem` no está definido.
