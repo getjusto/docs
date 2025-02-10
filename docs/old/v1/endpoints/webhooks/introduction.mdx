@@ -221,7 +221,7 @@ const checkSignature = (body, passedSignature) => {
   const signature = shaObj.getHMAC('HEX')
 
   // si son iguales significa que esta verificado
-  return passedSignature === calculatedSignature
+  return passedSignature === signature
 }
 
 checkSignature(request.body, headers['x-orion-signature'])
