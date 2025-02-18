@@ -267,6 +267,17 @@
 						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
 						"docs/old/v1/endpoints/StockMethods/updateStock"
 					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/old/v1/endpoints/webhooks/introduction",
+						"docs/old/v1/endpoints/webhooks/newOrder",
+						"docs/old/v1/endpoints/webhooks/orderStatusUpdated",
+						"docs/old/v1/endpoints/webhooks/orderItemsUpdated",
+						"docs/old/v1/endpoints/webhooks/deliveryUpdated",
+						"docs/old/v1/endpoints/webhooks/processStatusUpdated"
+					]
 				}
 			]
 		}
