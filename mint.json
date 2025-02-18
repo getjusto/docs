@@ -256,6 +256,17 @@
 						"docs/old/v1/endpoints/client/clients",
 						"docs/old/v1/endpoints/client/addPoints"
 					]
+				},
+				{
+					"group": "Metodos de stock",
+					"pages": [
+						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/outOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/updateStock"
+					]
 				}
 			]
 		}
