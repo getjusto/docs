@@ -4,6 +4,10 @@ description: "Usa este metodo para cancelar el despacho"
 openapi: Post /cancelDelivery
 ---
 
+### Descripción
+
+Este método es esencial para la gestión de la logística de pedidos, puesto que permite la cancelación de despachos y la adaptación a cambios o imprevistos. Su integración mejora la eficiencia y la satisfacción del cliente.
+
 # Nota 
 Solamente se pueden cancelar despachos que no estén activos o que no hayan completado el punto 1. En caso contrario, el método devolverá un error
 ```json
@@ -14,9 +18,6 @@ Solamente se pueden cancelar despachos que no estén activos o que no hayan comp
 ```
 
 ## Ejemplo
-
-**Endpoint:**  
-`POST /cancelDelivery`
 
 ```json
 {

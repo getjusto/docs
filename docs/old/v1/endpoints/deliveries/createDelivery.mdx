@@ -4,6 +4,10 @@ description: "Usa este metodo para crear una solicitud de despacho"
 openapi: "Post /createDelivery"
 ---
 
+### Descripción
+
+Este método posibilita la creación de una solicitud de reparto especial, generando un envío de forma inmediata o programada. Adicionalmente, incorpora un mecanismo de indempotencia y personalización de la entrega.
+
 # Nota al margen
 
 Los pedidos especiales no están limitados en los horarios de venta que establezca la marca, siendo de exclusiva responsabilidad del solicitante el verificar si pueden despachar el producto en cuestión.
@@ -11,8 +15,6 @@ Los pedidos especiales no están limitados en los horarios de venta que establez
 
 # Ejemplo con placeId
 
-**Endpoint:**  
-`POST /createDelivery`
 
 ### Descripción
 Este endpoint muestra un ejemplo de crear un delivery con placeId
@@ -51,8 +53,6 @@ Este endpoint muestra un ejemplo de crear un delivery con placeId
 ```
 # Ejemplo sin placeId
 
-**Endpoint:**  
-`POST /createDelivery`
 
 ### Descripción
 Este endpoint muestra un ejemplo de crear un delivery con placeId
