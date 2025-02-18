@@ -258,6 +258,28 @@
 					]
 				},
 				{
+					"group": "Metodos de stock",
+					"pages": [
+						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem",
+						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/outOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
+						"docs/old/v1/endpoints/StockMethods/updateStock"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/old/v1/endpoints/webhooks/introduction",
+						"docs/old/v1/endpoints/webhooks/newOrder",
+						"docs/old/v1/endpoints/webhooks/orderStatusUpdated",
+						"docs/old/v1/endpoints/webhooks/orderItemsUpdated",
+						"docs/old/v1/endpoints/webhooks/deliveryUpdated",
+						"docs/old/v1/endpoints/webhooks/processStatusUpdated"
+					]
+				},
+				{
 					"group": "Pedidos",
 					"pages": [
 						"docs/old/v1/endpoints/orders/rejectOrders",
