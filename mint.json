@@ -278,6 +278,21 @@
 						"docs/old/v1/endpoints/webhooks/deliveryUpdated",
 						"docs/old/v1/endpoints/webhooks/processStatusUpdated"
 					]
+				},
+				{
+					"group": "Pedidos",
+					"pages": [
+						"docs/old/v1/endpoints/orders/rejectOrders",
+						"docs/old/v1/endpoints/orders/acceeptOrder",
+						"docs/old/v1/endpoints/orders/activateDelivery",
+						"docs/old/v1/endpoints/orders/order",
+						"docs/old/v1/endpoints/orders/setOrderFlagColor",
+						"docs/old/v1/endpoints/orders/setOrderManagedDelivery",
+						"docs/old/v1/endpoints/orders/updateOrderStatus",
+						"docs/old/v1/endpoints/orders/pendingOrders",
+						"docs/old/v1/endpoints/orders/orders",
+						"docs/old/v1/endpoints/orders/deliveryVerificationCode"
+					]
 				}
 			]
 		}

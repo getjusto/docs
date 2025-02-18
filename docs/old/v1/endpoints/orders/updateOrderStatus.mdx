@@ -1,0 +1,30 @@
+---
+title: "Cambiar el estado de un pedido"
+description: "Usa este metodo para cambiar el estado de un pedido"
+openapi: Post /updateOrderStatus
+---
+
+### Descripción
+
+Este método fue diseñado con el fin de modificar el estado de un pedido, mediante este endpoint se puede actualizar el estado a uno de “delivering”, “done” o “cancelled”. Notar que un cambio de estado puede poner en marcha un gran número de procesos internos como, la generación automática de devoluciones cuando un pedido se “cancela”, y para esto hay que cumplir ciertas condiciones, especialmente cuando uno selecciona “cancelled” el pedido. 
+
+#### NOTA 1: 
+Si se cancela un pedido, el sistema generará una devolución automatica siempre y cuando el medio de pago lo permita. Los pedidos con entrega en el local o con pago en efectivo no generan devoluciones.
+
+#### NOTA 2: 
+Se podrán ver los campos `reason`, `reasonMessage` y `category` en el objeto `cancellationInfo` de los pedidos cancelados, tanto para aquellos que no generen devoluciones, como para aquellos pedidos cancelados que si generen devoluciones.
+
+#### NOTA 3: 
+Se podrán ver los campos `amount`, `reason`, `reasonMessage` y `category` de los pedidos cancelados con devoluciones en la lista `devolutions`.
+
+#### NOTA 4: 
+Si se cancela un pedido, este **NO** debe tener despachos activos. Si esto ocurre la petición será rechazada con el siguiente error:
+
+```json
+{
+    "status": "error",
+    "error": "El pedido no se puede cancelar porque esta activo"
+}
+```
+
+
