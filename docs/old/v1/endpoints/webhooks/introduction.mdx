@@ -207,22 +207,41 @@ Al crear un Webhook debes entrar un clave, que le llamamos secreto. Todas las ll
 Para verificar la firma debes hacer lo siguiente:
 
 ```json
-import JSSHA from 'jssha'
+import JSSHA from 'jssha';
 
-const mySecret = '12345'
+const mySecret = '12345';
 
 // para comprobar que la firma es correcta debemos generarla de nuevo y ver si coincide con la entregada en el request
 const checkSignature = (body, passedSignature) => {
-  const shaObj = new JSSHA('SHA-1', 'TEXT')
+  const shaObj = new JSSHA('SHA-1', 'TEXT');
   // usamos la clave que le ingresamos al webhook
-  shaObj.setHMACKey(mySecret, 'TEXT')
+  shaObj.setHMACKey(mySecret, 'TEXT');
   // generamos el hash del body
-  shaObj.update(body)
-  const signature = shaObj.getHMAC('HEX')
+  shaObj.update(body);
+  const signature = shaObj.getHMAC('HEX');
+  return passedSignature === signature;
+};
 
-  // si son iguales significa que esta verificado
-  return passedSignature === signature
-}
+// Simulación de request y headers
+const request = {
+  body: '{"key":"value"}',  // Simula el cuerpo de la solicitud
+};
 
-checkSignature(request.body, headers['x-orion-signature'])
+const headers = {
+  'x-orion-signature': 'firma_generada_por_el_servidor'  // Simula la firma
+};
+
+// Generar la firma correcta para comparar
+const shaObj = new JSSHA('SHA-1', 'TEXT');
+shaObj.setHMACKey(mySecret, 'TEXT');
+shaObj.update(request.body);
+const correctSignature = shaObj.getHMAC('HEX');
+
+// Asignar la firma correcta a los headers para la prueba
+headers['x-orion-signature'] = correctSignature;
+
+// Llamar a la función de verificación
+const isSignatureValid = checkSignature(request.body, headers['x-orion-signature']);
+
+console.log('Is signature valid?', isSignatureValid);
 ```
