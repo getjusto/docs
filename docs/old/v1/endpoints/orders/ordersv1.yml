@@ -846,6 +846,10 @@ components:
           type: number
           description: Monto del descuento del cupón.
           example: "null"
+        couponExternalId:
+          type: string
+          description: ID externo del cupón.
+          example: ID_EXTERNO
         websiteCoinsDiscount:
           type: number
           description: Monto descuento de programa de lealtad.

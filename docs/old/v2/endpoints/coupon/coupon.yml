@@ -75,6 +75,10 @@ components:
         active:
           type: boolean
           description: Define el estado actual de tu cupón.
+        externalId:
+          type: string
+          description: ID externo del cupón.
+          example: ID_EXTERNO
         onlyForProductsWithoutDiscount:
           type: boolean
           description: No aplicable si algún producto en el carro tiene precio con descuento
@@ -131,6 +135,12 @@ components:
         minimumOrderPrice:
           type: number
           description: Monto mínimo del pedido
+        isBirthdayCoupon:
+          type: boolean
+          description: Es un cupón de cumpleaños (y por ende solo se puede canjer cuando el usuario tenga registrada la fecha de cumpleaños)
+        onlyRedeemOnBirthday:
+          type: boolean
+          description: Solo canjear el día del cumpleaños
         onlyForCertainCreditCard:
           type: boolean
         onlyForNewUsers:
