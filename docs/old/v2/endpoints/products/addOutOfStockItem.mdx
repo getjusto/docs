@@ -1,0 +1,51 @@
+---
+title: "Agotar un producto o modificador"
+description: "Usa este metodo cuando quieras modificar o agotar un producto"
+openapi: Post /products/addOutOfStockItem
+---
+
+### Descripcón
+
+Este método permite marcar un producto o un modificador como no disponible en una tienda específica hasta una fecha determinada.
+
+# Ejemplo para agotar un producto
+
+### Llamada
+
+```json
+{
+  "storeId": "Li4eEa3W2hiuGGCFa",
+  "productId": "XS3wWdedwKRRYrZZt",
+  "untilDate": "Thu Jul 30 2020 10:11:45 GMT-0400 (hora estándar de Chile)",
+  "type": "product"
+}
+```
+
+### Respuesta
+
+Respuesta en la barra lateral "200"
+```json
+{
+  "status": "ok",
+  "data": {
+    <OutOfStockItem>
+  }
+}
+```
+
+### Ejemplo para agotar un modificador
+
+Llamada
+
+**Endpoint:**  
+`POST /addOutOfStockItem`
+
+```json
+{
+  "storeId": "Li4eEa3W2hiuGGCFa",
+  "modifierId": "XS3wWdedwKRRYrZZt",
+  "modifierOptionId": "Na4Ha7ShFbDsvcRKg",
+  "untilDate": "Thu Jul 30 2020 10:11:45 GMT-0400 (hora estándar de Chile)",
+  "type": "modifier"
+}
+```

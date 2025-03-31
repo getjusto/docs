@@ -1,0 +1,647 @@
+openapi: 3.0.0
+info:
+  title: Order Endpoint API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v2
+    description: Production server
+tags:
+  - name: order
+    description: Todo lo relacionado a operar con ordenes
+paths:
+  /orders:
+    get:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/orderResultGet'
+  /orders/{id}:
+    get:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: success 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderResultGet'
+  /orders/{id}/setOrderFlagColor:
+    post:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - flagColor
+              properties:
+                flagColor:
+                  type: string
+                  description: Color de la bandera
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderResultGet'                
+  /orders/{id}/rejectOrder:
+    post:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la orden
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reasonMessage
+                - reason
+                - category
+              properties:
+                reasonMessage:
+                  type: string
+                  description: Motivo del rechazo
+                reason:
+                  type: string
+                  description: Motivo del rechazo 
+                category: 
+                  type: string
+                  description: Categoría del rechazo
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderResultGet'
+  /orders/{id}/acceptOrder:
+    post:
+      tags:
+        - order
+      summary: Aceptar un pedido
+      description: Acepta un pedido pendiente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la orden
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'                    
+        '400':
+          description: Access token is missing or invalid
+  /orders/{id}/activateDelivery:
+    post:
+      tags:
+        - order
+      summary: Aceptar un pedido
+      description: Acepta un pedido pendiente.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la orden
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operacion.
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'                    
+        '400':
+          description: Access token is missing or invalid
+  /orders/{id}/setOrderManagedDelivery:
+    post:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la orden
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - managedDelivery
+              properties:
+                managedDelivery:
+                  type: string
+                  description: Tipo de despacho
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Access token is missing or invalid 
+  /orders/{id}/updateOrderStatus:
+    post:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la orden
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderStatus
+              properties:
+                orderStatus:
+                  type: string
+                  description: Estado de la orden
+      responses:
+        '200':
+          description: Operación exitosa  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Access token is missing or invalid
+  /orders/{id}/setDeliveryVerificationCode:
+    post:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la orden
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - verificationCode  
+              properties:
+                verificationCode:
+                  type: string
+                  description: Código de verificación
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        description: Mensaje de la operación
+                      orderId:
+                        type: string
+                        description: ID de la orden
+                      deliveryVerificationCode:
+                        type: string
+                        description: Código de verificación
+        '400':
+          description: Access token is missing or invalid
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    orderResultGet:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la orden
+        orderStatus:
+          type: string
+          description: Estado de la orden
+        isScheduled:
+          type: boolean
+          description: Indica si la orden es programada
+        websiteId:
+          type: string
+          description: ID del sitio web
+        code:
+          type: string
+          description: Código de la orden
+        createdAt:
+          type: string
+          description: Fecha de creación de la orden
+        fullCode:
+          type: string
+          description: Código completo de la orden
+        userId:
+          type: string
+          description: ID del usuario
+        storeId:
+          type: string
+          description: ID de la tienda
+        address:
+          type: object
+          $ref: '#/components/schemas/addressSchema'
+        menuId:
+          type: string
+          description: ID del menú
+        deliveryType:
+          type: string
+          description: Tipo de entrega
+        deliverAt:
+          type: string
+          format: date-time
+          description: Fecha de entrega
+        paymentType:
+          type: string
+          description: Tipo de pago
+        paymentTypeLabel:
+          type: string
+          description: Etiqueta del tipo de pago
+        paymentTypeIsIntegration:
+          type: boolean
+          description: Indica si el tipo de pago es integración
+        otherPaymentType:
+          type: string
+          description: Otro tipo de pago
+        amountToPay:
+          type: number
+          description: Monto a pagar
+        deliveryFee:
+          type: number
+          description: Cargo por entrega
+        serviceFee:
+          type: number
+          description: Cargo por servicio
+        itemsPrice:
+          type: number
+          description: Precio de los ítems
+        totalPrice:
+          type: number
+          description: Precio total 
+        totalPriceBeforeDiscountsAfterProductDiscount:
+          type: number
+          description: Precio total antes de descuentos
+        discountedAmountAfterProductDiscount:
+          type: number
+          description: Precio total después de descuentos
+        justoCoinsDiscount:
+          type: number
+          description: Descuento por Justo Coins
+        invoiceTotalPrice:
+          type: number
+          description: Precio total de la factura
+        amountFinancedByWebsite:
+          type: number
+          description: Monto financiado por el sitio web
+        amountFinancedByJusto:
+          type: number
+          description: Monto financiado por Justo
+        expectedPreparationDuration:
+          type: number
+          description: Duración de preparación esperada
+        deliveryDuration:
+          type: number
+          description: Duración de entrega
+        cardId:
+          type: string
+          description: ID de la tarjeta
+        channel:
+          type: string
+          description: Canal
+        source:
+          type: string
+          description: Fuente
+        buyerName:
+          type: string
+          description: Nombre del comprador
+        couponId:
+          type: string
+          description: ID del cupón
+        couponName:
+          type: string
+          description: Nombre del cupón
+        couponDiscount:
+          type: number
+          description: Descuento del cupón
+        flagColor:
+          type: string
+          description: Color de la bandera
+        store:
+          type: object
+          $ref: '#/components/schemas/storeSchema'
+        items:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/itemSchema'
+        transaction:
+          type: object
+          description: Transacción
+        devolutions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/devolutionSchema'
+        deliveries:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/deliverySchema'
+        charges:
+          type: object
+          properties:
+            platformFee:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: Monto de la comisión
+                totalAmount:
+                  type: number
+                  description: Monto total de la comisión
+                tax:
+                  type: number
+                  description: Monto de impuestos de la comisión  
+                count:
+                  type: number
+                  description: Cantidad de comisiones
+        orderParams:
+          type: object
+          properties:
+            isGift:
+              type: boolean
+              description: Indica si la orden es un regalo  
+        billing:
+          type: object
+          description: Información de la factura
+        clonedOrder:
+          type: object
+          description: Orden clonada  
+        parentOrder:
+          type: object
+          description: Orden padre
+        hasManagedDelivery:
+          type: boolean
+          description: Indica si la orden tiene entrega gestionada  
+        loyaltyTransaction:
+          type: object
+          description: Transacción de fidelidad
+        cancellationInfo:
+          type: object
+          description: Información de cancelación 
+        websiteCoinsDiscount:
+          type: number
+          description: Descuento por Justo Coins
+    addressSchema:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la dirección
+        placeId:
+          type: string
+          description: ID de la dirección
+        address:
+          type: string
+          description: Dirección
+        addressSecondary:
+          type: string
+          description: Dirección secundaria
+        location:
+          type: object
+          properties:
+            lat:
+              type: number
+              description: Latitud
+            lng:
+              type: number
+              description: Longitud
+        streetAddress:
+          type: string
+          description: Dirección
+        locality:
+          type: string
+          description: Localidad
+        region:
+          type: string
+          description: Región
+        postalCode:
+          type: string
+          description: Código postal
+        directions:
+          type: object
+          properties:
+            duration:
+              type: number
+              description: Duración
+            distance:
+              type: number
+              description: Distancia
+    storeSchema:
+      type: object
+      properties:
+        _id:  
+          type: string
+          description: ID de la tienda
+        websiteId:
+          type: string
+          description: ID del sitio web
+        name:
+          type: string
+          description: Nombre de la tienda
+        acceptDelivery:
+          type: boolean
+          description: Indica si la tienda acepta entrega
+        currentPreparationDuration:
+          type: number
+          description: Duración de preparación actual
+        currentDeliveryDuration:
+          type: number
+          description: Duración de entrega actual
+        phone:
+          type: string
+          description: Teléfono de la tienda
+        address:
+          type: object
+          $ref: '#/components/schemas/addressSchema'
+        externalId:
+          type: string
+          description: ID externo de la tienda
+        schedule:
+          type: object
+          $ref: '#/components/schemas/scheduleSchema'
+    scheduleSchema: 
+      type: object
+      properties:
+        closedDays:
+          type: array
+          description: Días cerrados
+        availableAtPeriods:
+          type: boolean
+          description: Indica si la tienda está disponible en periodos
+        openPeriods:
+          type: array
+          items:
+            type: object
+            properties:
+              daysOfWeek:
+                type: array
+                description: Días de la semana
+                items:
+                  type: number
+                  description: Día de la semana
+              fromMinute:
+                type: number
+                description: Minutos desde las 00:00 hrs en que empieza este periodo. Ejemplo 720 significa que empezará a operar desde las 720/60 = 12 hrs.
+              toMinute:
+                type: number
+                description: Minutos desde las 00:00 hrs en que termina este periodo. Ejemplo 960 significa que terminará de operar a las 960/60 = 16 hrs.
+              specialPeriods:
+                type: array
+                description: Periodos especiales
+              timezone:
+                type: string
+                description: Zona horaria
+              availableStateValidUntil:
+                type: string
+                description: Fecha de validez del estado de disponibilidad
+              isAvailableNow:
+                type: boolean
+                description: Indica si la tienda está disponible ahora
+              updatedCacheAt:
+                type: string
+                description: Fecha de actualización del estado de disponibilidad
+    itemSchema:
+      type: object
+      properties:
+        product:
+          type: object
+          $ref: '#/components/schemas/productSchema'
+        unitPrice:
+          type: number
+          description: Precio unitario
+        baseUnitPrice:
+          type: number
+          description: Precio unitario base
+        productPrice:
+          type: number
+          description: Precio del producto
+        baseProductPrice:
+          type: number
+          description: Precio del producto base
+        amount:
+          type: number
+          description: Cantidad
+        comment:
+          type: string
+          description: Comentario
+        modifiers:
+          type: array
+          description: Modificadores
+        options:
+          type: array
+          description: Opciones
+    productSchema:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del producto
+        name:
+          type: string
+          description: Nombre del producto
+        externalId:
+          type: string
+          description: ID externo del producto
+    devolutionSchema:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la devolución
+        amount:
+          type: number
+          description: Monto de la devolución
+        completedAt:
+          type: string
+          format: date-time
+          description: Fecha de completación de la devolución
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación de la devolución
+    deliverySchema:
+      type: object
