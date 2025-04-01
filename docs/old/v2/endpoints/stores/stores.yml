@@ -80,6 +80,85 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/storeResult'
+  /stores/{id}/schedule:
+    patch:
+      tags:
+        - store
+      security:
+        - bearerAuth: []
+      summary: Actualizar horarios
+      description: Actualiza los horarios de un local específico  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scheduleSchema'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/storeResult'
+  /stores/{id}/temporaryCloseStore:
+    patch:
+      tags:
+        - store
+      security:
+        - bearerAuth: []
+      summary: Cierre temporal del local
+      description: Cierra temporalmente un local
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                closedUntilDate:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/storeResult'
+  /stores/{id}/currentPreparationDuration:
+    patch:
+      tags:
+        - store
+      security:
+        - bearerAuth: []  
+      summary: Actualizar tiempo de preparación
+      description: Actualiza el tiempo de preparación de un local
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: ID del local
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                currentPreparationDuration:
+                  type: number
+                  description: Tiempo de preparación en minutos.
+                  example: 10
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/storeResult'
 components:
   securitySchemes:
     bearerAuth:
@@ -205,3 +284,35 @@ components:
               type: string
               description: Zona horaria.
               example: America/Santiago
+    scheduleSchema:
+      type: object
+      properties:
+        schedule:
+          type: object
+          properties:
+            closedDays:
+              type: array
+              description: Fechas exactas cuando esta cerrado (como feriados).
+              items:
+                type: string
+                format: date-time
+            openPeriods:
+              type: array
+              description: Un arreglo con los periodos de apertura.
+              items:
+                type: object
+                properties:
+                  daysOfWeek:
+                    type: array
+                    description:  Un arreglo con los días de la semana en que este periodo aplica. Lunes es 1 y domingo es 7.
+                    items:
+                      type: number
+                      example: [1, 2, 3, 4, 5, 6, 7]
+                  fromMinute:
+                    type: number
+                    description: Minutos desde las 12 de la mañana en que empieza este periodo.
+                    example: 480
+                  toMinute:
+                    type: number
+                    description: Minutos desde las 12 de la mañana en que termina este periodo.
+                    example: 1200

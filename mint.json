@@ -238,7 +238,8 @@
 						"docs/old/v2/endpoints/orders/activateDelivery",
 						"docs/old/v2/endpoints/orders/setOrderManagedDelivery",
 						"docs/old/v2/endpoints/orders/updateOrderStatus",
-						"docs/old/v2/endpoints/orders/setDeliveryVerificationCode"
+						"docs/old/v2/endpoints/orders/setDeliveryVerificationCode",
+						"docs/old/v2/endpoints/orders/pendingOrders"
 					]
 				},
 				{
@@ -257,7 +258,30 @@
 					"pages": [
 						"docs/old/v2/endpoints/stores/get",
 						"docs/old/v2/endpoints/stores/getStore",
-						"docs/old/v2/endpoints/stores/patch"
+						"docs/old/v2/endpoints/stores/patch",
+						"docs/old/v2/endpoints/stores/schedule",
+						"docs/old/v2/endpoints/stores/temporaryCloseStore",
+						"docs/old/v2/endpoints/stores/currentPreparationDuration"
+					]
+				},
+				{
+					"group": "Ultima milla",
+					"pages": [
+						"docs/old/v2/endpoints/deliveries/createDelivery",
+						"docs/old/v2/endpoints/deliveries/get",
+						"docs/old/v2/endpoints/deliveries/cancelDelivery",
+						"docs/old/v2/endpoints/deliveries/createExternalDelivery"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/old/v2/endpoints/webhooks/introduction",
+						"docs/old/v2/endpoints/webhooks/newOrder",
+						"docs/old/v2/endpoints/webhooks/orderStatusUpdated",
+						"docs/old/v2/endpoints/webhooks/orderItemsUpdated",
+						"docs/old/v2/endpoints/webhooks/deliveryUpdated",
+						"docs/old/v2/endpoints/webhooks/processStatusUpdated"
 					]
 				}
 			]
