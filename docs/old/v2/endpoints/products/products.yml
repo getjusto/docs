@@ -118,6 +118,7 @@ paths:
                   status:
                     type: string
                     description: Estado de la operación
+                    example: ok
                   data:
                     type: boolean
                     description: Resultado de la operación
@@ -159,9 +160,11 @@ paths:
                   status:
                     type: string
                     description: Estado de la operación
+                    example: ok
                   data:
                     type: boolean
                     description: Resultado de la operación
+                    example: true
         '400':
           description: Access token is missing or invalid
   /products/setItemsStock:
@@ -193,6 +196,7 @@ paths:
                   status: 
                     type: string
                     description: Estado de la operacion.
+                    example: ok
                   data:
                     type: array
                     items:

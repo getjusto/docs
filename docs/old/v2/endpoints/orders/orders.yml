@@ -21,9 +21,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/orderResultGet'
+                type: object  
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/orderResultGet'
   /orders/{id}:
     get:
       tags:
@@ -36,7 +43,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/orderResultGet'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'
   /orders/{id}/setOrderFlagColor:
     post:
       tags:
@@ -60,7 +74,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/orderResultGet'                
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok 
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'                
   /orders/{id}/rejectOrder:
     post:
       tags:
@@ -99,7 +120,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/orderResultGet'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'
   /orders/{id}/acceptOrder:
     post:
       tags:
@@ -188,7 +216,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/orderResultGet'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'
         '400':
           description: Access token is missing or invalid 
   /orders/{id}/updateOrderStatus:
@@ -221,7 +256,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/orderResultGet'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok 
+                  data:
+                    $ref: '#/components/schemas/orderResultGet'
         '400':
           description: Access token is missing or invalid
   /orders/{id}/setDeliveryVerificationCode:
@@ -259,18 +301,22 @@ paths:
                   status:
                     type: string
                     description: Estado de la operación
+                    example: ok
                   data:
                     type: object
                     properties:
                       message:
                         type: string
                         description: Mensaje de la operación
+                        example: "Delivery verification code set successfully"
                       orderId:
                         type: string
                         description: ID de la orden
+                        example: "1234567890"
                       deliveryVerificationCode:
                         type: string
                         description: Código de verificación
+                        example: "123456"
         '400':
           description: Access token is missing or invalid
 

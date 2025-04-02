@@ -21,7 +21,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/clientsResultGet'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/clientsResultGet'
   /clients/{id}:
     get:
       tags:
@@ -41,7 +49,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/clientResultGet'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data: 
+                    type: object
+                    $ref: '#/components/schemas/clientResultGet'
   /clients/addPoints:
     post:
       tags:
@@ -70,17 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Resultado de la operación
-                  data:
-                    type: object
-                    properties:
-                      pointsBalance:
-                        type: number
-                        description: Nuevo saldo de puntos del cliente
+                $ref: '#/components/schemas/addPointsResult'
 components:
   securitySchemes:
     bearerAuth:
@@ -150,6 +156,52 @@ components:
           type: boolean
           description: Indica si el cliente tiene habilitado el correo marketing
     
+    addPointsResult:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Resultado de la operación
+          example: ok
+        data: 
+          type: object
+          properties:
+            amount:
+              type: number
+              description: Cantidad de puntos agregados
+              example: 1000
+            websiteId:
+              type: string
+              description: Identificador del sitio web
+              example: ErCkmcyCEovseJq5E
+            date:
+              type: string
+              format: date-time
+              description: Fecha de la operación  
+              example: 2022-03-01T13:18:59.381Z
+            balance:
+              type: number
+              description: Cantidad de puntos agregados
+              example: 5026
+            user:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  description: Identificador del cliente
+                  example: YdhZfJzvD2atjXeED
+                email:
+                  type: string
+                  description: Email del cliente
+                  example: jdoe@gmail.com
+                fullName:
+                  type: string
+                  description: Nombre del cliente
+                  example: John  Doe
+                phone:
+                  type: string
+                  description: Teléfono del cliente
+                  example: "+56912345678"
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid

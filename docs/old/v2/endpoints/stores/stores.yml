@@ -58,7 +58,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/storeResult'  
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok 
+                  data:
+                    $ref: '#/components/schemas/storeResult'  
   /stores/{id}:
     get:
       tags:
@@ -79,7 +86,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/storeResult'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data: 
+                    $ref: '#/components/schemas/storeResult'
   /stores/{id}/schedule:
     patch:
       tags:
@@ -100,7 +114,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/storeResult'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok 
+                  data:
+                    $ref: '#/components/schemas/storeResult'
   /stores/{id}/temporaryCloseStore:
     patch:
       tags:
@@ -125,7 +146,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/storeResult'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok 
+                  data:
+                    $ref: '#/components/schemas/storeResult'
   /stores/{id}/currentPreparationDuration:
     patch:
       tags:
@@ -158,7 +186,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/storeResult'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/storeResult'
 components:
   securitySchemes:
     bearerAuth:
