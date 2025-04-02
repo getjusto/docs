@@ -365,15 +365,18 @@ components:
         status:
           type: string
           description: Estado de la cancelación.
+          example: ok
         data:
           type: object
           properties:
             deliveryId:
               type: string
               description: ID de la entrega.
+              example: xabAso2p3pKkLMTuz
             externalId:
               type: string
               description: ID externo de la entrega.
+              example: 123456
     externalDeliverySchema:
       type: object
       properties:
