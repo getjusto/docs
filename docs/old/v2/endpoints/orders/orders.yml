@@ -31,6 +31,39 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/orderResultGet'
+  /orders/pendingOrders:
+    get:
+      tags:
+        - order
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeIds:
+                  type: array
+                  items:
+                    type: string
+                    description: ID de la tienda
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object  
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/orderResultGet'
   /orders/{id}:
     get:
       tags:
@@ -51,8 +84,8 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/orderResultGet'
-  /orders/{id}/setOrderFlagColor:
-    post:
+  /orders/{id}/orderFlagColor:
+    patch:
       tags:
         - order
       security:
@@ -186,7 +219,7 @@ paths:
                     $ref: '#/components/schemas/orderResultGet'                    
         '400':
           description: Access token is missing or invalid
-  /orders/{id}/setOrderManagedDelivery:
+  /orders/{id}/orderManagedDelivery:
     post:
       tags:
         - order
@@ -226,8 +259,8 @@ paths:
                     $ref: '#/components/schemas/orderResultGet'
         '400':
           description: Access token is missing or invalid 
-  /orders/{id}/updateOrderStatus:
-    post:
+  /orders/{id}/orderStatus:
+    patch:
       tags:
         - order
       security:
@@ -266,7 +299,7 @@ paths:
                     $ref: '#/components/schemas/orderResultGet'
         '400':
           description: Access token is missing or invalid
-  /orders/{id}/setDeliveryVerificationCode:
+  /orders/{id}/deliveryVerificationCode:
     post:
       tags:
         - order

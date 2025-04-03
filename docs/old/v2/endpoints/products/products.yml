@@ -56,78 +56,6 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/productResultGet'
-  /products/addOutOfStockItem:
-    post:
-      tags:
-        - product
-      summary: Agregar item agotado
-      description: Agrega un item agotado a un local en específico
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - storeId
-                - productId
-                - untilDate
-                - type
-              properties:
-                storeId:
-                  type: string
-                  description: ID del local
-                productId:
-                  type: string
-                  description: ID del producto
-                untilDate:
-                  type: string
-                  description: Fecha de agotamiento
-                type:
-                  type: string
-                  description: Tipo de producto
-      responses:
-        '200':
-          description: success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/productResultGet'
-        '400':
-          description: Access token is missing or invalid
-  /products/deleteOutOfStockItem/{id}:
-    delete:
-      tags:
-        - product
-      summary: Eliminar item agotado
-      description: Elimina un item agotado de un local en específico  
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID del item agotado
-      responses:  
-        '200':
-          description: success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la operación
-                    example: ok
-                  data:
-                    type: boolean
-                    description: Resultado de la operación
-                example:
-                  status: ok
-                  data: true
-        '400':
-          description: Access token is missing or invalid
-  /products/deleteOutOfStockItems:
     delete:
       tags:
         - product
@@ -167,8 +95,79 @@ paths:
                     example: true
         '400':
           description: Access token is missing or invalid
-  /products/setItemsStock:
+  /products/outOfStockItem:
     post:
+      tags:
+        - product
+      summary: Agregar item agotado
+      description: Agrega un item agotado a un local en específico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - storeId
+                - productId
+                - untilDate
+                - type
+              properties:
+                storeId:
+                  type: string
+                  description: ID del local
+                productId:
+                  type: string
+                  description: ID del producto
+                untilDate:
+                  type: string
+                  description: Fecha de agotamiento
+                type:
+                  type: string
+                  description: Tipo de producto
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productResultGet'
+        '400':
+          description: Access token is missing or invalid
+  /products/outOfStockItem/{id}:
+    delete:
+      tags:
+        - product
+      summary: Eliminar item agotado
+      description: Elimina un item agotado de un local en específico  
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del item agotado
+      responses:  
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: ok
+                  data:
+                    type: boolean
+                    description: Resultado de la operación
+                example:
+                  status: ok
+                  data: true
+        '400':
+          description: Access token is missing or invalid 
+  /products/itemsStock:
+    patch:
       tags:
         - product
       summary: Definir stock de productos
