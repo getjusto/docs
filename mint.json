@@ -205,6 +205,7 @@
 			"pages": [
 				"docs/old/v2/introduction",
 				"docs/old/v2/authentication",
+				"docs/old/v2/structure",
 				{
 					"group": "Menú",
 					"pages": [
