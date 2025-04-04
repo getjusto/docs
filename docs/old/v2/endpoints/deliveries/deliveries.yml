@@ -28,6 +28,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deliveryResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /deliveries/{id}:
     get:
       tags:
@@ -47,7 +77,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deliveryResult' 
+                $ref: '#/components/schemas/deliveryResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized 
   /deliveries/{id}/cancelDelivery:
     post:
       tags:
@@ -68,6 +128,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/cancelDeliveryResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /deliveries/createExternalDelivery:
     post:
       tags:
@@ -87,6 +177,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deliveryResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
 components:
   schemas:
     deliverySchema:

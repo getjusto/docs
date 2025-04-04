@@ -30,6 +30,36 @@ paths:
                   data:
                     type: object
                     $ref: '#/components/schemas/clientsResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /clients/{id}:
     get:
       tags:
@@ -58,6 +88,36 @@ paths:
                   data: 
                     type: object
                     $ref: '#/components/schemas/clientResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized 
   /clients/addPoints:
     post:
       tags:
@@ -87,6 +147,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/addPointsResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized 
 components:
   securitySchemes:
     bearerAuth:
@@ -116,7 +206,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/clientResultGet'
-
     clientResultGet:
       type: object
       properties:
@@ -154,8 +243,7 @@ components:
           description: Cantidad de puntos
         marketingEmailEnabled:
           type: boolean
-          description: Indica si el cliente tiene habilitado el correo marketing
-    
+          description: Indica si el cliente tiene habilitado el correo marketing 
     addPointsResult:
       type: object
       properties:
@@ -202,6 +290,3 @@ components:
                   type: string
                   description: Teléfono del cliente
                   example: "+56912345678"
-  responses:
-    UnauthorizedError:
-      description: Access token is missing or invalid

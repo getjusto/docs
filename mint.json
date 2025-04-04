@@ -231,8 +231,8 @@
 				{
 					"group": "Ordenes",
 					"pages": [
-						"docs/old/v2/endpoints/orders/get",
 						"docs/old/v2/endpoints/orders/orders",
+						"docs/old/v2/endpoints/orders/get",
 						"docs/old/v2/endpoints/orders/setOrderFlagColor",
 						"docs/old/v2/endpoints/orders/rejectOrder",
 						"docs/old/v2/endpoints/orders/acceptOrder",

@@ -31,6 +31,36 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/pendingOrders:
     get:
       tags:
@@ -64,6 +94,36 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/{id}:
     get:
       tags:
@@ -84,6 +144,36 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/{id}/orderFlagColor:
     patch:
       tags:
@@ -114,7 +204,37 @@ paths:
                     description: Resultado de la operación
                     example: ok 
                   data:
-                    $ref: '#/components/schemas/orderResultGet'                
+                    $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized                
   /orders/{id}/rejectOrder:
     post:
       tags:
@@ -161,6 +281,36 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/orderResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/{id}/acceptOrder:
     post:
       tags:
@@ -189,7 +339,35 @@ paths:
                   data:
                     $ref: '#/components/schemas/orderResultGet'                    
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/{id}/activateDelivery:
     post:
       tags:
@@ -218,7 +396,35 @@ paths:
                   data:
                     $ref: '#/components/schemas/orderResultGet'                    
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/{id}/orderManagedDelivery:
     post:
       tags:
@@ -258,7 +464,35 @@ paths:
                   data:
                     $ref: '#/components/schemas/orderResultGet'
         '400':
-          description: Access token is missing or invalid 
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized 
   /orders/{id}/orderStatus:
     patch:
       tags:
@@ -298,7 +532,35 @@ paths:
                   data:
                     $ref: '#/components/schemas/orderResultGet'
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /orders/{id}/deliveryVerificationCode:
     post:
       tags:
@@ -351,7 +613,35 @@ paths:
                         description: Código de verificación
                         example: "123456"
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
 
 components:
   securitySchemes:

@@ -26,6 +26,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/storeResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
     patch:
       tags:
         - store
@@ -65,7 +95,37 @@ paths:
                     description: Resultado de la operación
                     example: ok 
                   data:
-                    $ref: '#/components/schemas/storeResult'  
+                    $ref: '#/components/schemas/storeResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /stores/{id}:
     get:
       tags:
@@ -94,6 +154,36 @@ paths:
                     example: ok
                   data: 
                     $ref: '#/components/schemas/storeResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /stores/{id}/schedule:
     patch:
       tags:
@@ -122,6 +212,36 @@ paths:
                     example: ok 
                   data:
                     $ref: '#/components/schemas/storeResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /stores/{id}/temporaryCloseStore:
     patch:
       tags:
@@ -154,6 +274,36 @@ paths:
                     example: ok 
                   data:
                     $ref: '#/components/schemas/storeResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /stores/{id}/currentPreparationDuration:
     patch:
       tags:
@@ -194,6 +344,36 @@ paths:
                     example: ok
                   data:
                     $ref: '#/components/schemas/storeResult'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
 components:
   securitySchemes:
     bearerAuth:

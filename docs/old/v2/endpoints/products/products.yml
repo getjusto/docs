@@ -30,7 +30,35 @@ paths:
               schema: 
                 $ref: '#/components/schemas/productResultGet'
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /products/outOfStockItems:
     get:
       tags:
@@ -94,7 +122,35 @@ paths:
                     description: Resultado de la operación
                     example: true
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /products/outOfStockItem:
     post:
       tags:
@@ -132,7 +188,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/productResultGet'
         '400':
-          description: Access token is missing or invalid
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
   /products/outOfStockItem/{id}:
     delete:
       tags:
@@ -165,7 +249,35 @@ paths:
                   status: ok
                   data: true
         '400':
-          description: Access token is missing or invalid 
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized 
   /products/itemsStock:
     patch:
       tags:
@@ -309,52 +421,35 @@ paths:
                           type: integer
                           description: Valor numérico del stock.
         '400':
-          description: Error en la solicitud, validaciones fallidas
+          description: Error en la petición
           content:
             application/json:
               schema:
                 type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
                 properties:
                   status:
                     type: string
-                    description: Indicador de la solicitud con el valor.
+                    description: Resultado de la operación
+                    example: error  
                   error:
                     type: string
-                    description: Indicador de la razón del error.
-                  data:
-                    type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            items:
-                              type: object
-                              properties:
-                                storeId:
-                                  type: string
-                                  description: ID de la tienda asociada.
-                                productId:
-                                  type: string
-                                  description: ID del producto.
-                                modifierId:
-                                  type: string
-                                  description: ID del modificador.
-                                modifierOptionId:
-                                  type: string
-                                  description: ID de la opcion de modificador.
-                                type:
-                                  type: string
-                                  description: Tipo del producto.
-                                stock:
-                                  type: number
-                                  description: Cantidad de stock. 
-                            errors:
-                              items:
-                                type: string             
-        '401':
-          description: Access token is missing or invalid
+                    description: Mensaje de error
+                    example: Unauthorized
 
 components:
   schemas:
