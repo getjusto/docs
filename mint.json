@@ -257,7 +257,7 @@
 				{
 					"group": "Locales",
 					"pages": [
-						"docs/old/v2/endpoints/stores/get",
+						"docs/old/v2/endpoints/stores/getStores",
 						"docs/old/v2/endpoints/stores/getStore",
 						"docs/old/v2/endpoints/stores/patch",
 						"docs/old/v2/endpoints/stores/schedule",

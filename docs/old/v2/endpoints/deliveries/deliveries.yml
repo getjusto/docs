@@ -158,7 +158,7 @@ paths:
                     type: string
                     description: Mensaje de error
                     example: Unauthorized
-  /deliveries/createExternalDelivery:
+  /deliveries/externalDelivery:
     post:
       tags:
         - delivery
@@ -176,7 +176,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deliveryResult'
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/deliveryResult'
         '400':
           description: Error en la petición
           content:

@@ -84,6 +84,36 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/productResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized        
     delete:
       tags:
         - product
