@@ -155,9 +155,7 @@
 				},
 				{
 					"group": "Pagos",
-					"pages": [
-						"docs/crisp/endpoints/tabPayments/list-tab-payments"
-					]
+					"pages": ["docs/crisp/endpoints/tabPayments/list-tab-payments"]
 				}
 			]
 		},
@@ -207,6 +205,7 @@
 			"pages": [
 				"docs/old/v2/introduction",
 				"docs/old/v2/authentication",
+				"docs/old/v2/structure",
 				{
 					"group": "Menú",
 					"pages": [
@@ -220,6 +219,71 @@
 				{
 					"group": "Cupones",
 					"pages": ["docs/old/v2/endpoints/coupon/get"]
+				},
+				{
+					"group": "Clientes",
+					"pages": [
+						"docs/old/v2/endpoints/client/getClients",
+						"docs/old/v2/endpoints/client/get",
+						"docs/old/v2/endpoints/client/addPoints"
+					]
+				},
+				{
+					"group": "Ordenes",
+					"pages": [
+						"docs/old/v2/endpoints/orders/orders",
+						"docs/old/v2/endpoints/orders/get",
+						"docs/old/v2/endpoints/orders/setOrderFlagColor",
+						"docs/old/v2/endpoints/orders/rejectOrder",
+						"docs/old/v2/endpoints/orders/acceptOrder",
+						"docs/old/v2/endpoints/orders/activateDelivery",
+						"docs/old/v2/endpoints/orders/setOrderManagedDelivery",
+						"docs/old/v2/endpoints/orders/updateOrderStatus",
+						"docs/old/v2/endpoints/orders/setDeliveryVerificationCode",
+						"docs/old/v2/endpoints/orders/pendingOrders"
+					]
+				},
+				{
+					"group": "Productos",
+					"pages": [
+						"docs/old/v2/endpoints/products/getOutOfStockItems",
+						"docs/old/v2/endpoints/products/getStoresOutOfStockItems",
+						"docs/old/v2/endpoints/products/addOutOfStockItem",
+						"docs/old/v2/endpoints/products/deleteOutOfStockItem",
+						"docs/old/v2/endpoints/products/deleteOutOfStockItems",
+						"docs/old/v2/endpoints/products/setItemsStock"
+					]
+				},
+				{
+					"group": "Locales",
+					"pages": [
+						"docs/old/v2/endpoints/stores/getStores",
+						"docs/old/v2/endpoints/stores/getStore",
+						"docs/old/v2/endpoints/stores/patch",
+						"docs/old/v2/endpoints/stores/schedule",
+						"docs/old/v2/endpoints/stores/temporaryCloseStore",
+						"docs/old/v2/endpoints/stores/currentPreparationDuration"
+					]
+				},
+				{
+					"group": "Ultima milla",
+					"pages": [
+						"docs/old/v2/endpoints/deliveries/createDelivery",
+						"docs/old/v2/endpoints/deliveries/get",
+						"docs/old/v2/endpoints/deliveries/cancelDelivery",
+						"docs/old/v2/endpoints/deliveries/createExternalDelivery"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/old/v2/endpoints/webhooks/introduction",
+						"docs/old/v2/endpoints/webhooks/newOrder",
+						"docs/old/v2/endpoints/webhooks/orderStatusUpdated",
+						"docs/old/v2/endpoints/webhooks/orderItemsUpdated",
+						"docs/old/v2/endpoints/webhooks/deliveryUpdated",
+						"docs/old/v2/endpoints/webhooks/processStatusUpdated"
+					]
 				}
 			]
 		},

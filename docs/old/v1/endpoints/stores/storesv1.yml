@@ -10,7 +10,7 @@ tags:
     description: locales
 paths:
   /stores:
-    get:
+    post:
       tags:
         - stores
       security:

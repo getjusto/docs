@@ -1,0 +1,52 @@
+---
+title: Estructura
+description: ''
+---
+
+## Autenticación
+
+Justo utiliza [Token Based Authentication](https://www.w3.org/2001/sw/Europe/events/foaf-galway/papers/fp/token_based_authentication/) para la autenticación. Contáctate con tu ejectuvo para que active tu cuenta de desarrollador.
+
+La autenticación es esencial para proteger los recursos de la API. Este sistema usa tokens definidos por el usuario en el panel de administración.
+
+
+## Header de autenticación
+El token se envia en los headers usando el siguiente formato:
+```
+Authorization: Bearer `<token>`
+```
+
+Debes reemplazar `<token>` por el token que generaste.
+
+
+## Parámetros
+Todas las llamadas se realizan en POST enviando en el body un JSON con la información
+<CodeGroup>
+```js
+request({
+  method: 'POST',
+  uri: 'https://api.getjusto.com/api/v2/<method>',
+  headers: {
+    Authorization: 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: '{<data in json>}'
+})
+```
+</CodeGroup>
+
+## Respuestas
+Todas las respuestas estan en JSON y tienen siempre la misma estructura:
+```json
+{
+    "status": String,
+    "error": String,
+    "data": Object
+}
+```
+
+- status: Puede ser ok o error dependiendo del resultado.
+- error: Un mensaje explicando el error si es que ocurrió.
+- data: La respuesta del método.
+## Fechas
+Todas las fechas se enviarán y recibirán en formato [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) incluyendo la zona horaria.

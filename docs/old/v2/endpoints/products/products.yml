@@ -1,0 +1,570 @@
+openapi: 3.0.0
+info:
+  title: Order Endpoint API
+  version: 1.0.0
+servers:
+  - url: https://api.getjusto.com/api/v2
+    description: Production server
+tags:
+  - name: product
+    description: Todo lo relacionado a operar con productos
+paths:
+  /products/outOfStockItems/{storeId}:
+    get:
+      tags:
+        - product
+      summary: Obtener items agotados
+      description: Obtiene los items agotados de un local en específico 
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del local
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/productResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
+  /products/outOfStockItems:
+    get:
+      tags:
+        - product
+      summary: Obtener items agotados
+      description: Obtiene los items agotados de todos multiples locales
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - storeIds
+              properties:
+                storeIds:
+                  type: array
+                  items:
+                    type: string 
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/productResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized        
+    delete:
+      tags:
+        - product
+      summary: Eliminar items agotados
+      description: Elimina items agotados
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - items
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      outOfStockItemId:
+                        type: string
+                        description: ID del item agotado
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: ok
+                  data:
+                    type: boolean
+                    description: Resultado de la operación
+                    example: true
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
+  /products/outOfStockItem:
+    post:
+      tags:
+        - product
+      summary: Agregar item agotado
+      description: Agrega un item agotado a un local en específico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - storeId
+                - productId
+                - untilDate
+                - type
+              properties:
+                storeId:
+                  type: string
+                  description: ID del local
+                productId:
+                  type: string
+                  description: ID del producto
+                untilDate:
+                  type: string
+                  description: Fecha de agotamiento
+                type:
+                  type: string
+                  description: Tipo de producto
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productResultGet'
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
+  /products/outOfStockItem/{id}:
+    delete:
+      tags:
+        - product
+      summary: Eliminar item agotado
+      description: Elimina un item agotado de un local en específico  
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del item agotado
+      responses:  
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: ok
+                  data:
+                    type: boolean
+                    description: Resultado de la operación
+                example:
+                  status: ok
+                  data: true
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized 
+  /products/itemsStock:
+    patch:
+      tags:
+        - product
+      summary: Definir stock de productos
+      description: Este endpoint se utiliza para modificar el stock de un producto.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                oneOf:
+                  - title: Product Stock
+                    $ref: '#/components/schemas/setproduct'
+                  - title: Modifier Stock
+                    $ref: '#/components/schemas/setmodifier'
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    description: Estado de la operacion.
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: ID del item.
+                        store:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: ID de la tienda.
+                            name:
+                              type: string
+                              description: Nombre de la tienda.
+                            externalId:
+                              type: string
+                              description: ID externo de la tienda.
+                        modifier:    
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: ID del modicador.
+                            externalId:
+                              type: string
+                              description: ID externo del modicador.
+                            name:
+                              type: string
+                              description: Nombre del modificador.
+                        modifierOption:    
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: ID de la opcion de modificador.
+                            name:
+                              type: string
+                              description: Nombre de la opcion de modificador.
+                            externalId:
+                              type: string
+                              description: ID externo de la opcion de modificador.
+                        type:
+                          type: string
+                          description: Tipo de producto a agotar.
+                        websiteId:
+                          type: string
+                          description: ID de la pagina web.
+                        createAt:
+                          type: string
+                          format: date-time
+                          description: Fecha en la que se creo.
+                        stock:
+                          type: integer
+                          description: Valor numérico del stock.
+        '207':
+          description: Errores parciales
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Indicador de la solicitud con el valor.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: ID del item.
+                        store:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: ID de la tienda.
+                            name:
+                              type: string
+                              description: Nombre de la tienda.
+                            externalId:
+                              type: string
+                              description: ID externo de la tienda.
+                        modifier:    
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: ID del modificador.
+                            externalId:
+                              type: string
+                              description: ID externo del modificador.
+                            name:
+                              type: string
+                              description: Nombre del modificador.
+                        type:
+                          type: string
+                          description: Tipo de producto a agotar.
+                        websiteId:
+                          type: string
+                          description: ID de la pagina web.
+                        createAt:
+                          type: string
+                          format: date-time
+                          description: Fecha en la que se creo.
+                        stock:
+                          type: integer
+                          description: Valor numérico del stock.
+        '400':
+          description: Error en la petición
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error
+                  error:
+                    type: string  
+                    description: Mensaje de error
+                    example: Error en la petición
+        '401':
+          description: Token inválido
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Resultado de la operación
+                    example: error  
+                  error:
+                    type: string
+                    description: Mensaje de error
+                    example: Unauthorized
+
+components:
+  schemas:
+    productResultGet:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Estado de la operación
+          example: ok
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/productDetails'
+    productDetails:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del producto
+        type:
+          type: string
+          description: Tipo de producto
+        websiteId:
+          type: string
+          description: ID del sitio web
+        productId:
+          type: string
+          description: ID del producto
+        createdAt:
+          type: string
+          description: Fecha de creación
+          format: date-time
+        until:
+          type: string
+          description: Fecha de agotamiento
+          format: date-time
+        untilDate:
+          type: string
+          description: Fecha de agotamiento
+          format: date-time  
+    setproduct:
+      type: object
+      properties:
+        storeId:
+          type: string
+          description: ID del local. Se puede utilizar el `externalId`.
+        type:
+          type: string
+          description: Tipo de producto. Debe ser `product`.
+          enum: ['product', 'modifier']
+        productId:
+          type: string
+          description: ID del Producto. Se puede utilizar el `externalId`.
+        stock:
+          type: integer
+          description:  Valor numérico del stock.
+      required:
+        - storeId
+        - type
+        - productId
+        - stock
+    setmodifier:
+      type: object
+      properties:
+        storeId:
+          type: string
+          description: ID del local. Se puede utilizar el `externalId`.
+        type:
+          type: string
+          description: Tipo de producto. Debe ser `modifier`.
+          enum: ['product','modifier']
+        modifierId:
+          type: string
+          description: ID del Modificador. Se puede utilizar el `externalId`.
+        modifierOptionId:
+          type: string
+          description: ID de la opción del Modificador. Se puede utilizar el `externalId`.
+        stock:
+          type: integer
+          description:  Valor numérico del stock.
+      required:
+        - storeId
+        - type
+        - modifierId
+        - modifierOptionId
+        - stock
+    

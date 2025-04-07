@@ -1,0 +1,73 @@
+---
+title: "Crear solicitud de despacho externo"
+description: "Usa este metodo para crear una solicitud de despacho externo"
+openapi: "Post /deliveries/externalDelivery"
+---
+
+### Descripción
+
+Este método posibilita la creación de una solicitud de despacho para el traslado de un pedido entre dos puntos, sin que el punto de origen sea necesariamente la tienda. 
+
+# Ejemplo
+
+
+```json
+{
+  "originAddress" : {
+    "latitude": "-33.403961",
+    "longitude": "-70.573359",
+    "addressLine1": "Rosario Norte 660",
+    "addressLine2": "Oficina 192",
+    "placePhone" : "+56912345678",
+    "placeName": "Juan Perez"
+  },
+  "destinationAddress" : {
+    "latitude": "-33.412449",
+    "longitude": "-70.574669",
+    "addressLine1": "Neveria 5092",
+    "addressLine2": "Dpto 144",
+    "placePhone": "+56987654321",
+    "placeName": "Javier Diaz"
+  },
+  "storeId": "Li4eEa3W2hiuGGCFa",
+  "externalId": "P13G3",
+  "tipAmount": 998,
+  "expectedDate": "2023-07-24T22:15:26Z",
+  "contents": [
+    {
+      "quantity": 1,
+      "name": "Pizza",
+      "description": "Extras: Bebida 1.5lt",
+      "unitPrice": 4000
+    }
+  ]
+}
+```
+
+### Respuestas
+
+#### 200 - Éxito
+```json
+{
+  "status": "ok",
+  "data": {
+    <Delivery>
+  }
+}
+```
+
+#### 400 - Error en la petición
+```json
+{
+  "status": "error",
+  "error": "Error en la petición"
+}
+```
+
+#### 401 - Token inválido
+```json
+{
+  "status": "error",
+  "error": "Unauthorized"
+}
+```

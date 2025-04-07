@@ -1,0 +1,36 @@
+---
+title: "Cancelar despacho"
+description: "Usa este metodo para cancelar el despacho"
+openapi: Post /deliveries/{id}/cancelDelivery
+---
+
+### Descripción
+
+Este método es esencial para la gestión de la logística de pedidos, puesto que permite la cancelación de despachos y la adaptación a cambios o imprevistos. Su integración mejora la eficiencia y la satisfacción del cliente.
+
+# Nota 
+Solamente se pueden cancelar despachos que no estén activos o que no hayan completado el punto 1. En caso contrario, el método devolverá un error
+```json
+{
+    "status": "error",
+    "error": "El pedido no se puede cancelar porque esta activo"
+}
+```
+
+## Ejemplo
+
+```json
+{
+  "deliveryId": "gAMR9R63yaRd5xmBK",
+  "externalId": "P13G3-extra"
+}
+```
+### Respuesta
+```json
+{
+  "status": "ok",
+  "data": {
+    <canceledDeliveries>
+  }
+}
+```
