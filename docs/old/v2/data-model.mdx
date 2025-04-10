@@ -1,0 +1,115 @@
+---
+title: Modelo de datos de Justo
+description: ""
+---
+
+El modelo de datos de Justo está diseñado para manejar la complejidad de los menús de restaurantes de manera eficiente y escalable. En esta sección, explicaremos los conceptos fundamentales y cómo se relacionan entre sí.
+
+## El Catálogo Global
+
+En Justo, existe un catálogo global que contiene todos los elementos base de una marca:
+
+- **Categorías**: Agrupaciones lógicas de productos (ej: Entradas, Platos Principales, Postres)
+- **Productos**: Los items base que se pueden vender (ej: Hamburguesa Clásica, Pizza Margarita)
+- **Modificadores**: Grupos de opciones que se pueden aplicar a productos (ej: Tamaño, Temperatura)
+- **Opciones**: Las variantes específicas dentro de un modificador (ej: Grande, Mediano, Pequeño)
+
+Este catálogo es compartido por todos los locales de una marca, asegurando consistencia en la oferta.
+
+## El Menú como Agregación
+
+Un menú en Justo es una agregación del catálogo global que define qué oferta se presenta a los comensales (eaters) y bajo qué condiciones. Además de los precios, un menú permite configurar:
+
+1. **Disponibilidad por Local**:
+
+   - Cada local puede tener su propio menú con precios específicos
+   - Permite adaptar la oferta a las características de cada establecimiento
+   - Ejemplo: Un local en zona turística puede tener precios diferentes a uno en zona residencial
+
+2. **Disponibilidad Temporal**:
+
+   - Los menús pueden estar activos en horarios específicos
+   - Permite crear menús especiales para diferentes momentos del día
+   - Ejemplos:
+     - Menú de Desayuno (6:00 - 11:00)
+     - Menú de Almuerzo (11:00 - 16:00)
+     - Menú de Cena (16:00 - 23:00)
+
+3. **Configuración de la Oferta**:
+   - Selección de productos disponibles del catálogo
+   - Definición de precios específicos
+   - Configuración de visibilidad y disponibilidad
+   - Personalización de la presentación para los comensales
+
+El menú actúa como una capa de configuración sobre el catálogo global, permitiendo:
+
+- Adaptar la oferta a diferentes contextos
+- Gestionar precios de manera flexible
+- Controlar la disponibilidad temporal
+- Personalizar la experiencia del comensal
+
+## Ejemplo Práctico
+
+Imaginemos una cadena de hamburguesas:
+
+- **En el Catálogo Global**:
+  - Producto: "Hamburguesa Clásica"
+  - Modificador: "Tamaño"
+    - Opciones: "Grande", "Mediano", "Pequeño"
+- **En el Menú del Local A**:
+  - Hamburguesa Clásica (Grande): $10
+  - Hamburguesa Clásica (Mediano): $8
+  - Hamburguesa Clásica (Pequeño): $6
+
+## Ventajas de este Modelo
+
+1. **Consistencia**: El catálogo asegura que todos los elementos sean consistentes en toda la marca
+2. **Flexibilidad**: Cada local puede tener su propio menú con precios específicos
+3. **Mantenimiento**: Los cambios en el catálogo se reflejan automáticamente en todos los menús
+4. **Eficiencia**: No hay duplicación de datos entre locales
+
+## Endpoints de Menú
+
+Los endpoints de menú (`/menu`) están diseñados para facilitar la operación completa del catálogo y los menús de un restaurante. Una de las características más importantes es que permiten manejar tanto la estructura del catálogo como los precios en un solo paso.
+
+Por ejemplo, cuando necesitas:
+
+- Cambiar el nombre de un producto en el catálogo
+- Modificar las opciones disponibles en el catálogo
+- Actualizar los precios en un menú específico
+
+Todo esto se puede realizar a través de una única operación con los endpoints de menú. Esto significa que:
+
+1. **Operaciones Unificadas**: No necesitas hacer múltiples llamadas para actualizar diferentes aspectos del catálogo y los menús
+2. **Consistencia Garantizada**: Los cambios se aplican de manera atómica, asegurando que el catálogo y los precios siempre estén sincronizados
+3. **Eficiencia Operativa**: Reduce la complejidad de las operaciones de mantenimiento
+
+Los endpoints de menú te permiten:
+
+- Obtener la estructura completa del catálogo y los menús
+- Crear nuevos menús basados en el catálogo
+- Modificar menús existentes
+- Actualizar precios y disponibilidad
+- Gestionar la visibilidad de productos y opciones
+
+Para más detalles sobre cómo interactuar con estos endpoints, consulta la sección de [Endpoints de Menú](/docs/old/v2/endpoints/menu).
+
+**Limitaciones del Catálogo Centralizado**
+
+El modelo de catálogo centralizado de Justo tiene una limitación importante: no permite personalizar los datos de los elementos del catálogo para menús específicos. Esto significa que:
+
+- No puedes tener nombres diferentes para un mismo producto en diferentes menús
+- No puedes asignar categorías diferentes a un producto según el menú
+- No puedes modificar las opciones de un modificador para un menú específico
+
+Por ejemplo, si necesitas que una "Pizza Margarita" se llame "Pizza Clásica" en un menú específico, o que aparezca en la categoría "Especialidades" en lugar de "Pizzas", esto no es posible directamente.
+
+**Solución Alternativa**
+
+En caso de necesitar este tipo de personalizaciones, una solución posible es:
+
+1. Crear una copia del producto en el catálogo global con el nombre o configuración especial
+2. Asociar esta nueva versión solo a los menús que requieren la personalización
+3. Mantener el producto original para los demás menús
+
+Esta solución permite mantener la consistencia del catálogo mientras se logra la personalización deseada, aunque implica duplicar algunos elementos del catálogo. Lo que se puede hacer mientras tengan identificadores distintos.

@@ -1,368 +1,369 @@
 {
-	"$schema": "https://mintlify.com/schema.json",
-	"name": "Justo Docs",
-	"versions": ["v3", "v2", "v1"],
-	"logo": {
-		"dark": "/logo/logo-white.svg",
-		"light": "/logo/logo-dark.svg"
-	},
-	"favicon": "/favicon.png",
-	"colors": {
-		"primary": "#3b82f6",
-		"light": "#AE87FF",
-		"dark": "#0D001D",
-		"background": {
-			"dark": "#090014"
-		},
-		"anchors": {
-			"from": "#FF7F57",
-			"to": "#3b82f6"
-		}
-	},
-	"api": {
-		"auth": {
-			"method": "bearer"
-		},
-		"playground": {
-			"mode": "show"
-		}
-	},
-	"integrations": {
-		"intercom": "ohd982w5"
-	},
-	"primaryTab": {
-		"name": "Documentación"
-	},
-	"topbarLinks": [
-		{
-			"name": "Ayuda",
-			"url": "mailto:tecnologia@getjusto.com"
-		}
-	],
-	"topbarCtaButton": {
-		"name": "Justo",
-		"url": "https://getjusto.com"
-	},
-	"tabs": [
-		{
-			"name": "PDV",
-			"url": "docs/crisp"
-		},
-		{
-			"name": "Reservas",
-			"url": "docs/reservations"
-		},
-		{
-			"name": "Royalty",
-			"url": "docs/royalty"
-		},
-		{
-			"name": "Embedded Ordering",
-			"url": "docs/embedded_ordering"
-		}
-	],
-	"anchors": [
-		{
-			"name": "Developer Portal",
-			"icon": "code",
-			"url": "https://developers.getjusto.com"
-		}
-	],
-	"navigation": [
-		{
-			"group": "Códigos de canje",
-			"version": "v3",
-			"pages": [
-				"docs/royalty/endpoints/coinsRedeemCodes/get-redeem-code",
-				"docs/royalty/endpoints/coinsRedeemCodes/post-redeem-code",
-				"docs/royalty/endpoints/coinsRedeemCodes/delete-redeem-code"
-			]
-		},
-		{
-			"group": "Perfiles",
-			"version": "v3",
-			"pages": [
-				"docs/reservations/endpoints/storeProfiles/match-store-profiles"
-			]
-		},
-		{
-			"group": "Introducción",
-			"version": "v3",
-			"pages": ["docs/embedded_ordering/introduction"]
-		},
-		{
-			"group": "Onboarding",
-			"version": "v3",
-			"pages": ["docs/embedded_ordering/endpoints/auth/details"]
-		},
-		{
-			"group": "Pagos",
-			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/endpoints/payments/verify",
-				"docs/embedded_ordering/endpoints/payments/execute",
-				"docs/embedded_ordering/endpoints/payments/refund"
-			]
-		},
-		{
-			"group": "Notificaciones",
-			"version": "v3",
-			"pages": ["docs/embedded_ordering/endpoints/notifications/notify"]
-		},
-		{
-			"group": "Empezando",
-			"version": "v3",
-			"pages": [
-				"docs/main/introduction",
-				"docs/main/authentication",
-				{
-					"group": "Endpoints generales",
-					"pages": ["docs/main/endpoints/me"]
-				}
-			]
-		},
-		{
-			"group": "API Endpoints",
-			"version": "v3",
-			"pages": [
-				{
-					"group": "Cuentas",
-					"pages": [
-						"docs/crisp/endpoints/tabs/get-tab",
-						"docs/crisp/endpoints/tabs/list-tabs"
-					]
-				},
-				{
-					"group": "Turnos",
-					"pages": [
-						"docs/crisp/endpoints/shifts/get-active-shift",
-						"docs/crisp/endpoints/shifts/get-shift"
-					]
-				},
-				{
-					"group": "Inventario",
-					"pages": [
-						"docs/crisp/endpoints/inventory/get-current-inventory",
-						"docs/crisp/endpoints/inventory/list-ingredients"
-					]
-				},
-				{
-					"group": "Contabilidad",
-					"pages": [
-						"docs/crisp/endpoints/accounting/get-accounting-movement",
-						"docs/crisp/endpoints/accounting/list-accounting-movements"
-					]
-				},
-				{
-					"group": "Pagos",
-					"pages": ["docs/crisp/endpoints/tabPayments/list-tab-payments"]
-				}
-			]
-		},
-		{
-			"group": "Webhooks",
-			"version": "v3",
-			"pages": [
-				{
-					"group": "Cuenta",
-					"pages": [
-						"docs/crisp/webhooks/tab/created",
-						"docs/crisp/webhooks/tab/ready",
-						"docs/crisp/webhooks/tab/closed"
-					]
-				}
-			]
-		},
-		{
-			"group": "API de Canal de Ventas",
-			"version": "v3",
-			"pages": [
-				"docs/crisp/orders/introduction",
-				"docs/crisp/orders/authentication",
-				"docs/crisp/orders/demo",
-				{
-					"group": "Endpoints",
-					"pages": [
-						"docs/crisp/orders/endpoints/inject-an-order",
-						"docs/crisp/orders/endpoints/complete-an-order",
-						"docs/crisp/orders/endpoints/cancel-an-order"
-					]
-				},
-				{
-					"group": "Webhooks",
-					"pages": [
-						"docs/crisp/orders/webhooks/get-availability",
-						"docs/crisp/orders/webhooks/accept-order",
-						"docs/crisp/orders/webhooks/reject-order",
-						"docs/crisp/orders/webhooks/order-ready"
-					]
-				}
-			]
-		},
-		{
-			"group": "API V2.2",
-			"version": "v2",
-			"pages": [
-				"docs/old/v2/introduction",
-				"docs/old/v2/authentication",
-				"docs/old/v2/structure",
-				{
-					"group": "Menú",
-					"pages": [
-						"docs/old/v2/endpoints/menu/head",
-						"docs/old/v2/endpoints/menu/get",
-						"docs/old/v2/endpoints/menu/post",
-						"docs/old/v2/endpoints/menu/put",
-						"docs/old/v2/endpoints/menu/patch"
-					]
-				},
-				{
-					"group": "Cupones",
-					"pages": ["docs/old/v2/endpoints/coupon/get"]
-				},
-				{
-					"group": "Clientes",
-					"pages": [
-						"docs/old/v2/endpoints/client/getClients",
-						"docs/old/v2/endpoints/client/get",
-						"docs/old/v2/endpoints/client/addPoints"
-					]
-				},
-				{
-					"group": "Ordenes",
-					"pages": [
-						"docs/old/v2/endpoints/orders/orders",
-						"docs/old/v2/endpoints/orders/get",
-						"docs/old/v2/endpoints/orders/setOrderFlagColor",
-						"docs/old/v2/endpoints/orders/rejectOrder",
-						"docs/old/v2/endpoints/orders/acceptOrder",
-						"docs/old/v2/endpoints/orders/activateDelivery",
-						"docs/old/v2/endpoints/orders/setOrderManagedDelivery",
-						"docs/old/v2/endpoints/orders/updateOrderStatus",
-						"docs/old/v2/endpoints/orders/setDeliveryVerificationCode",
-						"docs/old/v2/endpoints/orders/pendingOrders"
-					]
-				},
-				{
-					"group": "Productos",
-					"pages": [
-						"docs/old/v2/endpoints/products/getOutOfStockItems",
-						"docs/old/v2/endpoints/products/getStoresOutOfStockItems",
-						"docs/old/v2/endpoints/products/addOutOfStockItem",
-						"docs/old/v2/endpoints/products/deleteOutOfStockItem",
-						"docs/old/v2/endpoints/products/deleteOutOfStockItems",
-						"docs/old/v2/endpoints/products/setItemsStock"
-					]
-				},
-				{
-					"group": "Locales",
-					"pages": [
-						"docs/old/v2/endpoints/stores/getStores",
-						"docs/old/v2/endpoints/stores/getStore",
-						"docs/old/v2/endpoints/stores/patch",
-						"docs/old/v2/endpoints/stores/schedule",
-						"docs/old/v2/endpoints/stores/temporaryCloseStore",
-						"docs/old/v2/endpoints/stores/currentPreparationDuration"
-					]
-				},
-				{
-					"group": "Ultima milla",
-					"pages": [
-						"docs/old/v2/endpoints/deliveries/createDelivery",
-						"docs/old/v2/endpoints/deliveries/get",
-						"docs/old/v2/endpoints/deliveries/cancelDelivery",
-						"docs/old/v2/endpoints/deliveries/createExternalDelivery"
-					]
-				},
-				{
-					"group": "Webhooks",
-					"pages": [
-						"docs/old/v2/endpoints/webhooks/introduction",
-						"docs/old/v2/endpoints/webhooks/newOrder",
-						"docs/old/v2/endpoints/webhooks/orderStatusUpdated",
-						"docs/old/v2/endpoints/webhooks/orderItemsUpdated",
-						"docs/old/v2/endpoints/webhooks/deliveryUpdated",
-						"docs/old/v2/endpoints/webhooks/processStatusUpdated"
-					]
-				}
-			]
-		},
-		{
-			"group": "API V1",
-			"version": "v1",
-			"pages": [
-				"docs/old/v1/introduction",
-				"docs/old/v1/authentication",
-				{
-					"group": "Ultima milla",
-					"pages": [
-						"docs/old/v1/endpoints/deliveries/createDelivery",
-						"docs/old/v1/endpoints/deliveries/delivery",
-						"docs/old/v1/endpoints/deliveries/cancelDelivery",
-						"docs/old/v1/endpoints/deliveries/createExternalDelivery"
-					]
-				},
-				{
-					"group": "Locales",
-					"pages": [
-						"docs/old/v1/endpoints/stores/store",
-						"docs/old/v1/endpoints/stores/stores",
-						"docs/old/v1/endpoints/stores/updateStoreInformation",
-						"docs/old/v1/endpoints/stores/temporaryCloseStore",
-						"docs/old/v1/endpoints/stores/updateStoreSchedule",
-						"docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
-					]
-				},
-				{
-					"group": "Clientes",
-					"pages": [
-						"docs/old/v1/endpoints/client/client",
-						"docs/old/v1/endpoints/client/clients",
-						"docs/old/v1/endpoints/client/addPoints"
-					]
-				},
-				{
-					"group": "Metodos de stock",
-					"pages": [
-						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/outOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/updateStock"
-					]
-				},
-				{
-					"group": "Webhooks",
-					"pages": [
-						"docs/old/v1/endpoints/webhooks/introduction",
-						"docs/old/v1/endpoints/webhooks/newOrder",
-						"docs/old/v1/endpoints/webhooks/orderStatusUpdated",
-						"docs/old/v1/endpoints/webhooks/orderItemsUpdated",
-						"docs/old/v1/endpoints/webhooks/deliveryUpdated",
-						"docs/old/v1/endpoints/webhooks/processStatusUpdated"
-					]
-				},
-				{
-					"group": "Pedidos",
-					"pages": [
-						"docs/old/v1/endpoints/orders/rejectOrders",
-						"docs/old/v1/endpoints/orders/acceeptOrder",
-						"docs/old/v1/endpoints/orders/activateDelivery",
-						"docs/old/v1/endpoints/orders/order",
-						"docs/old/v1/endpoints/orders/setOrderFlagColor",
-						"docs/old/v1/endpoints/orders/setOrderManagedDelivery",
-						"docs/old/v1/endpoints/orders/updateOrderStatus",
-						"docs/old/v1/endpoints/orders/pendingOrders",
-						"docs/old/v1/endpoints/orders/orders",
-						"docs/old/v1/endpoints/orders/deliveryVerificationCode"
-					]
-				}
-			]
-		}
-	],
-	"footerSocials": {
-		"github": "https://github.com/getjusto",
-		"linkedin": "https://www.linkedin.com/company/getjusto"
-	}
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Justo Docs",
+  "versions": ["v3", "v2", "v1"],
+  "logo": {
+    "dark": "/logo/logo-white.svg",
+    "light": "/logo/logo-dark.svg"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#3b82f6",
+    "light": "#AE87FF",
+    "dark": "#0D001D",
+    "background": {
+      "dark": "#090014"
+    },
+    "anchors": {
+      "from": "#FF7F57",
+      "to": "#3b82f6"
+    }
+  },
+  "api": {
+    "auth": {
+      "method": "bearer"
+    },
+    "playground": {
+      "mode": "show"
+    }
+  },
+  "integrations": {
+    "intercom": "ohd982w5"
+  },
+  "primaryTab": {
+    "name": "Documentación"
+  },
+  "topbarLinks": [
+    {
+      "name": "Ayuda",
+      "url": "mailto:tecnologia@getjusto.com"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Justo",
+    "url": "https://getjusto.com"
+  },
+  "tabs": [
+    {
+      "name": "PDV",
+      "url": "docs/crisp"
+    },
+    {
+      "name": "Reservas",
+      "url": "docs/reservations"
+    },
+    {
+      "name": "Royalty",
+      "url": "docs/royalty"
+    },
+    {
+      "name": "Embedded Ordering",
+      "url": "docs/embedded_ordering"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Developer Portal",
+      "icon": "code",
+      "url": "https://developers.getjusto.com"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Códigos de canje",
+      "version": "v3",
+      "pages": [
+        "docs/royalty/endpoints/coinsRedeemCodes/get-redeem-code",
+        "docs/royalty/endpoints/coinsRedeemCodes/post-redeem-code",
+        "docs/royalty/endpoints/coinsRedeemCodes/delete-redeem-code"
+      ]
+    },
+    {
+      "group": "Perfiles",
+      "version": "v3",
+      "pages": [
+        "docs/reservations/endpoints/storeProfiles/match-store-profiles"
+      ]
+    },
+    {
+      "group": "Introducción",
+      "version": "v3",
+      "pages": ["docs/embedded_ordering/introduction"]
+    },
+    {
+      "group": "Onboarding",
+      "version": "v3",
+      "pages": ["docs/embedded_ordering/endpoints/auth/details"]
+    },
+    {
+      "group": "Pagos",
+      "version": "v3",
+      "pages": [
+        "docs/embedded_ordering/endpoints/payments/verify",
+        "docs/embedded_ordering/endpoints/payments/execute",
+        "docs/embedded_ordering/endpoints/payments/refund"
+      ]
+    },
+    {
+      "group": "Notificaciones",
+      "version": "v3",
+      "pages": ["docs/embedded_ordering/endpoints/notifications/notify"]
+    },
+    {
+      "group": "Empezando",
+      "version": "v3",
+      "pages": [
+        "docs/main/introduction",
+        "docs/main/authentication",
+        {
+          "group": "Endpoints generales",
+          "pages": ["docs/main/endpoints/me"]
+        }
+      ]
+    },
+    {
+      "group": "API Endpoints",
+      "version": "v3",
+      "pages": [
+        {
+          "group": "Cuentas",
+          "pages": [
+            "docs/crisp/endpoints/tabs/get-tab",
+            "docs/crisp/endpoints/tabs/list-tabs"
+          ]
+        },
+        {
+          "group": "Turnos",
+          "pages": [
+            "docs/crisp/endpoints/shifts/get-active-shift",
+            "docs/crisp/endpoints/shifts/get-shift"
+          ]
+        },
+        {
+          "group": "Inventario",
+          "pages": [
+            "docs/crisp/endpoints/inventory/get-current-inventory",
+            "docs/crisp/endpoints/inventory/list-ingredients"
+          ]
+        },
+        {
+          "group": "Contabilidad",
+          "pages": [
+            "docs/crisp/endpoints/accounting/get-accounting-movement",
+            "docs/crisp/endpoints/accounting/list-accounting-movements"
+          ]
+        },
+        {
+          "group": "Pagos",
+          "pages": ["docs/crisp/endpoints/tabPayments/list-tab-payments"]
+        }
+      ]
+    },
+    {
+      "group": "Webhooks",
+      "version": "v3",
+      "pages": [
+        {
+          "group": "Cuenta",
+          "pages": [
+            "docs/crisp/webhooks/tab/created",
+            "docs/crisp/webhooks/tab/ready",
+            "docs/crisp/webhooks/tab/closed"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API de Canal de Ventas",
+      "version": "v3",
+      "pages": [
+        "docs/crisp/orders/introduction",
+        "docs/crisp/orders/authentication",
+        "docs/crisp/orders/demo",
+        {
+          "group": "Endpoints",
+          "pages": [
+            "docs/crisp/orders/endpoints/inject-an-order",
+            "docs/crisp/orders/endpoints/complete-an-order",
+            "docs/crisp/orders/endpoints/cancel-an-order"
+          ]
+        },
+        {
+          "group": "Webhooks",
+          "pages": [
+            "docs/crisp/orders/webhooks/get-availability",
+            "docs/crisp/orders/webhooks/accept-order",
+            "docs/crisp/orders/webhooks/reject-order",
+            "docs/crisp/orders/webhooks/order-ready"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API V2.2",
+      "version": "v2",
+      "pages": [
+        "docs/old/v2/introduction",
+        "docs/old/v2/authentication",
+        "docs/old/v2/structure",
+        "docs/old/v2/data-model",
+        {
+          "group": "Menú",
+          "pages": [
+            "docs/old/v2/endpoints/menu/head",
+            "docs/old/v2/endpoints/menu/get",
+            "docs/old/v2/endpoints/menu/post",
+            "docs/old/v2/endpoints/menu/put",
+            "docs/old/v2/endpoints/menu/patch"
+          ]
+        },
+        {
+          "group": "Cupones",
+          "pages": ["docs/old/v2/endpoints/coupon/get"]
+        },
+        {
+          "group": "Clientes",
+          "pages": [
+            "docs/old/v2/endpoints/client/getClients",
+            "docs/old/v2/endpoints/client/get",
+            "docs/old/v2/endpoints/client/addPoints"
+          ]
+        },
+        {
+          "group": "Ordenes",
+          "pages": [
+            "docs/old/v2/endpoints/orders/orders",
+            "docs/old/v2/endpoints/orders/get",
+            "docs/old/v2/endpoints/orders/setOrderFlagColor",
+            "docs/old/v2/endpoints/orders/rejectOrder",
+            "docs/old/v2/endpoints/orders/acceptOrder",
+            "docs/old/v2/endpoints/orders/activateDelivery",
+            "docs/old/v2/endpoints/orders/setOrderManagedDelivery",
+            "docs/old/v2/endpoints/orders/updateOrderStatus",
+            "docs/old/v2/endpoints/orders/setDeliveryVerificationCode",
+            "docs/old/v2/endpoints/orders/pendingOrders"
+          ]
+        },
+        {
+          "group": "Productos",
+          "pages": [
+            "docs/old/v2/endpoints/products/getOutOfStockItems",
+            "docs/old/v2/endpoints/products/getStoresOutOfStockItems",
+            "docs/old/v2/endpoints/products/addOutOfStockItem",
+            "docs/old/v2/endpoints/products/deleteOutOfStockItem",
+            "docs/old/v2/endpoints/products/deleteOutOfStockItems",
+            "docs/old/v2/endpoints/products/setItemsStock"
+          ]
+        },
+        {
+          "group": "Locales",
+          "pages": [
+            "docs/old/v2/endpoints/stores/getStores",
+            "docs/old/v2/endpoints/stores/getStore",
+            "docs/old/v2/endpoints/stores/patch",
+            "docs/old/v2/endpoints/stores/schedule",
+            "docs/old/v2/endpoints/stores/temporaryCloseStore",
+            "docs/old/v2/endpoints/stores/currentPreparationDuration"
+          ]
+        },
+        {
+          "group": "Ultima milla",
+          "pages": [
+            "docs/old/v2/endpoints/deliveries/createDelivery",
+            "docs/old/v2/endpoints/deliveries/get",
+            "docs/old/v2/endpoints/deliveries/cancelDelivery",
+            "docs/old/v2/endpoints/deliveries/createExternalDelivery"
+          ]
+        },
+        {
+          "group": "Webhooks",
+          "pages": [
+            "docs/old/v2/endpoints/webhooks/introduction",
+            "docs/old/v2/endpoints/webhooks/newOrder",
+            "docs/old/v2/endpoints/webhooks/orderStatusUpdated",
+            "docs/old/v2/endpoints/webhooks/orderItemsUpdated",
+            "docs/old/v2/endpoints/webhooks/deliveryUpdated",
+            "docs/old/v2/endpoints/webhooks/processStatusUpdated"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API V1",
+      "version": "v1",
+      "pages": [
+        "docs/old/v1/introduction",
+        "docs/old/v1/authentication",
+        {
+          "group": "Ultima milla",
+          "pages": [
+            "docs/old/v1/endpoints/deliveries/createDelivery",
+            "docs/old/v1/endpoints/deliveries/delivery",
+            "docs/old/v1/endpoints/deliveries/cancelDelivery",
+            "docs/old/v1/endpoints/deliveries/createExternalDelivery"
+          ]
+        },
+        {
+          "group": "Locales",
+          "pages": [
+            "docs/old/v1/endpoints/stores/store",
+            "docs/old/v1/endpoints/stores/stores",
+            "docs/old/v1/endpoints/stores/updateStoreInformation",
+            "docs/old/v1/endpoints/stores/temporaryCloseStore",
+            "docs/old/v1/endpoints/stores/updateStoreSchedule",
+            "docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
+          ]
+        },
+        {
+          "group": "Clientes",
+          "pages": [
+            "docs/old/v1/endpoints/client/client",
+            "docs/old/v1/endpoints/client/clients",
+            "docs/old/v1/endpoints/client/addPoints"
+          ]
+        },
+        {
+          "group": "Metodos de stock",
+          "pages": [
+            "docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
+            "docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem",
+            "docs/old/v1/endpoints/StockMethods/deleteOutOfStockItems",
+            "docs/old/v1/endpoints/StockMethods/outOfStockItems",
+            "docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
+            "docs/old/v1/endpoints/StockMethods/updateStock"
+          ]
+        },
+        {
+          "group": "Webhooks",
+          "pages": [
+            "docs/old/v1/endpoints/webhooks/introduction",
+            "docs/old/v1/endpoints/webhooks/newOrder",
+            "docs/old/v1/endpoints/webhooks/orderStatusUpdated",
+            "docs/old/v1/endpoints/webhooks/orderItemsUpdated",
+            "docs/old/v1/endpoints/webhooks/deliveryUpdated",
+            "docs/old/v1/endpoints/webhooks/processStatusUpdated"
+          ]
+        },
+        {
+          "group": "Pedidos",
+          "pages": [
+            "docs/old/v1/endpoints/orders/rejectOrders",
+            "docs/old/v1/endpoints/orders/acceeptOrder",
+            "docs/old/v1/endpoints/orders/activateDelivery",
+            "docs/old/v1/endpoints/orders/order",
+            "docs/old/v1/endpoints/orders/setOrderFlagColor",
+            "docs/old/v1/endpoints/orders/setOrderManagedDelivery",
+            "docs/old/v1/endpoints/orders/updateOrderStatus",
+            "docs/old/v1/endpoints/orders/pendingOrders",
+            "docs/old/v1/endpoints/orders/orders",
+            "docs/old/v1/endpoints/orders/deliveryVerificationCode"
+          ]
+        }
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/getjusto",
+    "linkedin": "https://www.linkedin.com/company/getjusto"
+  }
 }
