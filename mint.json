@@ -157,6 +157,14 @@
           "group": "Pagos",
           "pages": ["docs/crisp/endpoints/tabPayments/list-tab-payments"]
         }
+        ,
+        {
+          "group": "Recuentos",
+          "pages": [
+            "docs/crisp/endpoints/audits/get-audit",
+            "docs/crisp/endpoints/audits/list-audits"
+          ]
+        }
       ]
     },
     {
