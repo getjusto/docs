@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://4883-190-44-208-177.ngrok-free.app/v3",
+      "url": "https://api.service.getjusto.com/v3",
       "description": "Production server"
     }
   ],
@@ -2625,6 +2625,12 @@
             "type": "string",
             "example": "t-sri-12345",
             "description": "Identificador de la bodega del ingrediente."
+          },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "La fecha en que se anuló el recuento."
           },
           "ingredients": {
             "type": "array",
