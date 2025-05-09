@@ -1146,6 +1146,66 @@
           }
         }
       },
+      "tabsAudit": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del recuento."
+          },
+          "storeId": {
+            "type": "string",
+            "example": "Li4eEa3W2hiuGGCFa",
+            "description": "El ID de la tienda al que pertenece el recuento."
+          },
+          "code": {
+            "type": "string",
+            "example": "AAAAA",
+            "description": "El código del recuento."
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "La fecha del recuento."
+          },
+          "stockRoomId": {
+            "type": "string",
+            "example": "t-sri-12345",
+            "description": "Identificador de la bodega del ingrediente."
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredientId": {
+                  "type": "string",
+                  "example": "ing-1234567890",
+                  "description": "El ID del ingrediente."
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Tomate",
+                  "description": "El nombre del ingrediente."
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 500,
+                  "description": "La cantidad del ingrediente en el recuento."
+                },
+                "unitOfMeasurement": {
+                  "type": "string",
+                  "example": "kg",
+                  "description": "La unidad de medida del ingrediente."
+                }
+              }
+            },
+            "description": "Lista de ingredientes incluidos en el recuento."
+          }
+        }
+      },
       "apiAuthorizationStatus": {
         "type": "object",
         "properties": {
