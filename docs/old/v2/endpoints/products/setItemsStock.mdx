@@ -19,7 +19,7 @@ Este método tiene como finalidad definir, de manera unitaria o múltiple, el st
 El siguiente request define con `stock = 9` al producto con ID `r5RZaWcBzzWz3WAnp`.
 
 ```json
-curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
+curl --location --request PATCH 'https://api.getjusto.com/api/v2/products/itemsStock' \
      --header 'Authorization: Bearer <API TOKEN>' \
      --header 'Content-Type: application/json' \
      --data-raw'{
@@ -35,7 +35,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 El siguiente request define con `stock = 9` al producto con ID `r5RZaWcBzzWz3WAnp` y con `stock = 45` al producto con ID `h67Hkjhusdf54JnaK`.
 
 ```json
-curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
+curl --location --request PATCH 'https://api.getjusto.com/api/v2/products/itemsStock' \
      --header 'Authorization: Bearer <API TOKEN>' \
      --header 'Content-Type: application/json' \
      --data-raw'[{
@@ -57,7 +57,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 El siguiente request define con `stock = 23` a la opción con ID `PG68HFqD7rGz6XGBe` del modificador con ID `gSnnm7XEWqKbNqNKd`.
 
 ```json
-curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
+curl --location --request PATCH 'https://api.getjusto.com/api/v2/products/itemsStock' \
      --header 'Authorization: Bearer <API TOKEN>' \
      --header 'Content-Type: application/json' \
      --data-raw '{
@@ -75,7 +75,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 El siguiente request define con `stock = 23` a la opción con ID `PG68HFqD7rGz6XGBe` del modificador con ID `gSnnm7XEWqKbNqNKd` y define con `stock = 50` a la opción con ID `Jhjk987lJklnAdxf9` del modificador con ID `pqMan54HyrC537Nn`.
 
 ```json
-curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
+curl --location --request PATCH 'https://api.getjusto.com/api/v2/products/itemsStock' \
      --header 'Authorization: Bearer <API TOKEN>' \
      --header 'Content-Type: application/json' \
      --data-raw '[{
@@ -98,7 +98,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 ### Ejemplo para definir stock de la opción de productos y modificadores simultáneamente
 
 ```json 
-curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockItem' \
+curl --location --request PATCH 'https://api.getjusto.com/api/v2/products/itemsStock' \
      --header 'Authorization: Bearer <API TOKEN>' \
      --header 'Content-Type: application/json' \
      --data-raw '[{
@@ -140,7 +140,7 @@ curl --location --request POST 'https://api.getjusto.com/api/v1/setOutOfStockIte
 
     - Cada vez que se ingrese una nueva orden que incorpore alguno de los stocks definidos, se descontará del stock hasta que quede el contador en 0. Cuando eso ocurra, se mostrará el stock de ese producto como agotado.
 
-    - Para dejar de que un producto o modificador dependa de un stock y aparezca siempre disponible, se debe hacer un request a [deleteOutOfStockItem](https://docs2.getjusto.com/docs/old/v2/endpoints/products/deleteOutOfStockItem) con el ID del stock.
+    - Para dejar de que un producto o modificador dependa de un stock y aparezca siempre disponible, se debe hacer un request a [deleteOutOfStockItem](/docs/old/v2/endpoints/products/deleteOutOfStockItem) con el ID del stock.
 
 
 # Respuestas
