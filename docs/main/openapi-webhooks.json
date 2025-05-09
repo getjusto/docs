@@ -1175,6 +1175,12 @@
             "example": "t-sri-12345",
             "description": "Identificador de la bodega del ingrediente."
           },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "La fecha en que se anuló el recuento."
+          },
           "ingredients": {
             "type": "array",
             "items": {
