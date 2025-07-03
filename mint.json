@@ -1,7 +1,7 @@
 {
 	"$schema": "https://mintlify.com/schema.json",
 	"name": "Justo Docs",
-	"versions": ["v3", "v2", "v1"],
+	"versions": ["v3", "v2"],
 	"defaultPage": "docs/old/v2/legacy-documentation",
 	"logo": {
 		"dark": "/logo/logo-white.svg",
@@ -286,79 +286,6 @@
 						"docs/crisp/orders/webhooks/accept-order",
 						"docs/crisp/orders/webhooks/reject-order",
 						"docs/crisp/orders/webhooks/order-ready"
-					]
-				}
-			]
-		},
-		{
-			"group": "API V1",
-			"version": "v1",
-			"pages": [
-				"docs/old/v1/introduction",
-				"docs/old/v1/authentication",
-				{
-					"group": "Ultima milla",
-					"pages": [
-						"docs/old/v1/endpoints/deliveries/createDelivery",
-						"docs/old/v1/endpoints/deliveries/delivery",
-						"docs/old/v1/endpoints/deliveries/cancelDelivery",
-						"docs/old/v1/endpoints/deliveries/createExternalDelivery"
-					]
-				},
-				{
-					"group": "Locales",
-					"pages": [
-						"docs/old/v1/endpoints/stores/store",
-						"docs/old/v1/endpoints/stores/stores",
-						"docs/old/v1/endpoints/stores/updateStoreInformation",
-						"docs/old/v1/endpoints/stores/temporaryCloseStore",
-						"docs/old/v1/endpoints/stores/updateStoreSchedule",
-						"docs/old/v1/endpoints/stores/setStoreCurrentPreparationDuration"
-					]
-				},
-				{
-					"group": "Clientes",
-					"pages": [
-						"docs/old/v1/endpoints/client/client",
-						"docs/old/v1/endpoints/client/clients",
-						"docs/old/v1/endpoints/client/addPoints"
-					]
-				},
-				{
-					"group": "Metodos de stock",
-					"pages": [
-						"docs/old/v1/endpoints/StockMethods/addOutOfStockItem",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItem",
-						"docs/old/v1/endpoints/StockMethods/deleteOutOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/outOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/setOutOfStockItems",
-						"docs/old/v1/endpoints/StockMethods/updateStock"
-					]
-				},
-				{
-					"group": "Webhooks",
-					"pages": [
-						"docs/old/v1/endpoints/webhooks/introduction",
-						"docs/old/v1/endpoints/webhooks/newOrder",
-						"docs/old/v1/endpoints/webhooks/orderStatusUpdated",
-						"docs/old/v1/endpoints/webhooks/orderItemsUpdated",
-						"docs/old/v1/endpoints/webhooks/deliveryUpdated",
-						"docs/old/v1/endpoints/webhooks/processStatusUpdated"
-					]
-				},
-				{
-					"group": "Pedidos",
-					"pages": [
-						"docs/old/v1/endpoints/orders/rejectOrders",
-						"docs/old/v1/endpoints/orders/acceeptOrder",
-						"docs/old/v1/endpoints/orders/activateDelivery",
-						"docs/old/v1/endpoints/orders/order",
-						"docs/old/v1/endpoints/orders/setOrderFlagColor",
-						"docs/old/v1/endpoints/orders/setOrderManagedDelivery",
-						"docs/old/v1/endpoints/orders/updateOrderStatus",
-						"docs/old/v1/endpoints/orders/pendingOrders",
-						"docs/old/v1/endpoints/orders/orders",
-						"docs/old/v1/endpoints/orders/deliveryVerificationCode"
 					]
 				}
 			]
