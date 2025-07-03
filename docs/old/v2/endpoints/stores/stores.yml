@@ -259,6 +259,7 @@ paths:
               properties:
                 closedUntilDate:
                   type: string
+                  description: Fecha hasta la que el local estará cerrado. Si se deja en null, el local volverá a estar disponible.
                   format: date-time
       responses:
         '200':
