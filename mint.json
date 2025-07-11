@@ -177,6 +177,13 @@
 			]
 		},
 		{
+			"group": "Reservas",
+			"version": "v3",
+			"pages": [
+				"docs/reservations/endpoints/reservations/reservations"
+			]
+		},
+		{
 			"group": "Introducción",
 			"version": "v3",
 			"pages": ["docs/embedded_ordering/introduction"]
