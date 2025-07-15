@@ -1333,7 +1333,7 @@
         }
       }
     },
-    "/reservations": {
+    "/reservations/reservation": {
       "post": {
         "summary": "Crear reserva",
         "requestBody": {
@@ -1440,6 +1440,236 @@
                     "data": {
                       "$ref": "#/components/schemas/reservationsReservation",
                       "description": "Reserva creada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservations/reservation/{reservationId}": {
+      "get": {
+        "summary": "Obtener reserva",
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^res-[a-zA-Z0-9]+$",
+              "description": "Identificador único de reserva",
+              "example": "res-abc123def456"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/reservationsReservation",
+                      "description": "Reserva obtenida"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar reserva",
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^res-[a-zA-Z0-9]+$",
+              "description": "Identificador único de reserva",
+              "example": "res-abc123def456"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Actualiza una reserva",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startsAt": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "Fecha de inicio de la reserva"
+                  },
+                  "partySize": {
+                    "type": "number",
+                    "example": 2,
+                    "description": "Tamaño de la reserva"
+                  }
+                },
+                "required": [
+                  "startsAt",
+                  "partySize"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/reservationsReservation",
+                      "description": "Reserva actualizada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar reserva",
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^res-[a-zA-Z0-9]+$",
+              "description": "Identificador único de reserva",
+              "example": "res-abc123def456"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/reservationsReservation",
+                      "description": "Reserva eliminada"
                     }
                   }
                 }
