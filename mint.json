@@ -170,17 +170,13 @@
 			]
 		},
 		{
-			"group": "Perfiles",
-			"version": "v3",
-			"pages": [
-				"docs/reservations/endpoints/storeProfiles/match-store-profiles"
-			]
-		},
-		{
 			"group": "Reservas",
 			"version": "v3",
 			"pages": [
-				"docs/reservations/endpoints/reservations/reservations"
+				"docs/reservations/endpoints/reservations/post-reservations",
+				"docs/reservations/endpoints/reservations/get-reservations",
+				"docs/reservations/endpoints/reservations/update-reservations",
+				"docs/reservations/endpoints/reservations/delete-reservations"
 			]
 		},
 		{
