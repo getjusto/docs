@@ -715,7 +715,10 @@ components:
           description: Monto a pagar
         deliveryFee:
           type: number
-          description: Cargo por entrega
+          description: Cargo por entrega con descuento aplicado
+        deliveryFeeWithoutDiscount:
+          type: number
+          description: Cargo por entrega antes de aplicar descuentos
         serviceFee:
           type: number
           description: Cargo por servicio
