@@ -176,7 +176,14 @@
 				"docs/reservations/endpoints/reservations/post-reservations",
 				"docs/reservations/endpoints/reservations/get-reservations",
 				"docs/reservations/endpoints/reservations/update-reservations",
-				"docs/reservations/endpoints/reservations/delete-reservations"
+				"docs/reservations/endpoints/reservations/delete-reservations",
+				{
+					"group": "Webhooks",
+					"version": "v3",
+					"pages": [
+						"docs/reservations/webhooks/reservation/created"
+					]
+				}
 			]
 		},
 		{
