@@ -15,6 +15,43 @@ paths:
         - order
       security:
         - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: string
+                  description: Un texto que se usa para filtrar por código de pedido o nombre del comprador
+                storesIds:
+                  type: array
+                  description: Un arreglo con el ID o ID externo de los locales
+                  items:
+                    type: string
+                fromDate:
+                  type: date
+                  format: date-time
+                  description: Incluír pedidos desde alguna fecha. Si no se incluye se toman todos los pedidos
+                toDate:
+                  type: date
+                  format: date-time
+                  description: Incluír pedidos hasta que fecha. Si no se incluye se toman todos los pedidos
+                orderStatuses:
+                  type: array
+                  description: Un arreglo, opcional. Muestra los pedidos que tengan estos estados (`pending`, `waiting`, `preparing`, `delivering`, `done`, `cancelled`, `scheduled`)
+                  items:
+                    type: string
+                useDeliverAt:
+                  type: boolean
+                  description: Verdadero o falso. Si es que se deja verdadero se van a ordenar y filtrar los pedidos por fecha de entrega, sino por fecha de creación
+                includeNotPaid:
+                  type: boolean
+                  description: Verdadero o falso. Si es verdadero se incluyen los pedidos con pago no completado (paymentStatus no done).
+                page:
+                  type: integer
+                  description: Página de los resultados
       responses:
         '200':
           description: success
