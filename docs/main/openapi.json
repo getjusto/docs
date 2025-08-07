@@ -3349,6 +3349,434 @@
           }
         }
       },
+      "ReservationServiceWebhook": {
+        "type": "object",
+        "title": "Service Webhook de Reservas",
+        "description": "Configuración de webhook para eventos de reservas",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "pattern": "^swh-[a-zA-Z0-9]{17}$",
+            "description": "ID único del webhook",
+            "example": "swh-xxxxxxxxxxxxxxxxx"
+          },
+          "apiKey": {
+            "type": "string",
+            "description": "Clave API asociada al webhook",
+            "example": "api_key_example_123"
+          },
+          "appId": {
+            "type": "string",
+            "pattern": "^app-[a-zA-Z0-9]{17}$",
+            "description": "ID de la aplicación",
+            "example": "app-xxxxxxxxxxxxxxxxx"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre descriptivo del webhook",
+            "example": "Webhook de Reservas para Sistema POS"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL de destino del webhook",
+            "example": "https://mi-sistema.com/webhooks/reservations"
+          },
+          "secret": {
+            "type": "string",
+            "description": "Secreto para firmar los payloads (solo en respuestas de creación/actualización)",
+            "example": "whsec_1234567890abcdef"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "reservations"
+            ],
+            "description": "Categoría del webhook",
+            "example": "reservations"
+          },
+          "eventTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "reservations.reservation.created",
+                "reservations.reservation.confirmed",
+                "reservations.reservation.cancelled",
+                "reservations.reservation.updated"
+              ]
+            },
+            "description": "Tipos de eventos que debe escuchar este webhook",
+            "example": [
+              "reservations.reservation.created",
+              "reservations.reservation.cancelled"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Si el webhook está activo",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación",
+            "example": "2024-07-30T09:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización",
+            "example": "2024-07-30T09:00:00Z"
+          }
+        },
+        "required": [
+          "_id",
+          "apiKey",
+          "appId",
+          "name",
+          "url",
+          "category",
+          "eventTypes",
+          "active",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateReservationServiceWebhook": {
+        "type": "object",
+        "title": "Crear Service Webhook de Reservas",
+        "description": "Datos requeridos para crear un webhook de reservas",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Nombre descriptivo del webhook",
+            "example": "Webhook de Reservas para Sistema POS"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL de destino del webhook",
+            "example": "https://mi-sistema.com/webhooks/reservations"
+          },
+          "eventTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "reservations.reservation.created",
+                "reservations.reservation.confirmed",
+                "reservations.reservation.cancelled",
+                "reservations.reservation.updated"
+              ]
+            },
+            "minItems": 1,
+            "description": "Tipos de eventos que debe escuchar este webhook",
+            "example": [
+              "reservations.reservation.created",
+              "reservations.reservation.updated"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Si el webhook debe estar activo inmediatamente",
+            "default": true,
+            "example": true
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "eventTypes"
+        ]
+      },
+      "UpdateReservationServiceWebhook": {
+        "type": "object",
+        "title": "Actualizar Service Webhook de Reservas",
+        "description": "Datos para actualizar un webhook de reservas existente",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Nombre descriptivo del webhook",
+            "example": "Webhook de Reservas para Sistema POS (Actualizado)"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL de destino del webhook",
+            "example": "https://mi-sistema.com/webhooks/reservations"
+          },
+          "eventTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "reservations.reservation.created",
+                "reservations.reservation.confirmed",
+                "reservations.reservation.cancelled",
+                "reservations.reservation.updated"
+              ]
+            },
+            "minItems": 1,
+            "description": "Tipos de eventos que debe escuchar este webhook",
+            "example": [
+              "reservations.reservation.created",
+              "reservations.reservation.cancelled"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Si el webhook debe estar activo",
+            "example": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReservationWebhookPayload": {
+        "type": "object",
+        "title": "Payload de Webhook de Reserva",
+        "description": "Estructura completa del payload enviado en webhooks de reservas",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Tipo de evento de webhook",
+            "example": "reservations.reservation.created"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reservation": {
+                "type": "object",
+                "title": "Datos de Reserva en Webhook",
+                "description": "Datos de la reserva incluidos en el payload del webhook",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "pattern": "^res-[a-zA-Z0-9]{17}$",
+                    "description": "ID único de la reserva",
+                    "example": "res-xxxxxxxxxxxxxxxxx"
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "pattern": "^sto-[a-zA-Z0-9]{17}$",
+                    "description": "ID de la tienda donde se realizó la reserva",
+                    "example": "sto-xxxxxxxxxxxxxxxxx"
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "pattern": "^web-[a-zA-Z0-9]{17}$",
+                    "description": "ID del sitio web donde se originó la reserva",
+                    "example": "web-xxxxxxxxxxxxxxxxx"
+                  },
+                  "startsAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora de inicio de la reserva",
+                    "example": "2024-07-30T10:00:00Z"
+                  },
+                  "partySize": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 50,
+                    "description": "Número de personas para la reserva",
+                    "example": 2
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "created",
+                      "confirmed",
+                      "cancelled",
+                      "completed"
+                    ],
+                    "description": "Estado actual de la reserva",
+                    "example": "created"
+                  },
+                  "customerName": {
+                    "type": "string",
+                    "description": "Nombre del cliente que hizo la reserva",
+                    "example": "Juan Pérez"
+                  },
+                  "customerEmail": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email del cliente",
+                    "example": "juan@example.com"
+                  },
+                  "customerPhone": {
+                    "type": "string",
+                    "description": "Teléfono del cliente",
+                    "example": "+56912345678"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Notas adicionales de la reserva",
+                    "example": "Mesa cerca de la ventana"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha de creación de la reserva",
+                    "example": "2024-07-30T09:00:00Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha de última actualización",
+                    "example": "2024-07-30T09:00:00Z"
+                  }
+                },
+                "required": [
+                  "_id",
+                  "storeId",
+                  "websiteId",
+                  "startsAt",
+                  "partySize",
+                  "status",
+                  "customerName",
+                  "createdAt",
+                  "updatedAt"
+                ]
+              }
+            },
+            "required": [
+              "reservation"
+            ],
+            "description": "Datos del evento"
+          },
+          "entityId": {
+            "type": "string",
+            "pattern": "^res-[a-zA-Z0-9]{17}$",
+            "description": "ID de la entidad afectada (reserva)",
+            "example": "res-xxxxxxxxxxxxxxxxx"
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "reservation"
+            ],
+            "description": "Tipo de entidad",
+            "example": "reservation"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha y hora del evento",
+            "example": "2024-07-30T09:00:00Z"
+          },
+          "eventId": {
+            "type": "string",
+            "pattern": "^swev-[a-zA-Z0-9]{17}$",
+            "description": "ID único del evento de webhook",
+            "example": "swev-xxxxxxxxxxxxxxxxx"
+          }
+        },
+        "required": [
+          "type",
+          "data",
+          "entityId",
+          "entityType",
+          "date",
+          "eventId"
+        ]
+      },
+      "ReservationWebhookData": {
+        "type": "object",
+        "title": "Datos de Reserva en Webhook",
+        "description": "Datos de la reserva incluidos en el payload del webhook",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "pattern": "^res-[a-zA-Z0-9]{17}$",
+            "description": "ID único de la reserva",
+            "example": "res-xxxxxxxxxxxxxxxxx"
+          },
+          "storeId": {
+            "type": "string",
+            "pattern": "^sto-[a-zA-Z0-9]{17}$",
+            "description": "ID de la tienda donde se realizó la reserva",
+            "example": "sto-xxxxxxxxxxxxxxxxx"
+          },
+          "websiteId": {
+            "type": "string",
+            "pattern": "^web-[a-zA-Z0-9]{17}$",
+            "description": "ID del sitio web donde se originó la reserva",
+            "example": "web-xxxxxxxxxxxxxxxxx"
+          },
+          "startsAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha y hora de inicio de la reserva",
+            "example": "2024-07-30T10:00:00Z"
+          },
+          "partySize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "Número de personas para la reserva",
+            "example": 2
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "confirmed",
+              "cancelled",
+              "completed"
+            ],
+            "description": "Estado actual de la reserva",
+            "example": "created"
+          },
+          "customerName": {
+            "type": "string",
+            "description": "Nombre del cliente que hizo la reserva",
+            "example": "Juan Pérez"
+          },
+          "customerEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "Email del cliente",
+            "example": "juan@example.com"
+          },
+          "customerPhone": {
+            "type": "string",
+            "description": "Teléfono del cliente",
+            "example": "+56912345678"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notas adicionales de la reserva",
+            "example": "Mesa cerca de la ventana"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación de la reserva",
+            "example": "2024-07-30T09:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización",
+            "example": "2024-07-30T09:00:00Z"
+          }
+        },
+        "required": [
+          "_id",
+          "storeId",
+          "websiteId",
+          "startsAt",
+          "partySize",
+          "status",
+          "customerName",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "royaltyCoinsRedeemCode": {
         "type": "object",
         "properties": {
