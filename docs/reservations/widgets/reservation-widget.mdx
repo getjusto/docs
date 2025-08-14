@@ -1,0 +1,57 @@
+---
+title: Widget de reservas
+description: 'Integre el widget de reservas de Justo dentro de su sitio web'
+---
+
+## Integración
+
+Para integrar el widget de reservas en su sitio web, utilice el hook `useReservationsEmbed` en un componente React de su aplicación. Este hook carga dinámicamente el script necesario desde la URL correspondiente al entorno (local o producción) e inicializa el widget con parámetros como `storeId`, `clientToken` e `isWaitingList`. Asegúrese de proporcionar los valores adecuados para estos parámetros y maneje eventos como `onReservationCreated` para redirigir al usuario o realizar otras acciones posteriores a la creación de una reserva. El widget se ajustará automáticamente al tamaño y usará los colores de diseño de su sitio web para una integración seamless.
+
+```
+import {useEffect} from 'react'
+import {useWebsiteData} from '~/lib/components/Website/useWebsite'
+import {isServer, justoEnv} from '~/lib/env'
+import useScript, {removeScript} from '~/lib/hooks/fetch/useScript'
+import {getCurrentSession} from '~/lib/session'
+
+export const reservationsScriptURL = {
+  local: 'http://reservas.internal:5140/reservations/embed.js',
+  prod: 'https://reservando.com/reservations/embed.js',
+}[justoEnv]
+
+interface Params {
+  storeId?: string
+  clientToken?: string
+  isWaitingList?: boolean
+}
+
+export function useReservationsEmbed(params: Params) {
+  if (isServer) return null
+  const website = useWebsiteData()
+  const session = getCurrentSession()
+  useScript(reservationsScriptURL, () => {
+    const win = window as any
+    win.initReservations('reservations-frame', {
+      websiteId: website._id,
+      storeId: params.storeId,
+      isWaitingList: params.isWaitingList,
+      clientToken: params.clientToken,
+      autoSize: true,
+      backgroundColor: website.designConfiguration.backgroundColor,
+      primaryColor: website.designConfiguration.primaryColor,
+      jwtToken: session.jwt,
+      refreshToken: session.refresh,
+      onReservationCreated: ({clientToken}) => {
+        console.log('got clientToken', clientToken)
+        window.location.href = `/reserva/${clientToken}`
+      },
+    })
+  })
+  useEffect(() => {
+    return () => {
+      removeScript(reservationsScriptURL)
+    }
+  }, [])
+}
+```
+

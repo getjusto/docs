@@ -199,96 +199,315 @@
                         "properties": {
                           "reservation": {
                             "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
+                                "pattern": "^res-[a-zA-Z0-9]+$",
+                                "description": "Identificador único de reserva",
+                                "example": "res-abc123def456"
                               },
-                              "storeId": {
+                              "clientToken": {
                                 "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
+                                "description": "Token de autenticación del cliente",
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                               },
-                              "websiteId": {
+                              "code": {
                                 "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
+                                "description": "Código de reserva legible",
+                                "example": "RES2024-001234"
                               },
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Marca de tiempo de creación de la reserva",
+                                "example": "2024-01-15T10:30:00.000Z"
                               },
-                              "updatedAt": {
+                              "startsAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Hora de inicio de la reserva",
+                                "example": "2024-01-15T19:30:00.000Z"
+                              },
+                              "endsAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora de finalización de la reserva",
+                                "example": "2024-01-15T21:30:00.000Z"
+                              },
+                              "completedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de finalización de la reserva",
+                                "example": "2024-01-15T21:45:00.000Z"
+                              },
+                              "durationMinutes": {
+                                "type": "number",
+                                "description": "Duración de la reserva en minutos",
+                                "example": 120
+                              },
+                              "partySize": {
+                                "type": "number",
+                                "maximum": 100,
+                                "minimum": 1,
+                                "description": "Número de personas en el grupo",
+                                "example": 4
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "pattern": "^w-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sitio web",
+                                "example": "w-restaurant123"
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "pattern": "^s-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la tienda",
+                                "example": "s-downtown-branch"
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país (ISO 3166-1 alpha-2)",
+                                "example": "US"
+                              },
+                              "sectorId": {
+                                "type": "string",
+                                "pattern": "^rsec-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sector",
+                                "example": "rsec-main-dining"
+                              },
+                              "tableIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                                  "example": "rtbl-table-12"
+                                },
+                                "description": "Array de identificadores de mesa",
+                                "example": [
+                                  "rtbl-table-12",
+                                  "rtbl-table-13"
+                                ]
+                              },
+                              "royaltyClientId": {
+                                "type": "string",
+                                "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                                "description": "Identificador del cliente de fidelidad",
+                                "example": "rty-cli-johndoe123"
+                              },
+                              "tabId": {
+                                "type": "string",
+                                "pattern": "^tab-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la cuenta",
+                                "example": "tab-active-session-789"
+                              },
+                              "clientData": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "John"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Doe"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "example": "+1-555-123-4567"
+                                  },
+                                  "isOver18": {
+                                    "type": "boolean",
+                                    "example": true
+                                  }
+                                },
+                                "description": "Información de contacto del cliente",
+                                "example": {
+                                  "email": "john.doe@example.com",
+                                  "firstName": "John",
+                                  "lastName": "Doe",
+                                  "phone": "+1-555-123-4567",
+                                  "isOver18": true
+                                }
+                              },
+                              "userId": {
+                                "type": "string",
+                                "pattern": "^u-[a-zA-Z0-9]+$",
+                                "description": "ID de usuario si el cliente existe en el sistema Justo",
+                                "example": "u-existing-user-456"
+                              },
+                              "specialRequests": {
+                                "type": "string",
+                                "description": "Solicitudes especiales del cliente",
+                                "example": "Please prepare a birthday cake. Allergic to nuts."
+                              },
+                              "specialOccasion": {
+                                "type": "string",
+                                "enum": [
+                                  "birthday",
+                                  "anniversary",
+                                  "date",
+                                  "business",
+                                  "celebration"
+                                ],
+                                "description": "Tipo de ocasión especial",
+                                "example": "birthday"
+                              },
+                              "cancelledAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación",
+                                "example": "2024-01-15T16:00:00.000Z"
+                              },
+                              "cancelReason": {
+                                "type": "string",
+                                "description": "Razón de la cancelación",
+                                "example": "Customer requested to change date"
+                              },
+                              "modifiedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de última modificación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "confirmedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "cancelledByStoreAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación por la tienda",
+                                "example": "2024-01-15T15:30:00.000Z"
+                              },
+                              "isWaitingList": {
+                                "type": "boolean",
+                                "description": "Si la reserva está en lista de espera",
+                                "example": false
+                              },
+                              "waitingListAssignedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de asignación a lista de espera",
+                                "example": "2024-01-15T10:45:00.000Z"
+                              },
+                              "showStatus": {
+                                "type": "string",
+                                "enum": [
+                                  "show",
+                                  "noShow"
+                                ],
+                                "description": "Si el cliente se presentó",
+                                "example": "show"
+                              },
+                              "confirmedByClientAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación del cliente",
+                                "example": "2024-01-15T11:30:00.000Z"
+                              },
+                              "clientSaidItsLateAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de notificación de retraso del cliente",
+                                "example": "2024-01-15T19:15:00.000Z"
+                              },
+                              "sendReminderAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora programada del recordatorio",
+                                "example": "2024-01-15T17:30:00.000Z"
+                              },
+                              "reminderSentAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de envío del recordatorio",
+                                "example": "2024-01-15T17:30:15.000Z"
+                              },
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "pos",
+                                  "website",
+                                  "messenger",
+                                  "marketplace",
+                                  "embed"
+                                ],
+                                "description": "Fuente de creación de la reserva",
+                                "example": "website"
+                              },
+                              "referrer": {
+                                "type": "string",
+                                "enum": [
+                                  "api:e2e"
+                                ],
+                                "description": "Fuente de referencia del tráfico",
+                                "example": "api:e2e"
+                              },
+                              "marketplaceAppId": {
+                                "type": "string",
+                                "description": "Identificador de aplicación del marketplace",
+                                "example": "marketplace-app-123"
+                              },
+                              "sourceUserAgent": {
+                                "type": "string",
+                                "description": "User agent de la fuente de reserva",
+                                "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                              },
+                              "evaluation": {
+                                "type": "object",
+                                "properties": {
+                                  "createdById": {
+                                    "type": "string",
+                                    "pattern": "^u-[a-zA-Z0-9]+$",
+                                    "example": "u-existing-user-456"
+                                  },
+                                  "createdByName": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "createdByEmail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "evaluation": {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "maximum": 5,
+                                    "example": 5
+                                  },
+                                  "comments": {
+                                    "type": "string",
+                                    "example": "Excellent service and food quality. Will definitely come back!"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-01-15T22:00:00.000Z"
+                                  }
+                                },
+                                "required": [
+                                  "evaluation",
+                                  "createdAt"
+                                ],
+                                "description": "Evaluación del cliente de la experiencia",
+                                "example": {
+                                  "createdById": "u-existing-user-456",
+                                  "createdByName": "John Doe",
+                                  "createdByEmail": "john.doe@example.com",
+                                  "evaluation": 5,
+                                  "comments": "Excellent service and food quality. Will definitely come back!",
+                                  "createdAt": "2024-01-15T22:00:00.000Z"
+                                }
                               }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
+                            }
                           }
                         },
                         "required": [
@@ -347,96 +566,315 @@
                         "properties": {
                           "reservation": {
                             "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
+                                "pattern": "^res-[a-zA-Z0-9]+$",
+                                "description": "Identificador único de reserva",
+                                "example": "res-abc123def456"
                               },
-                              "storeId": {
+                              "clientToken": {
                                 "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
+                                "description": "Token de autenticación del cliente",
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                               },
-                              "websiteId": {
+                              "code": {
                                 "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
+                                "description": "Código de reserva legible",
+                                "example": "RES2024-001234"
                               },
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Marca de tiempo de creación de la reserva",
+                                "example": "2024-01-15T10:30:00.000Z"
                               },
-                              "updatedAt": {
+                              "startsAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Hora de inicio de la reserva",
+                                "example": "2024-01-15T19:30:00.000Z"
+                              },
+                              "endsAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora de finalización de la reserva",
+                                "example": "2024-01-15T21:30:00.000Z"
+                              },
+                              "completedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de finalización de la reserva",
+                                "example": "2024-01-15T21:45:00.000Z"
+                              },
+                              "durationMinutes": {
+                                "type": "number",
+                                "description": "Duración de la reserva en minutos",
+                                "example": 120
+                              },
+                              "partySize": {
+                                "type": "number",
+                                "maximum": 100,
+                                "minimum": 1,
+                                "description": "Número de personas en el grupo",
+                                "example": 4
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "pattern": "^w-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sitio web",
+                                "example": "w-restaurant123"
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "pattern": "^s-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la tienda",
+                                "example": "s-downtown-branch"
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país (ISO 3166-1 alpha-2)",
+                                "example": "US"
+                              },
+                              "sectorId": {
+                                "type": "string",
+                                "pattern": "^rsec-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sector",
+                                "example": "rsec-main-dining"
+                              },
+                              "tableIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                                  "example": "rtbl-table-12"
+                                },
+                                "description": "Array de identificadores de mesa",
+                                "example": [
+                                  "rtbl-table-12",
+                                  "rtbl-table-13"
+                                ]
+                              },
+                              "royaltyClientId": {
+                                "type": "string",
+                                "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                                "description": "Identificador del cliente de fidelidad",
+                                "example": "rty-cli-johndoe123"
+                              },
+                              "tabId": {
+                                "type": "string",
+                                "pattern": "^tab-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la cuenta",
+                                "example": "tab-active-session-789"
+                              },
+                              "clientData": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "John"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Doe"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "example": "+1-555-123-4567"
+                                  },
+                                  "isOver18": {
+                                    "type": "boolean",
+                                    "example": true
+                                  }
+                                },
+                                "description": "Información de contacto del cliente",
+                                "example": {
+                                  "email": "john.doe@example.com",
+                                  "firstName": "John",
+                                  "lastName": "Doe",
+                                  "phone": "+1-555-123-4567",
+                                  "isOver18": true
+                                }
+                              },
+                              "userId": {
+                                "type": "string",
+                                "pattern": "^u-[a-zA-Z0-9]+$",
+                                "description": "ID de usuario si el cliente existe en el sistema Justo",
+                                "example": "u-existing-user-456"
+                              },
+                              "specialRequests": {
+                                "type": "string",
+                                "description": "Solicitudes especiales del cliente",
+                                "example": "Please prepare a birthday cake. Allergic to nuts."
+                              },
+                              "specialOccasion": {
+                                "type": "string",
+                                "enum": [
+                                  "birthday",
+                                  "anniversary",
+                                  "date",
+                                  "business",
+                                  "celebration"
+                                ],
+                                "description": "Tipo de ocasión especial",
+                                "example": "birthday"
+                              },
+                              "cancelledAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación",
+                                "example": "2024-01-15T16:00:00.000Z"
+                              },
+                              "cancelReason": {
+                                "type": "string",
+                                "description": "Razón de la cancelación",
+                                "example": "Customer requested to change date"
+                              },
+                              "modifiedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de última modificación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "confirmedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "cancelledByStoreAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación por la tienda",
+                                "example": "2024-01-15T15:30:00.000Z"
+                              },
+                              "isWaitingList": {
+                                "type": "boolean",
+                                "description": "Si la reserva está en lista de espera",
+                                "example": false
+                              },
+                              "waitingListAssignedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de asignación a lista de espera",
+                                "example": "2024-01-15T10:45:00.000Z"
+                              },
+                              "showStatus": {
+                                "type": "string",
+                                "enum": [
+                                  "show",
+                                  "noShow"
+                                ],
+                                "description": "Si el cliente se presentó",
+                                "example": "show"
+                              },
+                              "confirmedByClientAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación del cliente",
+                                "example": "2024-01-15T11:30:00.000Z"
+                              },
+                              "clientSaidItsLateAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de notificación de retraso del cliente",
+                                "example": "2024-01-15T19:15:00.000Z"
+                              },
+                              "sendReminderAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora programada del recordatorio",
+                                "example": "2024-01-15T17:30:00.000Z"
+                              },
+                              "reminderSentAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de envío del recordatorio",
+                                "example": "2024-01-15T17:30:15.000Z"
+                              },
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "pos",
+                                  "website",
+                                  "messenger",
+                                  "marketplace",
+                                  "embed"
+                                ],
+                                "description": "Fuente de creación de la reserva",
+                                "example": "website"
+                              },
+                              "referrer": {
+                                "type": "string",
+                                "enum": [
+                                  "api:e2e"
+                                ],
+                                "description": "Fuente de referencia del tráfico",
+                                "example": "api:e2e"
+                              },
+                              "marketplaceAppId": {
+                                "type": "string",
+                                "description": "Identificador de aplicación del marketplace",
+                                "example": "marketplace-app-123"
+                              },
+                              "sourceUserAgent": {
+                                "type": "string",
+                                "description": "User agent de la fuente de reserva",
+                                "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                              },
+                              "evaluation": {
+                                "type": "object",
+                                "properties": {
+                                  "createdById": {
+                                    "type": "string",
+                                    "pattern": "^u-[a-zA-Z0-9]+$",
+                                    "example": "u-existing-user-456"
+                                  },
+                                  "createdByName": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "createdByEmail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "evaluation": {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "maximum": 5,
+                                    "example": 5
+                                  },
+                                  "comments": {
+                                    "type": "string",
+                                    "example": "Excellent service and food quality. Will definitely come back!"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-01-15T22:00:00.000Z"
+                                  }
+                                },
+                                "required": [
+                                  "evaluation",
+                                  "createdAt"
+                                ],
+                                "description": "Evaluación del cliente de la experiencia",
+                                "example": {
+                                  "createdById": "u-existing-user-456",
+                                  "createdByName": "John Doe",
+                                  "createdByEmail": "john.doe@example.com",
+                                  "evaluation": 5,
+                                  "comments": "Excellent service and food quality. Will definitely come back!",
+                                  "createdAt": "2024-01-15T22:00:00.000Z"
+                                }
                               }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
+                            }
                           }
                         },
                         "required": [
@@ -459,330 +897,6 @@
                   "summary": "Ejemplo de webhook reserva creada",
                   "value": {
                     "type": "reservations.reservation.created",
-                    "data": {
-                      "reservation": {
-                        "_id": "res-xxxxxxxxxxxxxxxxx",
-                        "storeId": "sto-xxxxxxxxxxxxxxxxx",
-                        "websiteId": "web-xxxxxxxxxxxxxxxxx",
-                        "startsAt": "2024-07-30T10:00:00Z",
-                        "partySize": 2,
-                        "status": "created",
-                        "customerName": "Juan Pérez",
-                        "customerEmail": "juan@example.com",
-                        "customerPhone": "+56912345678",
-                        "notes": "Mesa cerca de la ventana",
-                        "createdAt": "2024-07-30T09:00:00Z",
-                        "updatedAt": "2024-07-30T09:00:00Z"
-                      }
-                    },
-                    "entityId": "res-xxxxxxxxxxxxxxxxx",
-                    "entityType": "reservation",
-                    "date": "2024-07-30T09:00:00Z",
-                    "eventId": "swev-xxxxxxxxxxxxxxxxx"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "webhookSignature": []
-          }
-        ]
-      }
-    },
-    "/reservations.reservation.confirmed": {
-      "post": {
-        "summary": "Reserva Confirmada",
-        "description": "Evento que se dispara cuando se confirma una reserva",
-        "requestBody": {
-          "description": "Payload del webhook de reserva",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "title": "Payload de Webhook de Reserva",
-                    "description": "Estructura completa del payload enviado en webhooks de reservas",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "description": "Tipo de evento de webhook",
-                        "example": "reservations.reservation.created"
-                      },
-                      "data": {
-                        "type": "object",
-                        "properties": {
-                          "reservation": {
-                            "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
-                            "properties": {
-                              "_id": {
-                                "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
-                              },
-                              "storeId": {
-                                "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
-                              },
-                              "websiteId": {
-                                "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
-                              }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "reservation"
-                        ],
-                        "description": "Datos del evento"
-                      },
-                      "entityId": {
-                        "type": "string",
-                        "pattern": "^res-[a-zA-Z0-9]{17}$",
-                        "description": "ID de la entidad afectada (reserva)",
-                        "example": "res-xxxxxxxxxxxxxxxxx"
-                      },
-                      "entityType": {
-                        "type": "string",
-                        "enum": [
-                          "reservation"
-                        ],
-                        "description": "Tipo de entidad",
-                        "example": "reservation"
-                      },
-                      "date": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Fecha y hora del evento",
-                        "example": "2024-07-30T09:00:00Z"
-                      },
-                      "eventId": {
-                        "type": "string",
-                        "pattern": "^swev-[a-zA-Z0-9]{17}$",
-                        "description": "ID único del evento de webhook",
-                        "example": "swev-xxxxxxxxxxxxxxxxx"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "data",
-                      "entityId",
-                      "entityType",
-                      "date",
-                      "eventId"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "reservations.reservation.confirmed"
-                        ],
-                        "const": "reservations.reservation.confirmed"
-                      },
-                      "data": {
-                        "type": "object",
-                        "properties": {
-                          "reservation": {
-                            "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
-                            "properties": {
-                              "_id": {
-                                "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
-                              },
-                              "storeId": {
-                                "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
-                              },
-                              "websiteId": {
-                                "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
-                              }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "reservation"
-                        ]
-                      },
-                      "entityType": {
-                        "type": "string",
-                        "enum": [
-                          "reservation"
-                        ],
-                        "const": "reservation"
-                      }
-                    }
-                  }
-                ]
-              },
-              "examples": {
-                "example": {
-                  "summary": "Ejemplo de webhook reserva confirmada",
-                  "value": {
-                    "type": "reservations.reservation.confirmed",
                     "data": {
                       "reservation": {
                         "_id": "res-xxxxxxxxxxxxxxxxx",
@@ -847,96 +961,315 @@
                         "properties": {
                           "reservation": {
                             "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
+                                "pattern": "^res-[a-zA-Z0-9]+$",
+                                "description": "Identificador único de reserva",
+                                "example": "res-abc123def456"
                               },
-                              "storeId": {
+                              "clientToken": {
                                 "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
+                                "description": "Token de autenticación del cliente",
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                               },
-                              "websiteId": {
+                              "code": {
                                 "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
+                                "description": "Código de reserva legible",
+                                "example": "RES2024-001234"
                               },
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Marca de tiempo de creación de la reserva",
+                                "example": "2024-01-15T10:30:00.000Z"
                               },
-                              "updatedAt": {
+                              "startsAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Hora de inicio de la reserva",
+                                "example": "2024-01-15T19:30:00.000Z"
+                              },
+                              "endsAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora de finalización de la reserva",
+                                "example": "2024-01-15T21:30:00.000Z"
+                              },
+                              "completedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de finalización de la reserva",
+                                "example": "2024-01-15T21:45:00.000Z"
+                              },
+                              "durationMinutes": {
+                                "type": "number",
+                                "description": "Duración de la reserva en minutos",
+                                "example": 120
+                              },
+                              "partySize": {
+                                "type": "number",
+                                "maximum": 100,
+                                "minimum": 1,
+                                "description": "Número de personas en el grupo",
+                                "example": 4
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "pattern": "^w-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sitio web",
+                                "example": "w-restaurant123"
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "pattern": "^s-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la tienda",
+                                "example": "s-downtown-branch"
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país (ISO 3166-1 alpha-2)",
+                                "example": "US"
+                              },
+                              "sectorId": {
+                                "type": "string",
+                                "pattern": "^rsec-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sector",
+                                "example": "rsec-main-dining"
+                              },
+                              "tableIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                                  "example": "rtbl-table-12"
+                                },
+                                "description": "Array de identificadores de mesa",
+                                "example": [
+                                  "rtbl-table-12",
+                                  "rtbl-table-13"
+                                ]
+                              },
+                              "royaltyClientId": {
+                                "type": "string",
+                                "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                                "description": "Identificador del cliente de fidelidad",
+                                "example": "rty-cli-johndoe123"
+                              },
+                              "tabId": {
+                                "type": "string",
+                                "pattern": "^tab-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la cuenta",
+                                "example": "tab-active-session-789"
+                              },
+                              "clientData": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "John"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Doe"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "example": "+1-555-123-4567"
+                                  },
+                                  "isOver18": {
+                                    "type": "boolean",
+                                    "example": true
+                                  }
+                                },
+                                "description": "Información de contacto del cliente",
+                                "example": {
+                                  "email": "john.doe@example.com",
+                                  "firstName": "John",
+                                  "lastName": "Doe",
+                                  "phone": "+1-555-123-4567",
+                                  "isOver18": true
+                                }
+                              },
+                              "userId": {
+                                "type": "string",
+                                "pattern": "^u-[a-zA-Z0-9]+$",
+                                "description": "ID de usuario si el cliente existe en el sistema Justo",
+                                "example": "u-existing-user-456"
+                              },
+                              "specialRequests": {
+                                "type": "string",
+                                "description": "Solicitudes especiales del cliente",
+                                "example": "Please prepare a birthday cake. Allergic to nuts."
+                              },
+                              "specialOccasion": {
+                                "type": "string",
+                                "enum": [
+                                  "birthday",
+                                  "anniversary",
+                                  "date",
+                                  "business",
+                                  "celebration"
+                                ],
+                                "description": "Tipo de ocasión especial",
+                                "example": "birthday"
+                              },
+                              "cancelledAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación",
+                                "example": "2024-01-15T16:00:00.000Z"
+                              },
+                              "cancelReason": {
+                                "type": "string",
+                                "description": "Razón de la cancelación",
+                                "example": "Customer requested to change date"
+                              },
+                              "modifiedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de última modificación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "confirmedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "cancelledByStoreAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación por la tienda",
+                                "example": "2024-01-15T15:30:00.000Z"
+                              },
+                              "isWaitingList": {
+                                "type": "boolean",
+                                "description": "Si la reserva está en lista de espera",
+                                "example": false
+                              },
+                              "waitingListAssignedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de asignación a lista de espera",
+                                "example": "2024-01-15T10:45:00.000Z"
+                              },
+                              "showStatus": {
+                                "type": "string",
+                                "enum": [
+                                  "show",
+                                  "noShow"
+                                ],
+                                "description": "Si el cliente se presentó",
+                                "example": "show"
+                              },
+                              "confirmedByClientAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación del cliente",
+                                "example": "2024-01-15T11:30:00.000Z"
+                              },
+                              "clientSaidItsLateAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de notificación de retraso del cliente",
+                                "example": "2024-01-15T19:15:00.000Z"
+                              },
+                              "sendReminderAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora programada del recordatorio",
+                                "example": "2024-01-15T17:30:00.000Z"
+                              },
+                              "reminderSentAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de envío del recordatorio",
+                                "example": "2024-01-15T17:30:15.000Z"
+                              },
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "pos",
+                                  "website",
+                                  "messenger",
+                                  "marketplace",
+                                  "embed"
+                                ],
+                                "description": "Fuente de creación de la reserva",
+                                "example": "website"
+                              },
+                              "referrer": {
+                                "type": "string",
+                                "enum": [
+                                  "api:e2e"
+                                ],
+                                "description": "Fuente de referencia del tráfico",
+                                "example": "api:e2e"
+                              },
+                              "marketplaceAppId": {
+                                "type": "string",
+                                "description": "Identificador de aplicación del marketplace",
+                                "example": "marketplace-app-123"
+                              },
+                              "sourceUserAgent": {
+                                "type": "string",
+                                "description": "User agent de la fuente de reserva",
+                                "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                              },
+                              "evaluation": {
+                                "type": "object",
+                                "properties": {
+                                  "createdById": {
+                                    "type": "string",
+                                    "pattern": "^u-[a-zA-Z0-9]+$",
+                                    "example": "u-existing-user-456"
+                                  },
+                                  "createdByName": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "createdByEmail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "evaluation": {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "maximum": 5,
+                                    "example": 5
+                                  },
+                                  "comments": {
+                                    "type": "string",
+                                    "example": "Excellent service and food quality. Will definitely come back!"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-01-15T22:00:00.000Z"
+                                  }
+                                },
+                                "required": [
+                                  "evaluation",
+                                  "createdAt"
+                                ],
+                                "description": "Evaluación del cliente de la experiencia",
+                                "example": {
+                                  "createdById": "u-existing-user-456",
+                                  "createdByName": "John Doe",
+                                  "createdByEmail": "john.doe@example.com",
+                                  "evaluation": 5,
+                                  "comments": "Excellent service and food quality. Will definitely come back!",
+                                  "createdAt": "2024-01-15T22:00:00.000Z"
+                                }
                               }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
+                            }
                           }
                         },
                         "required": [
@@ -995,96 +1328,315 @@
                         "properties": {
                           "reservation": {
                             "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
+                                "pattern": "^res-[a-zA-Z0-9]+$",
+                                "description": "Identificador único de reserva",
+                                "example": "res-abc123def456"
                               },
-                              "storeId": {
+                              "clientToken": {
                                 "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
+                                "description": "Token de autenticación del cliente",
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                               },
-                              "websiteId": {
+                              "code": {
                                 "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
+                                "description": "Código de reserva legible",
+                                "example": "RES2024-001234"
                               },
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Marca de tiempo de creación de la reserva",
+                                "example": "2024-01-15T10:30:00.000Z"
                               },
-                              "updatedAt": {
+                              "startsAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Hora de inicio de la reserva",
+                                "example": "2024-01-15T19:30:00.000Z"
+                              },
+                              "endsAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora de finalización de la reserva",
+                                "example": "2024-01-15T21:30:00.000Z"
+                              },
+                              "completedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de finalización de la reserva",
+                                "example": "2024-01-15T21:45:00.000Z"
+                              },
+                              "durationMinutes": {
+                                "type": "number",
+                                "description": "Duración de la reserva en minutos",
+                                "example": 120
+                              },
+                              "partySize": {
+                                "type": "number",
+                                "maximum": 100,
+                                "minimum": 1,
+                                "description": "Número de personas en el grupo",
+                                "example": 4
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "pattern": "^w-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sitio web",
+                                "example": "w-restaurant123"
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "pattern": "^s-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la tienda",
+                                "example": "s-downtown-branch"
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país (ISO 3166-1 alpha-2)",
+                                "example": "US"
+                              },
+                              "sectorId": {
+                                "type": "string",
+                                "pattern": "^rsec-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sector",
+                                "example": "rsec-main-dining"
+                              },
+                              "tableIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                                  "example": "rtbl-table-12"
+                                },
+                                "description": "Array de identificadores de mesa",
+                                "example": [
+                                  "rtbl-table-12",
+                                  "rtbl-table-13"
+                                ]
+                              },
+                              "royaltyClientId": {
+                                "type": "string",
+                                "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                                "description": "Identificador del cliente de fidelidad",
+                                "example": "rty-cli-johndoe123"
+                              },
+                              "tabId": {
+                                "type": "string",
+                                "pattern": "^tab-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la cuenta",
+                                "example": "tab-active-session-789"
+                              },
+                              "clientData": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "John"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Doe"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "example": "+1-555-123-4567"
+                                  },
+                                  "isOver18": {
+                                    "type": "boolean",
+                                    "example": true
+                                  }
+                                },
+                                "description": "Información de contacto del cliente",
+                                "example": {
+                                  "email": "john.doe@example.com",
+                                  "firstName": "John",
+                                  "lastName": "Doe",
+                                  "phone": "+1-555-123-4567",
+                                  "isOver18": true
+                                }
+                              },
+                              "userId": {
+                                "type": "string",
+                                "pattern": "^u-[a-zA-Z0-9]+$",
+                                "description": "ID de usuario si el cliente existe en el sistema Justo",
+                                "example": "u-existing-user-456"
+                              },
+                              "specialRequests": {
+                                "type": "string",
+                                "description": "Solicitudes especiales del cliente",
+                                "example": "Please prepare a birthday cake. Allergic to nuts."
+                              },
+                              "specialOccasion": {
+                                "type": "string",
+                                "enum": [
+                                  "birthday",
+                                  "anniversary",
+                                  "date",
+                                  "business",
+                                  "celebration"
+                                ],
+                                "description": "Tipo de ocasión especial",
+                                "example": "birthday"
+                              },
+                              "cancelledAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación",
+                                "example": "2024-01-15T16:00:00.000Z"
+                              },
+                              "cancelReason": {
+                                "type": "string",
+                                "description": "Razón de la cancelación",
+                                "example": "Customer requested to change date"
+                              },
+                              "modifiedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de última modificación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "confirmedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "cancelledByStoreAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación por la tienda",
+                                "example": "2024-01-15T15:30:00.000Z"
+                              },
+                              "isWaitingList": {
+                                "type": "boolean",
+                                "description": "Si la reserva está en lista de espera",
+                                "example": false
+                              },
+                              "waitingListAssignedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de asignación a lista de espera",
+                                "example": "2024-01-15T10:45:00.000Z"
+                              },
+                              "showStatus": {
+                                "type": "string",
+                                "enum": [
+                                  "show",
+                                  "noShow"
+                                ],
+                                "description": "Si el cliente se presentó",
+                                "example": "show"
+                              },
+                              "confirmedByClientAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación del cliente",
+                                "example": "2024-01-15T11:30:00.000Z"
+                              },
+                              "clientSaidItsLateAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de notificación de retraso del cliente",
+                                "example": "2024-01-15T19:15:00.000Z"
+                              },
+                              "sendReminderAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora programada del recordatorio",
+                                "example": "2024-01-15T17:30:00.000Z"
+                              },
+                              "reminderSentAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de envío del recordatorio",
+                                "example": "2024-01-15T17:30:15.000Z"
+                              },
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "pos",
+                                  "website",
+                                  "messenger",
+                                  "marketplace",
+                                  "embed"
+                                ],
+                                "description": "Fuente de creación de la reserva",
+                                "example": "website"
+                              },
+                              "referrer": {
+                                "type": "string",
+                                "enum": [
+                                  "api:e2e"
+                                ],
+                                "description": "Fuente de referencia del tráfico",
+                                "example": "api:e2e"
+                              },
+                              "marketplaceAppId": {
+                                "type": "string",
+                                "description": "Identificador de aplicación del marketplace",
+                                "example": "marketplace-app-123"
+                              },
+                              "sourceUserAgent": {
+                                "type": "string",
+                                "description": "User agent de la fuente de reserva",
+                                "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                              },
+                              "evaluation": {
+                                "type": "object",
+                                "properties": {
+                                  "createdById": {
+                                    "type": "string",
+                                    "pattern": "^u-[a-zA-Z0-9]+$",
+                                    "example": "u-existing-user-456"
+                                  },
+                                  "createdByName": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "createdByEmail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "evaluation": {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "maximum": 5,
+                                    "example": 5
+                                  },
+                                  "comments": {
+                                    "type": "string",
+                                    "example": "Excellent service and food quality. Will definitely come back!"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-01-15T22:00:00.000Z"
+                                  }
+                                },
+                                "required": [
+                                  "evaluation",
+                                  "createdAt"
+                                ],
+                                "description": "Evaluación del cliente de la experiencia",
+                                "example": {
+                                  "createdById": "u-existing-user-456",
+                                  "createdByName": "John Doe",
+                                  "createdByEmail": "john.doe@example.com",
+                                  "evaluation": 5,
+                                  "comments": "Excellent service and food quality. Will definitely come back!",
+                                  "createdAt": "2024-01-15T22:00:00.000Z"
+                                }
                               }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
+                            }
                           }
                         },
                         "required": [
@@ -1171,96 +1723,315 @@
                         "properties": {
                           "reservation": {
                             "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
+                                "pattern": "^res-[a-zA-Z0-9]+$",
+                                "description": "Identificador único de reserva",
+                                "example": "res-abc123def456"
                               },
-                              "storeId": {
+                              "clientToken": {
                                 "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
+                                "description": "Token de autenticación del cliente",
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                               },
-                              "websiteId": {
+                              "code": {
                                 "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
+                                "description": "Código de reserva legible",
+                                "example": "RES2024-001234"
                               },
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Marca de tiempo de creación de la reserva",
+                                "example": "2024-01-15T10:30:00.000Z"
                               },
-                              "updatedAt": {
+                              "startsAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Hora de inicio de la reserva",
+                                "example": "2024-01-15T19:30:00.000Z"
+                              },
+                              "endsAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora de finalización de la reserva",
+                                "example": "2024-01-15T21:30:00.000Z"
+                              },
+                              "completedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de finalización de la reserva",
+                                "example": "2024-01-15T21:45:00.000Z"
+                              },
+                              "durationMinutes": {
+                                "type": "number",
+                                "description": "Duración de la reserva en minutos",
+                                "example": 120
+                              },
+                              "partySize": {
+                                "type": "number",
+                                "maximum": 100,
+                                "minimum": 1,
+                                "description": "Número de personas en el grupo",
+                                "example": 4
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "pattern": "^w-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sitio web",
+                                "example": "w-restaurant123"
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "pattern": "^s-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la tienda",
+                                "example": "s-downtown-branch"
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país (ISO 3166-1 alpha-2)",
+                                "example": "US"
+                              },
+                              "sectorId": {
+                                "type": "string",
+                                "pattern": "^rsec-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sector",
+                                "example": "rsec-main-dining"
+                              },
+                              "tableIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                                  "example": "rtbl-table-12"
+                                },
+                                "description": "Array de identificadores de mesa",
+                                "example": [
+                                  "rtbl-table-12",
+                                  "rtbl-table-13"
+                                ]
+                              },
+                              "royaltyClientId": {
+                                "type": "string",
+                                "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                                "description": "Identificador del cliente de fidelidad",
+                                "example": "rty-cli-johndoe123"
+                              },
+                              "tabId": {
+                                "type": "string",
+                                "pattern": "^tab-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la cuenta",
+                                "example": "tab-active-session-789"
+                              },
+                              "clientData": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "John"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Doe"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "example": "+1-555-123-4567"
+                                  },
+                                  "isOver18": {
+                                    "type": "boolean",
+                                    "example": true
+                                  }
+                                },
+                                "description": "Información de contacto del cliente",
+                                "example": {
+                                  "email": "john.doe@example.com",
+                                  "firstName": "John",
+                                  "lastName": "Doe",
+                                  "phone": "+1-555-123-4567",
+                                  "isOver18": true
+                                }
+                              },
+                              "userId": {
+                                "type": "string",
+                                "pattern": "^u-[a-zA-Z0-9]+$",
+                                "description": "ID de usuario si el cliente existe en el sistema Justo",
+                                "example": "u-existing-user-456"
+                              },
+                              "specialRequests": {
+                                "type": "string",
+                                "description": "Solicitudes especiales del cliente",
+                                "example": "Please prepare a birthday cake. Allergic to nuts."
+                              },
+                              "specialOccasion": {
+                                "type": "string",
+                                "enum": [
+                                  "birthday",
+                                  "anniversary",
+                                  "date",
+                                  "business",
+                                  "celebration"
+                                ],
+                                "description": "Tipo de ocasión especial",
+                                "example": "birthday"
+                              },
+                              "cancelledAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación",
+                                "example": "2024-01-15T16:00:00.000Z"
+                              },
+                              "cancelReason": {
+                                "type": "string",
+                                "description": "Razón de la cancelación",
+                                "example": "Customer requested to change date"
+                              },
+                              "modifiedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de última modificación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "confirmedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "cancelledByStoreAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación por la tienda",
+                                "example": "2024-01-15T15:30:00.000Z"
+                              },
+                              "isWaitingList": {
+                                "type": "boolean",
+                                "description": "Si la reserva está en lista de espera",
+                                "example": false
+                              },
+                              "waitingListAssignedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de asignación a lista de espera",
+                                "example": "2024-01-15T10:45:00.000Z"
+                              },
+                              "showStatus": {
+                                "type": "string",
+                                "enum": [
+                                  "show",
+                                  "noShow"
+                                ],
+                                "description": "Si el cliente se presentó",
+                                "example": "show"
+                              },
+                              "confirmedByClientAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación del cliente",
+                                "example": "2024-01-15T11:30:00.000Z"
+                              },
+                              "clientSaidItsLateAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de notificación de retraso del cliente",
+                                "example": "2024-01-15T19:15:00.000Z"
+                              },
+                              "sendReminderAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora programada del recordatorio",
+                                "example": "2024-01-15T17:30:00.000Z"
+                              },
+                              "reminderSentAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de envío del recordatorio",
+                                "example": "2024-01-15T17:30:15.000Z"
+                              },
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "pos",
+                                  "website",
+                                  "messenger",
+                                  "marketplace",
+                                  "embed"
+                                ],
+                                "description": "Fuente de creación de la reserva",
+                                "example": "website"
+                              },
+                              "referrer": {
+                                "type": "string",
+                                "enum": [
+                                  "api:e2e"
+                                ],
+                                "description": "Fuente de referencia del tráfico",
+                                "example": "api:e2e"
+                              },
+                              "marketplaceAppId": {
+                                "type": "string",
+                                "description": "Identificador de aplicación del marketplace",
+                                "example": "marketplace-app-123"
+                              },
+                              "sourceUserAgent": {
+                                "type": "string",
+                                "description": "User agent de la fuente de reserva",
+                                "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                              },
+                              "evaluation": {
+                                "type": "object",
+                                "properties": {
+                                  "createdById": {
+                                    "type": "string",
+                                    "pattern": "^u-[a-zA-Z0-9]+$",
+                                    "example": "u-existing-user-456"
+                                  },
+                                  "createdByName": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "createdByEmail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "evaluation": {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "maximum": 5,
+                                    "example": 5
+                                  },
+                                  "comments": {
+                                    "type": "string",
+                                    "example": "Excellent service and food quality. Will definitely come back!"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-01-15T22:00:00.000Z"
+                                  }
+                                },
+                                "required": [
+                                  "evaluation",
+                                  "createdAt"
+                                ],
+                                "description": "Evaluación del cliente de la experiencia",
+                                "example": {
+                                  "createdById": "u-existing-user-456",
+                                  "createdByName": "John Doe",
+                                  "createdByEmail": "john.doe@example.com",
+                                  "evaluation": 5,
+                                  "comments": "Excellent service and food quality. Will definitely come back!",
+                                  "createdAt": "2024-01-15T22:00:00.000Z"
+                                }
                               }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
+                            }
                           }
                         },
                         "required": [
@@ -1319,96 +2090,315 @@
                         "properties": {
                           "reservation": {
                             "type": "object",
-                            "title": "Datos de Reserva en Webhook",
-                            "description": "Datos de la reserva incluidos en el payload del webhook",
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "pattern": "^res-[a-zA-Z0-9]{17}$",
-                                "description": "ID único de la reserva",
-                                "example": "res-xxxxxxxxxxxxxxxxx"
+                                "pattern": "^res-[a-zA-Z0-9]+$",
+                                "description": "Identificador único de reserva",
+                                "example": "res-abc123def456"
                               },
-                              "storeId": {
+                              "clientToken": {
                                 "type": "string",
-                                "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                                "description": "ID de la tienda donde se realizó la reserva",
-                                "example": "sto-xxxxxxxxxxxxxxxxx"
+                                "description": "Token de autenticación del cliente",
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                               },
-                              "websiteId": {
+                              "code": {
                                 "type": "string",
-                                "pattern": "^web-[a-zA-Z0-9]{17}$",
-                                "description": "ID del sitio web donde se originó la reserva",
-                                "example": "web-xxxxxxxxxxxxxxxxx"
-                              },
-                              "startsAt": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Fecha y hora de inicio de la reserva",
-                                "example": "2024-07-30T10:00:00Z"
-                              },
-                              "partySize": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 50,
-                                "description": "Número de personas para la reserva",
-                                "example": 2
-                              },
-                              "status": {
-                                "type": "string",
-                                "enum": [
-                                  "created",
-                                  "confirmed",
-                                  "cancelled",
-                                  "completed"
-                                ],
-                                "description": "Estado actual de la reserva",
-                                "example": "created"
-                              },
-                              "customerName": {
-                                "type": "string",
-                                "description": "Nombre del cliente que hizo la reserva",
-                                "example": "Juan Pérez"
-                              },
-                              "customerEmail": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email del cliente",
-                                "example": "juan@example.com"
-                              },
-                              "customerPhone": {
-                                "type": "string",
-                                "description": "Teléfono del cliente",
-                                "example": "+56912345678"
-                              },
-                              "notes": {
-                                "type": "string",
-                                "description": "Notas adicionales de la reserva",
-                                "example": "Mesa cerca de la ventana"
+                                "description": "Código de reserva legible",
+                                "example": "RES2024-001234"
                               },
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de creación de la reserva",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Marca de tiempo de creación de la reserva",
+                                "example": "2024-01-15T10:30:00.000Z"
                               },
-                              "updatedAt": {
+                              "startsAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "description": "Fecha de última actualización",
-                                "example": "2024-07-30T09:00:00Z"
+                                "description": "Hora de inicio de la reserva",
+                                "example": "2024-01-15T19:30:00.000Z"
+                              },
+                              "endsAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora de finalización de la reserva",
+                                "example": "2024-01-15T21:30:00.000Z"
+                              },
+                              "completedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de finalización de la reserva",
+                                "example": "2024-01-15T21:45:00.000Z"
+                              },
+                              "durationMinutes": {
+                                "type": "number",
+                                "description": "Duración de la reserva en minutos",
+                                "example": 120
+                              },
+                              "partySize": {
+                                "type": "number",
+                                "maximum": 100,
+                                "minimum": 1,
+                                "description": "Número de personas en el grupo",
+                                "example": 4
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "pattern": "^w-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sitio web",
+                                "example": "w-restaurant123"
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "pattern": "^s-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la tienda",
+                                "example": "s-downtown-branch"
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país (ISO 3166-1 alpha-2)",
+                                "example": "US"
+                              },
+                              "sectorId": {
+                                "type": "string",
+                                "pattern": "^rsec-[a-zA-Z0-9]+$",
+                                "description": "Identificador del sector",
+                                "example": "rsec-main-dining"
+                              },
+                              "tableIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                                  "example": "rtbl-table-12"
+                                },
+                                "description": "Array de identificadores de mesa",
+                                "example": [
+                                  "rtbl-table-12",
+                                  "rtbl-table-13"
+                                ]
+                              },
+                              "royaltyClientId": {
+                                "type": "string",
+                                "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                                "description": "Identificador del cliente de fidelidad",
+                                "example": "rty-cli-johndoe123"
+                              },
+                              "tabId": {
+                                "type": "string",
+                                "pattern": "^tab-[a-zA-Z0-9]+$",
+                                "description": "Identificador de la cuenta",
+                                "example": "tab-active-session-789"
+                              },
+                              "clientData": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "John"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Doe"
+                                  },
+                                  "phone": {
+                                    "type": "string",
+                                    "example": "+1-555-123-4567"
+                                  },
+                                  "isOver18": {
+                                    "type": "boolean",
+                                    "example": true
+                                  }
+                                },
+                                "description": "Información de contacto del cliente",
+                                "example": {
+                                  "email": "john.doe@example.com",
+                                  "firstName": "John",
+                                  "lastName": "Doe",
+                                  "phone": "+1-555-123-4567",
+                                  "isOver18": true
+                                }
+                              },
+                              "userId": {
+                                "type": "string",
+                                "pattern": "^u-[a-zA-Z0-9]+$",
+                                "description": "ID de usuario si el cliente existe en el sistema Justo",
+                                "example": "u-existing-user-456"
+                              },
+                              "specialRequests": {
+                                "type": "string",
+                                "description": "Solicitudes especiales del cliente",
+                                "example": "Please prepare a birthday cake. Allergic to nuts."
+                              },
+                              "specialOccasion": {
+                                "type": "string",
+                                "enum": [
+                                  "birthday",
+                                  "anniversary",
+                                  "date",
+                                  "business",
+                                  "celebration"
+                                ],
+                                "description": "Tipo de ocasión especial",
+                                "example": "birthday"
+                              },
+                              "cancelledAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación",
+                                "example": "2024-01-15T16:00:00.000Z"
+                              },
+                              "cancelReason": {
+                                "type": "string",
+                                "description": "Razón de la cancelación",
+                                "example": "Customer requested to change date"
+                              },
+                              "modifiedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de última modificación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "confirmedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación",
+                                "example": "2024-01-15T11:45:00.000Z"
+                              },
+                              "cancelledByStoreAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de cancelación por la tienda",
+                                "example": "2024-01-15T15:30:00.000Z"
+                              },
+                              "isWaitingList": {
+                                "type": "boolean",
+                                "description": "Si la reserva está en lista de espera",
+                                "example": false
+                              },
+                              "waitingListAssignedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de asignación a lista de espera",
+                                "example": "2024-01-15T10:45:00.000Z"
+                              },
+                              "showStatus": {
+                                "type": "string",
+                                "enum": [
+                                  "show",
+                                  "noShow"
+                                ],
+                                "description": "Si el cliente se presentó",
+                                "example": "show"
+                              },
+                              "confirmedByClientAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de confirmación del cliente",
+                                "example": "2024-01-15T11:30:00.000Z"
+                              },
+                              "clientSaidItsLateAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de notificación de retraso del cliente",
+                                "example": "2024-01-15T19:15:00.000Z"
+                              },
+                              "sendReminderAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Hora programada del recordatorio",
+                                "example": "2024-01-15T17:30:00.000Z"
+                              },
+                              "reminderSentAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Marca de tiempo de envío del recordatorio",
+                                "example": "2024-01-15T17:30:15.000Z"
+                              },
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "pos",
+                                  "website",
+                                  "messenger",
+                                  "marketplace",
+                                  "embed"
+                                ],
+                                "description": "Fuente de creación de la reserva",
+                                "example": "website"
+                              },
+                              "referrer": {
+                                "type": "string",
+                                "enum": [
+                                  "api:e2e"
+                                ],
+                                "description": "Fuente de referencia del tráfico",
+                                "example": "api:e2e"
+                              },
+                              "marketplaceAppId": {
+                                "type": "string",
+                                "description": "Identificador de aplicación del marketplace",
+                                "example": "marketplace-app-123"
+                              },
+                              "sourceUserAgent": {
+                                "type": "string",
+                                "description": "User agent de la fuente de reserva",
+                                "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                              },
+                              "evaluation": {
+                                "type": "object",
+                                "properties": {
+                                  "createdById": {
+                                    "type": "string",
+                                    "pattern": "^u-[a-zA-Z0-9]+$",
+                                    "example": "u-existing-user-456"
+                                  },
+                                  "createdByName": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "createdByEmail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "john.doe@example.com"
+                                  },
+                                  "evaluation": {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "maximum": 5,
+                                    "example": 5
+                                  },
+                                  "comments": {
+                                    "type": "string",
+                                    "example": "Excellent service and food quality. Will definitely come back!"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-01-15T22:00:00.000Z"
+                                  }
+                                },
+                                "required": [
+                                  "evaluation",
+                                  "createdAt"
+                                ],
+                                "description": "Evaluación del cliente de la experiencia",
+                                "example": {
+                                  "createdById": "u-existing-user-456",
+                                  "createdByName": "John Doe",
+                                  "createdByEmail": "john.doe@example.com",
+                                  "evaluation": 5,
+                                  "comments": "Excellent service and food quality. Will definitely come back!",
+                                  "createdAt": "2024-01-15T22:00:00.000Z"
+                                }
                               }
-                            },
-                            "required": [
-                              "_id",
-                              "storeId",
-                              "websiteId",
-                              "startsAt",
-                              "partySize",
-                              "status",
-                              "customerName",
-                              "createdAt",
-                              "updatedAt"
-                            ]
+                            }
                           }
                         },
                         "required": [
@@ -3176,96 +4166,315 @@
             "properties": {
               "reservation": {
                 "type": "object",
-                "title": "Datos de Reserva en Webhook",
-                "description": "Datos de la reserva incluidos en el payload del webhook",
                 "properties": {
                   "_id": {
                     "type": "string",
-                    "pattern": "^res-[a-zA-Z0-9]{17}$",
-                    "description": "ID único de la reserva",
-                    "example": "res-xxxxxxxxxxxxxxxxx"
+                    "pattern": "^res-[a-zA-Z0-9]+$",
+                    "description": "Identificador único de reserva",
+                    "example": "res-abc123def456"
                   },
-                  "storeId": {
+                  "clientToken": {
                     "type": "string",
-                    "pattern": "^sto-[a-zA-Z0-9]{17}$",
-                    "description": "ID de la tienda donde se realizó la reserva",
-                    "example": "sto-xxxxxxxxxxxxxxxxx"
+                    "description": "Token de autenticación del cliente",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                   },
-                  "websiteId": {
+                  "code": {
                     "type": "string",
-                    "pattern": "^web-[a-zA-Z0-9]{17}$",
-                    "description": "ID del sitio web donde se originó la reserva",
-                    "example": "web-xxxxxxxxxxxxxxxxx"
-                  },
-                  "startsAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "Fecha y hora de inicio de la reserva",
-                    "example": "2024-07-30T10:00:00Z"
-                  },
-                  "partySize": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 50,
-                    "description": "Número de personas para la reserva",
-                    "example": 2
-                  },
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "created",
-                      "confirmed",
-                      "cancelled",
-                      "completed"
-                    ],
-                    "description": "Estado actual de la reserva",
-                    "example": "created"
-                  },
-                  "customerName": {
-                    "type": "string",
-                    "description": "Nombre del cliente que hizo la reserva",
-                    "example": "Juan Pérez"
-                  },
-                  "customerEmail": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email del cliente",
-                    "example": "juan@example.com"
-                  },
-                  "customerPhone": {
-                    "type": "string",
-                    "description": "Teléfono del cliente",
-                    "example": "+56912345678"
-                  },
-                  "notes": {
-                    "type": "string",
-                    "description": "Notas adicionales de la reserva",
-                    "example": "Mesa cerca de la ventana"
+                    "description": "Código de reserva legible",
+                    "example": "RES2024-001234"
                   },
                   "createdAt": {
                     "type": "string",
                     "format": "date-time",
-                    "description": "Fecha de creación de la reserva",
-                    "example": "2024-07-30T09:00:00Z"
+                    "description": "Marca de tiempo de creación de la reserva",
+                    "example": "2024-01-15T10:30:00.000Z"
                   },
-                  "updatedAt": {
+                  "startsAt": {
                     "type": "string",
                     "format": "date-time",
-                    "description": "Fecha de última actualización",
-                    "example": "2024-07-30T09:00:00Z"
+                    "description": "Hora de inicio de la reserva",
+                    "example": "2024-01-15T19:30:00.000Z"
+                  },
+                  "endsAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Hora de finalización de la reserva",
+                    "example": "2024-01-15T21:30:00.000Z"
+                  },
+                  "completedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de finalización de la reserva",
+                    "example": "2024-01-15T21:45:00.000Z"
+                  },
+                  "durationMinutes": {
+                    "type": "number",
+                    "description": "Duración de la reserva en minutos",
+                    "example": 120
+                  },
+                  "partySize": {
+                    "type": "number",
+                    "maximum": 100,
+                    "minimum": 1,
+                    "description": "Número de personas en el grupo",
+                    "example": 4
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "pattern": "^w-[a-zA-Z0-9]+$",
+                    "description": "Identificador del sitio web",
+                    "example": "w-restaurant123"
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "pattern": "^s-[a-zA-Z0-9]+$",
+                    "description": "Identificador de la tienda",
+                    "example": "s-downtown-branch"
+                  },
+                  "countryCode": {
+                    "type": "string",
+                    "description": "Código de país (ISO 3166-1 alpha-2)",
+                    "example": "US"
+                  },
+                  "sectorId": {
+                    "type": "string",
+                    "pattern": "^rsec-[a-zA-Z0-9]+$",
+                    "description": "Identificador del sector",
+                    "example": "rsec-main-dining"
+                  },
+                  "tableIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^rtbl-[a-zA-Z0-9]+$",
+                      "example": "rtbl-table-12"
+                    },
+                    "description": "Array de identificadores de mesa",
+                    "example": [
+                      "rtbl-table-12",
+                      "rtbl-table-13"
+                    ]
+                  },
+                  "royaltyClientId": {
+                    "type": "string",
+                    "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+                    "description": "Identificador del cliente de fidelidad",
+                    "example": "rty-cli-johndoe123"
+                  },
+                  "tabId": {
+                    "type": "string",
+                    "pattern": "^tab-[a-zA-Z0-9]+$",
+                    "description": "Identificador de la cuenta",
+                    "example": "tab-active-session-789"
+                  },
+                  "clientData": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                      },
+                      "firstName": {
+                        "type": "string",
+                        "example": "John"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "example": "Doe"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "+1-555-123-4567"
+                      },
+                      "isOver18": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    },
+                    "description": "Información de contacto del cliente",
+                    "example": {
+                      "email": "john.doe@example.com",
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "phone": "+1-555-123-4567",
+                      "isOver18": true
+                    }
+                  },
+                  "userId": {
+                    "type": "string",
+                    "pattern": "^u-[a-zA-Z0-9]+$",
+                    "description": "ID de usuario si el cliente existe en el sistema Justo",
+                    "example": "u-existing-user-456"
+                  },
+                  "specialRequests": {
+                    "type": "string",
+                    "description": "Solicitudes especiales del cliente",
+                    "example": "Please prepare a birthday cake. Allergic to nuts."
+                  },
+                  "specialOccasion": {
+                    "type": "string",
+                    "enum": [
+                      "birthday",
+                      "anniversary",
+                      "date",
+                      "business",
+                      "celebration"
+                    ],
+                    "description": "Tipo de ocasión especial",
+                    "example": "birthday"
+                  },
+                  "cancelledAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de cancelación",
+                    "example": "2024-01-15T16:00:00.000Z"
+                  },
+                  "cancelReason": {
+                    "type": "string",
+                    "description": "Razón de la cancelación",
+                    "example": "Customer requested to change date"
+                  },
+                  "modifiedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de última modificación",
+                    "example": "2024-01-15T11:45:00.000Z"
+                  },
+                  "confirmedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de confirmación",
+                    "example": "2024-01-15T11:45:00.000Z"
+                  },
+                  "cancelledByStoreAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de cancelación por la tienda",
+                    "example": "2024-01-15T15:30:00.000Z"
+                  },
+                  "isWaitingList": {
+                    "type": "boolean",
+                    "description": "Si la reserva está en lista de espera",
+                    "example": false
+                  },
+                  "waitingListAssignedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de asignación a lista de espera",
+                    "example": "2024-01-15T10:45:00.000Z"
+                  },
+                  "showStatus": {
+                    "type": "string",
+                    "enum": [
+                      "show",
+                      "noShow"
+                    ],
+                    "description": "Si el cliente se presentó",
+                    "example": "show"
+                  },
+                  "confirmedByClientAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de confirmación del cliente",
+                    "example": "2024-01-15T11:30:00.000Z"
+                  },
+                  "clientSaidItsLateAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de notificación de retraso del cliente",
+                    "example": "2024-01-15T19:15:00.000Z"
+                  },
+                  "sendReminderAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Hora programada del recordatorio",
+                    "example": "2024-01-15T17:30:00.000Z"
+                  },
+                  "reminderSentAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Marca de tiempo de envío del recordatorio",
+                    "example": "2024-01-15T17:30:15.000Z"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "pos",
+                      "website",
+                      "messenger",
+                      "marketplace",
+                      "embed"
+                    ],
+                    "description": "Fuente de creación de la reserva",
+                    "example": "website"
+                  },
+                  "referrer": {
+                    "type": "string",
+                    "enum": [
+                      "api:e2e"
+                    ],
+                    "description": "Fuente de referencia del tráfico",
+                    "example": "api:e2e"
+                  },
+                  "marketplaceAppId": {
+                    "type": "string",
+                    "description": "Identificador de aplicación del marketplace",
+                    "example": "marketplace-app-123"
+                  },
+                  "sourceUserAgent": {
+                    "type": "string",
+                    "description": "User agent de la fuente de reserva",
+                    "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                  },
+                  "evaluation": {
+                    "type": "object",
+                    "properties": {
+                      "createdById": {
+                        "type": "string",
+                        "pattern": "^u-[a-zA-Z0-9]+$",
+                        "example": "u-existing-user-456"
+                      },
+                      "createdByName": {
+                        "type": "string",
+                        "example": "John Doe"
+                      },
+                      "createdByEmail": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                      },
+                      "evaluation": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5,
+                        "example": 5
+                      },
+                      "comments": {
+                        "type": "string",
+                        "example": "Excellent service and food quality. Will definitely come back!"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15T22:00:00.000Z"
+                      }
+                    },
+                    "required": [
+                      "evaluation",
+                      "createdAt"
+                    ],
+                    "description": "Evaluación del cliente de la experiencia",
+                    "example": {
+                      "createdById": "u-existing-user-456",
+                      "createdByName": "John Doe",
+                      "createdByEmail": "john.doe@example.com",
+                      "evaluation": 5,
+                      "comments": "Excellent service and food quality. Will definitely come back!",
+                      "createdAt": "2024-01-15T22:00:00.000Z"
+                    }
                   }
-                },
-                "required": [
-                  "_id",
-                  "storeId",
-                  "websiteId",
-                  "startsAt",
-                  "partySize",
-                  "status",
-                  "customerName",
-                  "createdAt",
-                  "updatedAt"
-                ]
+                }
               }
             },
             "required": [
@@ -3311,96 +4520,315 @@
       },
       "ReservationWebhookData": {
         "type": "object",
-        "title": "Datos de Reserva en Webhook",
-        "description": "Datos de la reserva incluidos en el payload del webhook",
         "properties": {
           "_id": {
             "type": "string",
-            "pattern": "^res-[a-zA-Z0-9]{17}$",
-            "description": "ID único de la reserva",
-            "example": "res-xxxxxxxxxxxxxxxxx"
+            "pattern": "^res-[a-zA-Z0-9]+$",
+            "description": "Identificador único de reserva",
+            "example": "res-abc123def456"
           },
-          "storeId": {
+          "clientToken": {
             "type": "string",
-            "pattern": "^sto-[a-zA-Z0-9]{17}$",
-            "description": "ID de la tienda donde se realizó la reserva",
-            "example": "sto-xxxxxxxxxxxxxxxxx"
+            "description": "Token de autenticación del cliente",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
           },
-          "websiteId": {
+          "code": {
             "type": "string",
-            "pattern": "^web-[a-zA-Z0-9]{17}$",
-            "description": "ID del sitio web donde se originó la reserva",
-            "example": "web-xxxxxxxxxxxxxxxxx"
-          },
-          "startsAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Fecha y hora de inicio de la reserva",
-            "example": "2024-07-30T10:00:00Z"
-          },
-          "partySize": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 50,
-            "description": "Número de personas para la reserva",
-            "example": 2
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "confirmed",
-              "cancelled",
-              "completed"
-            ],
-            "description": "Estado actual de la reserva",
-            "example": "created"
-          },
-          "customerName": {
-            "type": "string",
-            "description": "Nombre del cliente que hizo la reserva",
-            "example": "Juan Pérez"
-          },
-          "customerEmail": {
-            "type": "string",
-            "format": "email",
-            "description": "Email del cliente",
-            "example": "juan@example.com"
-          },
-          "customerPhone": {
-            "type": "string",
-            "description": "Teléfono del cliente",
-            "example": "+56912345678"
-          },
-          "notes": {
-            "type": "string",
-            "description": "Notas adicionales de la reserva",
-            "example": "Mesa cerca de la ventana"
+            "description": "Código de reserva legible",
+            "example": "RES2024-001234"
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "description": "Fecha de creación de la reserva",
-            "example": "2024-07-30T09:00:00Z"
+            "description": "Marca de tiempo de creación de la reserva",
+            "example": "2024-01-15T10:30:00.000Z"
           },
-          "updatedAt": {
+          "startsAt": {
             "type": "string",
             "format": "date-time",
-            "description": "Fecha de última actualización",
-            "example": "2024-07-30T09:00:00Z"
+            "description": "Hora de inicio de la reserva",
+            "example": "2024-01-15T19:30:00.000Z"
+          },
+          "endsAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Hora de finalización de la reserva",
+            "example": "2024-01-15T21:30:00.000Z"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de finalización de la reserva",
+            "example": "2024-01-15T21:45:00.000Z"
+          },
+          "durationMinutes": {
+            "type": "number",
+            "description": "Duración de la reserva en minutos",
+            "example": 120
+          },
+          "partySize": {
+            "type": "number",
+            "maximum": 100,
+            "minimum": 1,
+            "description": "Número de personas en el grupo",
+            "example": 4
+          },
+          "websiteId": {
+            "type": "string",
+            "pattern": "^w-[a-zA-Z0-9]+$",
+            "description": "Identificador del sitio web",
+            "example": "w-restaurant123"
+          },
+          "storeId": {
+            "type": "string",
+            "pattern": "^s-[a-zA-Z0-9]+$",
+            "description": "Identificador de la tienda",
+            "example": "s-downtown-branch"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país (ISO 3166-1 alpha-2)",
+            "example": "US"
+          },
+          "sectorId": {
+            "type": "string",
+            "pattern": "^rsec-[a-zA-Z0-9]+$",
+            "description": "Identificador del sector",
+            "example": "rsec-main-dining"
+          },
+          "tableIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^rtbl-[a-zA-Z0-9]+$",
+              "example": "rtbl-table-12"
+            },
+            "description": "Array de identificadores de mesa",
+            "example": [
+              "rtbl-table-12",
+              "rtbl-table-13"
+            ]
+          },
+          "royaltyClientId": {
+            "type": "string",
+            "pattern": "^rty-cli-[a-zA-Z0-9]+$",
+            "description": "Identificador del cliente de fidelidad",
+            "example": "rty-cli-johndoe123"
+          },
+          "tabId": {
+            "type": "string",
+            "pattern": "^tab-[a-zA-Z0-9]+$",
+            "description": "Identificador de la cuenta",
+            "example": "tab-active-session-789"
+          },
+          "clientData": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "john.doe@example.com"
+              },
+              "firstName": {
+                "type": "string",
+                "example": "John"
+              },
+              "lastName": {
+                "type": "string",
+                "example": "Doe"
+              },
+              "phone": {
+                "type": "string",
+                "example": "+1-555-123-4567"
+              },
+              "isOver18": {
+                "type": "boolean",
+                "example": true
+              }
+            },
+            "description": "Información de contacto del cliente",
+            "example": {
+              "email": "john.doe@example.com",
+              "firstName": "John",
+              "lastName": "Doe",
+              "phone": "+1-555-123-4567",
+              "isOver18": true
+            }
+          },
+          "userId": {
+            "type": "string",
+            "pattern": "^u-[a-zA-Z0-9]+$",
+            "description": "ID de usuario si el cliente existe en el sistema Justo",
+            "example": "u-existing-user-456"
+          },
+          "specialRequests": {
+            "type": "string",
+            "description": "Solicitudes especiales del cliente",
+            "example": "Please prepare a birthday cake. Allergic to nuts."
+          },
+          "specialOccasion": {
+            "type": "string",
+            "enum": [
+              "birthday",
+              "anniversary",
+              "date",
+              "business",
+              "celebration"
+            ],
+            "description": "Tipo de ocasión especial",
+            "example": "birthday"
+          },
+          "cancelledAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de cancelación",
+            "example": "2024-01-15T16:00:00.000Z"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Razón de la cancelación",
+            "example": "Customer requested to change date"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de última modificación",
+            "example": "2024-01-15T11:45:00.000Z"
+          },
+          "confirmedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de confirmación",
+            "example": "2024-01-15T11:45:00.000Z"
+          },
+          "cancelledByStoreAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de cancelación por la tienda",
+            "example": "2024-01-15T15:30:00.000Z"
+          },
+          "isWaitingList": {
+            "type": "boolean",
+            "description": "Si la reserva está en lista de espera",
+            "example": false
+          },
+          "waitingListAssignedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de asignación a lista de espera",
+            "example": "2024-01-15T10:45:00.000Z"
+          },
+          "showStatus": {
+            "type": "string",
+            "enum": [
+              "show",
+              "noShow"
+            ],
+            "description": "Si el cliente se presentó",
+            "example": "show"
+          },
+          "confirmedByClientAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de confirmación del cliente",
+            "example": "2024-01-15T11:30:00.000Z"
+          },
+          "clientSaidItsLateAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de notificación de retraso del cliente",
+            "example": "2024-01-15T19:15:00.000Z"
+          },
+          "sendReminderAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Hora programada del recordatorio",
+            "example": "2024-01-15T17:30:00.000Z"
+          },
+          "reminderSentAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Marca de tiempo de envío del recordatorio",
+            "example": "2024-01-15T17:30:15.000Z"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "pos",
+              "website",
+              "messenger",
+              "marketplace",
+              "embed"
+            ],
+            "description": "Fuente de creación de la reserva",
+            "example": "website"
+          },
+          "referrer": {
+            "type": "string",
+            "enum": [
+              "api:e2e"
+            ],
+            "description": "Fuente de referencia del tráfico",
+            "example": "api:e2e"
+          },
+          "marketplaceAppId": {
+            "type": "string",
+            "description": "Identificador de aplicación del marketplace",
+            "example": "marketplace-app-123"
+          },
+          "sourceUserAgent": {
+            "type": "string",
+            "description": "User agent de la fuente de reserva",
+            "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          },
+          "evaluation": {
+            "type": "object",
+            "properties": {
+              "createdById": {
+                "type": "string",
+                "pattern": "^u-[a-zA-Z0-9]+$",
+                "example": "u-existing-user-456"
+              },
+              "createdByName": {
+                "type": "string",
+                "example": "John Doe"
+              },
+              "createdByEmail": {
+                "type": "string",
+                "format": "email",
+                "example": "john.doe@example.com"
+              },
+              "evaluation": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 5,
+                "example": 5
+              },
+              "comments": {
+                "type": "string",
+                "example": "Excellent service and food quality. Will definitely come back!"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-01-15T22:00:00.000Z"
+              }
+            },
+            "required": [
+              "evaluation",
+              "createdAt"
+            ],
+            "description": "Evaluación del cliente de la experiencia",
+            "example": {
+              "createdById": "u-existing-user-456",
+              "createdByName": "John Doe",
+              "createdByEmail": "john.doe@example.com",
+              "evaluation": 5,
+              "comments": "Excellent service and food quality. Will definitely come back!",
+              "createdAt": "2024-01-15T22:00:00.000Z"
+            }
           }
-        },
-        "required": [
-          "_id",
-          "storeId",
-          "websiteId",
-          "startsAt",
-          "partySize",
-          "status",
-          "customerName",
-          "createdAt",
-          "updatedAt"
-        ]
+        }
       }
     }
   }
