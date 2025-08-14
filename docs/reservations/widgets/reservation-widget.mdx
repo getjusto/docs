@@ -7,7 +7,7 @@ description: 'Integre el widget de reservas de Justo dentro de su sitio web'
 
 Para integrar el widget de reservas en su sitio web, utilice el hook `useReservationsEmbed` en un componente React de su aplicación. Este hook carga dinámicamente el script necesario desde la URL correspondiente al entorno (local o producción) e inicializa el widget con parámetros como `storeId`, `clientToken` e `isWaitingList`. Asegúrese de proporcionar los valores adecuados para estos parámetros y maneje eventos como `onReservationCreated` para redirigir al usuario o realizar otras acciones posteriores a la creación de una reserva. El widget se ajustará automáticamente al tamaño y usará los colores de diseño de su sitio web para una integración seamless.
 
-```
+```javascript widget.jsx
 import {useEffect} from 'react'
 import {useWebsiteData} from '~/lib/components/Website/useWebsite'
 import {isServer, justoEnv} from '~/lib/env'
