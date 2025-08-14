@@ -173,16 +173,27 @@
 			"group": "Reservas",
 			"version": "v3",
 			"pages": [
-				"docs/reservations/endpoints/reservations/post-reservations",
-				"docs/reservations/endpoints/reservations/get-reservations",
-				"docs/reservations/endpoints/reservations/update-reservations",
-				"docs/reservations/endpoints/reservations/delete-reservations",
+				{
+					"group": "Endpoints",
+					"pages": [
+						"docs/reservations/endpoints/reservations/post-reservations",
+						"docs/reservations/endpoints/reservations/get-reservations",
+						"docs/reservations/endpoints/reservations/update-reservations",
+						"docs/reservations/endpoints/reservations/delete-reservations"
+					]
+				},
 				{
 					"group": "Webhooks",
-					"version": "v3",
 					"pages": [
 						"docs/reservations/webhooks/reservation/created",
-						"docs/reservations/webhooks/reservation/updated"
+						"docs/reservations/webhooks/reservation/updated",
+						"docs/reservations/webhooks/reservation/cancelled"
+					]
+				},
+				{
+					"group": "Widgets",
+					"pages": [
+						"docs/reservations/widgets/reservation-widget"
 					]
 				}
 			]
