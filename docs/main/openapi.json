@@ -1609,28 +1609,6 @@
           },
           {
             "in": "query",
-            "name": "fromDate",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "2020-01-01T00:00:00.000Z",
-              "format": "date-time",
-              "description": "Fecha de inicio de la búsqueda."
-            }
-          },
-          {
-            "in": "query",
-            "name": "toDate",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "2020-01-01T00:00:00.000Z",
-              "format": "date-time",
-              "description": "Fecha de fin de la búsqueda."
-            }
-          },
-          {
-            "in": "query",
             "name": "page",
             "required": false,
             "schema": {
