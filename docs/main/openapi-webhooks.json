@@ -2831,6 +2831,115 @@
           }
         }
       },
+      "tabsShiftDetails": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Shift ID"
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local"
+          },
+          "startedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que empezó el turno"
+          },
+          "endedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que terminó el turno"
+          },
+          "createdById": {
+            "type": "string",
+            "description": "ID del usuario que abrió el turno"
+          },
+          "closedTabsTotalSales": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de ventas de los tabs cerrados"
+          },
+          "discountsAmount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de descuentos"
+          },
+          "avgTicket": {
+            "type": "number",
+            "example": 2,
+            "description": "Promedio de ticket"
+          },
+          "eatersCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Cantidad de comensales"
+          },
+          "totalPayments": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de pagos"
+          },
+          "cashRegisterShifts": {
+            "type": "array",
+            "description": "Turnos de la caja",
+            "items": {
+              "type": "object",
+              "description": "Turnos de caja",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "cashRegisterId": {
+                  "type": "string"
+                },
+                "startedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "endedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "startBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                },
+                "endBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tabsShiftCashregisterBalance": {
+        "type": "object",
+        "properties": {
+          "paymentMethodId": {
+            "type": "string",
+            "description": "ID del método de pago"
+          },
+          "balance": {
+            "type": "number",
+            "description": "Balance de la caja"
+          }
+        }
+      },
       "tabsTabPayment": {
         "type": "object",
         "properties": {
@@ -2906,6 +3015,21 @@
             "type": "string",
             "example": "a3W2hiuGGLi4eECFa",
             "description": "El ID del usuario que pagó la cuenta. Solo para JustoPay"
+          }
+        }
+      },
+      "tabsTabPaymentMethod": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del pago."
+          },
+          "name": {
+            "type": "string",
+            "example": "Efectivo",
+            "description": "El nombre del método de pago."
           }
         }
       },
