@@ -11,6 +11,165 @@
     }
   ],
   "paths": {
+    "/tabs/{storeId}/shifts": {
+      "get": {
+        "summary": "List Shifts",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de inicio de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de fin de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt"
+              ],
+              "example": "createdAt",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"createdAt\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsShift"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tabs/{storeId}/shifts/active": {
       "get": {
         "summary": "Active Shift",
@@ -110,7 +269,7 @@
                       "example": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/tabsShift"
+                      "$ref": "#/components/schemas/tabsShiftDetails"
                     }
                   }
                 }
@@ -1277,6 +1436,302 @@
         }
       }
     },
+    "/tabs/{storeId}/invoices": {
+      "get": {
+        "summary": "List invoices",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de inicio de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de fin de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt"
+              ],
+              "example": "createdAt",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"createdAt\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsTabInvoice"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tabs/{storeId}/payment-methods": {
+      "get": {
+        "summary": "List payment methods",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt"
+              ],
+              "example": "createdAt",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"createdAt\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsTabPaymentMethod"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/me": {
       "get": {
         "summary": "Token info",
@@ -2313,6 +2768,115 @@
           }
         }
       },
+      "tabsShiftDetails": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Shift ID"
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local"
+          },
+          "startedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que empezó el turno"
+          },
+          "endedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que terminó el turno"
+          },
+          "createdById": {
+            "type": "string",
+            "description": "ID del usuario que abrió el turno"
+          },
+          "closedTabsTotalSales": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de ventas de los tabs cerrados"
+          },
+          "discountsAmount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de descuentos"
+          },
+          "avgTicket": {
+            "type": "number",
+            "example": 2,
+            "description": "Promedio de ticket"
+          },
+          "eatersCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Cantidad de comensales"
+          },
+          "totalPayments": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de pagos"
+          },
+          "cashRegisterShifts": {
+            "type": "array",
+            "description": "Turnos de la caja",
+            "items": {
+              "type": "object",
+              "description": "Turnos de caja",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "cashRegisterId": {
+                  "type": "string"
+                },
+                "startedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "endedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "startBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                },
+                "endBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tabsShiftCashregisterBalance": {
+        "type": "object",
+        "properties": {
+          "paymentMethodId": {
+            "type": "string",
+            "description": "ID del método de pago"
+          },
+          "balance": {
+            "type": "number",
+            "description": "Balance de la caja"
+          }
+        }
+      },
       "tabsTabPayment": {
         "type": "object",
         "properties": {
@@ -2388,6 +2952,21 @@
             "type": "string",
             "example": "a3W2hiuGGLi4eECFa",
             "description": "El ID del usuario que pagó la cuenta. Solo para JustoPay"
+          }
+        }
+      },
+      "tabsTabPaymentMethod": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del pago."
+          },
+          "name": {
+            "type": "string",
+            "example": "Efectivo",
+            "description": "El nombre del método de pago."
           }
         }
       },
