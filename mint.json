@@ -192,9 +192,7 @@
 				},
 				{
 					"group": "Widgets",
-					"pages": [
-						"docs/reservations/widgets/reservation-widget"
-					]
+					"pages": ["docs/reservations/widgets/reservation-widget"]
 				}
 			]
 		},
@@ -248,9 +246,10 @@
 				{
 					"group": "Turnos",
 					"pages": [
-						"docs/crisp/endpoints/shifts/get-active-shift",
 						"docs/crisp/endpoints/shifts/get-shift",
-						"docs/crisp/endpoints/shifts/list-shifts"
+						"docs/crisp/endpoints/shifts/list-shifts",
+						"docs/crisp/endpoints/shifts/list-shift-tabs",
+						"docs/crisp/endpoints/shifts/get-shift-tab"
 					]
 				},
 				{
@@ -273,7 +272,9 @@
 				},
 				{
 					"group": "Métodos de pago",
-					"pages": ["docs/crisp/endpoints/tabPaymentMethods/list-tab-payment-methods"]
+					"pages": [
+						"docs/crisp/endpoints/tabPaymentMethods/list-tab-payment-methods"
+					]
 				},
 				{
 					"group": "Facturación",

@@ -170,13 +170,22 @@
         }
       }
     },
-    "/tabs/{storeId}/shifts/active": {
+    "/tabs/{storeId}/shifts/{shiftId}": {
       "get": {
-        "summary": "Active Shift",
+        "summary": "Shift",
         "parameters": [
           {
             "in": "path",
             "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "shiftId",
+            "description": "ID del turno o \"active\"",
             "required": true,
             "schema": {
               "type": "string"
@@ -235,9 +244,9 @@
         }
       }
     },
-    "/tabs/{storeId}/shifts/{shiftId}": {
+    "/tabs/{storeId}/shifts/{shiftId}/tabs": {
       "get": {
-        "summary": "Shift",
+        "summary": "Tabs in shift",
         "parameters": [
           {
             "in": "path",
@@ -251,8 +260,56 @@
             "in": "path",
             "name": "shiftId",
             "required": true,
+            "description": "ID del turno o \"active\"",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt"
+              ],
+              "example": "createdAt",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"createdAt\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
             }
           }
         ],
@@ -269,7 +326,114 @@
                       "example": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/tabsShiftDetails"
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsTab"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tabs/{storeId}/shifts/{shiftId}/tabs/{tabCounter}": {
+      "get": {
+        "summary": "Tab by counter at Shift",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "shiftId",
+            "description": "ID del turno o \"active\"",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "tabCounter",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/tabsTab"
                     }
                   }
                 }
@@ -2395,6 +2559,144 @@
           }
         }
       }
+    },
+    "/royalty/clients-loyalty-balance": {
+      "get": {
+        "summary": "Get Clients Loyalty Balance",
+        "description": "Obtiene una lista paginada de los balances de lealtad de los clientes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "description": "Número de página a obtener"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "description": "Cantidad de elementos por página"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "clientId": {
+                                "type": "string",
+                                "example": "crd-client-001",
+                                "description": "El ID del cliente"
+                              },
+                              "justoUserId": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "example": "usr-001",
+                                "description": "El ID del usuario de Justo asociado al cliente, si existe"
+                              },
+                              "balance": {
+                                "type": "number",
+                                "example": 150,
+                                "description": "El balance actual de puntos de lealtad del cliente"
+                              }
+                            },
+                            "required": [
+                              "clientId",
+                              "justoUserId",
+                              "balance"
+                            ]
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -2431,6 +2733,16 @@
             "type": "string",
             "example": "Li4eEa3W2hiuGGCFa",
             "description": "El ID de la tienda al que pertenece la cuenta."
+          },
+          "shiftId": {
+            "type": "string",
+            "example": "tsft-b6fda21f-b638-428b-a785-849fdbe3fe0b",
+            "description": "El ID del turno al que pertenece la cuenta."
+          },
+          "tabCounter": {
+            "type": "number",
+            "example": 1,
+            "description": "El número de la cuenta en el turno. Único en el turno."
           },
           "createdById": {
             "type": "string",
@@ -2736,39 +3048,6 @@
         }
       },
       "tabsShift": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Shift ID"
-          },
-          "websiteId": {
-            "type": "string",
-            "description": "ID de la marca"
-          },
-          "storeId": {
-            "type": "string",
-            "description": "ID del local"
-          },
-          "startedAt": {
-            "type": "string",
-            "example": "2020-01-01T00:00:00.000Z",
-            "format": "date-time",
-            "description": "Fecha en que empezó el turno"
-          },
-          "endedAt": {
-            "type": "string",
-            "example": "2020-01-01T00:00:00.000Z",
-            "format": "date-time",
-            "description": "Fecha en que terminó el turno"
-          },
-          "createdById": {
-            "type": "string",
-            "description": "ID del usuario que abrió el turno"
-          }
-        }
-      },
-      "tabsShiftDetails": {
         "type": "object",
         "properties": {
           "_id": {
@@ -3193,6 +3472,16 @@
               "$ref": "#/components/schemas/tabsTabItemModifier"
             },
             "description": "Modificadores del item."
+          },
+          "unitProductWeight": {
+            "type": "number",
+            "example": 100,
+            "description": "Peso del producto por unidad."
+          },
+          "totalWeight": {
+            "type": "number",
+            "example": 100,
+            "description": "Peso total del item incluyendo modificadores y cantidad."
           }
         }
       },
@@ -3253,6 +3542,11 @@
             "type": "number",
             "example": 1,
             "description": "Cantidad de unidades que contiene el modificador. Por ejemplo un combo papas fritas + hamburguesa y bebida contiene 3 items o un 2x1 contiene 2 items."
+          },
+          "modifierUnitWeight": {
+            "type": "number",
+            "example": 100,
+            "description": "Peso del modificador por unidad."
           }
         }
       },
@@ -4890,6 +5184,31 @@
             "description": "Fecha de eliminación del código, si es que esta eliminado"
           }
         }
+      },
+      "clientLoyaltyBalance": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "cli-ry-001",
+            "description": "El ID del cliente"
+          },
+          "justoUserId": {
+            "type": "string",
+            "example": "u-001",
+            "description": "El ID del usuario de Justo asociado al cliente"
+          },
+          "balance": {
+            "type": "number",
+            "example": 150,
+            "description": "El balance actual de puntos de lealtad del cliente"
+          }
+        },
+        "required": [
+          "clientId",
+          "justoUserId",
+          "balance"
+        ]
       }
     }
   }

@@ -2495,6 +2495,16 @@
             "example": "Li4eEa3W2hiuGGCFa",
             "description": "El ID de la tienda al que pertenece la cuenta."
           },
+          "shiftId": {
+            "type": "string",
+            "example": "tsft-b6fda21f-b638-428b-a785-849fdbe3fe0b",
+            "description": "El ID del turno al que pertenece la cuenta."
+          },
+          "tabCounter": {
+            "type": "number",
+            "example": 1,
+            "description": "El número de la cuenta en el turno. Único en el turno."
+          },
           "createdById": {
             "type": "string",
             "example": "a3W2hiuGGLi4eECFa",
@@ -2799,39 +2809,6 @@
         }
       },
       "tabsShift": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Shift ID"
-          },
-          "websiteId": {
-            "type": "string",
-            "description": "ID de la marca"
-          },
-          "storeId": {
-            "type": "string",
-            "description": "ID del local"
-          },
-          "startedAt": {
-            "type": "string",
-            "example": "2020-01-01T00:00:00.000Z",
-            "format": "date-time",
-            "description": "Fecha en que empezó el turno"
-          },
-          "endedAt": {
-            "type": "string",
-            "example": "2020-01-01T00:00:00.000Z",
-            "format": "date-time",
-            "description": "Fecha en que terminó el turno"
-          },
-          "createdById": {
-            "type": "string",
-            "description": "ID del usuario que abrió el turno"
-          }
-        }
-      },
-      "tabsShiftDetails": {
         "type": "object",
         "properties": {
           "_id": {
@@ -3256,6 +3233,16 @@
               "$ref": "#/components/schemas/tabsTabItemModifier"
             },
             "description": "Modificadores del item."
+          },
+          "unitProductWeight": {
+            "type": "number",
+            "example": 100,
+            "description": "Peso del producto por unidad."
+          },
+          "totalWeight": {
+            "type": "number",
+            "example": 100,
+            "description": "Peso total del item incluyendo modificadores y cantidad."
           }
         }
       },
@@ -3316,6 +3303,11 @@
             "type": "number",
             "example": 1,
             "description": "Cantidad de unidades que contiene el modificador. Por ejemplo un combo papas fritas + hamburguesa y bebida contiene 3 items o un 2x1 contiene 2 items."
+          },
+          "modifierUnitWeight": {
+            "type": "number",
+            "example": 100,
+            "description": "Peso del modificador por unidad."
           }
         }
       },
@@ -3775,6 +3767,31 @@
             "description": "Fecha de eliminación del código, si es que esta eliminado"
           }
         }
+      },
+      "clientLoyaltyBalance": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "cli-ry-001",
+            "description": "El ID del cliente"
+          },
+          "justoUserId": {
+            "type": "string",
+            "example": "u-001",
+            "description": "El ID del usuario de Justo asociado al cliente"
+          },
+          "balance": {
+            "type": "number",
+            "example": 150,
+            "description": "El balance actual de puntos de lealtad del cliente"
+          }
+        },
+        "required": [
+          "clientId",
+          "justoUserId",
+          "balance"
+        ]
       },
       "reservationsReservation": {
         "type": "object",
