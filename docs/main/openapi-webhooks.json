@@ -3614,6 +3614,56 @@
           }
         }
       },
+      "tabsProductCosts": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del producto."
+          },
+          "name": {
+            "type": "string",
+            "example": "Hamburguesa",
+            "description": "El nombre del producto."
+          },
+          "externalId": {
+            "type": "string",
+            "example": "prd_external_id",
+            "description": "Identificador externo del producto"
+          },
+          "cost": {
+            "type": "number",
+            "example": 100,
+            "description": "Costo del producto"
+          }
+        }
+      },
+      "tabsModifierCosts": {
+        "type": "object",
+        "properties": {
+          "modifierId": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del modificador."
+          },
+          "name": {
+            "type": "string",
+            "example": "Mayonesa",
+            "description": "El nombre del modificador."
+          },
+          "externalId": {
+            "type": "string",
+            "example": "mod_external_id",
+            "description": "Identificador externo del modificador"
+          },
+          "cost": {
+            "type": "number",
+            "example": 100,
+            "description": "Costo del modificador"
+          }
+        }
+      },
       "apiAuthorizationStatus": {
         "type": "object",
         "properties": {

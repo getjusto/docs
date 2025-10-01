@@ -256,7 +256,9 @@
 					"group": "Inventario",
 					"pages": [
 						"docs/crisp/endpoints/inventory/get-current-inventory",
-						"docs/crisp/endpoints/inventory/list-ingredients"
+						"docs/crisp/endpoints/inventory/list-ingredients",
+						"docs/crisp/endpoints/inventory/get-menu-costs"
+
 					]
 				},
 				{

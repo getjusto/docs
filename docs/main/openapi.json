@@ -950,6 +950,87 @@
         }
       }
     },
+    "/tabs/{storeId}/menu-costs": {
+      "get": {
+        "summary": "Costos de menu",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "products": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsProductCosts"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "modifiers": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsModifierCosts"
+                          },
+                          "description": "Items de la lista."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tabs/{storeId}/accounting-movements/{accountingMovementId}": {
       "get": {
         "summary": "Accounting Movement",
@@ -3850,6 +3931,56 @@
               }
             },
             "description": "Lista de ingredientes incluidos en el recuento."
+          }
+        }
+      },
+      "tabsProductCosts": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del producto."
+          },
+          "name": {
+            "type": "string",
+            "example": "Hamburguesa",
+            "description": "El nombre del producto."
+          },
+          "externalId": {
+            "type": "string",
+            "example": "prd_external_id",
+            "description": "Identificador externo del producto"
+          },
+          "cost": {
+            "type": "number",
+            "example": 100,
+            "description": "Costo del producto"
+          }
+        }
+      },
+      "tabsModifierCosts": {
+        "type": "object",
+        "properties": {
+          "modifierId": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del modificador."
+          },
+          "name": {
+            "type": "string",
+            "example": "Mayonesa",
+            "description": "El nombre del modificador."
+          },
+          "externalId": {
+            "type": "string",
+            "example": "mod_external_id",
+            "description": "Identificador externo del modificador"
+          },
+          "cost": {
+            "type": "number",
+            "example": 100,
+            "description": "Costo del modificador"
           }
         }
       },
