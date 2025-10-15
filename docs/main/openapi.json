@@ -2641,10 +2641,117 @@
         }
       }
     },
+    "/royalty/client-loyalty-balance": {
+      "get": {
+        "summary": "Balance de puntos de un cliente",
+        "description": "Obtiene el balance de puntos de lealtad de un cliente específico. Se debe proporcionar al menos uno de los siguientes parámetros: justoUserId, clientId o email.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "justoUserId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "ID del usuario de Justo"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "ID del cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Email del cliente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Balance de puntos del cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "rty-cli-001",
+                      "description": "El ID del cliente"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "cliente@example.com",
+                      "description": "El email del cliente, si existe",
+                      "nullable": true
+                    },
+                    "justoUserId": {
+                      "type": "string",
+                      "example": "u-001",
+                      "description": "El ID del usuario de Justo asociado al cliente, si existe",
+                      "nullable": true
+                    },
+                    "balance": {
+                      "type": "number",
+                      "example": 150,
+                      "description": "El balance actual de puntos de lealtad del cliente"
+                    },
+                    "websiteId": {
+                      "type": "string",
+                      "example": "w-001",
+                      "description": "El ID del sitio web al que pertenece el cliente"
+                    },
+                    "lastUpdated": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2025-10-14T14:16:11.000Z",
+                      "description": "Fecha de la última actualización del balance, si existe",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "clientId",
+                    "email",
+                    "justoUserId",
+                    "balance",
+                    "websiteId",
+                    "lastUpdated"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - falta proporcionar al menos uno de los parámetros requeridos"
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          },
+          "404": {
+            "description": "Cliente no encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
     "/royalty/clients-loyalty-balance": {
       "get": {
-        "summary": "Get Clients Loyalty Balance",
-        "description": "Obtiene una lista paginada de los balances de lealtad de los clientes",
+        "summary": "Balances de puntos",
+        "description": "Obtiene una lista paginada de los balances de puntos de lealtad de los clientes.",
         "parameters": [
           {
             "in": "query",
@@ -2692,7 +2799,7 @@
                             "properties": {
                               "clientId": {
                                 "type": "string",
-                                "example": "crd-client-001",
+                                "example": "rty-cli-001",
                                 "description": "El ID del cliente"
                               },
                               "justoUserId": {
@@ -2700,7 +2807,7 @@
                                   "string",
                                   "null"
                                 ],
-                                "example": "usr-001",
+                                "example": "u-001",
                                 "description": "El ID del usuario de Justo asociado al cliente, si existe"
                               },
                               "balance": {
@@ -3129,6 +3236,102 @@
         }
       },
       "tabsShift": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Shift ID"
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local"
+          },
+          "startedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que empezó el turno"
+          },
+          "endedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que terminó el turno"
+          },
+          "createdById": {
+            "type": "string",
+            "description": "ID del usuario que abrió el turno"
+          },
+          "closedTabsTotalSales": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de ventas de los tabs cerrados"
+          },
+          "discountsAmount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de descuentos"
+          },
+          "avgTicket": {
+            "type": "number",
+            "example": 2,
+            "description": "Promedio de ticket"
+          },
+          "eatersCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Cantidad de comensales"
+          },
+          "totalPayments": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de pagos"
+          },
+          "cashRegisterShifts": {
+            "type": "array",
+            "description": "Turnos de la caja",
+            "items": {
+              "type": "object",
+              "description": "Turnos de caja",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "cashRegisterId": {
+                  "type": "string"
+                },
+                "startedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "endedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "startBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                },
+                "endBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tabsShiftDetails": {
         "type": "object",
         "properties": {
           "_id": {

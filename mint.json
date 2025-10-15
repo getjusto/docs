@@ -1,7 +1,10 @@
 {
 	"$schema": "https://mintlify.com/schema.json",
 	"name": "Justo Docs",
-	"versions": ["v3", "v2"],
+	"versions": [
+		"v3",
+		"v2"
+	],
 	"defaultPage": "docs/old/v2/legacy-documentation",
 	"logo": {
 		"dark": "/logo/logo-white.svg",
@@ -91,7 +94,9 @@
 				},
 				{
 					"group": "Cupones",
-					"pages": ["docs/old/v2/endpoints/coupon/get"]
+					"pages": [
+						"docs/old/v2/endpoints/coupon/get"
+					]
 				},
 				{
 					"group": "Clientes",
@@ -161,6 +166,14 @@
 			]
 		},
 		{
+			"group": "Balance de cuentas",
+			"version": "v3",
+			"pages": [
+				"docs/royalty/endpoints/loyaltyBalance/get-clients-loyalty-balance",
+				"docs/royalty/endpoints/loyaltyBalance/get-client-loyalty-balance"
+			]
+		},
+		{
 			"group": "Códigos de canje",
 			"version": "v3",
 			"pages": [
@@ -192,19 +205,25 @@
 				},
 				{
 					"group": "Widgets",
-					"pages": ["docs/reservations/widgets/reservation-widget"]
+					"pages": [
+						"docs/reservations/widgets/reservation-widget"
+					]
 				}
 			]
 		},
 		{
 			"group": "Introducción",
 			"version": "v3",
-			"pages": ["docs/embedded_ordering/introduction"]
+			"pages": [
+				"docs/embedded_ordering/introduction"
+			]
 		},
 		{
 			"group": "Onboarding",
 			"version": "v3",
-			"pages": ["docs/embedded_ordering/endpoints/auth/details"]
+			"pages": [
+				"docs/embedded_ordering/endpoints/auth/details"
+			]
 		},
 		{
 			"group": "Pagos",
@@ -218,7 +237,9 @@
 		{
 			"group": "Notificaciones",
 			"version": "v3",
-			"pages": ["docs/embedded_ordering/endpoints/notifications/notify"]
+			"pages": [
+				"docs/embedded_ordering/endpoints/notifications/notify"
+			]
 		},
 		{
 			"group": "Empezando",
@@ -228,7 +249,9 @@
 				"docs/main/authentication",
 				{
 					"group": "Endpoints generales",
-					"pages": ["docs/main/endpoints/me"]
+					"pages": [
+						"docs/main/endpoints/me"
+					]
 				}
 			]
 		},
@@ -258,7 +281,6 @@
 						"docs/crisp/endpoints/inventory/get-current-inventory",
 						"docs/crisp/endpoints/inventory/list-ingredients",
 						"docs/crisp/endpoints/inventory/get-menu-costs"
-
 					]
 				},
 				{
@@ -270,7 +292,9 @@
 				},
 				{
 					"group": "Pagos",
-					"pages": ["docs/crisp/endpoints/tabPayments/list-tab-payments"]
+					"pages": [
+						"docs/crisp/endpoints/tabPayments/list-tab-payments"
+					]
 				},
 				{
 					"group": "Métodos de pago",
@@ -280,7 +304,9 @@
 				},
 				{
 					"group": "Facturación",
-					"pages": ["docs/crisp/endpoints/invoices/list-invoices"]
+					"pages": [
+						"docs/crisp/endpoints/invoices/list-invoices"
+					]
 				}
 			]
 		},
