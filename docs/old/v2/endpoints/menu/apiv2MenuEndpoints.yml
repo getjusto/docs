@@ -199,7 +199,7 @@ components:
           items:
             type: string
             description: Un arreglo con sellos informativos de productos. Este campo solo acepta como parámetros
-            enum: ['VEGAN','VEGETARIAN','GLUTEN_FREE','LACTOSE_FREE','SUGAR_FREE','CACAO_100','RECYCLABLE','SPICY','KETO','RECYCLED','HANDMADE','OLDER_THAN_18','CRUELTY_FREE']
+            enum: ['VEGAN','VEGETARIAN','GLUTEN_FREE','LACTOSE_FREE','SUGAR_FREE','CACAO_100','RECYCLABLE','SPICY','KETO','RECYCLED','HANDMADE','OLDER_THAN_18','CRUELTY_FREE', 'REFRIGERATED', 'FROZEN']
         categoriesExternalIds:
           type: array
           description: Un arreglo con los externalId de las categorías que tiene el producto.
