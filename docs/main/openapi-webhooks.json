@@ -173,6 +173,63 @@
         }
       }
     },
+    "/client.balance.syncClientBalance": {
+      "post": {
+        "summary": "Sincronización de saldo de cliente",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook",
+                    "type": "string",
+                    "enum": [
+                      "client.balance.syncClientBalance"
+                    ],
+                    "const": "client.balance.syncClientBalance"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "client": {
+                        "description": "Evento que se dispara cuando se sincroniza el saldo de un cliente",
+                        "$ref": "#/components/schemas/clientLoyaltyBalance"
+                      }
+                    }
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "El ID de la marca"
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "El ID del local si es que corresponde"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "La fecha en que se generó el evento"
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "El ID del evento"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/reservations.reservation.created": {
       "post": {
         "summary": "Reserva Creada",
@@ -2809,6 +2866,102 @@
         }
       },
       "tabsShift": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Shift ID"
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local"
+          },
+          "startedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que empezó el turno"
+          },
+          "endedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que terminó el turno"
+          },
+          "createdById": {
+            "type": "string",
+            "description": "ID del usuario que abrió el turno"
+          },
+          "closedTabsTotalSales": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de ventas de los tabs cerrados"
+          },
+          "discountsAmount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de descuentos"
+          },
+          "avgTicket": {
+            "type": "number",
+            "example": 2,
+            "description": "Promedio de ticket"
+          },
+          "eatersCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Cantidad de comensales"
+          },
+          "totalPayments": {
+            "type": "number",
+            "example": 2,
+            "description": "Total de pagos"
+          },
+          "cashRegisterShifts": {
+            "type": "array",
+            "description": "Turnos de la caja",
+            "items": {
+              "type": "object",
+              "description": "Turnos de caja",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "cashRegisterId": {
+                  "type": "string"
+                },
+                "startedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "endedAt": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z",
+                  "format": "date-time"
+                },
+                "startBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                },
+                "endBalances": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tabsShiftCashregisterBalance"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tabsShiftDetails": {
         "type": "object",
         "properties": {
           "_id": {
