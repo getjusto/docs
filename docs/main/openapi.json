@@ -2682,48 +2682,62 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "clientId": {
-                      "type": "string",
-                      "example": "rty-cli-001",
-                      "description": "El ID del cliente"
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indica si la operación fue exitosa"
                     },
-                    "email": {
-                      "type": "string",
-                      "example": "cliente@example.com",
-                      "description": "El email del cliente, si existe",
-                      "nullable": true
-                    },
-                    "justoUserId": {
-                      "type": "string",
-                      "example": "u-001",
-                      "description": "El ID del usuario de Justo asociado al cliente, si existe",
-                      "nullable": true
-                    },
-                    "balance": {
-                      "type": "number",
-                      "example": 150,
-                      "description": "El balance actual de puntos de lealtad del cliente"
-                    },
-                    "websiteId": {
-                      "type": "string",
-                      "example": "w-001",
-                      "description": "El ID del sitio web al que pertenece el cliente"
-                    },
-                    "lastUpdated": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2025-10-14T14:16:11.000Z",
-                      "description": "Fecha de la última actualización del balance, si existe",
-                      "nullable": true
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "clientId": {
+                          "type": "string",
+                          "example": "rty-cli-001",
+                          "description": "El ID del cliente"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "cliente@example.com",
+                          "description": "El email del cliente, si existe",
+                          "nullable": true
+                        },
+                        "justoUserId": {
+                          "type": "string",
+                          "example": "u-001",
+                          "description": "El ID del usuario de Justo asociado al cliente, si existe",
+                          "nullable": true
+                        },
+                        "balance": {
+                          "type": "number",
+                          "example": 150,
+                          "description": "El balance actual de puntos de lealtad del cliente"
+                        },
+                        "websiteId": {
+                          "type": "string",
+                          "example": "w-001",
+                          "description": "El ID del sitio web al que pertenece el cliente"
+                        },
+                        "lastUpdated": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-10-14T14:16:11.000Z",
+                          "description": "Fecha de la última actualización del balance, si existe",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "clientId",
+                        "email",
+                        "justoUserId",
+                        "balance",
+                        "websiteId",
+                        "lastUpdated"
+                      ]
                     }
                   },
                   "required": [
-                    "clientId",
-                    "email",
-                    "justoUserId",
-                    "balance",
-                    "websiteId",
-                    "lastUpdated"
+                    "success",
+                    "data"
                   ]
                 }
               }
@@ -2779,7 +2793,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Lista paginada de balances de puntos de lealtad",
             "content": {
               "application/json": {
                 "schema": {
@@ -2787,7 +2801,8 @@
                   "properties": {
                     "success": {
                       "type": "boolean",
-                      "example": true
+                      "example": true,
+                      "description": "Indica si la operación fue exitosa"
                     },
                     "data": {
                       "type": "object",
@@ -2803,12 +2818,10 @@
                                 "description": "El ID del cliente"
                               },
                               "justoUserId": {
-                                "type": [
-                                  "string",
-                                  "null"
-                                ],
+                                "type": "string",
                                 "example": "u-001",
-                                "description": "El ID del usuario de Justo asociado al cliente, si existe"
+                                "description": "El ID del usuario de Justo asociado al cliente, si existe",
+                                "nullable": true
                               },
                               "balance": {
                                 "type": "number",
@@ -2822,33 +2835,103 @@
                               "balance"
                             ]
                           },
-                          "description": "Items de la lista."
+                          "description": "Items de la lista paginada"
                         },
                         "hasNextPage": {
                           "type": "boolean",
-                          "description": "Indica si hay una página siguiente."
+                          "example": false,
+                          "description": "Indica si hay una página siguiente"
                         },
                         "hasPreviousPage": {
                           "type": "boolean",
-                          "description": "Indica si hay una página anterior."
+                          "example": false,
+                          "description": "Indica si hay una página anterior"
                         },
                         "totalPages": {
                           "type": "number",
-                          "description": "Total de páginas."
+                          "example": 1,
+                          "description": "Total de páginas"
                         },
                         "totalCount": {
                           "type": "number",
-                          "description": "Total de items."
+                          "example": 25,
+                          "description": "Total de items"
                         }
-                      }
+                      },
+                      "required": [
+                        "items",
+                        "hasNextPage",
+                        "hasPreviousPage",
+                        "totalPages",
+                        "totalCount"
+                      ]
                     }
-                  }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error de validación"
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/royalty/justo-coins/add": {
+      "post": {
+        "summary": "Agregar puntos de lealtad a un cliente",
+        "description": "Agrega puntos de lealtad (Justo Coins) a un cliente específico. Requiere autorización de administrador.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "minimum": 0.01,
+                    "example": 100,
+                    "description": "Cantidad de puntos de lealtad a agregar (debe ser un número positivo)"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "u-001",
+                    "description": "ID del usuario de Justo al que se le agregarán los puntos"
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-12-31T23:59:59.000Z",
+                    "description": "Fecha de expiración de los puntos (opcional)",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "amount",
+                  "userId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Puntos de lealtad agregados exitosamente",
             "content": {
               "application/json": {
                 "schema": {
@@ -2856,25 +2939,270 @@
                   "properties": {
                     "success": {
                       "type": "boolean",
-                      "example": "false"
+                      "example": true,
+                      "description": "Operación exitosa"
                     },
-                    "error": {
+                    "data": {
                       "type": "object",
                       "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
+                        "amount": {
+                          "type": "number",
+                          "example": 100,
+                          "description": "Cantidad de puntos agregados"
                         },
-                        "message": {
+                        "websiteId": {
                           "type": "string",
-                          "example": "The request has an error"
+                          "example": "w-001",
+                          "description": "ID del sitio web donde se realizó la transacción"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-14T14:16:11.000Z",
+                          "description": "Fecha y hora de la transacción"
+                        },
+                        "balance": {
+                          "type": "number",
+                          "example": 250,
+                          "description": "Balance total de puntos después de la transacción"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "clientId": {
+                              "type": "string",
+                              "example": "rty-cli-001",
+                              "description": "ID del cliente"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "cliente@example.com",
+                              "description": "Email del cliente"
+                            },
+                            "fullName": {
+                              "type": "string",
+                              "example": "Juan Pérez",
+                              "description": "Nombre completo del cliente"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "+1234567890",
+                              "description": "Teléfono del cliente"
+                            }
+                          },
+                          "required": [
+                            "clientId",
+                            "email",
+                            "fullName",
+                            "phone"
+                          ]
                         }
-                      }
+                      },
+                      "required": [
+                        "amount",
+                        "websiteId",
+                        "date",
+                        "balance",
+                        "user"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - datos inválidos o faltantes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "invalidAmount",
+                      "description": "Código de error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Amount is required and must be a number",
+                      "description": "Mensaje descriptivo del error"
                     }
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          },
+          "404": {
+            "description": "Usuario no encontrado en el sitio web especificado"
+          },
+          "500": {
+            "description": "Error interno del servidor - fallo en la transacción"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/royalty/justo-coins/subtract": {
+      "post": {
+        "summary": "Quitar puntos de lealtad de un cliente",
+        "description": "Quita puntos de lealtad (Justo Coins) de un cliente específico. Requiere autorización de administrador y valida que el cliente tenga suficiente balance.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "minimum": 0.01,
+                    "example": 50,
+                    "description": "Cantidad de puntos de lealtad a quitar (debe ser un número positivo)"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "u-001",
+                    "description": "ID del usuario de Justo al que se le quitarán los puntos"
+                  }
+                },
+                "required": [
+                  "amount",
+                  "userId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Puntos de lealtad quitados exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Operación exitosa"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "number",
+                          "example": -50,
+                          "description": "Cantidad de puntos quitados (valor negativo)"
+                        },
+                        "websiteId": {
+                          "type": "string",
+                          "example": "w-001",
+                          "description": "ID del sitio web donde se realizó la transacción"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-14T14:16:11.000Z",
+                          "description": "Fecha y hora de la transacción"
+                        },
+                        "balance": {
+                          "type": "number",
+                          "example": 200,
+                          "description": "Balance total de puntos después de la transacción"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "clientId": {
+                              "type": "string",
+                              "example": "rty-cli-001",
+                              "description": "ID del cliente"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "cliente@example.com",
+                              "description": "Email del cliente"
+                            },
+                            "fullName": {
+                              "type": "string",
+                              "example": "Juan Pérez",
+                              "description": "Nombre completo del cliente"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "+1234567890",
+                              "description": "Teléfono del cliente"
+                            }
+                          },
+                          "required": [
+                            "clientId",
+                            "email",
+                            "fullName",
+                            "phone"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "amount",
+                        "websiteId",
+                        "date",
+                        "balance",
+                        "user"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - datos inválidos, faltantes o balance insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "insufficientBalance",
+                      "description": "Código de error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User has insufficient balance. Current: 30, Required: 50",
+                      "description": "Mensaje descriptivo del error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          },
+          "404": {
+            "description": "Usuario no encontrado en el sitio web especificado"
+          },
+          "500": {
+            "description": "Error interno del servidor - fallo en la transacción"
           }
         },
         "security": [

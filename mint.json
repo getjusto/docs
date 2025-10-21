@@ -166,11 +166,13 @@
 			]
 		},
 		{
-			"group": "Balance de cuentas",
+			"group": "Puntos de lealtad",
 			"version": "v3",
 			"pages": [
 				"docs/royalty/endpoints/loyaltyBalance/get-clients-loyalty-balance",
-				"docs/royalty/endpoints/loyaltyBalance/get-client-loyalty-balance"
+				"docs/royalty/endpoints/loyaltyBalance/get-client-loyalty-balance",
+				"docs/royalty/endpoints/justoCoins/add",
+				"docs/royalty/endpoints/justoCoins/subtract"
 			]
 		},
 		{
