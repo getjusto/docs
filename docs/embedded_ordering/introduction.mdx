@@ -1,23 +1,206 @@
 ---
 title: Introducción
-description: 'Propuesta de Webhooks para la integración de Justo con otros sistemas'
+description: 'Integración del marketplace de Justo dentro de aplicaciones contenedoras'
 sidebar_position: 1
 ---
 
-Mediante el presente documento damos los lineamientos generales de los webhooks que tenemos, los cuales servirán para la integración de Justo con otros sistemas.
+## Objetivo general
 
-Cabe destacar que el presente documento es una propuesta y no es un estándar. Por lo tanto, los webhooks que se describen en este documento pueden adaptarse a los requerimientos de cada sistema.
+Este documento describe el proceso para integrar el marketplace de Justo, o una tienda específica, dentro de una aplicación contenedora (como una wallet) a través de un webview, generando una experiencia de uso sin fricción integrando completamente los procesos de onboarding y el pago usando la misma aplicación contenedora (si aplica).
+
+<Info>
+**Importante:** Este documento describe una **propuesta** de los endpoints y especificaciones que las marcas (aplicaciones contenedoras) deben implementar para que Justo pueda operar e integrar el marketplace dentro de sus aplicaciones. Los endpoints, esquemas y especificaciones aquí descritos son una propuesta y pueden adaptarse a los requerimientos específicos de cada sistema, siempre y cuando se mantenga la funcionalidad necesaria para que Justo pueda realizar las operaciones requeridas.
+</Info>
+
+## Cómo funciona la integración
+
+En nuestro sistema, la experiencia del usuario se estructura en cinco etapas clave:
+
+1. **Apertura de la tienda**
+2. **Aceptación de términos y condiciones**
+3. **Onboarding automático**
+4. **Proceso de pago** (integrado con la app contenedora si aplica)
+5. **Tracking de pedidos**
+
+Cada una de estas etapas ha sido diseñada de forma modular, permitiendo que la integración se adapte a las necesidades específicas de cada aplicación. Por ejemplo, una implementación puede requerir únicamente el flujo de pago, mientras que otra podría enfocarse solo en el onboarding y la aceptación de términos.
+
+En la etapa inicial, la aplicación debe incluir un ícono que abra, mediante un webview, el marketplace de Justo o una tienda en particular. Durante la segunda etapa, los usuarios aceptan los Términos y Condiciones necesarios para continuar con el proceso.
+
+Las siguientes etapas —onboarding automático, pago y tracking— requieren la implementación de una API por parte del equipo técnico de la contraparte, para habilitar la transferencia de datos en tiempo real. Esto permite obtener información del usuario y mantener actualizados los estados de los pedidos, asegurando una experiencia fluida, transparente y sincronizada.
+
+<Info>
+**Propuesta de implementación:** La documentación de los endpoints que deben implementarse se encuentra en las secciones siguientes. Estos endpoints son una **propuesta** que puede adaptarse a los requerimientos específicos de cada sistema, siempre y cuando se mantenga la funcionalidad necesaria para que Justo pueda realizar las operaciones requeridas.
+</Info>
+
+Es importante destacar que no es necesario implementar todas las etapas: el sistema es flexible y se puede integrar de manera parcial, de acuerdo con las prioridades y capacidades del proyecto.
+
+## Insertar Justo en una app
+
+Para abrir una web Justo dentro de la app, basta con disponibilizar un icono en la aplicación el cual abrirá un webview de la URL de destino, incorporando el parámetro `webview`. Esto permitirá que las personas que visiten la tienda puedan verla en modo Embedded.
+
+### Ejemplo básico
+
+```
+https://tiendadeprueba.cl/?webview=<embedded_code>
+```
+
+También está disponible una alternativa sin parámetros explícitos en la URL:
+
+```
+https://tiendadeprueba.cl/embedded/<embedded_code>
+```
+
+### Catálogo completo de Justo
+
+Si se desea integrar todo el catálogo de Justo, se puede redirigir directamente a:
+
+```
+https://pide.getjusto.com/?webview=<embedded_code>
+```
+
+Para replicar la experiencia completa de la JustoApp:
+
+```
+https://justoapp.getjusto.com/pide?webview=<embedded_code>
+```
+
+<Warning>
+El uso de la JustoApp requiere tener implementado el onboarding automático.
+</Warning>
+
+Para obtener el `embedded_code`, se debe solicitar con anticipación al equipo de ingeniería mediante el correo `tecnologia@getjusto.com`.
+
+### Características del modo embedded
+
+Las principales características que cuenta el modo embedded son:
+
+- Aceptación de términos y condiciones antes de proceder al checkout
+- Onboarding automático, adaptado según la app utilizada
+- Eliminación de la opción de cerrar sesión en la plataforma
+- Los términos y condiciones se cargan en la plataforma a nivel de comercio
+
+## Onboarding automático
+
+Para realizar el proceso de onboarding automático entre la app utilizada y los diferentes comercios que están en Justo, debemos cumplir con dos puntos:
+
+### Identificación
+
+Para identificar a un usuario de la app en la plataforma de Justo, es necesario definir un mecanismo en el cual la aplicación padre pueda transmitir a la aplicación hijo (el webview) algún dato que permita situar al usuario que la está visitando.
+
+En este contexto, este puede ser:
+
+- `userId`
+- `accountId`
+- `sessionId`
+- `email`
+- `authCode`
+- llave cifrada (mediante previa coordinación)
+
+Este identificador será usado más adelante para poder obtener el resto de la información en cuestión.
+
+**Ejemplo de una URL para la JustoApp con login automático:**
+
+```
+https://justoapp.getjusto.com/pide?webview=<embedded_code>&target=<key>
+```
+
+### Datos del usuario
+
+En este punto necesitamos consultar mediante una API, los datos sensibles del usuario en cuestión. En concreto nuestro sistema necesita los siguientes campos para operar:
+
+- `email`
+- `firstName`
+- `lastName`
+- `phone`
+
+<Info>
+Un punto importante es que los usuarios de Justo tienen el email como llave primaria, por lo que es necesario que la app en cuestión siempre valide con el usuario el acceso al correo electrónico, tanto en su onboarding como en caso de actualizar dicha información.
+</Info>
+
+Dado que el intercambio de datos sensibles requiera de la aprobación explícita del usuario, en caso de ser necesario se deberá definir un mecanismo de autorización entre las diferentes partes.
+
+<Info>
+**Propuesta de endpoint:** Para obtener estos datos, proponemos la implementación del endpoint `GET /users/details/{externalUserId}` que se detalla en la sección de Onboarding. Este endpoint es una **propuesta** y puede adaptarse a los requerimientos específicos de cada sistema.
+</Info>
+
+## Recaudación
+
+En Justo, manejamos dos modelos de recaudación para pagos:
+
+### Recaudación por parte de la App
+
+En este modelo, cada comercio posee una cuenta recaudadora individual por parte de la App. Los fondos de las ventas se depositan directamente en estas cuentas, lo que permite una mayor autonomía para cada comercio.
+
+<Warning>
+Este esquema aplica exclusivamente a comercios que ya cuentan con su propio botón de pago (como las billeteras digitales); de lo contrario, no es posible implementarlo.
+</Warning>
+
+Cada semana, quien recauda el dinero tendrá que realizar la dispersión de este de acuerdo con la configuración establecida previamente y luego tendrá que ser el comercio quien pague a Justo las respectivas comisiones.
+
+En este esquema operativo, Justo selecciona las marcas que pueden participar en este canal de ventas, exigiendo que cumplan con ciertos requisitos para habilitar su participación.
+
+### Recaudación centralizada en Justo
+
+En este modelo, todas las ventas se canalizan hacia una única cuenta recaudadora gestionada por Justo, la cual se encarga de transferir semanalmente los fondos a cada comercio que aparece en el marketplace, abarcando no sólo las transacciones realizadas a través de la App en cuestión, sino también otras formas de pago. Con este enfoque, Justo asume la gestión completa de los pagos, asegurando que cada comercio reciba sus ingresos de manera eficiente y en los tiempos acordados.
+
+Estos modelos permiten flexibilidad en la recaudación, adaptándose a las necesidades y optimizando la gestión de los ingresos.
+
+<Info>
+En caso de que la app en cuestión no cuente con un sistema de pagos propio, es Justo quien realizará la recaudación y posterior distribución de los fondos a los respectivos comercios.
+</Info>
+
+## Pasarela de pago
+
+Respecto al proceso de pagos, este se divide en cuatro grandes hitos:
+
+1. **Verificación** - Validación de fondos y disponibilidad
+2. **Autorización** - Aplicación de mecanismos de seguridad (ej: 2FA)
+3. **Procesamiento** - Ejecución del pago
+4. **Reversa/devoluciones** - Gestión de devoluciones y reversas
+
+<Info>
+**Propuesta de endpoints:** Para implementar la pasarela de pago, proponemos los siguientes endpoints que se detallan en la sección de Pagos:
+- `POST /payments/verify` - Para verificar transacciones
+- `POST /payments/execute` - Para ejecutar pagos
+- `POST /payments/refund` - Para procesar devoluciones
+
+Estos endpoints son una **propuesta** y pueden adaptarse a los requerimientos específicos de cada sistema, siempre y cuando se mantenga la funcionalidad necesaria para que Justo pueda realizar las operaciones requeridas.
+</Info>
+
+## Notificaciones
+
+Para informar a los usuarios sobre el estado de sus pedidos, Justo enviará diferentes notificaciones a lo largo del proceso de entrega. La contraparte técnica deberá disponer de un endpoint que permita recibir estas notificaciones, de modo que puedan determinar cómo mostrar la información y el tipo de alerta o notificación (por ejemplo, una notificación push o una alerta en la aplicación).
+
+<Info>
+**Propuesta de webhook:** Proponemos la implementación del endpoint `POST /notifications/notify` que se detalla en la sección de Notificaciones. Este endpoint es una **propuesta** y puede adaptarse a los requerimientos específicos de cada sistema, siempre y cuando se mantenga la funcionalidad necesaria para que Justo pueda enviar las notificaciones requeridas.
+</Info>
+
+Las notificaciones incluirán las siguientes actualizaciones clave del pedido:
+
+- Pedido aceptado por la tienda (`status: pending`)
+- Tu pedido va en camino (`status: delivering`)
+- Pedido entregado (`status: done`)
+- Pedido cancelado (`status: cancelled`)
+- Tu pedido está llegando a destino (`status: nearToFinish`)
+
+<Warning>
+La notificación con el estado `nearToFinish` puede enviarse varias veces, ya que el conductor puede cumplir repetidamente con la condición de estar a menos de 300 metros del punto de entrega. Para evitar efectos no deseados o duplicaciones en el sistema, es necesario que la contraparte implemente esta notificación de manera idempotente.
+</Warning>
 
 ## Seguridad de la conexión
 
-Todas las llamadas a estos webhooks deben ser realizadas sobre una conexión segura, es decir, utilizando el protocolo HTTPS, además se debe utilizar un certificado SSL válido. 
+Todas las llamadas a estos endpoints deben ser realizadas sobre una conexión segura, es decir, utilizando el protocolo HTTPS, además se debe utilizar un certificado SSL válido.
 
 También deberá contar con un mecanismo de autorización con token de acceso, que se generará en base a la información de la cuenta de usuario. Este mecanismo es flexible y ajustable a las necesidades de cada sistema.
 
+<Info>
+**Propuesta de autenticación:** Proponemos el uso de autenticación Bearer Token (JWT) como se detalla en la especificación OpenAPI. Sin embargo, este es un **mecanismo propuesto** que puede adaptarse a los requerimientos específicos de cada sistema, siempre y cuando se mantenga la seguridad necesaria. El mecanismo específico debe coordinarse entre Justo y la aplicación contenedora.
+</Info>
+
 ## Formato de los datos
 
-Todos los datos que se envían a estos webhooks deben ser en formato JSON.
+Todos los datos que se envían y reciben deben ser en formato JSON.
 
 ## Estados de respuesta
 
-Los webhooks deben devolver un código de estado HTTP 200 en caso de éxito y un código de estado HTTP 400 en caso de error de validación, el cual se detallarán en cada webhook/endpoint.
+Los endpoints deben devolver un código de estado HTTP 200 en caso de éxito y un código de estado HTTP 400 en caso de error de validación, el cual se detallarán en cada endpoint.

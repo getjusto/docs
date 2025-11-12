@@ -1,3 +1,120 @@
 ---
+title: Verificar transacción
+description: 'Endpoint para verificar la disponibilidad de fondos y validar una transacción antes de procesarla'
 openapi: post /payments/verify
 ---
+
+Este endpoint permite a Justo verificar si una transacción puede ser procesada. Durante esta etapa se realizan validaciones internas como disponibilidad de fondos, autenticidad de la cuenta, límite diario, etc.
+
+Justo llamará a este endpoint antes de procesar el pago para asegurar que la transacción puede ser completada exitosamente.
+
+## Cuerpo de la solicitud
+
+<RequestField name="amount" type="number" required>
+  Monto de la transacción a verificar.
+</RequestField>
+
+<RequestField name="currency" type="string" required>
+  Moneda de la transacción (ej: "CLP", "USD", "MXN").
+</RequestField>
+
+<RequestField name="description" type="string" required>
+  Descripción del cargo que se realizará al usuario.
+</RequestField>
+
+<RequestField name="transactionId" type="string" required>
+  Identificador único de la transacción generado por Justo.
+</RequestField>
+
+<RequestField name="orderId" type="string" required>
+  Identificador del pedido asociado a esta transacción.
+</RequestField>
+
+<RequestField name="externalUserId" type="string" required>
+  Identificador del usuario en la aplicación contenedora (el mismo usado en el onboarding).
+</RequestField>
+
+## Ejemplo de solicitud
+
+```json
+{
+  "amount": 15000,
+  "currency": "CLP",
+  "description": "Pedido #12345 - Restaurante XYZ",
+  "transactionId": "txn_abc123def456",
+  "orderId": "order_xyz789",
+  "externalUserId": "user_12345"
+}
+```
+
+## Respuesta exitosa
+
+<ResponseField name="transactionCode" type="string" required>
+  Código de transacción generado por la aplicación contenedora. Este código será usado posteriormente para verificar el estado de la transacción o para procesarla.
+</ResponseField>
+
+<ResponseField name="status" type="string" required>
+  Estado de la verificación. Valores posibles: `approved`, `rejected`, `pending`.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Mensaje descriptivo sobre el resultado de la verificación (opcional).
+</ResponseField>
+
+## Ejemplo de respuesta exitosa
+
+```json
+{
+  "transactionCode": "app_txn_987654",
+  "status": "approved",
+  "message": "Transacción verificada exitosamente"
+}
+```
+
+## Respuesta de rechazo
+
+Si la verificación falla (por ejemplo, fondos insuficientes), se debe retornar:
+
+```json
+{
+  "status": "rejected",
+  "message": "Fondos insuficientes"
+}
+```
+
+## Códigos de estado
+
+<StatusCode status="200">
+  La verificación fue procesada. Revisar el campo `status` en el cuerpo de la respuesta para conocer el resultado.
+</StatusCode>
+
+<StatusCode status="400">
+  Error de validación. Los datos enviados no son válidos (ej: monto inválido, moneda no soportada).
+</StatusCode>
+
+<StatusCode status="401">
+  No autorizado. El token de autenticación es inválido o ha expirado.
+</StatusCode>
+
+<StatusCode status="500">
+  Error interno del servidor de la aplicación contenedora.
+</StatusCode>
+
+## Notas importantes
+
+<Info>
+Este endpoint debe validar internamente aspectos como:
+- Disponibilidad de fondos en la cuenta del usuario
+- Autenticidad de la cuenta
+- Límites diarios de transacciones
+- Restricciones de la cuenta
+- Cualquier otra validación requerida por la aplicación contenedora
+</Info>
+
+<Warning>
+El `transactionCode` retornado debe ser único y permitir identificar la transacción en pasos posteriores (procesamiento o verificación de estado).
+</Warning>
+
+<Info>
+En caso de requerir más datos para la verificación, esto puede configurarse coordinando con el equipo técnico de Justo.
+</Info>

@@ -1,3 +1,70 @@
 ---
+title: Obtener datos del usuario
+description: 'Endpoint para obtener los datos del usuario necesarios para el onboarding automático'
 openapi: get /users/details/{externalUserId}
 ---
+
+Este endpoint permite a Justo obtener los datos del usuario necesarios para realizar el onboarding automático. Justo llamará a este endpoint cuando necesite obtener la información del usuario identificado por el `externalUserId` que se pasó en la URL del webview.
+
+## Parámetros de ruta
+
+<ParamField path="externalUserId" type="string" required>
+  El identificador del usuario en la aplicación contenedora. Este puede ser un `userId`, `accountId`, `sessionId`, `email`, `authCode`, o una llave cifrada previamente coordinada.
+</ParamField>
+
+## Respuesta exitosa
+
+<ResponseField name="email" type="string" required>
+  Correo electrónico del usuario. Este campo es obligatorio ya que en Justo el email es la llave primaria de los usuarios.
+</ResponseField>
+
+<ResponseField name="firstName" type="string" required>
+  Nombre del usuario.
+</ResponseField>
+
+<ResponseField name="lastName" type="string" required>
+  Apellido del usuario.
+</ResponseField>
+
+<ResponseField name="phone" type="string" required>
+  Número de teléfono del usuario.
+</ResponseField>
+
+## Ejemplo de respuesta
+
+```json
+{
+  "email": "usuario@ejemplo.com",
+  "firstName": "Juan",
+  "lastName": "Pérez",
+  "phone": "+56912345678"
+}
+```
+
+## Códigos de estado
+
+<StatusCode status="200">
+  La solicitud fue exitosa y se retornaron los datos del usuario.
+</StatusCode>
+
+<StatusCode status="400">
+  Error de validación. El `externalUserId` proporcionado no es válido o no se encontró el usuario.
+</StatusCode>
+
+<StatusCode status="401">
+  No autorizado. El token de autenticación es inválido o ha expirado.
+</StatusCode>
+
+<StatusCode status="404">
+  El usuario con el `externalUserId` proporcionado no fue encontrado.
+</StatusCode>
+
+## Notas importantes
+
+<Warning>
+El email es la llave primaria en Justo. Es responsabilidad de la aplicación contenedora validar con el usuario el acceso al correo electrónico, tanto en su onboarding como en caso de actualizar dicha información.
+</Warning>
+
+<Info>
+Este endpoint debe implementarse con un mecanismo de autorización seguro (token de acceso) que valide que la solicitud proviene de Justo. El mecanismo específico debe coordinarse entre ambos equipos técnicos.
+</Info>

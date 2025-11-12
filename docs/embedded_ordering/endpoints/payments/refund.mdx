@@ -1,3 +1,154 @@
 ---
+title: Reversa y devoluciones
+description: 'Endpoint para procesar devoluciones parciales o totales de transacciones'
 openapi: post /payments/refund
 ---
+
+Este endpoint permite a Justo realizar devoluciones y reversas de transacciones. Desde Justo contamos con un sistema de reversas y devoluciones que permite gestionar incidencias en pedidos, como entregas incompletas o fallidas debido a problemas diversos.
+
+Este endpoint debe soportar tanto devoluciones parciales (por entregas incompletas) como reversas/devoluciones totales.
+
+## Cuerpo de la solicitud
+
+<RequestField name="amountToRefund" type="number" required>
+  Monto a devolver al usuario. Puede ser parcial o total.
+</RequestField>
+
+<RequestField name="transactionId" type="string" required>
+  Identificador único de la transacción original generado por Justo.
+</RequestField>
+
+<RequestField name="currency" type="string" required>
+  Moneda de la transacción (ej: "CLP", "USD", "MXN").
+</RequestField>
+
+<RequestField name="reason" type="string">
+  Razón de la devolución (opcional). Ej: "Entrega incompleta", "Pedido cancelado", "Producto defectuoso".
+</RequestField>
+
+<RequestField name="orderId" type="string">
+  Identificador del pedido asociado a la transacción (opcional).
+</RequestField>
+
+## Ejemplo de solicitud - Devolución total
+
+```json
+{
+  "amountToRefund": 15000,
+  "transactionId": "txn_abc123def456",
+  "currency": "CLP",
+  "reason": "Pedido cancelado",
+  "orderId": "order_xyz789"
+}
+```
+
+## Ejemplo de solicitud - Devolución parcial
+
+```json
+{
+  "amountToRefund": 5000,
+  "transactionId": "txn_abc123def456",
+  "currency": "CLP",
+  "reason": "Entrega incompleta - faltaron 2 productos",
+  "orderId": "order_xyz789"
+}
+```
+
+## Respuesta exitosa
+
+<ResponseField name="status" type="string" required>
+  Estado de la devolución. Valores posibles: `completed`, `pending`, `failed`.
+</ResponseField>
+
+<ResponseField name="refundId" type="string">
+  Identificador único de la devolución generado por la aplicación contenedora (opcional).
+</ResponseField>
+
+<ResponseField name="refundCode" type="string">
+  Código de la devolución para referencia (opcional).
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Mensaje descriptivo sobre el resultado de la devolución (opcional).
+</ResponseField>
+
+## Ejemplo de respuesta exitosa
+
+```json
+{
+  "status": "completed",
+  "refundId": "refund_987654",
+  "refundCode": "REF-2024-001234",
+  "message": "Devolución procesada exitosamente"
+}
+```
+
+## Respuesta pendiente
+
+Si la devolución queda en estado pendiente:
+
+```json
+{
+  "status": "pending",
+  "message": "Devolución en proceso, se notificará el resultado"
+}
+```
+
+## Respuesta fallida
+
+Si la devolución falla:
+
+```json
+{
+  "status": "failed",
+  "message": "Error al procesar la devolución: [descripción del error]"
+}
+```
+
+## Códigos de estado
+
+<StatusCode status="200">
+  La solicitud fue procesada. Revisar el campo `status` en el cuerpo de la respuesta para conocer el resultado.
+</StatusCode>
+
+<StatusCode status="400">
+  Error de validación. Los datos enviados no son válidos o la devolución no puede ser procesada (ej: monto mayor al original, transacción no encontrada).
+</StatusCode>
+
+<StatusCode status="401">
+  No autorizado. El token de autenticación es inválido o ha expirado.
+</StatusCode>
+
+<StatusCode status="500">
+  Error interno del servidor de la aplicación contenedora.
+</StatusCode>
+
+## Notas importantes
+
+<Warning>
+Es responsabilidad de la aplicación contenedora validar que la suma de las devoluciones no exceda el valor total de la transacción original. Aunque Justo cuenta con un mecanismo que verifica esto, la aplicación debe implementar esta validación también.
+</Warning>
+
+<Info>
+Durante este paso, la aplicación contenedora debe:
+- Revertir el monto de la cuenta del destinatario (comercio)
+- Acreditar el monto en la cuenta del usuario
+- Generar un registro de la devolución para auditoría
+- Mantener un historial de todas las devoluciones realizadas sobre una transacción
+</Info>
+
+<Warning>
+En caso de no contar con un sistema de reversas y utilizar el formato de recaudación centralizada de Justo, será Justo quien solicite al cliente final los datos necesarios para realizar la devolución de manera manual, proceso que se ejecutará una vez por semana.
+</Warning>
+
+<Info>
+Para los casos en que un tercero gestione la recaudación, este será responsable de realizar las devoluciones directamente, eximiendo a Justo de toda responsabilidad en dicho proceso.
+</Info>
+
+## Casos de uso
+
+### Devolución total
+Cuando un pedido es cancelado completamente o no puede ser entregado, se debe devolver el monto total de la transacción.
+
+### Devolución parcial
+Cuando un pedido tiene problemas parciales (ej: faltan algunos productos, productos defectuosos), se puede realizar una devolución por el monto correspondiente a los items afectados.
