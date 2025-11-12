@@ -1,3 +1,151 @@
 ---
+title: Ejecutar pago
+description: 'Endpoint para procesar el pago después de la verificación y autorización exitosa'
 openapi: post /payments/execute
 ---
+
+Este endpoint permite a Justo ejecutar el pago después de que la verificación y autorización hayan sido exitosas. Durante este paso, la aplicación contenedora debe deducir el monto de la cuenta del usuario y acreditarlo en la cuenta del destinatario.
+
+<Warning>
+Este endpoint solo debe ser llamado después de una verificación exitosa mediante el endpoint `/payments/verify`.
+</Warning>
+
+## Cuerpo de la solicitud
+
+<RequestField name="amount" type="number" required>
+  Monto de la transacción a procesar.
+</RequestField>
+
+<RequestField name="currency" type="string" required>
+  Moneda de la transacción (ej: "CLP", "USD", "MXN").
+</RequestField>
+
+<RequestField name="description" type="string" required>
+  Descripción del cargo que se realizará al usuario.
+</RequestField>
+
+<RequestField name="transactionId" type="string" required>
+  Identificador único de la transacción generado por Justo (el mismo usado en la verificación).
+</RequestField>
+
+<RequestField name="orderId" type="string" required>
+  Identificador del pedido asociado a esta transacción.
+</RequestField>
+
+<RequestField name="externalUserId" type="string" required>
+  Identificador del usuario en la aplicación contenedora (el mismo usado en el onboarding).
+</RequestField>
+
+<RequestField name="transactionCode" type="string">
+  Código de transacción retornado por el endpoint de verificación. Si fue proporcionado, debe usarse para procesar la transacción.
+</RequestField>
+
+## Ejemplo de solicitud
+
+```json
+{
+  "amount": 15000,
+  "currency": "CLP",
+  "description": "Pedido #12345 - Restaurante XYZ",
+  "transactionId": "txn_abc123def456",
+  "orderId": "order_xyz789",
+  "externalUserId": "user_12345",
+  "transactionCode": "app_txn_987654"
+}
+```
+
+## Respuesta exitosa
+
+<ResponseField name="status" type="string" required>
+  Estado del procesamiento. Valores posibles: `completed`, `pending`, `failed`.
+</ResponseField>
+
+<ResponseField name="receipt" type="string">
+  Número de recibo o operación que identifica la transacción desde el lado de la aplicación contenedora (opcional).
+</ResponseField>
+
+<ResponseField name="operationNumber" type="string">
+  Número de operación generado por la aplicación contenedora (opcional).
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Mensaje descriptivo sobre el resultado del procesamiento (opcional).
+</ResponseField>
+
+## Ejemplo de respuesta exitosa
+
+```json
+{
+  "status": "completed",
+  "receipt": "REC-2024-001234",
+  "operationNumber": "OP-987654321",
+  "message": "Pago procesado exitosamente"
+}
+```
+
+## Respuesta pendiente
+
+Si el pago queda en estado pendiente (por ejemplo, requiere confirmación adicional):
+
+```json
+{
+  "status": "pending",
+  "message": "Pago en proceso, se notificará el resultado"
+}
+```
+
+## Respuesta fallida
+
+Si el procesamiento falla:
+
+```json
+{
+  "status": "failed",
+  "message": "Error al procesar el pago: [descripción del error]"
+}
+```
+
+## Códigos de estado
+
+<StatusCode status="200">
+  La solicitud fue procesada. Revisar el campo `status` en el cuerpo de la respuesta para conocer el resultado.
+</StatusCode>
+
+<StatusCode status="400">
+  Error de validación. Los datos enviados no son válidos o la transacción no puede ser procesada.
+</StatusCode>
+
+<StatusCode status="401">
+  No autorizado. El token de autenticación es inválido o ha expirado.
+</StatusCode>
+
+<StatusCode status="500">
+  Error interno del servidor de la aplicación contenedora.
+</StatusCode>
+
+## Verificación de estado de transacción
+
+Para reducir posibles problemas de conexión (timeout), Justo puede necesitar verificar el estado de una transacción. Se recomienda implementar un endpoint adicional que permita consultar el estado de una transacción usando:
+
+- El `transactionCode` proporcionado durante la verificación
+- El `transactionId` de Justo
+
+Este endpoint debe retornar el estado actual de la transacción (`completed`, `pending`, `failed`) para permitir que Justo confirme, rechace o deje en estado pendiente la transacción en caso de fallas.
+
+## Notas importantes
+
+<Info>
+Durante este paso, la aplicación contenedora debe:
+- Deducir el monto de la cuenta del usuario
+- Acreditar el monto en la cuenta del destinatario (comercio)
+- Generar un recibo o número de operación si aplica
+- Registrar la transacción para auditoría
+</Info>
+
+<Warning>
+Si el procesamiento queda en estado `pending`, es responsabilidad de la aplicación contenedora notificar a Justo cuando el estado cambie, o proporcionar un endpoint para que Justo consulte el estado periódicamente.
+</Warning>
+
+<Info>
+El `receipt` o `operationNumber` retornado puede ser usado por Justo para referencia y auditoría de la transacción.
+</Info>

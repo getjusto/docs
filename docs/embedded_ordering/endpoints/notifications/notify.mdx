@@ -1,3 +1,188 @@
 ---
+title: Notificaciones de estado de pedido
+description: 'Webhook que Justo envía para notificar cambios en el estado de los pedidos'
 openapi: post /notifications/notify
 ---
+
+Este endpoint es un webhook que Justo llamará para informar a la aplicación contenedora sobre cambios en el estado de los pedidos. La aplicación contenedora debe implementar este endpoint para recibir estas notificaciones y determinar cómo mostrarlas al usuario (por ejemplo, una notificación push o una alerta en la aplicación).
+
+## Cuerpo de la solicitud
+
+<RequestField name="externalUserId" type="string" required>
+  Identificador del usuario en la aplicación contenedora (el mismo usado en el onboarding).
+</RequestField>
+
+<RequestField name="status" type="string" required>
+  Estado actual del pedido. Valores posibles: `pending`, `delivering`, `done`, `cancelled`, `nearToFinish`.
+</RequestField>
+
+<RequestField name="orderId" type="string" required>
+  Identificador único del pedido en Justo.
+</RequestField>
+
+<RequestField name="websiteId" type="string" required>
+  Identificador del sitio web o tienda donde se realizó el pedido.
+</RequestField>
+
+<RequestField name="requiresDeliveryVerificationCode" type="boolean">
+  Indica si el pedido requiere un código de verificación para la entrega (opcional).
+</RequestField>
+
+## Estados del pedido
+
+Los diferentes estados que Justo puede enviar y su significado:
+
+### `pending`
+**Pedido aceptado por la tienda**
+
+El pedido ha sido aceptado por la tienda y está siendo preparado.
+
+### `delivering`
+**Tu pedido va en camino**
+
+El pedido ha sido preparado y está en camino hacia el destino.
+
+### `nearToFinish`
+**Tu pedido está llegando a destino**
+
+El conductor está a menos de 300 metros del punto de entrega. Esta notificación puede enviarse múltiples veces.
+
+<Warning>
+La notificación con el estado `nearToFinish` puede enviarse varias veces, ya que el conductor puede cumplir repetidamente con la condición de estar a menos de 300 metros del punto de entrega. Para evitar efectos no deseados o duplicaciones en el sistema, es necesario que la contraparte implemente esta notificación de manera idempotente, garantizando que las múltiples recepciones de este estado no afecten el flujo ni el estado del pedido.
+</Warning>
+
+### `done`
+**Pedido entregado**
+
+El pedido ha sido entregado exitosamente al usuario.
+
+### `cancelled`
+**Pedido cancelado**
+
+El pedido ha sido cancelado. Puede ser cancelado por la tienda, el usuario, o por problemas en el proceso.
+
+## Ejemplo de solicitud - Pedido aceptado
+
+```json
+{
+  "externalUserId": "user_12345",
+  "status": "pending",
+  "orderId": "order_xyz789",
+  "websiteId": "website_abc123",
+  "requiresDeliveryVerificationCode": false
+}
+```
+
+## Ejemplo de solicitud - Pedido en camino
+
+```json
+{
+  "externalUserId": "user_12345",
+  "status": "delivering",
+  "orderId": "order_xyz789",
+  "websiteId": "website_abc123",
+  "requiresDeliveryVerificationCode": true
+}
+```
+
+## Ejemplo de solicitud - Pedido llegando a destino
+
+```json
+{
+  "externalUserId": "user_12345",
+  "status": "nearToFinish",
+  "orderId": "order_xyz789",
+  "websiteId": "website_abc123",
+  "requiresDeliveryVerificationCode": true
+}
+```
+
+## Ejemplo de solicitud - Pedido entregado
+
+```json
+{
+  "externalUserId": "user_12345",
+  "status": "done",
+  "orderId": "order_xyz789",
+  "websiteId": "website_abc123",
+  "requiresDeliveryVerificationCode": false
+}
+```
+
+## Ejemplo de solicitud - Pedido cancelado
+
+```json
+{
+  "externalUserId": "user_12345",
+  "status": "cancelled",
+  "orderId": "order_xyz789",
+  "websiteId": "website_abc123",
+  "requiresDeliveryVerificationCode": false
+}
+```
+
+## Respuesta esperada
+
+La aplicación contenedora debe responder con un código de estado HTTP 200 para indicar que la notificación fue recibida correctamente.
+
+### Respuesta exitosa
+
+```json
+{
+  "received": true,
+  "message": "Notificación procesada exitosamente"
+}
+```
+
+## Códigos de estado
+
+<StatusCode status="200">
+  La notificación fue recibida y procesada correctamente.
+</StatusCode>
+
+<StatusCode status="400">
+  Error de validación. Los datos enviados no son válidos.
+</StatusCode>
+
+<StatusCode status="401">
+  No autorizado. El token de autenticación es inválido o ha expirado.
+</StatusCode>
+
+<StatusCode status="500">
+  Error interno del servidor de la aplicación contenedora. Justo puede reintentar el envío de la notificación.
+</StatusCode>
+
+## Notas importantes
+
+<Info>
+Este endpoint debe implementarse con un mecanismo de autorización seguro (token de acceso) que valide que la solicitud proviene de Justo. El mecanismo específico debe coordinarse entre ambos equipos técnicos.
+</Info>
+
+<Warning>
+Es crítico que este endpoint sea idempotente, especialmente para el estado `nearToFinish` que puede enviarse múltiples veces. La aplicación debe poder procesar la misma notificación varias veces sin efectos secundarios.
+</Warning>
+
+<Info>
+La aplicación contenedora debe determinar cómo mostrar estas notificaciones al usuario. Algunas opciones incluyen:
+- Notificaciones push
+- Alertas en la aplicación
+- Actualización del estado del pedido en la UI
+- Sonidos o vibraciones
+</Info>
+
+<Info>
+Si la aplicación contenedora no responde con un código 200, Justo puede reintentar el envío de la notificación. Se recomienda implementar un mecanismo de procesamiento asíncrono para evitar timeouts.
+</Info>
+
+## Flujo de notificaciones
+
+El flujo típico de notificaciones para un pedido exitoso sería:
+
+1. `pending` - Pedido aceptado
+2. `delivering` - Pedido en camino
+3. `nearToFinish` - Pedido llegando (puede repetirse)
+4. `done` - Pedido entregado
+
+En caso de cancelación, se enviará directamente:
+
+1. `cancelled` - Pedido cancelado

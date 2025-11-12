@@ -1,0 +1,451 @@
+openapi: 3.0.0
+info:
+  title: Embedded Ordering API
+  version: 1.0.0
+  description: |
+    **Propuesta de API que debe ser implementada por la aplicación contenedora**
+    
+    Este documento describe una propuesta de los endpoints que las marcas (aplicaciones contenedoras) 
+    deben implementar para que Justo pueda operar e integrar el marketplace dentro de sus aplicaciones.
+    
+    Los endpoints, esquemas y especificaciones aquí descritos son una propuesta y pueden adaptarse 
+    a los requerimientos específicos de cada sistema, siempre y cuando se mantenga la funcionalidad 
+    necesaria para que Justo pueda realizar las operaciones requeridas.
+servers:
+  - url: https://your-app-domain.com
+    description: Servidor de la aplicación contenedora (debe ser configurado por cada implementación)
+tags:
+  - name: auth
+    description: Endpoints de autenticación y onboarding
+  - name: payments
+    description: Endpoints de pagos
+  - name: notifications
+    description: Webhooks de notificaciones
+paths:
+  /users/details/{externalUserId}:
+    get:
+      tags:
+        - auth
+      summary: Obtener datos del usuario
+      description: |
+        **Propuesta de endpoint** para obtener los datos del usuario necesarios para el onboarding automático.
+        
+        Este endpoint debe ser implementado por la aplicación contenedora para que Justo pueda obtener 
+        la información del usuario durante el proceso de onboarding.
+      parameters:
+        - name: externalUserId
+          in: path
+          description: El identificador del usuario en la aplicación contenedora
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: La solicitud fue exitosa y se retornaron los datos del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+        '400':
+          description: Error de validación. El externalUserId proporcionado no es válido o no se encontró el usuario
+        '401':
+          description: No autorizado. El token de autenticación es inválido o ha expirado
+        '404':
+          description: El usuario con el externalUserId proporcionado no fue encontrado
+
+  /payments/verify:
+    post:
+      tags:
+        - payments
+      summary: Verificar transacción
+      description: |
+        **Propuesta de endpoint** para verificar la disponibilidad de fondos y validar una transacción antes de procesarla.
+        
+        Este endpoint debe ser implementado por la aplicación contenedora para que Justo pueda verificar 
+        si una transacción puede ser procesada antes de ejecutarla.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyPaymentRequest'
+      responses:
+        '200':
+          description: La verificación fue procesada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyPaymentResponse'
+        '400':
+          description: Error de validación. Los datos enviados no son válidos
+        '401':
+          description: No autorizado. El token de autenticación es inválido o ha expirado
+        '500':
+          description: Error interno del servidor de la aplicación contenedora
+
+  /payments/execute:
+    post:
+      tags:
+        - payments
+      summary: Ejecutar pago
+      description: |
+        **Propuesta de endpoint** para procesar el pago después de la verificación y autorización exitosa.
+        
+        Este endpoint debe ser implementado por la aplicación contenedora para que Justo pueda ejecutar 
+        el pago después de que la verificación haya sido exitosa.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecutePaymentRequest'
+      responses:
+        '200':
+          description: La solicitud fue procesada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutePaymentResponse'
+        '400':
+          description: Error de validación. Los datos enviados no son válidos o la transacción no puede ser procesada
+        '401':
+          description: No autorizado. El token de autenticación es inválido o ha expirado
+        '500':
+          description: Error interno del servidor de la aplicación contenedora
+
+  /payments/refund:
+    post:
+      tags:
+        - payments
+      summary: Reversa y devoluciones
+      description: |
+        **Propuesta de endpoint** para procesar devoluciones parciales o totales de transacciones.
+        
+        Este endpoint debe ser implementado por la aplicación contenedora para que Justo pueda realizar 
+        devoluciones y reversas de transacciones cuando sea necesario.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundPaymentRequest'
+      responses:
+        '200':
+          description: La solicitud fue procesada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundPaymentResponse'
+        '400':
+          description: Error de validación. Los datos enviados no son válidos o la devolución no puede ser procesada
+        '401':
+          description: No autorizado. El token de autenticación es inválido o ha expirado
+        '500':
+          description: Error interno del servidor de la aplicación contenedora
+
+  /notifications/notify:
+    post:
+      tags:
+        - notifications
+      summary: Notificaciones de estado de pedido
+      description: |
+        **Propuesta de webhook** que Justo enviará para notificar cambios en el estado de los pedidos.
+        
+        Este endpoint debe ser implementado por la aplicación contenedora para recibir las notificaciones 
+        que Justo enviará sobre los cambios de estado de los pedidos.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+      responses:
+        '200':
+          description: La notificación fue recibida y procesada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Notificación procesada exitosamente"
+        '400':
+          description: Error de validación. Los datos enviados no son válidos
+        '401':
+          description: No autorizado. El token de autenticación es inválido o ha expirado
+        '500':
+          description: Error interno del servidor de la aplicación contenedora. Justo puede reintentar el envío de la notificación
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        **Propuesta de esquema de autenticación.** Token de autenticación que debe ser coordinado entre 
+        Justo y la aplicación contenedora. El mecanismo específico debe acordarse entre ambos equipos técnicos.
+
+  schemas:
+    UserDetails:
+      type: object
+      description: |
+        **Propuesta de esquema de respuesta.** Estructura propuesta para los datos del usuario que 
+        la aplicación contenedora debe retornar a Justo.
+      required:
+        - email
+        - firstName
+        - lastName
+        - phone
+      properties:
+        email:
+          type: string
+          format: email
+          description: Correo electrónico del usuario. Este campo es obligatorio ya que en Justo el email es la llave primaria de los usuarios
+          example: usuario@ejemplo.com
+        firstName:
+          type: string
+          description: Nombre del usuario
+          example: Juan
+        lastName:
+          type: string
+          description: Apellido del usuario
+          example: Pérez
+        phone:
+          type: string
+          description: Número de teléfono del usuario
+          example: "+56912345678"
+
+    VerifyPaymentRequest:
+      type: object
+      description: |
+        **Propuesta de esquema de solicitud.** Estructura propuesta para la verificación de pagos que 
+        Justo enviará a la aplicación contenedora.
+      required:
+        - amount
+        - currency
+        - description
+        - transactionId
+        - orderId
+        - externalUserId
+      properties:
+        amount:
+          type: number
+          description: Monto de la transacción a verificar
+          example: 15000
+        currency:
+          type: string
+          description: Moneda de la transacción
+          example: CLP
+        description:
+          type: string
+          description: Descripción del cargo que se realizará al usuario
+          example: "Pedido #12345 - Restaurante XYZ"
+        transactionId:
+          type: string
+          description: Identificador único de la transacción generado por Justo
+          example: txn_abc123def456
+        orderId:
+          type: string
+          description: Identificador del pedido asociado a esta transacción
+          example: order_xyz789
+        externalUserId:
+          type: string
+          description: Identificador del usuario en la aplicación contenedora
+          example: user_12345
+
+    VerifyPaymentResponse:
+      type: object
+      description: |
+        **Propuesta de esquema de respuesta.** Estructura propuesta que la aplicación contenedora debe 
+        retornar a Justo después de verificar una transacción.
+      required:
+        - transactionCode
+        - status
+      properties:
+        transactionCode:
+          type: string
+          description: Código de transacción generado por la aplicación contenedora
+          example: app_txn_987654
+        status:
+          type: string
+          enum: [approved, rejected, pending]
+          description: Estado de la verificación
+          example: approved
+        message:
+          type: string
+          description: Mensaje descriptivo sobre el resultado de la verificación
+          example: "Transacción verificada exitosamente"
+
+    ExecutePaymentRequest:
+      type: object
+      description: |
+        **Propuesta de esquema de solicitud.** Estructura propuesta para la ejecución de pagos que 
+        Justo enviará a la aplicación contenedora.
+      required:
+        - amount
+        - currency
+        - description
+        - transactionId
+        - orderId
+        - externalUserId
+      properties:
+        amount:
+          type: number
+          description: Monto de la transacción a procesar
+          example: 15000
+        currency:
+          type: string
+          description: Moneda de la transacción
+          example: CLP
+        description:
+          type: string
+          description: Descripción del cargo que se realizará al usuario
+          example: "Pedido #12345 - Restaurante XYZ"
+        transactionId:
+          type: string
+          description: Identificador único de la transacción generado por Justo
+          example: txn_abc123def456
+        orderId:
+          type: string
+          description: Identificador del pedido asociado a esta transacción
+          example: order_xyz789
+        externalUserId:
+          type: string
+          description: Identificador del usuario en la aplicación contenedora
+          example: user_12345
+        transactionCode:
+          type: string
+          description: Código de transacción retornado por el endpoint de verificación
+          example: app_txn_987654
+
+    ExecutePaymentResponse:
+      type: object
+      description: |
+        **Propuesta de esquema de respuesta.** Estructura propuesta que la aplicación contenedora debe 
+        retornar a Justo después de ejecutar un pago.
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [completed, pending, failed]
+          description: Estado del procesamiento
+          example: completed
+        receipt:
+          type: string
+          description: Número de recibo o operación que identifica la transacción
+          example: REC-2024-001234
+        operationNumber:
+          type: string
+          description: Número de operación generado por la aplicación contenedora
+          example: OP-987654321
+        message:
+          type: string
+          description: Mensaje descriptivo sobre el resultado del procesamiento
+          example: "Pago procesado exitosamente"
+
+    RefundPaymentRequest:
+      type: object
+      description: |
+        **Propuesta de esquema de solicitud.** Estructura propuesta para las devoluciones que 
+        Justo enviará a la aplicación contenedora.
+      required:
+        - amountToRefund
+        - transactionId
+        - currency
+      properties:
+        amountToRefund:
+          type: number
+          description: Monto a devolver al usuario. Puede ser parcial o total
+          example: 15000
+        transactionId:
+          type: string
+          description: Identificador único de la transacción original generado por Justo
+          example: txn_abc123def456
+        currency:
+          type: string
+          description: Moneda de la transacción
+          example: CLP
+        reason:
+          type: string
+          description: Razón de la devolución
+          example: "Pedido cancelado"
+        orderId:
+          type: string
+          description: Identificador del pedido asociado a la transacción
+          example: order_xyz789
+
+    RefundPaymentResponse:
+      type: object
+      description: |
+        **Propuesta de esquema de respuesta.** Estructura propuesta que la aplicación contenedora debe 
+        retornar a Justo después de procesar una devolución.
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [completed, pending, failed]
+          description: Estado de la devolución
+          example: completed
+        refundId:
+          type: string
+          description: Identificador único de la devolución generado por la aplicación contenedora
+          example: refund_987654
+        refundCode:
+          type: string
+          description: Código de la devolución para referencia
+          example: REF-2024-001234
+        message:
+          type: string
+          description: Mensaje descriptivo sobre el resultado de la devolución
+          example: "Devolución procesada exitosamente"
+
+    NotificationRequest:
+      type: object
+      description: |
+        **Propuesta de esquema de webhook.** Estructura propuesta que Justo enviará a la aplicación 
+        contenedora para notificar cambios en el estado de los pedidos.
+      required:
+        - externalUserId
+        - status
+        - orderId
+        - websiteId
+      properties:
+        externalUserId:
+          type: string
+          description: Identificador del usuario en la aplicación contenedora
+          example: user_12345
+        status:
+          type: string
+          enum: [pending, delivering, done, cancelled, nearToFinish]
+          description: Estado actual del pedido
+          example: pending
+        orderId:
+          type: string
+          description: Identificador único del pedido en Justo
+          example: order_xyz789
+        websiteId:
+          type: string
+          description: Identificador del sitio web o tienda donde se realizó el pedido
+          example: website_abc123
+        requiresDeliveryVerificationCode:
+          type: boolean
+          description: Indica si el pedido requiere un código de verificación para la entrega
+          example: false
+
