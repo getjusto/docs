@@ -161,6 +161,28 @@
 			]
 		},
 		{
+			"group": "Puntos de lealtad",
+			"version": "v3",
+			"pages": [
+				"docs/royalty/endpoints/loyaltyBalance/get-clients-loyalty-balance",
+				"docs/royalty/endpoints/loyaltyBalance/get-client-loyalty-balance",
+				"docs/royalty/endpoints/justoCoins/add",
+				"docs/royalty/endpoints/justoCoins/subtract"
+			]
+		},
+		{
+			"group": "Webhooks",
+			"version": "v3",
+			"pages": [
+				{
+					"group": "Clientes",
+					"pages": [
+						"docs/royalty/webhooks/client/syncBalance"
+					]
+				}
+			]
+		},
+		{
 			"group": "Códigos de canje",
 			"version": "v3",
 			"pages": [
