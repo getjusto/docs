@@ -1,10 +1,7 @@
 {
 	"$schema": "https://mintlify.com/schema.json",
 	"name": "Justo Docs",
-	"versions": [
-		"v3",
-		"v2"
-	],
+	"versions": ["v3", "v2"],
 	"defaultPage": "docs/old/v2/legacy-documentation",
 	"logo": {
 		"dark": "/logo/logo-white.svg",
@@ -94,9 +91,7 @@
 				},
 				{
 					"group": "Cupones",
-					"pages": [
-						"docs/old/v2/endpoints/coupon/get"
-					]
+					"pages": ["docs/old/v2/endpoints/coupon/get"]
 				},
 				{
 					"group": "Clientes",
@@ -228,16 +223,12 @@
 		{
 			"group": "Introducción",
 			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/introduction"
-			]
+			"pages": ["docs/embedded_ordering/introduction"]
 		},
 		{
 			"group": "Onboarding",
 			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/endpoints/auth/details"
-			]
+			"pages": ["docs/embedded_ordering/endpoints/auth/details"]
 		},
 		{
 			"group": "Pagos",
@@ -251,9 +242,7 @@
 		{
 			"group": "Notificaciones",
 			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/endpoints/notifications/notify"
-			]
+			"pages": ["docs/embedded_ordering/endpoints/notifications/notify"]
 		},
 		{
 			"group": "Empezando",
@@ -263,9 +252,7 @@
 				"docs/main/authentication",
 				{
 					"group": "Endpoints generales",
-					"pages": [
-						"docs/main/endpoints/me"
-					]
+					"pages": ["docs/main/endpoints/me"]
 				}
 			]
 		},
@@ -283,6 +270,7 @@
 				{
 					"group": "Turnos",
 					"pages": [
+						"docs/crisp/endpoints/shifts/get-active-shift",
 						"docs/crisp/endpoints/shifts/get-shift",
 						"docs/crisp/endpoints/shifts/list-shifts",
 						"docs/crisp/endpoints/shifts/list-shift-tabs",
@@ -294,7 +282,10 @@
 					"pages": [
 						"docs/crisp/endpoints/inventory/get-current-inventory",
 						"docs/crisp/endpoints/inventory/list-ingredients",
-						"docs/crisp/endpoints/inventory/get-menu-costs"
+						"docs/crisp/endpoints/inventory/get-menu-costs",
+						"docs/crisp/endpoints/inventory/list-recipes"
+
+
 					]
 				},
 				{
@@ -306,21 +297,15 @@
 				},
 				{
 					"group": "Pagos",
-					"pages": [
-						"docs/crisp/endpoints/tabPayments/list-tab-payments"
-					]
+					"pages": ["docs/crisp/endpoints/tabPayments/list-tab-payments"]
 				},
 				{
 					"group": "Métodos de pago",
-					"pages": [
-						"docs/crisp/endpoints/tabPaymentMethods/list-tab-payment-methods"
-					]
+					"pages": ["docs/crisp/endpoints/tabPaymentMethods/list-tab-payment-methods"]
 				},
 				{
 					"group": "Facturación",
-					"pages": [
-						"docs/crisp/endpoints/invoices/list-invoices"
-					]
+					"pages": ["docs/crisp/endpoints/invoices/list-invoices"]
 				}
 			]
 		},
