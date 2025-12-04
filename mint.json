@@ -272,7 +272,9 @@
 					"pages": [
 						"docs/crisp/endpoints/shifts/get-active-shift",
 						"docs/crisp/endpoints/shifts/get-shift",
-						"docs/crisp/endpoints/shifts/list-shifts"
+						"docs/crisp/endpoints/shifts/list-shifts",
+						"docs/crisp/endpoints/shifts/list-shift-tabs",
+						"docs/crisp/endpoints/shifts/get-shift-tab"
 					]
 				},
 				{
