@@ -2981,6 +2981,490 @@
         ]
       }
     },
+    "/royalty/client": {
+      "get": {
+        "summary": "Información de un cliente",
+        "description": "Obtiene la información completa de un cliente, incluyendo datos personales, comportamiento de compra y preferencias de marketing. Se debe proporcionar al menos uno de los siguientes parámetros: justoUserId o clientId.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "justoUserId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "ID del usuario de Justo"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "ID del cliente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Información del cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indica si la operación fue exitosa"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "rty-cli-001",
+                          "description": "El ID del cliente"
+                        },
+                        "websiteId": {
+                          "type": "string",
+                          "example": "w-001",
+                          "description": "El ID del sitio web al que pertenece el cliente"
+                        },
+                        "identifier": {
+                          "type": "string",
+                          "example": "CLI-001",
+                          "description": "Identificador del cliente",
+                          "nullable": true
+                        },
+                        "justoUserId": {
+                          "type": "string",
+                          "example": "u-001",
+                          "description": "El ID del usuario de Justo asociado al cliente",
+                          "nullable": true
+                        },
+                        "firstName": {
+                          "type": "string",
+                          "example": "Juan",
+                          "description": "Nombre del cliente",
+                          "nullable": true
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Pérez",
+                          "description": "Apellido del cliente",
+                          "nullable": true
+                        },
+                        "fullName": {
+                          "type": "string",
+                          "example": "Juan Pérez",
+                          "description": "Nombre completo del cliente",
+                          "nullable": true
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "+56912345678",
+                          "description": "Teléfono del cliente",
+                          "nullable": true
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "cliente@example.com",
+                          "description": "Email del cliente",
+                          "nullable": true
+                        },
+                        "birthday": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-15",
+                          "description": "Fecha de nacimiento del cliente",
+                          "nullable": true
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-01T00:00:00.000Z",
+                          "description": "Fecha de creación del cliente"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-15T10:30:00.000Z",
+                          "description": "Fecha de última actualización del cliente",
+                          "nullable": true
+                        },
+                        "lastOrderAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-20T14:30:00.000Z",
+                          "description": "Fecha de la última orden del cliente",
+                          "nullable": true
+                        },
+                        "firstOrderAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-12-01T10:00:00.000Z",
+                          "description": "Fecha de la primera orden del cliente",
+                          "nullable": true
+                        },
+                        "lastOrderAmount": {
+                          "type": "number",
+                          "example": 25000,
+                          "description": "Monto de la última orden del cliente"
+                        },
+                        "totalOrders": {
+                          "type": "number",
+                          "example": 15,
+                          "description": "Total de órdenes del cliente"
+                        },
+                        "loyaltyBalance": {
+                          "type": "number",
+                          "example": 150,
+                          "description": "Balance actual de puntos de lealtad del cliente"
+                        },
+                        "lastLoginAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-20T12:00:00.000Z",
+                          "description": "Fecha del último login del cliente",
+                          "nullable": true
+                        },
+                        "lastOrderStoreId": {
+                          "type": "string",
+                          "example": "store-001",
+                          "description": "ID de la tienda de la última orden",
+                          "nullable": true
+                        },
+                        "blockedMarketingEmails": {
+                          "type": "boolean",
+                          "example": false,
+                          "description": "Indica si el cliente ha bloqueado emails de marketing"
+                        },
+                        "blockedMarketingNotifications": {
+                          "type": "boolean",
+                          "example": false,
+                          "description": "Indica si el cliente ha bloqueado notificaciones de marketing"
+                        },
+                        "blockedMarketingSMS": {
+                          "type": "boolean",
+                          "example": false,
+                          "description": "Indica si el cliente ha bloqueado SMS de marketing"
+                        }
+                      },
+                      "required": [
+                        "_id",
+                        "websiteId",
+                        "identifier",
+                        "justoUserId",
+                        "firstName",
+                        "lastName",
+                        "fullName",
+                        "phone",
+                        "email",
+                        "birthday",
+                        "createdAt",
+                        "updatedAt",
+                        "lastOrderAt",
+                        "firstOrderAt",
+                        "lastOrderAmount",
+                        "totalOrders",
+                        "loyaltyBalance",
+                        "lastLoginAt",
+                        "lastOrderStoreId",
+                        "blockedMarketingEmails",
+                        "blockedMarketingNotifications",
+                        "blockedMarketingSMS"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - falta proporcionar al menos uno de los parámetros requeridos (justoUserId o clientId)"
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          },
+          "404": {
+            "description": "Cliente no encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/royalty/client-coin-movements": {
+      "get": {
+        "summary": "Movimientos de monedas de un cliente",
+        "description": "Obtiene una lista paginada de los movimientos de monedas (puntos) de un cliente específico. Permite filtrar por rango de fechas y tipo de transacción.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "justoUserId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID del usuario de Justo"
+            }
+          },
+          {
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Fecha de inicio del rango (formato YYYY-MM-DD o ISO 8601, ej: 2026-01-19 o 2026-01-19T00:00:00Z)",
+              "example": "2026-01-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Fecha de fin del rango (formato YYYY-MM-DD o ISO 8601, ej: 2026-01-19 o 2026-01-19T23:59:59Z)",
+              "example": "2026-01-31"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Tipo de transacción a filtrar"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "description": "Número de página a obtener"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "description": "Cantidad de elementos por página"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de movimientos de monedas del cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indica si la operación fue exitosa"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "movements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "amount": {
+                                "type": "number",
+                                "example": 50,
+                                "description": "Cantidad de monedas (positivo para ingresos, negativo para egresos)"
+                              },
+                              "userId": {
+                                "type": "string",
+                                "example": "u-001",
+                                "description": "ID del usuario de Justo"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2025-01-20T14:30:00.000Z",
+                                "description": "Fecha de creación del movimiento"
+                              },
+                              "balance": {
+                                "type": "number",
+                                "example": 150,
+                                "description": "Balance de monedas después de este movimiento"
+                              },
+                              "direction": {
+                                "type": "string",
+                                "enum": [
+                                  "in",
+                                  "out"
+                                ],
+                                "example": "in",
+                                "description": "Dirección del movimiento (in = ingreso, out = egreso)"
+                              },
+                              "originReference": {
+                                "type": "object",
+                                "nullable": true,
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "order",
+                                      "adjustment",
+                                      "expiration",
+                                      "refund",
+                                      "other"
+                                    ],
+                                    "example": "order",
+                                    "description": "Tipo de origen del movimiento"
+                                  },
+                                  "expiresAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2026-01-20T14:30:00.000Z",
+                                    "description": "Fecha de expiración, si aplica",
+                                    "nullable": true
+                                  },
+                                  "orderId": {
+                                    "type": "string",
+                                    "example": "ord-001",
+                                    "description": "ID de la orden, si aplica",
+                                    "nullable": true
+                                  },
+                                  "orderCode": {
+                                    "type": "string",
+                                    "example": "ORD-12345",
+                                    "description": "Código de la orden, si aplica",
+                                    "nullable": true
+                                  },
+                                  "tabId": {
+                                    "type": "string",
+                                    "example": "tab-001",
+                                    "description": "ID de la tab (orden presencial), si aplica",
+                                    "nullable": true
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "Orden Online",
+                                    "description": "Descripción del origen del movimiento",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ],
+                                "description": "Referencia del origen del movimiento"
+                              }
+                            },
+                            "required": [
+                              "amount",
+                              "userId",
+                              "createdAt",
+                              "balance",
+                              "direction",
+                              "originReference"
+                            ]
+                          },
+                          "description": "Lista de movimientos de monedas"
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "totalCount": {
+                              "type": "number",
+                              "example": 150,
+                              "description": "Total de movimientos"
+                            },
+                            "page": {
+                              "type": "number",
+                              "example": 1,
+                              "description": "Página actual"
+                            },
+                            "pageSize": {
+                              "type": "number",
+                              "example": 100,
+                              "description": "Tamaño de página"
+                            },
+                            "totalPages": {
+                              "type": "number",
+                              "example": 2,
+                              "description": "Total de páginas"
+                            },
+                            "hasNextPage": {
+                              "type": "boolean",
+                              "example": true,
+                              "description": "Indica si hay una página siguiente"
+                            },
+                            "hasPreviousPage": {
+                              "type": "boolean",
+                              "example": false,
+                              "description": "Indica si hay una página anterior"
+                            }
+                          },
+                          "required": [
+                            "totalCount",
+                            "page",
+                            "pageSize",
+                            "totalPages",
+                            "hasNextPage",
+                            "hasPreviousPage"
+                          ],
+                          "description": "Información de paginación"
+                        }
+                      },
+                      "required": [
+                        "movements",
+                        "pagination"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - falta proporcionar justoUserId, formato de fecha inválido, o parámetros de paginación inválidos"
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          },
+          "404": {
+            "description": "Cliente no encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
     "/royalty/justo-coins/add": {
       "post": {
         "summary": "Agregar puntos de lealtad a un cliente",
