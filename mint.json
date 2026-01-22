@@ -180,7 +180,7 @@
 			"version": "v3",
 			"pages": [
 				"docs/royalty/endpoints/client",
-				"docs/royalty/endpoints/client-coin-movements"
+				"docs/royalty/endpoints/client-point-movements"
 			]
 		},
 		{
