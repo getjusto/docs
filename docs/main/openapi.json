@@ -3204,10 +3204,10 @@
         ]
       }
     },
-    "/royalty/client-coin-movements": {
+    "/royalty/client-point-movements": {
       "get": {
-        "summary": "Movimientos de monedas de un cliente",
-        "description": "Obtiene una lista paginada de los movimientos de monedas (puntos) de un cliente específico. Permite filtrar por rango de fechas y tipo de transacción.",
+        "summary": "Movimientos de puntos de un cliente",
+        "description": "Obtiene una lista paginada de los movimientos de puntos de un cliente específico. Permite filtrar por rango de fechas y tipo de transacción.",
         "parameters": [
           {
             "in": "query",
