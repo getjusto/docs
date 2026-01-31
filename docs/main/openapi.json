@@ -3212,10 +3212,28 @@
           {
             "in": "query",
             "name": "justoUserId",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "description": "ID del usuario de Justo"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "ID del cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Email del cliente"
             }
           },
           {
@@ -3273,7 +3291,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista paginada de movimientos de monedas del cliente",
+            "description": "Lista paginada de movimientos de puntos del cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -3295,7 +3313,7 @@
                               "amount": {
                                 "type": "number",
                                 "example": 50,
-                                "description": "Cantidad de monedas (positivo para ingresos, negativo para egresos)"
+                                "description": "Cantidad de puntos (positivo para ingresos, negativo para egresos)"
                               },
                               "userId": {
                                 "type": "string",
@@ -3311,7 +3329,7 @@
                               "balance": {
                                 "type": "number",
                                 "example": 150,
-                                "description": "Balance de monedas después de este movimiento"
+                                "description": "Balance de puntos después de este movimiento"
                               },
                               "direction": {
                                 "type": "string",
@@ -3385,7 +3403,7 @@
                               "originReference"
                             ]
                           },
-                          "description": "Lista de movimientos de monedas"
+                          "description": "Lista de movimientos de puntos"
                         },
                         "pagination": {
                           "type": "object",
