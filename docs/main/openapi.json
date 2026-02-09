@@ -3206,34 +3206,16 @@
     },
     "/royalty/client-point-movements": {
       "get": {
-        "summary": "Movimientos de puntos de un cliente",
-        "description": "Obtiene una lista paginada de los movimientos de puntos de un cliente específico. Permite filtrar por rango de fechas y tipo de transacción.",
+        "summary": "Movimientos de puntos de lealtad",
+        "description": "Obtiene una lista paginada de los movimientos de puntos de lealtad. Permite filtrar por justoUserId, rango de fechas y tipo de transacción.",
         "parameters": [
           {
             "in": "query",
             "name": "justoUserId",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string",
               "description": "ID del usuario de Justo"
-            }
-          },
-          {
-            "in": "query",
-            "name": "clientId",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "ID del cliente"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Email del cliente"
             }
           },
           {
@@ -3262,7 +3244,15 @@
             "required": false,
             "schema": {
               "type": "string",
-              "description": "Tipo de transacción a filtrar"
+              "description": "Tipo de movimiento a filtrar",
+              "enum": [
+                "manual",
+                "redemption",
+                "accumulation",
+                "referral",
+                "expiration",
+                "refund"
+              ]
             }
           },
           {
@@ -3291,7 +3281,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista paginada de movimientos de puntos del cliente",
+            "description": "Lista paginada de movimientos de puntos de lealtad",
             "content": {
               "application/json": {
                 "schema": {
@@ -3313,7 +3303,7 @@
                               "amount": {
                                 "type": "number",
                                 "example": 50,
-                                "description": "Cantidad de puntos (positivo para ingresos, negativo para egresos)"
+                                "description": "Cantidad de puntos de lealtad (positivo para ingresos, negativo para egresos)"
                               },
                               "userId": {
                                 "type": "string",
@@ -3329,7 +3319,7 @@
                               "balance": {
                                 "type": "number",
                                 "example": 150,
-                                "description": "Balance de puntos después de este movimiento"
+                                "description": "Balance de monedas después de este movimiento"
                               },
                               "direction": {
                                 "type": "string",
@@ -3347,13 +3337,14 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "order",
-                                      "adjustment",
                                       "expiration",
                                       "refund",
-                                      "other"
+                                      "manual",
+                                      "redemption",
+                                      "accumulation",
+                                      "referral"
                                     ],
-                                    "example": "order",
+                                    "example": "accumulation",
                                     "description": "Tipo de origen del movimiento"
                                   },
                                   "expiresAt": {
@@ -3403,7 +3394,7 @@
                               "originReference"
                             ]
                           },
-                          "description": "Lista de movimientos de puntos"
+                          "description": "Lista de movimientos de monedas"
                         },
                         "pagination": {
                           "type": "object",
