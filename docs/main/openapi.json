@@ -3212,7 +3212,7 @@
           {
             "in": "query",
             "name": "justoUserId",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "description": "ID del usuario de Justo"
@@ -3786,6 +3786,163 @@
           },
           "500": {
             "description": "Error interno del servidor - fallo en la transacción"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/royalty/summary": {
+      "get": {
+        "summary": "Resumen de lealtad",
+        "description": "Obtiene el resumen de métricas del programa de lealtad: total de clientes, órdenes, puntos emitidos, puntos en circulación y buckets de expiración. Calculado desde las transacciones de los puntos de lealtad. Opcionalmente filtrable por rango de fechas (startDate, endDate).",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Fecha de inicio del rango. Formato YYYY-MM-DD (ej. 2026-01-19) o ISO 8601 (ej. 2026-01-19T00:00:00Z)"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Fecha de fin del rango. Formato YYYY-MM-DD o ISO 8601 (ej. 2026-01-19T23:59:59Z)"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resumen de métricas del programa de lealtad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indica si la operación fue exitosa"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "totalClients": {
+                          "type": "number",
+                          "example": 1250,
+                          "description": "Total de clientes con actividad en el programa de lealtad"
+                        },
+                        "totalOrders": {
+                          "type": "number",
+                          "example": 5800,
+                          "description": "Total de órdenes (online + en tienda)"
+                        },
+                        "totalOrdersOnline": {
+                          "type": "number",
+                          "example": 3200,
+                          "description": "Total de órdenes online"
+                        },
+                        "totalOrdersInStore": {
+                          "type": "number",
+                          "example": 2600,
+                          "description": "Total de órdenes en tienda"
+                        },
+                        "totalPointsIssued": {
+                          "type": "number",
+                          "example": 450000,
+                          "description": "Total de puntos emitidos"
+                        },
+                        "pointsInCirculation": {
+                          "type": "number",
+                          "example": 280000,
+                          "description": "Puntos actualmente en circulación (no redimidos ni expirados)"
+                        },
+                        "calculatedToDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2026-02-09T19:00:00.000Z",
+                          "description": "Fecha de cálculo del resumen"
+                        },
+                        "expirationBuckets": {
+                          "type": "object",
+                          "description": "Puntos por rango de días hasta su expiración (menos de 10, 30, 60, 90 días, más de 90, sin expiración)",
+                          "properties": {
+                            "lessThan10": {
+                              "type": "number",
+                              "example": 15000,
+                              "description": "Puntos que expiran en menos de 10 días"
+                            },
+                            "lessThan30": {
+                              "type": "number",
+                              "example": 22000,
+                              "description": "Puntos que expiran en menos de 30 días"
+                            },
+                            "lessThan60": {
+                              "type": "number",
+                              "example": 35000,
+                              "description": "Puntos que expiran en menos de 60 días"
+                            },
+                            "lessThan90": {
+                              "type": "number",
+                              "example": 48000,
+                              "description": "Puntos que expiran en menos de 90 días"
+                            },
+                            "moreThan90": {
+                              "type": "number",
+                              "example": 120000,
+                              "description": "Puntos que expiran en más de 90 días"
+                            },
+                            "noExpiration": {
+                              "type": "number",
+                              "example": 40000,
+                              "description": "Puntos sin fecha de expiración"
+                            }
+                          },
+                          "required": [
+                            "lessThan10",
+                            "lessThan30",
+                            "lessThan60",
+                            "lessThan90",
+                            "moreThan90",
+                            "noExpiration"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "totalClients",
+                        "totalOrders",
+                        "totalOrdersOnline",
+                        "totalOrdersInStore",
+                        "totalPointsIssued",
+                        "pointsInCirculation",
+                        "calculatedToDate",
+                        "expirationBuckets"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - formato de fecha inválido en startDate o endDate. Usar YYYY-MM-DD o ISO 8601."
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
           }
         },
         "security": [
