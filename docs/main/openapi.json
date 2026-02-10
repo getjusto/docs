@@ -3204,6 +3204,211 @@
         ]
       }
     },
+    "/royalty/clients": {
+      "get": {
+        "summary": "Listado paginado de clientes",
+        "description": "Obtiene una lista paginada de clientes. Opcionalmente se puede ordenar por fecha de creación ascendente mediante el parámetro orderByCreatedAt.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "description": "Número de página a obtener"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "description": "Cantidad de elementos por página"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filtro de búsqueda sobre los clientes"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filtro por estado del cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "orderByCreatedAt",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Si es true, ordena los resultados por fecha de creación ascendente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de clientes de royalty",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indica si la operación fue exitosa"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 1,
+                          "description": "Total de páginas"
+                        },
+                        "totalCount": {
+                          "type": "integer",
+                          "example": 25,
+                          "description": "Total de clientes"
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": false,
+                          "description": "Indica si hay una página siguiente"
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": false,
+                          "description": "Indica si hay una página anterior"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "ok",
+                          "description": "Estado de la respuesta"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "rty-cli-001",
+                                "description": "ID del cliente"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Juan Pérez",
+                                "description": "Nombre del cliente"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "cliente@example.com",
+                                "description": "Email del cliente"
+                              },
+                              "phone": {
+                                "type": "string",
+                                "example": "+56912345678",
+                                "description": "Teléfono del cliente"
+                              },
+                              "firstLogin": {
+                                "type": "string",
+                                "description": "Fecha del primer login"
+                              },
+                              "lastLogin": {
+                                "type": "string",
+                                "description": "Fecha del último login"
+                              },
+                              "ordersCount": {
+                                "type": "number",
+                                "example": 15,
+                                "description": "Cantidad de órdenes del cliente"
+                              },
+                              "firstOrder": {
+                                "type": "string",
+                                "description": "Fecha de la primera orden"
+                              },
+                              "lastOrder": {
+                                "type": "string",
+                                "description": "Fecha de la última orden"
+                              },
+                              "pointsBalance": {
+                                "type": "number",
+                                "example": 150,
+                                "description": "Balance de puntos de lealtad"
+                              },
+                              "marketingEmailEnabled": {
+                                "type": "boolean",
+                                "example": true,
+                                "description": "Indica si el cliente tiene habilitados los emails de marketing"
+                              }
+                            },
+                            "required": [
+                              "_id",
+                              "name",
+                              "email",
+                              "phone",
+                              "firstLogin",
+                              "lastLogin",
+                              "ordersCount",
+                              "firstOrder",
+                              "lastOrder",
+                              "pointsBalance",
+                              "marketingEmailEnabled"
+                            ]
+                          },
+                          "description": "Lista de clientes"
+                        }
+                      },
+                      "required": [
+                        "totalPages",
+                        "totalCount",
+                        "hasNextPage",
+                        "hasPreviousPage",
+                        "status",
+                        "items"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - página o pageSize inválidos (page >= 1, pageSize entre 1 y 1000)"
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
     "/royalty/client-point-movements": {
       "get": {
         "summary": "Movimientos de puntos de lealtad",
