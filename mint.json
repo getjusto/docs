@@ -172,6 +172,7 @@
 				"docs/royalty/endpoints/summary",
 				"docs/royalty/endpoints/loyaltyBalance/get-clients-loyalty-balance",
 				"docs/royalty/endpoints/loyaltyBalance/get-client-loyalty-balance",
+				"docs/royalty/endpoints/client-point-movements",
 				"docs/royalty/endpoints/justoCoins/add",
 				"docs/royalty/endpoints/justoCoins/subtract"
 			]
@@ -180,8 +181,8 @@
 			"group": "Clientes",
 			"version": "v3",
 			"pages": [
-				"docs/royalty/endpoints/client",
-				"docs/royalty/endpoints/client-point-movements"
+				"docs/royalty/endpoints/clients",
+				"docs/royalty/endpoints/client"
 			]
 		},
 		{
