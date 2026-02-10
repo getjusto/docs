@@ -181,7 +181,7 @@ components:
           description: Descripción del producto en cuestión.
         externalId:
           type: string
-          description: ID externo del producto. 
+          description: ID externo del producto (obligatorio). Solo se permiten caracteres alfanuméricos, guiones y guiones bajos. 
         priority:
           type: string
           description: Dice la prioridad que tiene este item versus el resto de los productos. Si tiene prioridad más alta sale primero en la lista de productos.
@@ -224,7 +224,7 @@ components:
           description: Nombre del producto de cara al compradores.
         externalId:
           type: string
-          description: ID externo del producto. 
+          description: ID externo de la categoría (obligatorio). Solo se permiten caracteres alfanuméricos, guiones y guiones bajos. 
         priority:
           type: string
           description: Dice la prioridad que tiene este item versus el resto de las categorías. Los primeros que se muestran son los que tienen una prioridad cercana a cero.
@@ -243,7 +243,7 @@ components:
           description: Cuantas veces se puede escoger esta opción dentro del modificador
         externalId:
           type: string
-          description: ID externo de esta opción. 
+          description: ID externo de esta opción (obligatorio). Solo se permiten caracteres alfanuméricos, guiones y guiones bajos. 
         price: 
           type: number
           description: Precio normal de la opción en este menú
@@ -281,7 +281,7 @@ components:
           description: Un nombre interno que no ven los compradores. Sirve para diferenciar modificadores con el mismo nombre y para asociar los modificadores a los productos.
         externalId:
           type: string
-          description: ID externo del modificador. 
+          description: ID externo del modificador (obligatorio). Solo se permiten caracteres alfanuméricos, guiones y guiones bajos.
         optionIds:
           type: array
           description: Arreglo de Id's externos de opciones que operan con este modificador
@@ -300,7 +300,7 @@ components:
           description: Dice la prioridad que tiene este versus el resto de los menú. Si tiene prioridad más alta y cumple con todas las condiciones, entonces es el que se muestra.
         storesIds:
           type: array
-          description: Utilizando el id de justo para cada tienda, se puede limitar en qué locales estará disponible este menú. Si quieres que esté en todos, basta con dejarlo vacío.
+          description: Utilizando el id de Justo para cada tienda, se puede limitar en qué locales estará disponible este menú. Cada id debe corresponder a una tienda existente en Justo (no eliminada). Si quieres que esté en todos, basta con dejarlo vacío.
           items:
             type: string
         externalId:
@@ -311,7 +311,7 @@ components:
           items:
             type: string
             description: Son los tipos de pedidos que acepta este menú
-            enum: ['web-delivery','web-go','web-serve','orion-delivery','orion-go','orion-serve','app-delivery','app-go','app-serve']
+            enum: ['web-delivery','web-go','web-serve','commander-delivery','commander-go','commander-serve','orion-delivery','orion-go','orion-serve','app-delivery','app-go','app-serve']
         daysBefore:
           type: number
           description: Días de anticipación se necesitan para activar este menú. Esta configuración es ideal para los negocios que tienen productos que se hacen a pedido. Ejemplo una pastelería.
