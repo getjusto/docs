@@ -214,7 +214,14 @@ components:
           type: array
           description: Arreglo con las URLs de las imágenes de este producto. Puedes usar cualquier URL externa y se va a subir la imagen a los servidores de Justo. El tamaño máximo para las imagenes es de 10mb. Si es que quieres dejar el producto sin imágenes, puedes enviar un arreglo vacío.
           items:
-            type: string            
+            type: string
+        measurementUnit:
+          type: string
+          description: Unidad de medida del producto para el cálculo del Precio por Unidad de Medida (PUM) según DS N° 38/2024.
+          enum: ['kg', 'gr', 'und', 'ltr', 'ml']
+        measurementValue:
+          type: number
+          description: Valor numérico del contenido del producto en la unidad de medida indicada. Debe ser mayor o igual a 0.
 
     category:
       type: object
