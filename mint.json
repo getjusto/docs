@@ -181,6 +181,7 @@
 			"group": "Clientes",
 			"version": "v3",
 			"pages": [
+				"docs/royalty/endpoints/clients-export",
 				"docs/royalty/endpoints/clients",
 				"docs/royalty/endpoints/client"
 			]
