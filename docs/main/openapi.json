@@ -3409,6 +3409,168 @@
         ]
       }
     },
+    "/royalty/clients-export": {
+      "get": {
+        "summary": "Exportación de clientes",
+        "description": "Obtiene una página de clientes optimizada para exportaciones masivas (BI). Usa keyset pagination por _id en lugar de skip/limit, lo que lo hace eficiente incluso con millones de registros. Pasar el nextLastSeenId de la respuesta anterior para obtener la siguiente página. nextLastSeenId null indica que no hay más páginas.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 500,
+              "description": "Cantidad de clientes a retornar por página"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lastSeenId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "ID del último cliente recibido (cursor). Omitir en la primera llamada."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de clientes para exportación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "description": "Clientes de la página actual",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "cli_abc123",
+                                "description": "ID del cliente"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Juan Pérez",
+                                "description": "Nombre completo del cliente"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "juan@example.com",
+                                "description": "Email del cliente"
+                              },
+                              "phone": {
+                                "type": "string",
+                                "example": "+56912345678",
+                                "description": "Teléfono del cliente"
+                              },
+                              "firstLogin": {
+                                "type": "string",
+                                "example": "2023-11-07T05:31:56Z",
+                                "description": "Fecha del primer login en formato ISO 8601. Vacío si no tiene."
+                              },
+                              "lastLogin": {
+                                "type": "string",
+                                "example": "2024-03-15T10:20:00Z",
+                                "description": "Fecha del último login en formato ISO 8601. Vacío si no tiene."
+                              },
+                              "ordersCount": {
+                                "type": "integer",
+                                "example": 5,
+                                "description": "Total de órdenes del cliente"
+                              },
+                              "firstOrder": {
+                                "type": "string",
+                                "example": "2023-11-07T05:31:56Z",
+                                "description": "Fecha de la primera orden en formato ISO 8601. Vacío si no tiene."
+                              },
+                              "lastOrder": {
+                                "type": "string",
+                                "example": "2024-03-15T10:20:00Z",
+                                "description": "Fecha de la última orden en formato ISO 8601. Vacío si no tiene."
+                              },
+                              "pointsBalance": {
+                                "type": "integer",
+                                "example": 100,
+                                "description": "Balance actual de puntos de lealtad"
+                              },
+                              "marketingEmailEnabled": {
+                                "type": "boolean",
+                                "example": true,
+                                "description": "Indica si el cliente tiene habilitados los emails de marketing"
+                              }
+                            },
+                            "required": [
+                              "_id",
+                              "name",
+                              "email",
+                              "phone",
+                              "firstLogin",
+                              "lastLogin",
+                              "ordersCount",
+                              "firstOrder",
+                              "lastOrder",
+                              "pointsBalance",
+                              "marketingEmailEnabled"
+                            ]
+                          }
+                        },
+                        "nextLastSeenId": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "cli_abc123",
+                          "description": "ID del último cliente retornado, para usar como cursor en la siguiente llamada. null indica que no hay más páginas."
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "example": 500,
+                          "description": "Tamaño de página utilizado"
+                        }
+                      },
+                      "required": [
+                        "items",
+                        "nextLastSeenId",
+                        "pageSize"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación - pageSize inválido (entre 1 y 1000)"
+          },
+          "401": {
+            "description": "No autorizado - token de autenticación inválido o ausente"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
     "/royalty/client-point-movements": {
       "get": {
         "summary": "Movimientos de puntos de lealtad",
