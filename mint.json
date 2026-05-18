@@ -57,6 +57,10 @@
 			"url": "docs/reservations"
 		},
 		{
+			"name": "Ecommerce",
+			"url": "docs/ecommerce"
+		},
+		{
 			"name": "Royalty",
 			"url": "docs/royalty"
 		},
@@ -241,6 +245,75 @@
 			"version": "v3",
 			"pages": [
 				"docs/embedded_ordering/introduction"
+			]
+		},
+		{
+			"group": "Ecommerce",
+			"version": "v3",
+			"pages": [
+				"docs/ecommerce/introduction",
+				{
+					"group": "Menú",
+					"pages": [
+						"docs/ecommerce/endpoints/menu/head-menu",
+						"docs/ecommerce/endpoints/menu/list-menus",
+						"docs/ecommerce/endpoints/menu/get-menu",
+						"docs/ecommerce/endpoints/menu/create-menu",
+						"docs/ecommerce/endpoints/menu/update-menu",
+						"docs/ecommerce/endpoints/menu/partially-update-menu"
+					]
+				},
+				{
+					"group": "Catálogo",
+					"pages": [
+						"docs/ecommerce/endpoints/catalog/list-categories",
+						"docs/ecommerce/endpoints/catalog/get-category",
+						"docs/ecommerce/endpoints/catalog/update-category",
+						"docs/ecommerce/endpoints/catalog/list-products",
+						"docs/ecommerce/endpoints/catalog/get-product",
+						"docs/ecommerce/endpoints/catalog/update-product",
+						"docs/ecommerce/endpoints/catalog/list-modifiers",
+						"docs/ecommerce/endpoints/catalog/get-modifier",
+						"docs/ecommerce/endpoints/catalog/update-modifier",
+						"docs/ecommerce/endpoints/catalog/list-modifier-options",
+						"docs/ecommerce/endpoints/catalog/get-modifier-option",
+						"docs/ecommerce/endpoints/catalog/update-modifier-option",
+						"docs/ecommerce/endpoints/catalog/list-prices",
+						"docs/ecommerce/endpoints/catalog/get-price",
+						"docs/ecommerce/endpoints/catalog/update-price"
+					]
+				},
+				{
+					"group": "Pedidos",
+					"pages": [
+						"docs/ecommerce/endpoints/orders/list-orders",
+						"docs/ecommerce/endpoints/orders/get-order",
+						"docs/ecommerce/endpoints/orders/accept-order",
+						"docs/ecommerce/endpoints/orders/reject-order",
+						"docs/ecommerce/endpoints/orders/mark-order-prepared"
+					]
+				},
+				{
+					"group": "Productos",
+					"pages": ["docs/ecommerce/endpoints/products/set-product-out-of-stock"]
+				},
+				{
+					"group": "Locales",
+					"pages": [
+						"docs/ecommerce/endpoints/stores/list-stores",
+						"docs/ecommerce/endpoints/stores/get-store",
+						"docs/ecommerce/endpoints/stores/temporary-close-store",
+						"docs/ecommerce/endpoints/stores/update-current-preparation-duration"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/ecommerce/webhooks/orders/created",
+						"docs/ecommerce/webhooks/orders/status-updated",
+						"docs/ecommerce/webhooks/orders/delivery-updated"
+					]
+				}
 			]
 		},
 		{

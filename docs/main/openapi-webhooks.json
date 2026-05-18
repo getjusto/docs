@@ -173,6 +173,164 @@
         }
       }
     },
+    "/ecommerce.order.created": {
+      "post": {
+        "summary": "Pedido creado",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook.",
+                    "type": "string",
+                    "enum": [
+                      "ecommerce.order.created"
+                    ],
+                    "const": "ecommerce.order.created"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "order": {
+                        "$ref": "#/components/schemas/apiOrder"
+                      }
+                    }
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "ID de la marca."
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID del local."
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "Fecha en que se generó el evento."
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "ID único del evento."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ecommerce.order.status.updated": {
+      "post": {
+        "summary": "Estado de pedido actualizado",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook.",
+                    "type": "string",
+                    "enum": [
+                      "ecommerce.order.status.updated"
+                    ],
+                    "const": "ecommerce.order.status.updated"
+                  },
+                  "data": {
+                    "$ref": "#/components/schemas/apiOrderStatusUpdatedWebhookData"
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "ID de la marca."
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID del local."
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "Fecha en que se generó el evento."
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "ID único del evento."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ecommerce.order.delivery.updated": {
+      "post": {
+        "summary": "Despacho de pedido actualizado",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook.",
+                    "type": "string",
+                    "enum": [
+                      "ecommerce.order.delivery.updated"
+                    ],
+                    "const": "ecommerce.order.delivery.updated"
+                  },
+                  "data": {
+                    "$ref": "#/components/schemas/apiOrderDeliveryUpdatedWebhookData"
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "ID de la marca."
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID del local."
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "Fecha en que se generó el evento."
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "ID único del evento."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/client.balance.syncClientBalance": {
       "post": {
         "summary": "Sincronización de saldo de cliente",
@@ -2585,16 +2743,7 @@
           "countryCode": {
             "type": "string",
             "description": "Código de país ISO 3166-1 alpha-2",
-            "example": "CL",
-            "enum": [
-              "CL",
-              "MX",
-              "PE",
-              "CO",
-              "EC",
-              "CR",
-              "AR"
-            ]
+            "example": "CL"
           },
           "createdAt": {
             "type": "string",
@@ -3368,7 +3517,8 @@
             "enum": [
               "product",
               "deliveryFee",
-              "serviceFee"
+              "serviceFee",
+              "billingItem"
             ],
             "description": "Tipo de item."
           },
@@ -3387,6 +3537,16 @@
             "type": "string",
             "example": "Juan",
             "description": "Nombre del cliente que agregó el item."
+          },
+          "addedByUserId": {
+            "type": "string",
+            "example": "a3W2hiuGGLi4eECFa",
+            "description": "El ID del garzón que digitó el item."
+          },
+          "addedByUserName": {
+            "type": "string",
+            "example": "Juan",
+            "description": "Nombre del garzón que digitó el item."
           },
           "eaterLabels": {
             "type": "array",
@@ -3962,13 +4122,13 @@
               "countryCode": {
                 "type": "string",
                 "enum": [
+                  "AR",
                   "CL",
-                  "MX",
-                  "PE",
                   "CO",
-                  "EC",
                   "CR",
-                  "AR"
+                  "EC",
+                  "MX",
+                  "PE"
                 ],
                 "example": "CL"
               },
@@ -4000,6 +4160,1450 @@
                 }
               }
             }
+          }
+        }
+      },
+      "apiMcdMenuPayload": {
+        "type": "object",
+        "description": "Payload de menú MCD compatible con menu-put-mcd-v1.",
+        "additionalProperties": true,
+        "required": [
+          "menus",
+          "categories",
+          "items",
+          "modifier_groups"
+        ],
+        "properties": {
+          "menus": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "modifier_groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "apiMcdMenuAdapterResult": {
+        "type": "object",
+        "description": "Resultado de la carga del menú MCD.",
+        "properties": {
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "menu-put-mcd-v1"
+            ]
+          },
+          "storeId": {
+            "type": "string"
+          },
+          "menus": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "menuId": {
+                  "type": "string"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "POST",
+                    "PUT"
+                  ]
+                },
+                "categories": {
+                  "type": "number"
+                },
+                "products": {
+                  "type": "number"
+                },
+                "modifiers": {
+                  "type": "number"
+                },
+                "options": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "apiMcdProductOutagePayload": {
+        "type": "object",
+        "description": "Payload MCD para marcar productos u opciones como agotados o disponibles.",
+        "additionalProperties": false,
+        "required": [
+          "app_item_ids",
+          "status"
+        ],
+        "properties": {
+          "app_item_ids": {
+            "type": "array",
+            "description": "IDs originales de McDonald’s. Justo los resuelve como {storeId}:{app_item_id}.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "number",
+            "enum": [
+              1,
+              2
+            ],
+            "description": "1 marca los items como disponibles. 2 los marca como agotados indefinidamente."
+          }
+        }
+      },
+      "apiMcdProductOutageAdapterResult": {
+        "type": "object",
+        "description": "Resultado de la actualización de disponibilidad MCD.",
+        "properties": {
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "product-outage-mcd-v1"
+            ]
+          },
+          "storeId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number",
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "outOfStock": {
+            "type": "boolean"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "appItemId": {
+                  "type": "string"
+                },
+                "externalId": {
+                  "type": "string"
+                },
+                "outOfStock": {
+                  "type": "boolean"
+                },
+                "productIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "modifierOptionIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "outOfStockItemIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "appItemId": {
+                  "type": "string"
+                },
+                "externalId": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "apiCategory": {
+        "type": "object",
+        "description": "Categoría de productos.",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "description": "ID Justo de la categoría."
+          },
+          "importId": {
+            "type": "string",
+            "description": "ID de importación de la categoría."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la categoría."
+          },
+          "index": {
+            "type": "number",
+            "description": "Posición de ordenamiento."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo configurado por la marca."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata del item escrita por API v3.",
+            "additionalProperties": true
+          }
+        }
+      },
+      "apiListingProduct": {
+        "type": "object",
+        "description": "Producto del catálogo.",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "ID Justo del producto."
+          },
+          "importId": {
+            "type": "string",
+            "description": "ID de importación del producto."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del producto."
+          },
+          "internalName": {
+            "type": "string",
+            "description": "Nombre interno del producto."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción visible del producto."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL pública del producto."
+          },
+          "partialUrl": {
+            "type": "string",
+            "description": "Path público del producto."
+          },
+          "categoriesNames": {
+            "type": "array",
+            "description": "Nombres de categorías asociadas.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "categoriesIds": {
+            "type": "array",
+            "description": "IDs de categorías asociadas.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "modifiersIds": {
+            "type": "array",
+            "description": "IDs de modificadores asociados.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo configurado por la marca."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata del item escrita por API v3.",
+            "additionalProperties": true
+          },
+          "images": {
+            "type": "array",
+            "description": "URLs de imágenes del producto.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "menus": {
+            "type": "array",
+            "description": "Precio y disponibilidad por precio/menú.",
+            "items": {
+              "type": "object",
+              "description": "Precio y disponibilidad del item para un precio/menú.",
+              "properties": {
+                "menuId": {
+                  "type": "string",
+                  "description": "ID Justo del precio/menú."
+                },
+                "price": {
+                  "type": "number",
+                  "description": "Precio configurado para este precio/menú."
+                },
+                "basePrice": {
+                  "type": "number",
+                  "description": "Precio base configurado para este precio/menú."
+                },
+                "discount": {
+                  "type": "number",
+                  "description": "Descuento principal configurado."
+                },
+                "discounts": {
+                  "type": "array",
+                  "description": "Descuentos configurados.",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "available": {
+                  "type": "boolean",
+                  "description": "Indica si el item está disponible."
+                },
+                "externalId": {
+                  "type": "string",
+                  "description": "ID externo efectivo para este precio/menú, si fue reemplazado."
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "Metadata del precio/disponibilidad escrita por API v3.",
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "apiListingModifier": {
+        "type": "object",
+        "description": "Modificador del catálogo.",
+        "properties": {
+          "modifierId": {
+            "type": "string",
+            "description": "ID Justo del modificador."
+          },
+          "importId": {
+            "type": "string",
+            "description": "ID de importación del modificador."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del modificador."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción del modificador."
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Nombre corto del modificador."
+          },
+          "internalName": {
+            "type": "string",
+            "description": "Nombre interno del modificador."
+          },
+          "min": {
+            "type": "number",
+            "description": "Cantidad mínima de opciones."
+          },
+          "max": {
+            "type": "number",
+            "description": "Cantidad máxima de opciones."
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Indica si el modificador es opcional."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo configurado por la marca."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata del item escrita por API v3.",
+            "additionalProperties": true
+          },
+          "optionIds": {
+            "type": "array",
+            "description": "IDs de opciones asociadas.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "options": {
+            "type": "array",
+            "description": "Opciones asociadas al modificador.",
+            "items": {
+              "$ref": "#/components/schemas/apiModifierOption"
+            }
+          }
+        }
+      },
+      "apiModifierOption": {
+        "type": "object",
+        "description": "Opción de modificador.",
+        "properties": {
+          "optionId": {
+            "type": "string",
+            "description": "ID Justo de la opción."
+          },
+          "importId": {
+            "type": "string",
+            "description": "ID de importación de la opción."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la opción."
+          },
+          "internalName": {
+            "type": "string",
+            "description": "Nombre interno de la opción."
+          },
+          "max": {
+            "type": "number",
+            "description": "Cantidad máxima seleccionable."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo configurado por la marca."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata del item escrita por API v3.",
+            "additionalProperties": true
+          },
+          "menus": {
+            "type": "array",
+            "description": "Precio y disponibilidad por precio/menú.",
+            "items": {
+              "type": "object",
+              "description": "Precio y disponibilidad del item para un precio/menú.",
+              "properties": {
+                "menuId": {
+                  "type": "string",
+                  "description": "ID Justo del precio/menú."
+                },
+                "price": {
+                  "type": "number",
+                  "description": "Precio configurado para este precio/menú."
+                },
+                "basePrice": {
+                  "type": "number",
+                  "description": "Precio base configurado para este precio/menú."
+                },
+                "discount": {
+                  "type": "number",
+                  "description": "Descuento principal configurado."
+                },
+                "discounts": {
+                  "type": "array",
+                  "description": "Descuentos configurados.",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "available": {
+                  "type": "boolean",
+                  "description": "Indica si el item está disponible."
+                },
+                "externalId": {
+                  "type": "string",
+                  "description": "ID externo efectivo para este precio/menú, si fue reemplazado."
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "Metadata del precio/disponibilidad escrita por API v3.",
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "apiPrice": {
+        "type": "object",
+        "description": "Precio/menú interno de Justo.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID Justo del precio."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del precio."
+          },
+          "priority": {
+            "type": "number",
+            "description": "Prioridad de aplicación."
+          },
+          "storesIds": {
+            "type": "array",
+            "description": "Locales asociados.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "channels": {
+            "type": "array",
+            "description": "Canales asociados.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "daysBefore": {
+            "type": "number",
+            "description": "Días de anticipación permitidos."
+          },
+          "schedule": {
+            "type": "object",
+            "description": "Horario de disponibilidad del precio.",
+            "additionalProperties": true
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo configurado por la marca."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata del item escrita por API v3.",
+            "additionalProperties": true
+          }
+        }
+      },
+      "apiMenuV22Payload": {
+        "type": "object",
+        "description": "Payload de menú compatible con API v2.2. Incluye menu, products, options, modifiers y categories. En API v3 los objetos menu, products, options, modifiers y categories aceptan metadata. Products y options aceptan priceMetadata para guardar metadata del precio/disponibilidad del menú.",
+        "additionalProperties": true
+      },
+      "apiMenuV22MutationResult": {
+        "type": "object",
+        "description": "Resultado de una escritura de menú compatible con API v2.2.",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "Errores no bloqueantes encontrados al procesar productos u opciones.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "apiOrder": {
+        "type": "object",
+        "description": "Pedido de ecommerce.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del pedido.",
+            "example": "ord-123"
+          },
+          "orderStatus": {
+            "type": "string",
+            "description": "Estado operacional del pedido.",
+            "enum": [
+              "pending",
+              "waiting",
+              "preparing",
+              "delivering",
+              "done",
+              "cancelled"
+            ]
+          },
+          "paymentStatus": {
+            "type": "string",
+            "description": "Estado del pago del pedido.",
+            "enum": [
+              "pending",
+              "done",
+              "error",
+              "blocked",
+              "inReview",
+              "waitingForAdditionalPayment"
+            ]
+          },
+          "isScheduled": {
+            "type": "boolean",
+            "description": "Indica si el pedido es programado."
+          },
+          "isConfirmed": {
+            "type": "boolean",
+            "description": "Indica si el pedido programado fue confirmado."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local."
+          },
+          "code": {
+            "type": "string",
+            "description": "Código único del pedido en Justo.",
+            "example": "123"
+          },
+          "fullCode": {
+            "type": "string",
+            "description": "Código del pedido con el correlativo diario de la marca.",
+            "example": "C#123"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID del usuario que creó el pedido."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del pedido."
+          },
+          "address": {
+            "$ref": "#/components/schemas/apiOrderAddress"
+          },
+          "menuId": {
+            "type": "string",
+            "description": "ID del menú desde el que se creó el pedido."
+          },
+          "deliveryType": {
+            "type": "string",
+            "description": "Tipo de entrega del pedido.",
+            "enum": [
+              "delivery",
+              "go",
+              "serve"
+            ]
+          },
+          "deliverAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que el pedido debe ser entregado o retirado."
+          },
+          "timeText": {
+            "type": "string",
+            "description": "Texto legible con la ventana estimada de entrega."
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "Medio de pago seleccionado."
+          },
+          "paymentTypeLabel": {
+            "type": "string",
+            "description": "Nombre legible del medio de pago."
+          },
+          "paymentTypeIsIntegration": {
+            "type": "boolean",
+            "description": "Indica si el medio de pago viene de una integración."
+          },
+          "tipAmount": {
+            "type": "number",
+            "description": "Monto de propina."
+          },
+          "amountToPay": {
+            "type": "number",
+            "description": "Monto total a pagar por el cliente, incluyendo propina."
+          },
+          "deliveryFee": {
+            "type": "number",
+            "description": "Precio del despacho cobrado al cliente."
+          },
+          "serviceFee": {
+            "type": "number",
+            "description": "Cargo de servicio cobrado al cliente."
+          },
+          "itemsPrice": {
+            "type": "number",
+            "description": "Precio de los productos, sin propina ni despacho."
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Monto del pedido sin propina."
+          },
+          "totalDiscount": {
+            "type": "number",
+            "description": "Monto total descontado del pedido."
+          },
+          "expectedPreparationDuration": {
+            "type": "number",
+            "description": "Tiempo estimado de preparación en minutos."
+          },
+          "deliveryDuration": {
+            "type": "number",
+            "description": "Tiempo estimado de despacho en minutos."
+          },
+          "cashAmount": {
+            "type": "number",
+            "description": "Monto que el cliente declara pagar si el medio de pago es efectivo."
+          },
+          "source": {
+            "type": "string",
+            "description": "Origen del pedido."
+          },
+          "buyerName": {
+            "type": "string",
+            "description": "Nombre del cliente."
+          },
+          "phone": {
+            "type": "string",
+            "description": "Teléfono del cliente."
+          },
+          "email": {
+            "type": "string",
+            "description": "Email del cliente."
+          },
+          "couponId": {
+            "type": "string",
+            "description": "ID del cupón usado."
+          },
+          "couponName": {
+            "type": "string",
+            "description": "Nombre del cupón usado."
+          },
+          "couponCode": {
+            "type": "string",
+            "description": "Código del cupón usado."
+          },
+          "couponDiscount": {
+            "type": "number",
+            "description": "Monto descontado por cupón."
+          },
+          "flagColor": {
+            "type": "string",
+            "description": "Color de la bandera del pedido en POS."
+          },
+          "items": {
+            "type": "array",
+            "description": "Detalle de los productos vendidos en el pedido.",
+            "items": {
+              "$ref": "#/components/schemas/apiOrderItem"
+            }
+          },
+          "transaction": {
+            "$ref": "#/components/schemas/apiOrderTransaction"
+          },
+          "deliveries": {
+            "type": "array",
+            "description": "Despachos asociados al pedido.",
+            "items": {
+              "$ref": "#/components/schemas/apiOrderDelivery"
+            }
+          },
+          "orderParams": {
+            "type": "object",
+            "description": "Parámetros adicionales del pedido.",
+            "additionalProperties": true
+          },
+          "hasManagedDelivery": {
+            "type": "boolean",
+            "description": "Indica si el despacho es gestionado por Justo."
+          },
+          "gift": {
+            "type": "object",
+            "description": "Información de regalo, si el pedido fue marcado como regalo.",
+            "additionalProperties": true
+          },
+          "billing": {
+            "type": "object",
+            "description": "Información de facturación del cliente.",
+            "additionalProperties": true
+          },
+          "cancellationInfo": {
+            "type": "object",
+            "description": "Información de cancelación del pedido.",
+            "additionalProperties": true
+          },
+          "deliveryZoneName": {
+            "type": "string",
+            "description": "Nombre de la zona de despacho aplicada al pedido."
+          }
+        }
+      },
+      "apiOrderAddress": {
+        "type": "object",
+        "description": "Dirección de entrega del pedido.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la dirección."
+          },
+          "placeId": {
+            "type": "string",
+            "description": "ID del lugar asociado a la dirección."
+          },
+          "address": {
+            "type": "string",
+            "description": "Dirección principal en formato legacy.",
+            "example": "Av. Apoquindo 3000"
+          },
+          "addressLine2": {
+            "type": "string",
+            "description": "Departamento, oficina u otra información complementaria.",
+            "example": "Depto 1201"
+          },
+          "addressSecondary": {
+            "type": "string",
+            "description": "Comuna, ciudad o referencia secundaria de la dirección."
+          },
+          "location": {
+            "type": "object",
+            "description": "Coordenadas geográficas.",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud.",
+                "example": -33.4489
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud.",
+                "example": -70.6693
+              }
+            }
+          }
+        }
+      },
+      "apiOrderDelivery": {
+        "type": "object",
+        "description": "Información de un despacho asociado al pedido.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del despacho."
+          },
+          "price": {
+            "type": "number",
+            "description": "Precio del despacho.",
+            "example": 2500
+          },
+          "status": {
+            "type": "string",
+            "description": "Estado del despacho.",
+            "enum": [
+              "active",
+              "canceled",
+              "cancelled",
+              "done",
+              "error",
+              "pending",
+              "scheduled",
+              "delivering",
+              "waiting",
+              "unconfirmed"
+            ]
+          },
+          "placeName": {
+            "type": "string",
+            "description": "Nombre del lugar de destino."
+          },
+          "isCash": {
+            "type": "boolean",
+            "description": "Indica si el despacho se paga en efectivo."
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Instrucciones para el despacho."
+          },
+          "fromLocation": {
+            "type": "object",
+            "description": "Coordenadas geográficas.",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud.",
+                "example": -33.4489
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud.",
+                "example": -70.6693
+              }
+            }
+          },
+          "toLocation": {
+            "type": "object",
+            "description": "Coordenadas geográficas.",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud.",
+                "example": -33.4489
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud.",
+                "example": -70.6693
+              }
+            }
+          },
+          "trackingURL": {
+            "type": "string",
+            "description": "URL de seguimiento del despacho."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "ID del pedido asociado al despacho."
+          },
+          "activatesAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que se activa el despacho."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación del despacho."
+          },
+          "forDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha objetivo del despacho."
+          },
+          "pickupAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de retiro del pedido."
+          },
+          "completedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que se completó el despacho."
+          },
+          "canceledAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de cancelación del despacho."
+          },
+          "deliveryExpectedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha estimada de entrega."
+          },
+          "driverReceivedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que el driver recibió el pedido, si aplica."
+          },
+          "driverInformation": {
+            "type": "object",
+            "description": "Información del driver asignado, si está disponible.",
+            "additionalProperties": true
+          },
+          "deliveryInformation": {
+            "type": "object",
+            "description": "Información adicional del despacho, si está disponible.",
+            "additionalProperties": true
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo del despacho, si existe."
+          },
+          "specialCode": {
+            "type": "string",
+            "description": "Código externo o especial del despacho, si existe."
+          }
+        }
+      },
+      "apiOrderDeliveryUpdatedWebhookData": {
+        "type": "object",
+        "description": "Datos del webhook de actualización de despacho de pedido.",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/apiOrder"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/apiOrderDelivery"
+          }
+        }
+      },
+      "apiOrderItem": {
+        "type": "object",
+        "description": "Producto vendido dentro del pedido.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del item del pedido."
+          },
+          "product": {
+            "type": "object",
+            "description": "Producto asociado al item.",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "ID Justo del producto."
+              },
+              "name": {
+                "type": "string",
+                "description": "Nombre del producto.",
+                "example": "Hamburguesa"
+              },
+              "externalId": {
+                "type": "string",
+                "description": "ID externo del producto configurado por la marca."
+              },
+              "metadata": {
+                "type": "object",
+                "description": "Metadata del producto escrita por API v3.",
+                "additionalProperties": true
+              },
+              "priceMetadata": {
+                "type": "object",
+                "description": "Metadata del precio/disponibilidad escrita por API v3.",
+                "additionalProperties": true
+              }
+            }
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Precio unitario con descuento, sin incluir descuento de cupón.",
+            "example": 5990
+          },
+          "baseUnitPrice": {
+            "type": "number",
+            "description": "Precio unitario original antes de descuentos.",
+            "example": 5990
+          },
+          "productPrice": {
+            "type": "number",
+            "description": "Precio del producto con descuento.",
+            "example": 5990
+          },
+          "baseProductPrice": {
+            "type": "number",
+            "description": "Precio original del producto antes de descuentos.",
+            "example": 5990
+          },
+          "amount": {
+            "type": "number",
+            "description": "Cantidad de este producto en el pedido.",
+            "example": 2
+          },
+          "comment": {
+            "type": "string",
+            "description": "Instrucciones adicionales para este producto."
+          },
+          "description": {
+            "type": "string",
+            "description": "Resumen en texto de los modificadores e instrucciones del item.",
+            "example": "Bebida: Coca Zero - Comentario: \"Sin cebolla\""
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "ID de la promoción aplicada al item."
+          },
+          "promotionDiscount": {
+            "type": "number",
+            "description": "Monto descontado por promoción en el item."
+          },
+          "promotionType": {
+            "type": "string",
+            "description": "Tipo de promoción aplicada al item."
+          },
+          "promotionLabel": {
+            "type": "string",
+            "description": "Etiqueta visible de la promoción aplicada al item."
+          },
+          "modifiers": {
+            "type": "array",
+            "description": "Modificadores seleccionados para el item.",
+            "items": {
+              "$ref": "#/components/schemas/apiOrderItemModifier"
+            }
+          }
+        }
+      },
+      "apiOrderItemModifier": {
+        "type": "object",
+        "description": "Modificador seleccionado para un item del pedido.",
+        "properties": {
+          "modifierId": {
+            "type": "string",
+            "description": "ID Justo del modificador."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo del modificador configurado por la marca."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del modificador.",
+            "example": "Agregados"
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Nombre corto del modificador."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata del modificador escrita por API v3.",
+            "additionalProperties": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Resumen en texto de las opciones seleccionadas."
+          },
+          "countById": {
+            "type": "object",
+            "description": "Cantidad seleccionada por ID Justo de opción.",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "countByExternalId": {
+            "type": "object",
+            "description": "Cantidad seleccionada por ID externo de opción.",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "options": {
+            "type": "array",
+            "description": "Opciones seleccionadas para este modificador.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "optionId": {
+                  "type": "string",
+                  "description": "ID Justo de la opción."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nombre de la opción.",
+                  "example": "Queso"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "Precio pagado por la opción.",
+                  "example": 1000
+                },
+                "externalId": {
+                  "type": "string",
+                  "description": "ID externo de la opción configurado por la marca."
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "Metadata de la opción escrita por API v3.",
+                  "additionalProperties": true
+                },
+                "priceMetadata": {
+                  "type": "object",
+                  "description": "Metadata del precio/disponibilidad escrita por API v3.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "apiOrderStatusUpdatedWebhookData": {
+        "type": "object",
+        "description": "Datos del webhook de cambio de estado de pedido.",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/apiOrder"
+          },
+          "previousOrderStatus": {
+            "type": "string",
+            "description": "Estado anterior del pedido.",
+            "enum": [
+              "pending",
+              "waiting",
+              "preparing",
+              "delivering",
+              "done",
+              "cancelled"
+            ]
+          },
+          "newOrderStatus": {
+            "type": "string",
+            "description": "Nuevo estado del pedido.",
+            "enum": [
+              "pending",
+              "waiting",
+              "preparing",
+              "delivering",
+              "done",
+              "cancelled"
+            ]
+          }
+        }
+      },
+      "apiOrderTransaction": {
+        "type": "object",
+        "description": "Transacción de pago asociada al pedido.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la transacción."
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Monto total de la transacción."
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "Medio de pago usado en la transacción."
+          },
+          "cardType": {
+            "type": "string",
+            "description": "Tipo de tarjeta usada, si aplica."
+          },
+          "cardLast4": {
+            "type": "string",
+            "description": "Últimos cuatro dígitos de la tarjeta, si aplica."
+          },
+          "status": {
+            "type": "string",
+            "description": "Estado de la transacción."
+          }
+        }
+      },
+      "apiProductOutOfStock": {
+        "type": "object",
+        "description": "Estado de disponibilidad de un producto en un local.",
+        "properties": {
+          "storeId": {
+            "type": "string",
+            "description": "ID Justo del local."
+          },
+          "productId": {
+            "type": "string",
+            "description": "ID Justo del producto."
+          },
+          "productExternalId": {
+            "type": "string",
+            "description": "ID externo del producto configurado por la marca."
+          },
+          "outOfStock": {
+            "type": "boolean",
+            "description": "Indica si el producto quedó marcado como agotado en el local."
+          },
+          "outOfStockItemId": {
+            "type": "string",
+            "description": "ID del registro de producto agotado creado por Justo."
+          },
+          "until": {
+            "type": "string",
+            "enum": [
+              "none",
+              "tomorrow"
+            ],
+            "description": "Duración predefinida del bloqueo de stock."
+          },
+          "untilDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha hasta la que el producto permanecerá agotado."
+          },
+          "stock": {
+            "type": "number",
+            "description": "Stock disponible configurado para el producto."
+          }
+        }
+      },
+      "apiStore": {
+        "type": "object",
+        "description": "Local de una marca.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID Justo del local."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca a la que pertenece el local."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del local.",
+            "example": "Providencia"
+          },
+          "acceptDelivery": {
+            "type": "boolean",
+            "description": "Indica si el local acepta pedidos con despacho."
+          },
+          "acceptServe": {
+            "type": "boolean",
+            "description": "Indica si el local acepta pedidos para servir en mesa."
+          },
+          "acceptGo": {
+            "type": "boolean",
+            "description": "Indica si el local acepta pedidos para retiro."
+          },
+          "currentPreparationDuration": {
+            "type": "number",
+            "description": "Tiempo actual de preparación en minutos."
+          },
+          "currentDeliveryDuration": {
+            "type": "number",
+            "description": "Tiempo actual estimado de despacho en minutos."
+          },
+          "phone": {
+            "type": "string",
+            "description": "Teléfono del local."
+          },
+          "address": {
+            "$ref": "#/components/schemas/apiStoreAddress"
+          },
+          "externalId": {
+            "type": "string",
+            "description": "ID externo del local configurado por la marca."
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/apiStoreSchedule"
+          }
+        }
+      },
+      "apiStoreAddress": {
+        "type": "object",
+        "description": "Dirección del local.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la dirección."
+          },
+          "placeId": {
+            "type": "string",
+            "description": "ID del lugar asociado a la dirección."
+          },
+          "address": {
+            "type": "string",
+            "description": "Dirección principal en formato legacy.",
+            "example": "Av. Apoquindo 3000"
+          },
+          "addressLine2": {
+            "type": "string",
+            "description": "Departamento, oficina u otra información complementaria."
+          },
+          "addressSecondary": {
+            "type": "string",
+            "description": "Comuna, ciudad o referencia secundaria de la dirección."
+          },
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y número normalizados."
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Información complementaria normalizada."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Comuna o localidad."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Código postal."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2."
+          },
+          "countryName": {
+            "type": "string",
+            "description": "Nombre del país."
+          },
+          "location": {
+            "type": "object",
+            "description": "Coordenadas geográficas del local.",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud.",
+                "example": -33.4489
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud.",
+                "example": -70.6693
+              }
+            }
+          }
+        }
+      },
+      "apiStoreSchedule": {
+        "type": "object",
+        "description": "Horario de atención del local.",
+        "properties": {
+          "closedUntilDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha hasta la que el local está cerrado temporalmente. Si es null, no hay cierre temporal activo."
+          },
+          "openPeriods": {
+            "type": "array",
+            "description": "Bloques horarios en que el local atiende.",
+            "items": {
+              "$ref": "#/components/schemas/apiStoreSchedulePeriod"
+            }
+          },
+          "closedDays": {
+            "type": "array",
+            "description": "Días completos en que el local está cerrado.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "apiStoreSchedulePeriod": {
+        "type": "object",
+        "description": "Bloque horario de atención del local.",
+        "properties": {
+          "daysOfWeek": {
+            "type": "array",
+            "description": "Días de la semana en que aplica el bloque horario.",
+            "items": {
+              "type": "number"
+            }
+          },
+          "fromMinute": {
+            "type": "number",
+            "description": "Minuto del día en que comienza el bloque."
+          },
+          "toMinute": {
+            "type": "number",
+            "description": "Minuto del día en que termina el bloque."
           }
         }
       },
