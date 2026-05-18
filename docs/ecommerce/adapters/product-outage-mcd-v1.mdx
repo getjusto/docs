@@ -26,49 +26,9 @@ Content-Type: application/json
 
 El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. No envíes `auth_token` en el body.
 
-## Identificación
-
-Justo resuelve cada item concatenando el local con el identificador original:
-
-```txt
-{storeId}:{app_item_id}
-```
-
-Ese `externalId` permite agotar o liberar productos y opciones sin mezclar datos entre locales. Si el identificador original contiene `:`, se conserva completo; Justo separa el local usando solo el primer `:` del `externalId`.
-
-Los campos originales que McDonald's necesita para trazabilidad quedan guardados en `metadata` durante la importación de menú. El adapter de agotados usa esos `externalId` ya creados para ubicar productos u opciones.
-
-## Flujo de integración
-
-```mermaid
-flowchart LR
-  OutageFile["Outage McDonald's\napp_item_ids + status"] --> Adapter["Adapter\nproduct-outage-mcd-v1"]
-  Store["storeId de la URL"] --> ExternalId["externalId\n{storeId}:{app_item_id}"]
-  Adapter --> ExternalId
-  ExternalId --> Lookup["Buscar entidades Justo\npor externalId"]
-  Lookup --> Product["Producto"]
-  Lookup --> Option["Opción de modificador"]
-  Product --> OOS["Out of stock\nindefinido"]
-  Option --> OOS
-  OOS --> Response["Respuesta por item\nprocesados y errores parciales"]
-  Metadata["metadata creada por\nmenu-put-mcd-v1"] --> Lookup
-```
-
-### Criterios de transformación
-
-| Caso McDonald's | Qué hace Justo |
-| --- | --- |
-| El agotado viene por local. | El `storeId` de la URL se usa para resolver cada item como `{storeId}:{app_item_id}`. |
-| El mismo `app_item_id` puede existir en otro local. | Solo se modifica el producto u opción cuyo `externalId` empieza con el `storeId` recibido. |
-| El `app_item_id` puede contener `:`. | Justo separa usando solo el primer `:` del `externalId`; el ID original se mantiene completo. |
-| McDonald's manda opciones como si fueran productos. | El adapter busca tanto productos como opciones de modificador con el mismo `externalId`. |
-| `status: 2` significa agotado temporal, pero sin fecha final. | Justo crea un agotado indefinido. |
-| Pueden venir varios items en el mismo payload. | Se procesan todos; si alguno no existe, queda en `errors` y los demás siguen. |
-
 ## Comportamiento
 
 - El cambio aplica solo al local indicado en `{storeId}`.
-- Cada item se resuelve como `externalId = {storeId}:{app_item_id}`.
 - `status: 2` marca los items como agotados indefinidamente.
 - `status: 1` marca los items como disponibles y elimina el agotado temporal.
 - La operación acepta múltiples items en una sola llamada.
@@ -149,3 +109,46 @@ Si un item no existe en Justo, se reporta en `errors`:
 ```
 
 Los errores parciales no detienen la operación completa. Los demás items válidos se procesan normalmente.
+
+## Detalles internos de integración
+
+Esta sección describe cómo Justo ubica productos y opciones del menú importado.
+
+### Identificación
+
+Justo resuelve cada item concatenando el local con el identificador original:
+
+```txt
+{storeId}:{app_item_id}
+```
+
+Ese `externalId` permite agotar o liberar productos y opciones sin mezclar datos entre locales. Si el identificador original contiene `:`, se conserva completo; Justo separa el local usando solo el primer `:` del `externalId`.
+
+Los campos originales que McDonald's necesita para trazabilidad quedan guardados en `metadata` durante la importación de menú. El adapter de agotados usa esos `externalId` ya creados para ubicar productos u opciones.
+
+### Flujo de integración
+
+```mermaid
+flowchart LR
+  OutageFile["Outage McDonald's\napp_item_ids + status"] --> Adapter["Adapter\nproduct-outage-mcd-v1"]
+  Store["storeId de la URL"] --> ExternalId["externalId\n{storeId}:{app_item_id}"]
+  Adapter --> ExternalId
+  ExternalId --> Lookup["Buscar entidades Justo\npor externalId"]
+  Lookup --> Product["Producto"]
+  Lookup --> Option["Opción de modificador"]
+  Product --> OOS["Out of stock\nindefinido"]
+  Option --> OOS
+  OOS --> Response["Respuesta por item\nprocesados y errores parciales"]
+  Metadata["metadata creada por\nmenu-put-mcd-v1"] --> Lookup
+```
+
+### Criterios de transformación
+
+| Caso McDonald's | Qué hace Justo |
+| --- | --- |
+| El agotado viene por local. | El `storeId` de la URL se usa para resolver cada item como `{storeId}:{app_item_id}`. |
+| El mismo `app_item_id` puede existir en otro local. | Solo se modifica el producto u opción cuyo `externalId` empieza con el `storeId` recibido. |
+| El `app_item_id` puede contener `:`. | Justo separa usando solo el primer `:` del `externalId`; el ID original se mantiene completo. |
+| McDonald's manda opciones como si fueran productos. | El adapter busca tanto productos como opciones de modificador con el mismo `externalId`. |
+| `status: 2` significa agotado temporal, pero sin fecha final. | Justo crea un agotado indefinido. |
+| Pueden venir varios items en el mismo payload. | Se procesan todos; si alguno no existe, queda en `errors` y los demás siguen. |

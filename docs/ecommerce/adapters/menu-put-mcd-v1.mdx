@@ -26,61 +26,14 @@ Content-Type: application/json
 
 El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. No envíes `auth_token` en el body.
 
-## Identificación
-
-Justo identifica las entidades de McDonald's concatenando el local con el identificador original:
-
-```txt
-{storeId}:{id_original_mcdonalds}
-```
-
-Ese `externalId` se usa para crear, actualizar o eliminar items sin mezclar datos entre locales. Si el identificador original contiene `:`, se conserva completo; Justo separa el local usando solo el primer `:` del `externalId`.
-
-Los campos originales que McDonald's necesita para trazabilidad quedan guardados en `metadata` sin el prefijo del local.
-
-```json
-{
-  "adapter": "mcd",
-  "type": "item",
-  "id": "CHO-26915-42065"
-}
-```
-
-## Flujo de integración
-
-```mermaid
-flowchart LR
-  McD["McDonald's\nMenú por local"] --> Adapter["Adapter\nmenu-put-mcd-v1"]
-  Store["storeId de la URL"] --> ExternalId["externalId\n{storeId}:{id_original}"]
-  Adapter --> ExternalId
-  ExternalId --> Menu["Menús y categorías\npor local"]
-  ExternalId --> Products["Productos\nvendidos separadamente"]
-  ExternalId --> Modifiers["Modificadores\ny opciones"]
-  Adapter --> Metadata["metadata\nIDs originales McDonald's"]
-  Metadata --> Webhooks["Webhooks y lecturas API\ncon trazabilidad externa"]
-  Products --> Outage["Adapter agotados\nproduct-outage-mcd-v1"]
-  Modifiers --> Outage
-```
-
-### Criterios de transformación
-
-| Caso McDonald's | Qué hace Justo |
-| --- | --- |
-| El catálogo viene por local, pero Justo normalmente modela menú por marca. | El adapter antepone `{storeId}:` a cada identificador y crea entidades independientes por local. |
-| Los SKUs pueden repetirse entre locales. | El `externalId` queda como `{storeId}:{id_original}`, evitando colisiones entre locales. |
-| El identificador original puede contener `:`. | Justo separa usando solo el primer `:`; el resto queda como parte del ID original. |
-| McDonald's necesita conservar sus IDs originales. | El `externalId` se usa para operar; el ID original sin prefijo queda en `metadata.id`. |
-| Las opciones de modificador vienen dentro de `items`. | El adapter detecta si el item es producto visible u opción de modificador según su uso en categorías y modifier groups. |
-| Hay cargas incrementales por local. | Los productos u opciones ausentes se eliminan solo dentro del menú/local importado, no en otros locales. |
-
 ## Comportamiento
 
-- Cada local tiene su propio menú: `{storeId}:{app_menu_id}`.
-- Menús, productos, categorías, modificadores y opciones se identifican usando `externalId` con prefijo `{storeId}:`.
-- Los identificadores originales de McDonald's quedan guardados sin prefijo dentro de `metadata`.
+- La llamada carga el menú completo de McDonald's para el local indicado en `{storeId}`.
+- Cada local mantiene su propio menú, productos, categorías, modificadores y opciones.
 - Si un producto u opción deja de venir en el payload, se elimina solo para el menú/local importado.
-- Las categorías quedan por local y se actualizan por `externalId`.
-- Los modifier options del catálogo McDonald's se reciben como `items` y el adapter los transforma a opciones de modificadores Justo.
+- Las categorías se mantienen separadas por local.
+- Los items vendidos separadamente se publican como productos.
+- Los items usados dentro de grupos de modificadores se publican como opciones de modificador.
 
 ## Campos raíz
 
@@ -161,7 +114,68 @@ flowchart LR
 | --- | --- | --- | --- |
 | `disable_item_instructions` | `boolean` | No | Opción visual del origen. Actualmente se acepta pero no cambia el menú Justo. |
 
-## Transformación del menú
+## Ejemplo
+
+```bash
+curl -X PUT \
+  "https://api.service.getjusto.com/v3/adapters/menu-put-mcd-v1/stores/{storeId}" \
+  -H "Authorization: Bearer <API_KEY>" \
+  -H "Content-Type: application/json" \
+  --data-binary @catalogo-local.json
+```
+
+## Detalles internos de integración
+
+Esta sección describe cómo Justo mantiene la trazabilidad y la separación de datos por local.
+
+### Identificación
+
+Justo identifica las entidades de McDonald's concatenando el local con el identificador original:
+
+```txt
+{storeId}:{id_original_mcdonalds}
+```
+
+Ese `externalId` se usa para crear, actualizar o eliminar items sin mezclar datos entre locales. Si el identificador original contiene `:`, se conserva completo; Justo separa el local usando solo el primer `:` del `externalId`.
+
+Los campos originales que McDonald's necesita para trazabilidad quedan guardados en `metadata` sin el prefijo del local.
+
+```json
+{
+  "adapter": "mcd",
+  "type": "item",
+  "id": "CHO-26915-42065"
+}
+```
+
+### Flujo de integración
+
+```mermaid
+flowchart LR
+  McD["McDonald's\nMenú por local"] --> Adapter["Adapter\nmenu-put-mcd-v1"]
+  Store["storeId de la URL"] --> ExternalId["externalId\n{storeId}:{id_original}"]
+  Adapter --> ExternalId
+  ExternalId --> Menu["Menús y categorías\npor local"]
+  ExternalId --> Products["Productos\nvendidos separadamente"]
+  ExternalId --> Modifiers["Modificadores\ny opciones"]
+  Adapter --> Metadata["metadata\nIDs originales McDonald's"]
+  Metadata --> Webhooks["Webhooks y lecturas API\ncon trazabilidad externa"]
+  Products --> Outage["Adapter agotados\nproduct-outage-mcd-v1"]
+  Modifiers --> Outage
+```
+
+### Criterios de transformación
+
+| Caso McDonald's | Qué hace Justo |
+| --- | --- |
+| El catálogo viene por local, pero Justo normalmente modela menú por marca. | El adapter antepone `{storeId}:` a cada identificador y crea entidades independientes por local. |
+| Los SKUs pueden repetirse entre locales. | El `externalId` queda como `{storeId}:{id_original}`, evitando colisiones entre locales. |
+| El identificador original puede contener `:`. | Justo separa usando solo el primer `:`; el resto queda como parte del ID original. |
+| McDonald's necesita conservar sus IDs originales. | El `externalId` se usa para operar; el ID original sin prefijo queda en `metadata.id`. |
+| Las opciones de modificador vienen dentro de `items`. | El adapter detecta si el item es producto visible u opción de modificador según su uso en categorías y modifier groups. |
+| Hay cargas incrementales por local. | Los productos u opciones ausentes se eliminan solo dentro del menú/local importado, no en otros locales. |
+
+### Transformación del menú
 
 | Origen McDonald's | Destino Justo |
 | --- | --- |
@@ -184,13 +198,3 @@ flowchart LR
 | `modifier_groups[].app_modifier_group_id` | `modifier.externalId = {storeId}:{app_modifier_group_id}` |
 | `modifier_groups[].app_modifier_group_id` | `modifier.metadata = {adapter: "mcd", type: "modifier_group", id: app_modifier_group_id}` |
 | `modifier_groups[].app_mg_items[].app_item_id` | Opciones del modificador |
-
-## Ejemplo
-
-```bash
-curl -X PUT \
-  "https://api.service.getjusto.com/v3/adapters/menu-put-mcd-v1/stores/{storeId}" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  --data-binary @catalogo-local.json
-```
