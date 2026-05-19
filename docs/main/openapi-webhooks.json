@@ -3343,9 +3343,10 @@
               "pending",
               "generated",
               "error",
-              "voided"
+              "voided",
+              "generating"
             ],
-            "description": "El estado de la factura. Valores posibles: 'pending', 'generated', 'error', 'voided'."
+            "description": "El estado de la factura. Valores posibles: 'pending', 'generated', 'error', 'voided', 'generating'."
           },
           "externalInvoiceId": {
             "type": "string",
@@ -5112,6 +5113,12 @@
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
             "description": "Fecha estimada de entrega."
+          },
+          "estimatedArrivalAtStoreAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha estimada de llegada del driver al local."
           },
           "driverReceivedAt": {
             "type": "string",

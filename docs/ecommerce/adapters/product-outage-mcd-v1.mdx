@@ -124,7 +124,7 @@ Justo resuelve cada item concatenando el local con el identificador original:
 
 Ese `externalId` permite agotar o liberar productos y opciones sin mezclar datos entre locales. Si el identificador original contiene `:`, se conserva completo; Justo separa el local usando solo el primer `:` del `externalId`.
 
-Los campos originales que McDonald's necesita para trazabilidad quedan guardados en `metadata` durante la importación de menú. El adapter de agotados usa esos `externalId` ya creados para ubicar productos u opciones.
+Los campos originales que McDonald's necesita para trazabilidad quedan guardados en `metadata` durante la importación de menú, junto con el `storeId` de Justo. El adapter de agotados usa esos `externalId` ya creados para ubicar productos u opciones.
 
 ### Flujo de integración
 
