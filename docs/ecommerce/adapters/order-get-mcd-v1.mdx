@@ -1,0 +1,158 @@
+---
+title: Consultar orden McDonald's
+description: "Adapter privado para ver una orden ecommerce en formato McDonald's"
+openapi: get /adapters/order-get-mcd-v1/orders/{orderId}
+noindex: true
+---
+
+<Warning>
+  Esta página no está listada en la navegación pública. Úsala solo para la integración McDonald's.
+</Warning>
+
+## Endpoint
+
+```http
+GET /v3/adapters/order-get-mcd-v1/orders/{orderId}
+```
+
+## Autenticación
+
+Envía el API key como bearer token.
+
+```http
+Authorization: Bearer <API_KEY>
+```
+
+El API key debe tener permisos `admin`, pertenecer a la misma marca del pedido y tener acceso al local del pedido.
+
+## Comportamiento
+
+- La llamada obtiene una orden ecommerce de Justo y la devuelve en el formato de evento `orderNew` solicitado por McDonald's.
+- Los identificadores de orden se envían como string.
+- `app_id` se envía vacío porque Justo no lo tiene como dato propio de la orden.
+- `app_shop_id` se envía como el `storeId` de Justo.
+- Los productos y opciones usan el ID original McDonald's guardado en `metadata.id` por `menu-put-mcd-v1`. Si no existe, Justo usa el `externalId` sin el prefijo `{storeId}:`.
+- Los montos se devuelven con la misma unidad entera que expone Justo para la orden.
+
+## Ejemplo
+
+```bash
+curl -X GET \
+  "https://api.service.getjusto.com/v3/adapters/order-get-mcd-v1/orders/{orderId}" \
+  -H "Authorization: Bearer <API_KEY>"
+```
+
+## Respuesta
+
+```json
+{
+  "success": true,
+  "data": {
+    "app_id": "",
+    "app_shop_id": "CRR",
+    "type": "orderNew",
+    "timestamp": 1778788575,
+    "data": {
+      "order_id": "500000000000000",
+      "order_info": {
+        "order_id": "500000000000000",
+        "status": 100,
+        "order_index": 12,
+        "order_channel": "Food",
+        "remark": "",
+        "country": "PE",
+        "city_id": 0,
+        "timezone": "America/Santiago",
+        "pay_type": 1,
+        "pay_method": 1,
+        "pay_channel": 150,
+        "delivery_type": 1,
+        "delivery_eta": 0,
+        "expected_cook_eta": 1778789475,
+        "expected_arrived_eta": 1778790463,
+        "create_time": 1778788575,
+        "pay_time": 1778788575,
+        "complete_time": 0,
+        "cancel_time": 0,
+        "shop_confirm_time": 0,
+        "c_cancel_preference": 7,
+        "price": {
+          "order_price": 6660,
+          "items_discount": 4070,
+          "delivery_discount": 0,
+          "others_fees": {
+            "service_price": 208
+          },
+          "shop_paid_money": 0,
+          "refund_price": 0,
+          "store_charged_delivery_price": 330
+        },
+        "shop": {
+          "shop_id": "CRR",
+          "app_shop_id": "CRR",
+          "shop_addr": "Chorrillos 15064",
+          "shop_name": "McDonald's - Chorrillos",
+          "shop_phone": [
+            {
+              "calling_code": 0,
+              "phone": "976645546",
+              "type": "1"
+            }
+          ]
+        },
+        "receive_address": {
+          "uid": "user-id",
+          "name": "Cliente Perez",
+          "first_name": "Cliente",
+          "last_name": "Perez",
+          "calling_code": "",
+          "phone": "+51000000000",
+          "city": "Lima",
+          "country_code": "PE",
+          "poi_address": "Av. Ejemplo 123",
+          "house_number": "Depto 1",
+          "poi_lat": -13,
+          "poi_lng": -78,
+          "coordinate_type": "wgs84",
+          "poi_display_name": "Av. Ejemplo 123"
+        },
+        "order_items": [],
+        "promotions": [],
+        "fulfillment_mode": 0
+      }
+    }
+  }
+}
+```
+
+## Mapeo inicial
+
+| Campo MCD | Fuente Justo |
+| --- | --- |
+| `app_id` | Vacío. Justo no lo tiene como dato de la orden. |
+| `app_shop_id` | `order.storeId` |
+| `data.order_id` | `order._id` como string |
+| `order_info.order_id` | `order._id` como string |
+| `order_info.order_index` | `order.code` convertido a número cuando aplica |
+| `order_info.expected_arrived_eta` | `order.deliverAt` en Unix timestamp segundos |
+| `order_info.expected_cook_eta` | `order.createdAt + expectedPreparationDuration` |
+| `order_info.price.order_price` | `order.totalPrice` |
+| `order_info.price.items_discount` | `order.totalDiscount` |
+| `order_info.price.others_fees.service_price` | `order.serviceFee` |
+| `order_info.price.store_charged_delivery_price` | `order.deliveryFee` |
+| `order_items[].app_item_id` | `product.metadata.id` o `product.externalId` sin `{storeId}:` |
+| `order_items[].sub_item_list[].app_item_id` | `modifierOption.metadata.id` o `modifierOption.externalId` sin `{storeId}:` |
+
+## Códigos pendientes por confirmar
+
+Este adapter incluye un mapeo inicial para poder validar el formato con McDonald's, pero los códigos numéricos deben confirmarse con MDC antes de considerarlos definitivos.
+
+| Campo | Mapeo inicial |
+| --- | --- |
+| `status` | `pending = 100`, `waiting = 200`, `preparing = 300`, `delivering = 400`, `done = 600`, `cancelled = 900` |
+| `pay_type` / `pay_method` | `cash = 2`, otros medios de pago = `1` |
+| `pay_channel` | `cash = 0`, otros medios de pago = `150` |
+| `delivery_type` | `delivery = 1`, `go = 2`, `serve = 3` |
+| `promo_type` | Descuentos de producto u orden = `2` |
+| `c_cancel_preference` | `7` |
+| `fulfillment_mode` | `0` |

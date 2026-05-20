@@ -2123,6 +2123,73 @@
         }
       }
     },
+    "/adapters/order-get-mcd-v1/orders/{orderId}": {
+      "get": {
+        "summary": "MCD order adapter v1",
+        "description": "Obtiene una orden ecommerce de Justo y la transforma al formato de evento orderNew solicitado por MCD.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo del pedido."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiMcdOrderEvent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/adapters/product-outage-mcd-v1/stores/{storeId}": {
       "post": {
         "summary": "MCD product outage adapter v1",
@@ -8381,6 +8448,45 @@
                 "options": {
                   "type": "number"
                 }
+              }
+            }
+          }
+        }
+      },
+      "apiMcdOrderEvent": {
+        "type": "object",
+        "description": "Orden ecommerce transformada al formato de evento orderNew MCD.",
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "App ID MCD. Por ahora Justo lo envía vacío."
+          },
+          "app_shop_id": {
+            "type": "string",
+            "description": "ID del local para MCD. Justo envía el storeId."
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de evento MCD.",
+            "enum": [
+              "orderNew"
+            ]
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Timestamp Unix en segundos de creación de la orden."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string",
+                "description": "ID Justo del pedido."
+              },
+              "order_info": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Detalle de la orden en el formato esperado por MCD."
               }
             }
           }
