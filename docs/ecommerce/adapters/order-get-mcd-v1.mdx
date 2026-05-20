@@ -27,6 +27,8 @@ El API key debe tener permisos `admin`, pertenecer a la misma marca del pedido y
 
 ## Comportamiento
 
+- McDonald's debe recibir los webhooks ecommerce estándar de Justo para enterarse de nuevos pedidos y cambios de estado.
+- Después de recibir un webhook, McDonald's puede llamar este adapter con el `orderId` del webhook para consultar la orden en formato `orderNew`.
 - La llamada obtiene una orden ecommerce de Justo y la devuelve en el formato de evento `orderNew` solicitado por McDonald's.
 - Los identificadores de orden se envían como string.
 - `app_id` se envía vacío porque Justo no lo tiene como dato propio de la orden.
