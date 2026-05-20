@@ -9733,6 +9733,11 @@
             "type": "string",
             "description": "ID externo del local configurado por la marca."
           },
+          "timezone": {
+            "type": "string",
+            "description": "Zona horaria IANA del local.",
+            "example": "America/Lima"
+          },
           "schedule": {
             "$ref": "#/components/schemas/apiStoreSchedule"
           }

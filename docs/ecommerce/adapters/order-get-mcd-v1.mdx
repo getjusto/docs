@@ -30,6 +30,8 @@ El API key debe tener permisos `admin`, pertenecer a la misma marca del pedido y
 - McDonald's debe recibir los webhooks ecommerce estándar de Justo para enterarse de nuevos pedidos y cambios de estado.
 - Después de recibir un webhook, McDonald's puede llamar este adapter con el `orderId` del webhook para consultar la orden en formato `orderNew`.
 - La llamada obtiene una orden ecommerce de Justo y la devuelve en el formato de evento `orderNew` solicitado por McDonald's.
+- El ETA que Flex Digital necesita para pasar la orden a cocina corresponde a `order_info.expected_arrived_eta`: fecha estimada de llegada del repartidor al local, en Unix timestamp segundos.
+- Justo solo envía `expected_arrived_eta` cuando existe un despacho con repartidor y se puede calcular la llegada al local. Si no hay repartidor asignado o no hay ETA calculable, se envía `0`.
 - Los identificadores de orden se envían como string.
 - `app_id` se envía vacío porque Justo no lo tiene como dato propio de la orden.
 - `app_shop_id` se envía como el `storeId` de Justo.
@@ -70,7 +72,7 @@ curl -X GET \
         "pay_channel": 150,
         "delivery_type": 1,
         "delivery_eta": 0,
-        "expected_cook_eta": 1778789475,
+        "expected_cook_eta": 0,
         "expected_arrived_eta": 1778790463,
         "create_time": 1778788575,
         "pay_time": 1778788575,
@@ -79,7 +81,7 @@ curl -X GET \
         "shop_confirm_time": 0,
         "c_cancel_preference": 7,
         "price": {
-          "order_price": 6660,
+          "order_price": 6330,
           "items_discount": 4070,
           "delivery_discount": 0,
           "others_fees": {
@@ -87,7 +89,7 @@ curl -X GET \
           },
           "shop_paid_money": 0,
           "refund_price": 0,
-          "store_charged_delivery_price": 330
+          "store_charged_delivery_price": 0
         },
         "shop": {
           "shop_id": "CRR",
@@ -136,12 +138,13 @@ curl -X GET \
 | `data.order_id` | `order._id` como string |
 | `order_info.order_id` | `order._id` como string |
 | `order_info.order_index` | `order.code` convertido a número cuando aplica |
-| `order_info.expected_arrived_eta` | `order.deliverAt` en Unix timestamp segundos |
-| `order_info.expected_cook_eta` | `order.createdAt + expectedPreparationDuration` |
-| `order_info.price.order_price` | `order.totalPrice` |
+| `order_info.expected_arrived_eta` | `delivery.estimatedArrivalAtStoreAt` en Unix timestamp segundos cuando hay repartidor activo. Si el repartidor ya llegó al local, usa `delivery.nearStoreAt`. Si no hay repartidor o ETA calculable, envía `0`. |
+| `order_info.expected_cook_eta` | `0`. Flex Digital calcula el momento de preparación usando `expected_arrived_eta` menos su tiempo de preparación configurado. |
+| `order_info.delivery_eta` | `0`. No se usa para informar ETA de llegada del repartidor al local. |
+| `order_info.price.order_price` | `order.totalPrice - order.deliveryFee` |
 | `order_info.price.items_discount` | `order.totalDiscount` |
 | `order_info.price.others_fees.service_price` | `order.serviceFee` |
-| `order_info.price.store_charged_delivery_price` | `order.deliveryFee` |
+| `order_info.price.store_charged_delivery_price` | `0` |
 | `order_items[].app_item_id` | `product.metadata.id` o `product.externalId` sin `{storeId}:` |
 | `order_items[].sub_item_list[].app_item_id` | `modifierOption.metadata.id` o `modifierOption.externalId` sin `{storeId}:` |
 
