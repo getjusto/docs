@@ -37,7 +37,7 @@ El API key debe tener permisos `admin`, pertenecer a la misma marca del pedido y
 - `app_shop_id` se envía como el `storeId` de Justo.
 - Los productos y opciones usan el ID original McDonald's guardado en `metadata.id` por `menu-put-mcd-v1`. Si no existe, Justo usa el `externalId` sin el prefijo `{storeId}:`.
 - Los montos se devuelven con la misma unidad entera que expone Justo para la orden.
-- Los campos numéricos que dependen de un dato no informado por Justo se envían como `null`, no como `0`. El valor `0` solo se usa cuando Justo lo entrega explícitamente o cuando el campo es un código fijo del formato McDonald's.
+- Los campos numéricos no monetarios que dependen de un dato no informado por Justo se envían como `null`, no como `0`. En campos de precios, descuentos, cobros o devoluciones, `0` significa cero.
 
 ## Ejemplo
 
@@ -84,13 +84,13 @@ curl -X GET \
         "price": {
           "order_price": 6330,
           "items_discount": 4070,
-          "delivery_discount": null,
+          "delivery_discount": 0,
           "others_fees": {
             "service_price": 208
           },
-          "shop_paid_money": null,
-          "refund_price": null,
-          "store_charged_delivery_price": null
+          "shop_paid_money": 0,
+          "refund_price": 0,
+          "store_charged_delivery_price": 0
         },
         "shop": {
           "shop_id": "CRR",
@@ -143,15 +143,15 @@ curl -X GET \
 | `order_info.expected_cook_eta` | `null`. Flex Digital calcula el momento de preparación usando `expected_arrived_eta` menos su tiempo de preparación configurado. |
 | `order_info.delivery_eta` | `null`. No se usa para informar ETA de llegada del repartidor al local. |
 | `order_info.complete_time`, `order_info.cancel_time`, `order_info.shop_confirm_time` | `null` cuando Justo no entrega esos timestamps al adapter. |
-| `order_info.price.order_price` | `order.totalPrice - order.deliveryFee` cuando ambos valores existen. Si falta alguno, envía `null`. |
-| `order_info.price.items_discount` | `order.totalDiscount`. Si no existe, envía `null`. |
-| `order_info.price.others_fees.service_price` | `order.serviceFee`. Si no existe, envía `null`. |
-| `order_info.price.delivery_discount`, `order_info.price.shop_paid_money`, `order_info.price.refund_price`, `order_info.price.store_charged_delivery_price` | `null` cuando Justo no entrega esos valores al adapter. |
+| `order_info.price.order_price` | `order.totalPrice - order.deliveryFee`. Si alguno de los montos no existe, se usa `0` para ese componente. |
+| `order_info.price.items_discount` | `order.totalDiscount`. Si no hay descuento, envía `0`. |
+| `order_info.price.others_fees.service_price` | `order.serviceFee`. Si no hay cargo de servicio, envía `0`. |
+| `order_info.price.delivery_discount`, `order_info.price.shop_paid_money`, `order_info.price.refund_price`, `order_info.price.store_charged_delivery_price` | `0` cuando no hay monto asociado. |
 | `order_info.receive_address.poi_lat`, `order_info.receive_address.poi_lng` | Coordenadas de la dirección. Si no existen, envía `null`. |
 | `order_items[].app_item_id` | `product.metadata.id` o `product.externalId` sin `{storeId}:` |
-| `order_items[].total_price`, `order_items[].sku_price`, `order_items[].real_price` | Precio Justo correspondiente. Si el valor existe y es `0`, se envía `0`; si no existe, se envía `null`. |
+| `order_items[].total_price`, `order_items[].sku_price`, `order_items[].real_price` | Precio Justo correspondiente. Si no hay precio informado, envía `0`. |
 | `order_items[].sub_item_list[].app_item_id` | `modifierOption.metadata.id` o `modifierOption.externalId` sin `{storeId}:` |
-| `order_items[].sub_item_list[].total_price`, `order_items[].sub_item_list[].sku_price` | Precio de la opción. Si el valor existe y es `0`, se envía `0`; si no existe, se envía `null`. |
+| `order_items[].sub_item_list[].total_price`, `order_items[].sub_item_list[].sku_price` | Precio de la opción. Si no hay precio informado, envía `0`. |
 
 ## Códigos pendientes por confirmar
 
