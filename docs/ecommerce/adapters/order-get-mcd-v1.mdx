@@ -130,39 +130,137 @@ curl -X GET \
 }
 ```
 
-## Mapeo inicial
+## Campos de respuesta
 
-| Campo MCD | Fuente Justo |
+### Evento
+
+| Campo | Significado |
 | --- | --- |
-| `app_id` | Vacío. Justo no lo tiene como dato de la orden. |
-| `app_shop_id` | `order.storeId` |
-| `data.order_id` | `order._id` como string |
-| `order_info.order_id` | `order._id` como string |
-| `order_info.order_index` | `order.code` convertido a número cuando aplica. Si no se puede convertir, envía `null`. |
-| `order_info.expected_arrived_eta` | `delivery.estimatedArrivalAtStoreAt` en Unix timestamp segundos cuando hay repartidor activo. Si el repartidor ya llegó al local, usa `delivery.nearStoreAt`. Si no hay repartidor o ETA calculable, envía `null`. |
-| `order_info.expected_cook_eta` | `null`. Flex Digital calcula el momento de preparación usando `expected_arrived_eta` menos su tiempo de preparación configurado. |
-| `order_info.delivery_eta` | `null`. No se usa para informar ETA de llegada del repartidor al local. |
-| `order_info.complete_time`, `order_info.cancel_time`, `order_info.shop_confirm_time` | `null` cuando Justo no entrega esos timestamps al adapter. |
-| `order_info.price.order_price` | `order.totalPrice - order.deliveryFee`. Si alguno de los montos no existe, se usa `0` para ese componente. |
-| `order_info.price.items_discount` | `order.totalDiscount`. Si no hay descuento, envía `0`. |
-| `order_info.price.others_fees.service_price` | `order.serviceFee`. Si no hay cargo de servicio, envía `0`. |
-| `order_info.price.delivery_discount`, `order_info.price.shop_paid_money`, `order_info.price.refund_price`, `order_info.price.store_charged_delivery_price` | `0` cuando no hay monto asociado. |
-| `order_info.receive_address.poi_lat`, `order_info.receive_address.poi_lng` | Coordenadas de la dirección. Si no existen, envía `null`. |
-| `order_items[].app_item_id` | `product.metadata.id` o `product.externalId` sin `{storeId}:` |
-| `order_items[].total_price`, `order_items[].sku_price`, `order_items[].real_price` | Precio Justo correspondiente. Si no hay precio informado, envía `0`. |
-| `order_items[].sub_item_list[].app_item_id` | `modifierOption.metadata.id` o `modifierOption.externalId` sin `{storeId}:` |
-| `order_items[].sub_item_list[].total_price`, `order_items[].sub_item_list[].sku_price` | Precio de la opción. Si no hay precio informado, envía `0`. |
+| `app_id` | Identificador de aplicación McDonald's. Justo lo envía vacío. |
+| `app_shop_id` | Identificador del local que recibe la orden. |
+| `type` | Tipo de evento. Para este adapter siempre es `orderNew`. |
+| `timestamp` | Fecha de creación de la orden en Unix timestamp segundos. |
+| `data.order_id` | Identificador único de la orden. |
 
-## Códigos pendientes por confirmar
+### Información de la orden
 
-Este adapter incluye un mapeo inicial para poder validar el formato con McDonald's, pero los códigos numéricos deben confirmarse con MDC antes de considerarlos definitivos.
-
-| Campo | Mapeo inicial |
+| Campo | Significado |
 | --- | --- |
-| `status` | `pending = 100`, `waiting = 200`, `preparing = 300`, `delivering = 400`, `done = 600`, `cancelled = 900` |
-| `pay_type` / `pay_method` | `cash = 2`, otros medios de pago = `1` |
-| `pay_channel` | `cash = 0`, otros medios de pago = `150` |
-| `delivery_type` | `delivery = 1`, `go = 2`, `serve = 3` |
-| `promo_type` | Descuentos de producto u orden = `2` |
-| `c_cancel_preference` | `7` |
-| `fulfillment_mode` | `0` |
+| `order_info.order_id` | Identificador único de la orden. |
+| `order_info.status` | Estado actual de la orden. Ver valores en la sección de códigos. |
+| `order_info.order_index` | Número visible de la orden. Si no se puede informar como número, se envía `null`. |
+| `order_info.order_channel` | Canal de venta. Para este adapter se envía `Food`. |
+| `order_info.remark` | Observación general de la orden. Si no hay observación, se envía vacío. |
+| `order_info.country` | País de la orden en código ISO alfa-2, por ejemplo `PE`. |
+| `order_info.city_id` | Identificador numérico de ciudad si está disponible. Si no está disponible, se envía `null`. |
+| `order_info.timezone` | Zona horaria usada para interpretar la operación del local. |
+| `order_info.pay_type` | Tipo de pago. Ver valores en la sección de códigos. |
+| `order_info.pay_method` | Método de pago. Usa los mismos valores que `pay_type`. |
+| `order_info.pay_channel` | Canal de pago. Ver valores en la sección de códigos. |
+| `order_info.delivery_type` | Tipo de entrega. Ver valores en la sección de códigos. |
+| `order_info.delivery_eta` | ETA general de entrega. Este adapter no lo usa y lo envía como `null`. |
+| `order_info.expected_cook_eta` | ETA esperado de preparación. Este adapter no lo calcula y lo envía como `null`. |
+| `order_info.expected_arrived_eta` | Fecha estimada de llegada del repartidor al local, en Unix timestamp segundos. Si no hay repartidor asignado o no hay ETA calculable, se envía `null`. |
+| `order_info.create_time` | Fecha de creación de la orden en Unix timestamp segundos. |
+| `order_info.pay_time` | Fecha de pago en Unix timestamp segundos. Si la orden aún no está pagada, se envía `null`. |
+| `order_info.complete_time` | Fecha de finalización de la orden. Si no está disponible, se envía `null`. |
+| `order_info.cancel_time` | Fecha de cancelación de la orden. Si no está disponible, se envía `null`. |
+| `order_info.shop_confirm_time` | Fecha de confirmación del local. Si no está disponible, se envía `null`. |
+| `order_info.c_cancel_preference` | Código fijo de preferencia de cancelación. Ver valores en la sección de códigos. |
+| `order_info.fulfillment_mode` | Modo de fulfillment. Ver valores en la sección de códigos. |
+
+### Precios
+
+Todos los campos de precios, descuentos, cobros y devoluciones son numéricos. Si no hay monto asociado, se envía `0`; `null` no se usa para montos.
+
+| Campo | Significado |
+| --- | --- |
+| `order_info.price.order_price` | Total de productos de la orden, sin costo de delivery. |
+| `order_info.price.items_discount` | Descuento total aplicado a productos. Si no hay descuento, se envía `0`. |
+| `order_info.price.delivery_discount` | Descuento aplicado al delivery. Si no hay descuento, se envía `0`. |
+| `order_info.price.others_fees.service_price` | Cargo de servicio. Si no hay cargo de servicio, se envía `0`. |
+| `order_info.price.shop_paid_money` | Monto pagado por el local. Si no aplica, se envía `0`. |
+| `order_info.price.refund_price` | Monto devuelto. Si no hay devolución, se envía `0`. |
+| `order_info.price.store_charged_delivery_price` | Monto de delivery cobrado al local. Si no aplica, se envía `0`. |
+
+### Local
+
+| Campo | Significado |
+| --- | --- |
+| `order_info.shop.shop_id` | Identificador del local. |
+| `order_info.shop.app_shop_id` | Identificador del local para la integración. |
+| `order_info.shop.shop_addr` | Dirección del local. |
+| `order_info.shop.shop_name` | Nombre del local. |
+| `order_info.shop.shop_phone` | Lista de teléfonos del local. Si no hay teléfono, se envía una lista vacía. |
+| `order_info.shop.shop_phone[].calling_code` | Código telefónico del país. Si no está disponible, se envía `null`. |
+| `order_info.shop.shop_phone[].phone` | Número de teléfono del local. |
+| `order_info.shop.shop_phone[].type` | Tipo de teléfono. Para este adapter se envía `1`. |
+
+### Dirección de entrega
+
+| Campo | Significado |
+| --- | --- |
+| `order_info.receive_address.uid` | Identificador del cliente. Si no está disponible, se envía vacío. |
+| `order_info.receive_address.name` | Nombre completo del cliente. |
+| `order_info.receive_address.first_name` | Primer nombre del cliente. |
+| `order_info.receive_address.last_name` | Apellido o resto del nombre del cliente. |
+| `order_info.receive_address.calling_code` | Código telefónico del país. Si no está disponible, se envía vacío. |
+| `order_info.receive_address.phone` | Teléfono del cliente. |
+| `order_info.receive_address.city` | Ciudad o zona de la dirección. |
+| `order_info.receive_address.country_code` | País de la dirección en código ISO alfa-2. |
+| `order_info.receive_address.poi_address` | Dirección principal de entrega. |
+| `order_info.receive_address.house_number` | Complemento de dirección, departamento o referencia. |
+| `order_info.receive_address.poi_lat` | Latitud de la dirección. Si no está disponible, se envía `null`. |
+| `order_info.receive_address.poi_lng` | Longitud de la dirección. Si no está disponible, se envía `null`. |
+| `order_info.receive_address.coordinate_type` | Sistema de coordenadas. Para este adapter se envía `wgs84`. |
+| `order_info.receive_address.poi_display_name` | Nombre visible de la dirección. |
+
+### Productos y opciones
+
+| Campo | Significado |
+| --- | --- |
+| `order_info.order_items[].mdu_id` | Identificador único del item dentro de la orden. |
+| `order_info.order_items[].app_item_id` | Identificador McDonald's del producto. |
+| `order_info.order_items[].app_external_id` | Identificador externo adicional. Si no aplica, se envía vacío. |
+| `order_info.order_items[].name` | Nombre del producto. |
+| `order_info.order_items[].total_price` | Precio total del producto. Si no hay precio informado, se envía `0`. |
+| `order_info.order_items[].sku_price` | Precio unitario del producto. Si no hay precio informado, se envía `0`. |
+| `order_info.order_items[].amount` | Cantidad del producto. |
+| `order_info.order_items[].remark` | Comentario del cliente para el producto. Si no hay comentario, se envía vacío. |
+| `order_info.order_items[].sub_item_list` | Opciones o modificadores seleccionados para el producto. |
+| `order_info.order_items[].real_price` | Precio real del producto después de ajustes. Si no hay precio informado, se envía `0`. |
+| `order_info.order_items[].sales_type` | Tipo de venta. Para este adapter se envía `unit`. |
+| `order_info.order_items[].sub_item_list[].app_item_id` | Identificador McDonald's de la opción. |
+| `order_info.order_items[].sub_item_list[].name` | Nombre de la opción. |
+| `order_info.order_items[].sub_item_list[].total_price` | Precio total de la opción. Si no hay precio informado, se envía `0`. |
+| `order_info.order_items[].sub_item_list[].sku_price` | Precio unitario de la opción. Si no hay precio informado, se envía `0`. |
+| `order_info.order_items[].sub_item_list[].amount` | Cantidad de la opción. |
+| `order_info.order_items[].sub_item_list[].app_content_id` | Identificador McDonald's del grupo de modificadores. |
+| `order_info.order_items[].sub_item_list[].content_name` | Nombre del grupo de modificadores. |
+| `order_info.order_items[].sub_item_list[].content_app_external_id` | Identificador externo del grupo de modificadores. |
+| `order_info.order_items[].sub_item_list[].sub_item_list` | Lista anidada de opciones. Para este adapter se envía vacía. |
+| `order_info.order_items[].sub_item_list[].sales_type` | Tipo de venta de la opción. Para este adapter se envía `unit`. |
+
+### Promociones
+
+| Campo | Significado |
+| --- | --- |
+| `order_info.promotions` | Promociones aplicadas a nivel de orden. Si no hay promociones, se envía una lista vacía. |
+| `order_info.order_items[].promo_type` | Tipo de promoción aplicada al producto. Solo se envía si hay descuento. |
+| `order_info.order_items[].promotion_detail` | Detalle de la promoción aplicada al producto. Solo se envía si hay descuento. |
+| `order_info.order_items[].promo_list` | Lista de promociones aplicadas al producto. Solo se envía si hay descuento. |
+| `promo_type` | Tipo de promoción. Ver valores en la sección de códigos. |
+| `promo_discount` | Monto descontado. |
+| `shop_subside_price` | Monto subsidiado por el local. |
+
+## Valores codificados
+
+| Campo | Valores |
+| --- | --- |
+| `status` | `100`: pendiente, `200`: esperando confirmación, `300`: preparando, `400`: en despacho, `600`: completada, `900`: cancelada. |
+| `pay_type` / `pay_method` | `1`: pago no efectivo, `2`: efectivo. |
+| `pay_channel` | `0`: efectivo, `150`: pago no efectivo. |
+| `delivery_type` | `1`: delivery, `2`: retiro, `3`: consumo en local. |
+| `promo_type` | `2`: descuento aplicado a producto u orden. |
+| `c_cancel_preference` | `7`: valor fijo enviado por el adapter. |
+| `fulfillment_mode` | `0`: valor fijo enviado por el adapter. |
