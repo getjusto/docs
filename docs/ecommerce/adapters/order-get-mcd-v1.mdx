@@ -66,7 +66,7 @@ curl -X GET \
         "order_channel": "Food",
         "remark": "",
         "country": "PE",
-        "city_id": null,
+        "city_id": "lima.PE",
         "timezone": "America/Santiago",
         "pay_type": 1,
         "pay_method": 1,
@@ -152,7 +152,7 @@ curl -X GET \
 | `order_info.order_channel` | Canal de venta. Para este adapter se envía `Food`. |
 | `order_info.remark` | Observación general de la orden. Si no hay observación, se envía vacío. |
 | `order_info.country` | País de la orden en código ISO alfa-2, por ejemplo `PE`. |
-| `order_info.city_id` | Identificador numérico de ciudad si está disponible. Si no está disponible, se envía `null`. |
+| `order_info.city_id` | Identificador de la ciudad del local. |
 | `order_info.timezone` | Zona horaria usada para interpretar la operación del local. |
 | `order_info.pay_type` | Tipo de pago. Ver valores en la sección de códigos. |
 | `order_info.pay_method` | Método de pago. Usa los mismos valores que `pay_type`. |
