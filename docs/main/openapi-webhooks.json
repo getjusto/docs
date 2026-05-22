@@ -4270,7 +4270,10 @@
             ]
           },
           "timestamp": {
-            "type": "number",
+            "type": [
+              "number",
+              "null"
+            ],
             "description": "Timestamp Unix en segundos de creación de la orden."
           },
           "data": {
