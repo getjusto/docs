@@ -4193,14 +4193,76 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": true
+              "additionalProperties": true,
+              "properties": {
+                "app_item_id": {
+                  "type": "string"
+                },
+                "item_name": {
+                  "type": "string"
+                },
+                "short_desc": {
+                  "type": "string"
+                },
+                "head_img": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "status": {
+                  "type": "number"
+                },
+                "is_sold_separately": {
+                  "type": "boolean"
+                },
+                "as_modifier_max_quantity": {
+                  "type": "number",
+                  "description": "Máximo de unidades seleccionables cuando este item se importa como opción de modificador. Si no viene, Justo usa 1."
+                },
+                "app_modifier_group_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           },
           "modifier_groups": {
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": true
+              "additionalProperties": true,
+              "properties": {
+                "app_modifier_group_id": {
+                  "type": "string"
+                },
+                "modifier_group_name": {
+                  "type": "string"
+                },
+                "is_required": {
+                  "type": "number"
+                },
+                "quantity_min_permitted": {
+                  "type": "number"
+                },
+                "quantity_max_permitted": {
+                  "type": "number"
+                },
+                "app_mg_items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                      "app_item_id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

@@ -73,6 +73,7 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | `price` | `number` | No | Precio del producto u opción. Si no viene, se usa `0`. |
 | `status` | `number` | No | Disponibilidad del origen. `1` se importa como disponible; cualquier otro valor se importa como no disponible. |
 | `is_sold_separately` | `boolean` | No | Si es `true`, el item puede convertirse en producto visible si está en una categoría del menú. Si es `false`, normalmente se usa como opción de modificador. |
+| `as_modifier_max_quantity` | `number` | No | Máximo de unidades seleccionables cuando el item se importa como opción de modificador. Si no viene, Justo usa `1`. Ejemplo: una opción `Extra: Queso` puede enviar `2` para permitir pedir dos quesos dentro del mismo grupo. |
 | `app_modifier_group_ids` | `array<string>` | No | Grupos de modificadores asociados al producto. Se convierten a `modifiersExternalIds` con prefijo `{storeId}:`. |
 
 ## `items[].sold_info_intl[]`
@@ -99,7 +100,6 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | `is_required` | `number` | No | Define si el grupo es obligatorio. `1` se importa como obligatorio; cualquier otro valor se importa como opcional. |
 | `quantity_min_permitted` | `number` | No | Mínimo de opciones seleccionables. Si no viene, se usa `0`. |
 | `quantity_max_permitted` | `number` | No | Máximo de opciones seleccionables. Si no viene, se usa `0`. |
-| `buy_mode` | `number` | No | Modo de compra del origen. Se acepta pero actualmente no se transforma a un campo Justo. |
 | `app_mg_items` | `array<ModifierGroupItem>` | No | Opciones del grupo. Cada `app_item_id` debe existir en `items` para importarse como opción. |
 
 ## `modifier_groups[].app_mg_items[]`
@@ -107,6 +107,56 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | Campo | Tipo | Requerido | Uso |
 | --- | --- | --- | --- |
 | `app_item_id` | `string` | Sí | Referencia a un item de `items`. Ese item se transforma en opción del modificador. |
+
+### Ejemplo de máximo por opción
+
+En Justo, `quantity_max_permitted` limita cuántas opciones se pueden elegir dentro del grupo completo. `as_modifier_max_quantity` limita cuántas unidades se pueden elegir de una opción específica.
+
+```json
+{
+  "items": [
+    {
+      "app_item_id": "PRODUCT-BIG-MAC",
+      "item_name": "Big Mac",
+      "price": 18.9,
+      "status": 1,
+      "is_sold_separately": true,
+      "app_modifier_group_ids": ["GROUP-EXTRAS"]
+    },
+    {
+      "app_item_id": "OPTION-EXTRA-CHEESE",
+      "item_name": "Extra: Queso",
+      "price": 1.5,
+      "status": 1,
+      "is_sold_separately": false,
+      "as_modifier_max_quantity": 2
+    },
+    {
+      "app_item_id": "OPTION-EXTRA-MEAT",
+      "item_name": "Extra: Carne",
+      "price": 5,
+      "status": 1,
+      "is_sold_separately": false,
+      "as_modifier_max_quantity": 2
+    }
+  ],
+  "modifier_groups": [
+    {
+      "app_modifier_group_id": "GROUP-EXTRAS",
+      "modifier_group_name": "Extras",
+      "is_required": 2,
+      "quantity_min_permitted": 0,
+      "quantity_max_permitted": 3,
+      "app_mg_items": [
+        {"app_item_id": "OPTION-EXTRA-CHEESE"},
+        {"app_item_id": "OPTION-EXTRA-MEAT"}
+      ]
+    }
+  ]
+}
+```
+
+Con este ejemplo, el grupo `Extras` permite seleccionar hasta 3 unidades en total, por ejemplo 2 quesos y 1 carne.
 
 ## `display_options`
 
@@ -194,6 +244,7 @@ flowchart LR
 | `items[].price` | Precio del producto u opción en el menú importado |
 | `items[].price` | `priceMetadata = {adapter: "mcd", storeId, type: "itemPrice", id: app_item_id}` |
 | `items[].status` | `available = status === 1` |
+| `items[].as_modifier_max_quantity` | `option.max` cuando el item se importa como opción de modificador; si no viene se usa `1` |
 | `items[].head_img` | Primera imagen del producto u opción |
 | `items[].app_modifier_group_ids` | Modificadores del producto |
 | `modifier_groups[].app_modifier_group_id` | `modifier.externalId = {storeId}:{app_modifier_group_id}` |
