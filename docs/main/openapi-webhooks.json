@@ -4348,7 +4348,17 @@
               "order_info": {
                 "type": "object",
                 "additionalProperties": true,
-                "description": "Detalle de la orden en el formato esperado por MCD."
+                "description": "Detalle de la orden en el formato esperado por MCD.",
+                "properties": {
+                  "driver_password": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Código del despacho que debe presentar el repartidor al retirar el pedido. Si no hay despacho con código, se envía null.",
+                    "example": "5366"
+                  }
+                }
               }
             }
           }
@@ -5135,6 +5145,11 @@
           "instructions": {
             "type": "string",
             "description": "Instrucciones para el despacho."
+          },
+          "driverPassword": {
+            "type": "string",
+            "description": "Código que debe presentar el repartidor al retirar el pedido.",
+            "example": "5366"
           },
           "fromLocation": {
             "type": "object",

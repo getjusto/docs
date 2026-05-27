@@ -32,6 +32,7 @@ El API key debe tener permisos `admin`, pertenecer a la misma marca del pedido y
 - La llamada obtiene una orden ecommerce de Justo y la devuelve en el formato de evento `orderNew` solicitado por McDonald's.
 - El ETA que Flex Digital necesita para pasar la orden a cocina corresponde a `order_info.expected_arrived_eta`: fecha estimada de llegada del repartidor al local, en Unix timestamp segundos.
 - Justo solo envía `expected_arrived_eta` cuando existe un despacho con repartidor y se puede calcular la llegada al local. Si no hay repartidor asignado o no hay ETA calculable, se envía `null`.
+- El código de retiro del despacho se envía en `order_info.driver_password`. Si la orden no tiene despacho con código, se envía `null`.
 - Los identificadores de orden se envían como string.
 - `app_id` se envía vacío porque Justo no lo tiene como dato propio de la orden.
 - `app_shop_id` se envía como el `storeId` de Justo.
@@ -72,6 +73,7 @@ curl -X GET \
         "pay_method": 1,
         "pay_channel": 150,
         "delivery_type": 1,
+        "driver_password": "5366",
         "delivery_eta": null,
         "expected_cook_eta": null,
         "expected_arrived_eta": 1778790463,
@@ -158,6 +160,7 @@ curl -X GET \
 | `order_info.pay_method` | Método de pago. Usa los mismos valores que `pay_type`. |
 | `order_info.pay_channel` | Canal de pago. Ver valores en la sección de códigos. |
 | `order_info.delivery_type` | Tipo de entrega. Ver valores en la sección de códigos. |
+| `order_info.driver_password` | Código del despacho que debe presentar el repartidor al retirar el pedido. Si no hay despacho con código, se envía `null`. |
 | `order_info.delivery_eta` | ETA general de entrega. Este adapter no lo usa y lo envía como `null`. |
 | `order_info.expected_cook_eta` | ETA esperado de preparación. Este adapter no lo calcula y lo envía como `null`. |
 | `order_info.expected_arrived_eta` | Fecha estimada de llegada del repartidor al local, en Unix timestamp segundos. Si no hay repartidor asignado o no hay ETA calculable, se envía `null`. |
