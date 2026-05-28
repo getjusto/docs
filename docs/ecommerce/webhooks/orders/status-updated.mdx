@@ -1,3 +1,57 @@
 ---
 openapi: post /ecommerce.order.status.updated
 ---
+
+Este webhook se envía cuando cambia el estado de un pedido o cuando ocurre un evento importante del despacho asociado.
+
+## Cambios de estado del pedido
+
+Cuando cambia el estado operacional de la orden, `previousOrderStatus` y `newOrderStatus` vienen con valores distintos.
+
+```json
+{
+  "type": "ecommerce.order.status.updated",
+  "data": {
+    "previousOrderStatus": "waiting",
+    "newOrderStatus": "preparing",
+    "order": {
+      "_id": "order-id",
+      "orderStatus": "preparing"
+    }
+  }
+}
+```
+
+## Eventos importantes del despacho
+
+Cuando el evento se origina por un cambio importante del despacho, `previousOrderStatus` y `newOrderStatus` vienen con el mismo valor y el payload incluye `delivery`.
+
+Justo envía estos eventos de despacho cuando:
+
+- cambia el estado del despacho;
+- el repartidor llega cerca del local;
+- el repartidor llega cerca del cliente.
+
+No se envía un webhook por cada cambio de ubicación del repartidor.
+
+```json
+{
+  "type": "ecommerce.order.status.updated",
+  "data": {
+    "previousOrderStatus": "preparing",
+    "newOrderStatus": "preparing",
+    "order": {
+      "_id": "order-id",
+      "orderStatus": "preparing"
+    },
+    "delivery": {
+      "_id": "delivery-id",
+      "status": "active",
+      "nearStoreAt": "2026-05-28T15:30:00.000Z",
+      "estimatedArrivalAtStoreAt": "2026-05-28T15:35:00.000Z"
+    }
+  }
+}
+```
+
+Para sincronizar una orden, usa siempre `data.order._id`. Si necesitas el estado del despacho o datos del repartidor, revisa `data.delivery` cuando venga presente.

@@ -8389,7 +8389,25 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": true
+              "additionalProperties": true,
+              "properties": {
+                "app_category_id": {
+                  "type": "string"
+                },
+                "category_name": {
+                  "type": "string"
+                },
+                "head_img": {
+                  "type": "string",
+                  "description": "URL de la imagen de la categoría."
+                },
+                "app_item_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           },
           "items": {
@@ -9412,11 +9430,23 @@
             "format": "date-time",
             "description": "Fecha objetivo del despacho."
           },
+          "nearStoreAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que el repartidor llegó cerca del local."
+          },
           "pickupAt": {
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
             "description": "Fecha de retiro del pedido."
+          },
+          "nearClientAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que el repartidor llegó cerca del cliente."
           },
           "completedAt": {
             "type": "string",
@@ -9661,10 +9691,14 @@
       },
       "apiOrderStatusUpdatedWebhookData": {
         "type": "object",
-        "description": "Datos del webhook de cambio de estado de pedido.",
+        "description": "Datos del webhook de actualización de pedido. Si previousOrderStatus y newOrderStatus son iguales, el evento corresponde a un cambio importante del despacho asociado.",
         "properties": {
           "order": {
             "$ref": "#/components/schemas/apiOrder"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/apiOrderDelivery",
+            "description": "Despacho actualizado. Se incluye cuando el evento se origina por un cambio importante del despacho, como cambio de estado o llegada del repartidor cerca del local o cliente."
           },
           "previousOrderStatus": {
             "type": "string",

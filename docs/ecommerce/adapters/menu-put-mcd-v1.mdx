@@ -59,6 +59,7 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | --- | --- | --- | --- |
 | `app_category_id` | `string` | Sí | Identificador de la categoría McDonald's. Se usa para construir `externalId = {storeId}:{app_category_id}` y queda guardado sin prefijo en `metadata.id`. |
 | `category_name` | `string` | Sí | Nombre de la categoría Justo. |
+| `head_img` | `string` | No | URL de imagen. Si viene, se guarda como imagen de la categoría. |
 | `app_item_ids` | `array<string>` | Sí | Items contenidos en la categoría. Solo los items con `is_sold_separately: true` se convierten en productos visibles. |
 
 ## `items[]`

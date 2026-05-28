@@ -310,8 +310,7 @@
 					"group": "Webhooks",
 					"pages": [
 						"docs/ecommerce/webhooks/orders/created",
-						"docs/ecommerce/webhooks/orders/status-updated",
-						"docs/ecommerce/webhooks/orders/delivery-updated"
+						"docs/ecommerce/webhooks/orders/status-updated"
 					]
 				}
 			]
