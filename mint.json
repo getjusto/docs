@@ -487,12 +487,6 @@
 						"docs/crisp/reports/consolidated-shifts",
 						"docs/crisp/reports/shift-details"
 					]
-				},
-				{
-					"group": "Ecosistema",
-					"pages": [
-						"docs/crisp/reports/ecosystem"
-					]
 				}
 			]
 		},
