@@ -2344,7 +2344,7 @@
         }
       }
     },
-    "/ecommerce/categories": {
+    "/menu/categories": {
       "get": {
         "summary": "List categories",
         "responses": {
@@ -2402,7 +2402,7 @@
         }
       }
     },
-    "/ecommerce/categories/{categoryId}": {
+    "/menu/categories/{categoryId}": {
       "get": {
         "summary": "Category",
         "parameters": [
@@ -2542,7 +2542,7 @@
         }
       }
     },
-    "/ecommerce/products": {
+    "/menu/products": {
       "get": {
         "summary": "List products",
         "responses": {
@@ -2600,7 +2600,7 @@
         }
       }
     },
-    "/ecommerce/products/{productId}": {
+    "/menu/products/{productId}": {
       "get": {
         "summary": "Product",
         "parameters": [
@@ -2740,7 +2740,7 @@
         }
       }
     },
-    "/ecommerce/modifiers": {
+    "/menu/modifiers": {
       "get": {
         "summary": "List modifiers",
         "responses": {
@@ -2798,7 +2798,7 @@
         }
       }
     },
-    "/ecommerce/modifiers/{modifierId}": {
+    "/menu/modifiers/{modifierId}": {
       "get": {
         "summary": "Modifier",
         "parameters": [
@@ -2938,7 +2938,7 @@
         }
       }
     },
-    "/ecommerce/modifier-options": {
+    "/menu/modifier-options": {
       "get": {
         "summary": "List modifier options",
         "responses": {
@@ -2996,7 +2996,7 @@
         }
       }
     },
-    "/ecommerce/modifier-options/{modifierOptionId}": {
+    "/menu/modifier-options/{modifierOptionId}": {
       "get": {
         "summary": "Modifier option",
         "parameters": [
@@ -3136,7 +3136,7 @@
         }
       }
     },
-    "/ecommerce/prices": {
+    "/menu/prices": {
       "get": {
         "summary": "List prices",
         "responses": {
@@ -3194,7 +3194,7 @@
         }
       }
     },
-    "/ecommerce/prices/{priceId}": {
+    "/menu/prices/{priceId}": {
       "get": {
         "summary": "Price",
         "parameters": [
@@ -3334,7 +3334,7 @@
         }
       }
     },
-    "/ecommerce/menu": {
+    "/menu": {
       "get": {
         "summary": "List menus",
         "parameters": [
@@ -3403,7 +3403,7 @@
         }
       }
     },
-    "/ecommerce/menu/{menuId}": {
+    "/menu/{menuId}": {
       "head": {
         "summary": "Menu exists",
         "parameters": [

@@ -57,6 +57,10 @@
 			"url": "docs/reservations"
 		},
 		{
+			"name": "Menú",
+			"url": "docs/menu-catalog"
+		},
+		{
 			"name": "Ecommerce",
 			"url": "docs/ecommerce"
 		},
@@ -248,41 +252,47 @@
 			]
 		},
 		{
-			"group": "Ecommerce",
+			"group": "Menú",
 			"version": "v3",
 			"pages": [
-				"docs/ecommerce/introduction",
 				{
 					"group": "Menú",
 					"pages": [
-						"docs/ecommerce/endpoints/menu/head-menu",
-						"docs/ecommerce/endpoints/menu/list-menus",
-						"docs/ecommerce/endpoints/menu/get-menu",
-						"docs/ecommerce/endpoints/menu/create-menu",
-						"docs/ecommerce/endpoints/menu/update-menu",
-						"docs/ecommerce/endpoints/menu/partially-update-menu"
+						"docs/menu-catalog/endpoints/menu/head-menu",
+						"docs/menu-catalog/endpoints/menu/list-menus",
+						"docs/menu-catalog/endpoints/menu/get-menu",
+						"docs/menu-catalog/endpoints/menu/create-menu",
+						"docs/menu-catalog/endpoints/menu/update-menu",
+						"docs/menu-catalog/endpoints/menu/partially-update-menu"
 					]
 				},
 				{
 					"group": "Catálogo",
 					"pages": [
-						"docs/ecommerce/endpoints/catalog/list-categories",
-						"docs/ecommerce/endpoints/catalog/get-category",
-						"docs/ecommerce/endpoints/catalog/update-category",
-						"docs/ecommerce/endpoints/catalog/list-products",
-						"docs/ecommerce/endpoints/catalog/get-product",
-						"docs/ecommerce/endpoints/catalog/update-product",
-						"docs/ecommerce/endpoints/catalog/list-modifiers",
-						"docs/ecommerce/endpoints/catalog/get-modifier",
-						"docs/ecommerce/endpoints/catalog/update-modifier",
-						"docs/ecommerce/endpoints/catalog/list-modifier-options",
-						"docs/ecommerce/endpoints/catalog/get-modifier-option",
-						"docs/ecommerce/endpoints/catalog/update-modifier-option",
-						"docs/ecommerce/endpoints/catalog/list-prices",
-						"docs/ecommerce/endpoints/catalog/get-price",
-						"docs/ecommerce/endpoints/catalog/update-price"
+						"docs/menu-catalog/endpoints/catalog/list-categories",
+						"docs/menu-catalog/endpoints/catalog/get-category",
+						"docs/menu-catalog/endpoints/catalog/update-category",
+						"docs/menu-catalog/endpoints/catalog/list-products",
+						"docs/menu-catalog/endpoints/catalog/get-product",
+						"docs/menu-catalog/endpoints/catalog/update-product",
+						"docs/menu-catalog/endpoints/catalog/list-modifiers",
+						"docs/menu-catalog/endpoints/catalog/get-modifier",
+						"docs/menu-catalog/endpoints/catalog/update-modifier",
+						"docs/menu-catalog/endpoints/catalog/list-modifier-options",
+						"docs/menu-catalog/endpoints/catalog/get-modifier-option",
+						"docs/menu-catalog/endpoints/catalog/update-modifier-option",
+						"docs/menu-catalog/endpoints/catalog/list-prices",
+						"docs/menu-catalog/endpoints/catalog/get-price",
+						"docs/menu-catalog/endpoints/catalog/update-price"
 					]
-				},
+				}
+			]
+		},
+		{
+			"group": "Ecommerce",
+			"version": "v3",
+			"pages": [
+				"docs/ecommerce/introduction",
 				{
 					"group": "Pedidos",
 					"pages": [
@@ -295,7 +305,9 @@
 				},
 				{
 					"group": "Productos",
-					"pages": ["docs/ecommerce/endpoints/products/set-product-out-of-stock"]
+					"pages": [
+						"docs/ecommerce/endpoints/products/set-product-out-of-stock"
+					]
 				},
 				{
 					"group": "Locales",
