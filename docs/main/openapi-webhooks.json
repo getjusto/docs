@@ -4073,7 +4073,8 @@
               "enum": [
                 "admin",
                 "reservationsMarketplace",
-                "orderingApi"
+                "orderingApi",
+                "orderAddressView"
               ]
             }
           },

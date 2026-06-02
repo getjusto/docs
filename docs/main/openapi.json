@@ -16602,7 +16602,7 @@
             "in": "path",
             "name": "addressId",
             "required": true,
-            "description": "ID de una dirección guardada por el customer.",
+            "description": "Identificador público de la dirección. Usa el placeId retornado por Ordering API.",
             "schema": {
               "type": "string"
             }
@@ -16679,7 +16679,7 @@
             "in": "path",
             "name": "addressId",
             "required": true,
-            "description": "ID de una dirección guardada por el customer.",
+            "description": "Identificador público de la dirección. Usa el placeId retornado por Ordering API.",
             "schema": {
               "type": "string"
             }
@@ -21782,7 +21782,8 @@
               "enum": [
                 "admin",
                 "reservationsMarketplace",
-                "orderingApi"
+                "orderingApi",
+                "orderAddressView"
               ]
             }
           },
@@ -24331,19 +24332,27 @@
         "type": "object",
         "description": "Dirección guardada por el customer de Ordering API.",
         "properties": {
-          "_id": {
-            "type": "string",
-            "description": "ID de la dirección."
-          },
           "placeId": {
             "type": "string",
             "description": "Place ID usado por Justo para calcular cobertura y despacho."
+          },
+          "cityId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID de la ciudad marketplace resuelta para la dirección."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID de la ciudad marketplace resuelta para la dirección."
           },
           "address": {
             "type": "string",
             "description": "Dirección principal."
           },
-          "addressLine2": {
+          "extendedAddress": {
             "oneOf": [
               {
                 "type": "string",
@@ -24354,6 +24363,18 @@
               }
             ],
             "description": "Departamento, oficina u otra información secundaria."
+          },
+          "addressLine2": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Alias legacy de extendedAddress."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Alias legacy de extendedAddress."
           },
           "addressSecondary": {
             "oneOf": [
@@ -24385,22 +24406,6 @@
               }
             ],
             "description": "Comentario o instrucciones de entrega."
-          },
-          "userId": {
-            "type": "string",
-            "description": "ID del usuario sintético dueño de la dirección."
-          },
-          "deviceId": {
-            "oneOf": [
-              {
-                "type": "string",
-                "description": "Device ID usado al crear la dirección."
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Device ID usado al crear la dirección."
           },
           "streetAddress": {
             "oneOf": [
@@ -25229,13 +25234,13 @@
             "oneOf": [
               {
                 "type": "string",
-                "description": "Dirección seleccionada."
+                "description": "Place ID público de la dirección seleccionada."
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Dirección seleccionada."
+            "description": "Place ID público de la dirección seleccionada."
           },
           "billing": {
             "oneOf": [
@@ -26620,17 +26625,18 @@
       },
       "OrderingAddressInput": {
         "type": "object",
-        "description": "Dirección a crear o actualizar para el customer.",
+        "description": "Dirección provista por la app externa. Ordering API la resuelve internamente a placeId y cityId.",
         "properties": {
-          "placeId": {
+          "streetAddress": {
             "type": "string",
-            "description": "Place ID normalizado usado para cobertura y despacho."
+            "description": "Calle y numeración ingresada por el customer o sistema externo."
           },
-          "address": {
+          "countryCode": {
             "type": "string",
-            "description": "Dirección principal visible para el customer."
+            "description": "Código de país ISO 3166-1 alpha-2.",
+            "example": "CL"
           },
-          "addressLine2": {
+          "extendedAddress": {
             "oneOf": [
               {
                 "type": "string",
@@ -26642,20 +26648,15 @@
             ],
             "description": "Departamento, oficina u otra información secundaria."
           },
-          "addressSecondary": {
+          "location": {
             "oneOf": [
               {
-                "type": "string",
-                "description": "Texto secundario de comuna, ciudad o referencia."
+                "$ref": "#/components/schemas/OrderingLocation"
               },
               {
                 "type": "null"
               }
-            ],
-            "description": "Texto secundario de comuna, ciudad o referencia."
-          },
-          "location": {
-            "$ref": "#/components/schemas/OrderingLocation"
+            ]
           },
           "acceptsNoLine2": {
             "oneOf": [
@@ -26681,18 +26682,6 @@
             ],
             "description": "Comentario o instrucciones de entrega."
           },
-          "streetAddress": {
-            "oneOf": [
-              {
-                "type": "string",
-                "description": "Calle y numeración normalizada."
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Calle y numeración normalizada."
-          },
           "locality": {
             "oneOf": [
               {
@@ -26704,18 +26693,6 @@
               }
             ],
             "description": "Localidad o comuna."
-          },
-          "subLocality": {
-            "oneOf": [
-              {
-                "type": "string",
-                "description": "Sub-localidad."
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Sub-localidad."
           },
           "region": {
             "oneOf": [
@@ -26740,34 +26717,13 @@
               }
             ],
             "description": "Código postal."
-          },
-          "countryCode": {
-            "oneOf": [
-              {
-                "type": "string",
-                "description": "Código de país ISO 3166-1 alpha-2.",
-                "example": "CL"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Código de país ISO 3166-1 alpha-2."
-          },
-          "countryName": {
-            "oneOf": [
-              {
-                "type": "string",
-                "description": "Nombre del país."
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Nombre del país."
           }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "required": [
+          "streetAddress",
+          "countryCode"
+        ]
       },
       "OrderingBillingInput": {
         "type": "object",
@@ -27101,13 +27057,13 @@
             "oneOf": [
               {
                 "type": "string",
-                "description": "ID de dirección seleccionada."
+                "description": "Place ID público de dirección seleccionada."
               },
               {
                 "type": "null"
               }
             ],
-            "description": "ID de dirección seleccionada."
+            "description": "Place ID público de dirección seleccionada."
           },
           "billing": {
             "oneOf": [
@@ -27373,13 +27329,13 @@
             "oneOf": [
               {
                 "type": "string",
-                "description": "ID de dirección para delivery."
+                "description": "Place ID público de dirección para delivery."
               },
               {
                 "type": "null"
               }
             ],
-            "description": "ID de dirección para delivery."
+            "description": "Place ID público de dirección para delivery."
           },
           "storeId": {
             "oneOf": [
@@ -27691,9 +27647,9 @@
         "type": "object",
         "description": "Dirección seleccionada para el checkout del website.",
         "properties": {
-          "addressId": {
+          "placeId": {
             "type": "string",
-            "description": "ID de una dirección del customer."
+            "description": "Place ID retornado al crear o listar direcciones."
           }
         },
         "additionalProperties": true

@@ -252,7 +252,6 @@
 					"group": "Ordering API",
 					"pages": [
 						"docs/services/ordering_api/introduction",
-						"docs/services/ordering_api/order-flow",
 						"docs/services/ordering_api/integration-tips",
 						"docs/services/ordering_api/data-models",
 						{
