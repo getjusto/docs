@@ -35,7 +35,7 @@
 		"intercom": "ohd982w5"
 	},
 	"primaryTab": {
-		"name": "Documentación"
+		"name": "Base"
 	},
 	"topbarLinks": [
 		{
@@ -53,19 +53,15 @@
 			"url": "docs/crisp"
 		},
 		{
-			"name": "Reservas",
-			"url": "docs/reservations"
-		},
-		{
-			"name": "Menú",
-			"url": "docs/menu-catalog"
-		},
-		{
 			"name": "Ecommerce",
 			"url": "docs/ecommerce"
 		},
 		{
-			"name": "Admin",
+			"name": "Config",
+			"url": "docs/menu-catalog"
+		},
+		{
+			"name": "Delivery",
 			"url": "docs/admin"
 		},
 		{
@@ -73,8 +69,8 @@
 			"url": "docs/royalty"
 		},
 		{
-			"name": "Integración Embebida",
-			"url": "docs/embedded_ordering"
+			"name": "Servicios",
+			"url": "docs/services"
 		}
 	],
 	"anchors": [
@@ -220,43 +216,68 @@
 			]
 		},
 		{
-			"group": "Reservas",
+			"group": "Servicios",
 			"version": "v3",
 			"pages": [
+				"docs/services/introduction",
 				{
-					"group": "Endpoints",
+					"group": "Reservas",
 					"pages": [
-						"docs/reservations/endpoints/reservations/post-reservations",
-						"docs/reservations/endpoints/reservations/get-reservations",
-						"docs/reservations/endpoints/reservations/update-reservations",
-						"docs/reservations/endpoints/reservations/delete-reservations"
+						{
+							"group": "Endpoints",
+							"pages": [
+								"docs/services/reservations/endpoints/reservations/post-reservations",
+								"docs/services/reservations/endpoints/reservations/get-reservations",
+								"docs/services/reservations/endpoints/reservations/update-reservations",
+								"docs/services/reservations/endpoints/reservations/delete-reservations"
+							]
+						},
+						{
+							"group": "Webhooks",
+							"pages": [
+								"docs/services/reservations/webhooks/reservation/created",
+								"docs/services/reservations/webhooks/reservation/updated",
+								"docs/services/reservations/webhooks/reservation/cancelled"
+							]
+						},
+						{
+							"group": "Widgets",
+							"pages": [
+								"docs/services/reservations/widgets/reservation-widget"
+							]
+						}
 					]
 				},
 				{
-					"group": "Webhooks",
+					"group": "Embedded Orders",
 					"pages": [
-						"docs/reservations/webhooks/reservation/created",
-						"docs/reservations/webhooks/reservation/updated",
-						"docs/reservations/webhooks/reservation/cancelled"
-					]
-				},
-				{
-					"group": "Widgets",
-					"pages": [
-						"docs/reservations/widgets/reservation-widget"
+						"docs/services/embedded_ordering/introduction",
+						{
+							"group": "Onboarding",
+							"pages": [
+								"docs/services/embedded_ordering/endpoints/auth/details"
+							]
+						},
+						{
+							"group": "Pagos",
+							"pages": [
+								"docs/services/embedded_ordering/endpoints/payments/verify",
+								"docs/services/embedded_ordering/endpoints/payments/execute",
+								"docs/services/embedded_ordering/endpoints/payments/refund"
+							]
+						},
+						{
+							"group": "Notificaciones",
+							"pages": [
+								"docs/services/embedded_ordering/endpoints/notifications/notify"
+							]
+						}
 					]
 				}
 			]
 		},
 		{
-			"group": "Introducción",
-			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/introduction"
-			]
-		},
-		{
-			"group": "Menú",
+			"group": "Config",
 			"version": "v3",
 			"pages": [
 				{
@@ -346,7 +367,7 @@
 			]
 		},
 		{
-			"group": "Admin",
+			"group": "Delivery",
 			"version": "v3",
 			"pages": [
 				"docs/admin/introduction",
@@ -360,29 +381,6 @@
 						"docs/admin/delivery/cancel"
 					]
 				}
-			]
-		},
-		{
-			"group": "Onboarding",
-			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/endpoints/auth/details"
-			]
-		},
-		{
-			"group": "Pagos",
-			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/endpoints/payments/verify",
-				"docs/embedded_ordering/endpoints/payments/execute",
-				"docs/embedded_ordering/endpoints/payments/refund"
-			]
-		},
-		{
-			"group": "Notificaciones",
-			"version": "v3",
-			"pages": [
-				"docs/embedded_ordering/endpoints/notifications/notify"
 			]
 		},
 		{
