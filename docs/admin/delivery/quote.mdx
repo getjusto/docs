@@ -2,6 +2,6 @@
 openapi: get /admin/deliveries/quote
 ---
 
-Cotiza una entrega sin pedido antes de crearla. Requiere un local autorizado y los `placeId` de origen y destino.
+Cotiza una entrega sin pedido antes de crearla. Como no existe un pedido de Justo Ecommerce asociado desde donde tomar local, dirección o datos de entrega, debes enviar un local autorizado y los `placeId` de origen y destino.
 
-Usa esta operación para mostrar o validar el costo de despacho. No crea entregas ni modifica estado.
+Usa esta operación para mostrar o validar el costo de despacho antes de crear una entrega manual o externa. No crea entregas, no modifica estado y no genera un pedido ecommerce.

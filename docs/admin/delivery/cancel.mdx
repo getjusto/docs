@@ -2,6 +2,8 @@
 openapi: post /admin/deliveries/{deliveryId}/cancel
 ---
 
-Cancela una entrega sin pedido de la marca autorizada. El identificador puede ser `_id`, `externalId` o `specialCode`.
+Cancela una entrega sin pedido de la marca autorizada. Esta operación afecta solo el despacho de Justo Delivery; no cancela pedidos de Justo Ecommerce porque estas entregas no tienen un pedido ecommerce asociado.
+
+El identificador puede ser `_id`, `externalId` o `specialCode`. Usa este endpoint para detener una entrega manual o creada por una integración externa cuando ya no debe ejecutarse.
 
 En Justo Admin MCP esta operación requiere confirmación explícita del usuario porque cambia el estado de una entrega.

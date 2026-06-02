@@ -13785,7 +13785,7 @@
     "/admin/deliveries": {
       "get": {
         "summary": "List deliveries without order",
-        "description": "Lista entregas solicitadas desde Website Admin que no están asociadas a un pedido ecommerce. La data siempre queda limitada al website autorizado.",
+        "description": "Lista entregas sin pedido de la marca autorizada. Una entrega sin pedido es un despacho de Justo Delivery que no tiene asociado un pedido de Justo Ecommerce; se crea desde Justo Admin, API o una integración externa para coordinar logística fuera del checkout de Justo.",
         "parameters": [
           {
             "in": "query",
@@ -13902,7 +13902,7 @@
       },
       "post": {
         "summary": "Create delivery without order",
-        "description": "Solicita una entrega sin pedido usando el flujo de Website Admin. Requiere origen, destino, local y datos de contacto. Si la cotización cambió, puede requerir confirmation=true.",
+        "description": "Crea una entrega sin pedido para la marca autorizada. Esta operación solicita un despacho de Justo Delivery sin crear ni asociar un pedido de Justo Ecommerce, útil para ventas tomadas por teléfono, WhatsApp, POS, backoffice o integraciones externas. Requiere origen, destino, local y datos de contacto. Si la cotización cambió, puede requerir confirmation=true.",
         "requestBody": {
           "required": true,
           "content": {
@@ -14074,7 +14074,7 @@
     "/admin/deliveries/quote": {
       "get": {
         "summary": "Quote delivery without order",
-        "description": "Cotiza una entrega sin pedido entre dos placeIds para un local de la marca autorizada. No crea la entrega.",
+        "description": "Cotiza una entrega sin pedido entre dos placeIds para un local de la marca autorizada. Como no existe un pedido de Justo Ecommerce asociado desde donde inferir local, dirección o datos de entrega, estos datos se envían explícitamente. No crea entregas, no modifica estado y no genera un pedido ecommerce.",
         "parameters": [
           {
             "in": "query",
@@ -14191,7 +14191,7 @@
     "/admin/deliveries/{deliveryId}": {
       "get": {
         "summary": "Get delivery without order",
-        "description": "Obtiene el detalle de una entrega sin pedido de la marca autorizada.",
+        "description": "Obtiene el detalle de una entrega sin pedido de la marca autorizada. Estas entregas son despachos de Justo Delivery creados sin un pedido de Justo Ecommerce asociado, por lo que el seguimiento se hace directamente sobre la entrega y no sobre una orden ecommerce.",
         "parameters": [
           {
             "in": "path",
@@ -14258,7 +14258,7 @@
     "/admin/deliveries/{deliveryId}/cancel": {
       "post": {
         "summary": "Cancel delivery without order",
-        "description": "Cancela una entrega sin pedido de la marca autorizada. Si existe cargo asociado sin payout, se anula en finanzas.",
+        "description": "Cancela una entrega sin pedido de la marca autorizada. Esta operación afecta solo el despacho de Justo Delivery; no cancela pedidos de Justo Ecommerce porque estas entregas no tienen un pedido ecommerce asociado. Si existe cargo asociado sin payout, se anula en finanzas.",
         "parameters": [
           {
             "in": "path",
@@ -20526,7 +20526,7 @@
       },
       "apiDeliveryWithoutOrder": {
         "type": "object",
-        "description": "Entrega solicitada desde Website Admin sin estar asociada a un pedido ecommerce.",
+        "description": "Entrega de Justo Delivery creada sin un pedido de Justo Ecommerce asociado. Se usa para despachos manuales o integraciones externas que necesitan logística fuera del checkout de Justo.",
         "properties": {
           "_id": {
             "type": "string",

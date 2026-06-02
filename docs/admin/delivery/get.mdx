@@ -2,6 +2,8 @@
 openapi: get /admin/deliveries/{deliveryId}
 ---
 
-Obtiene el detalle de una entrega sin pedido de la marca autorizada. El identificador puede ser `_id`, `externalId` o `specialCode`.
+Obtiene el detalle de una entrega sin pedido de la marca autorizada. Estas entregas son despachos de Justo Delivery creados sin un pedido de Justo Ecommerce asociado, por lo que el seguimiento se hace directamente sobre la entrega y no sobre una orden ecommerce.
+
+El identificador puede ser `_id`, `externalId` o `specialCode`. Usa este endpoint para consultar el estado actual, revisar la ruta, confirmar datos de contacto o sincronizar el estado de una entrega creada desde un sistema externo.
 
 La respuesta incluye estado, origen, destino, precio, datos de seguimiento y metadata operativa disponible para la entrega.

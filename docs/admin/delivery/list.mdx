@@ -2,6 +2,8 @@
 openapi: get /admin/deliveries
 ---
 
-Lista entregas sin pedido creadas desde Justo Admin para la marca autorizada. Sirve para monitorear despachos manuales, buscar por código o externalId, y revisar entregas activas.
+Lista las entregas sin pedido creadas para la marca autorizada. Una entrega sin pedido es un despacho de Justo Delivery que no tiene asociado un pedido de Justo Ecommerce; se crea directamente desde Justo Admin, API o una integración externa cuando la marca necesita mover un pedido tomado fuera de Justo o coordinar un despacho manual.
+
+Usa este endpoint para monitorear esos despachos, buscar por código o `externalId`, revisar entregas activas y auditar el estado de operaciones logísticas que no aparecen en la lista normal de pedidos ecommerce.
 
 La respuesta viene paginada. Para descargas completas desde Justo Admin MCP, usa `generate_data_file`; para una vista rápida usa `get_data`.

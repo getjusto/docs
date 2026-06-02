@@ -5218,7 +5218,7 @@
       },
       "apiDeliveryWithoutOrder": {
         "type": "object",
-        "description": "Entrega solicitada desde Website Admin sin estar asociada a un pedido ecommerce.",
+        "description": "Entrega de Justo Delivery creada sin un pedido de Justo Ecommerce asociado. Se usa para despachos manuales o integraciones externas que necesitan logística fuera del checkout de Justo.",
         "properties": {
           "_id": {
             "type": "string",
