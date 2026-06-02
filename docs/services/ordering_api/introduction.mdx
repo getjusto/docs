@@ -25,11 +25,13 @@ El email real del cliente no se guarda como email principal del usuario técnico
 
 ## Estado de checkout
 
-Los datos temporales del checkout se guardan por `{ appId, externalCustomerId, websiteId }` y expiran automáticamente. Este estado puede contener `selectedAddressId`, `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `idempotencyKey`, `meta` y datos equivalentes.
+Los datos temporales del checkout se guardan por `{ appId, externalCustomerId, websiteId }` y expiran automáticamente. Este estado puede contener `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `meta` y datos equivalentes.
 
-La dirección seleccionada principal vive en el `OrderingCustomer`, con `selectedAddressId`, `selectedPlaceId` y `selectedCityId`. El `selectedAddressId` dentro de checkout-state es un snapshot del checkout actual y se mantiene para compatibilidad con los flujos por website.
+La dirección seleccionada principal vive en el `OrderingCustomer`, con `selectedAddressId`, `selectedPlaceId` y `selectedCityId`. Marketplace, catálogo, carrito y órdenes siempre derivan ubicación desde esa dirección seleccionada; no envíes `cityId` ni `placeId` como campos configurables.
 
-El carro, tipo de despacho, local, hora, método de pago, cupones y coins siguen usando los flujos existentes de preferencias y carro.
+El carro, tipo de despacho, local, hora, método de pago, cupones, horarios disponibles, medios de pago y opciones dinámicas como billing se leen desde `GET /cart`. Las escrituras del checkout se hacen con `PATCH /cart/preferences`.
+
+Ordering API auto-acepta los términos legales obligatorios del website igual que inDrive: `GET /cart` devuelve `data.options.terms.hidden: true` y `data.options.terms.checked: true`, y al crear la orden se firman internamente las versiones vigentes para el usuario técnico del customer. No agregues un paso manual de términos ni envíes `termSignatures` en el flujo normal.
 
 ## Órdenes
 

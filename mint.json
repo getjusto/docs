@@ -253,7 +253,6 @@
 					"pages": [
 						"docs/services/ordering_api/introduction",
 						"docs/services/ordering_api/integration-tips",
-						"docs/services/ordering_api/data-models",
 						{
 							"group": "Marketplace",
 							"pages": [
@@ -265,11 +264,9 @@
 							"group": "Websites y catálogo",
 							"pages": [
 								"docs/services/ordering_api/endpoints/websites/get-website",
-								"docs/services/ordering_api/endpoints/websites/list-categories",
 								"docs/services/ordering_api/endpoints/websites/list-products",
 								"docs/services/ordering_api/endpoints/websites/search-products",
-								"docs/services/ordering_api/endpoints/websites/get-product",
-								"docs/services/ordering_api/endpoints/websites/get-billing-params"
+								"docs/services/ordering_api/endpoints/websites/get-product"
 							]
 						},
 						{
@@ -279,7 +276,6 @@
 								"docs/services/ordering_api/endpoints/customers/put-customer",
 								"docs/services/ordering_api/endpoints/customers/list-addresses",
 								"docs/services/ordering_api/endpoints/customers/create-address",
-								"docs/services/ordering_api/endpoints/customers/update-address",
 								"docs/services/ordering_api/endpoints/customers/delete-address",
 								"docs/services/ordering_api/endpoints/customers/set-selected-address"
 							]
@@ -292,16 +288,7 @@
 								"docs/services/ordering_api/endpoints/cart/update-item",
 								"docs/services/ordering_api/endpoints/cart/delete-item",
 								"docs/services/ordering_api/endpoints/cart/update-preferences",
-								"docs/services/ordering_api/endpoints/cart/list-stores",
-								"docs/services/ordering_api/endpoints/cart/list-times",
-								"docs/services/ordering_api/endpoints/cart/list-payment-methods",
-								"docs/services/ordering_api/endpoints/checkout/get-checkout-state",
-								"docs/services/ordering_api/endpoints/checkout/update-checkout-state",
-								"docs/services/ordering_api/endpoints/checkout/get-billing",
-								"docs/services/ordering_api/endpoints/checkout/set-billing",
-								"docs/services/ordering_api/endpoints/checkout/get-website-coins",
-								"docs/services/ordering_api/endpoints/checkout/get-justo-coins",
-								"docs/services/ordering_api/endpoints/checkout/list-favorite-products"
+								"docs/services/ordering_api/endpoints/cart/list-stores"
 							]
 						},
 						{

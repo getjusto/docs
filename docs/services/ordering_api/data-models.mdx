@@ -647,10 +647,6 @@ Estado temporal de checkout persistido por Ordering API.
   Firmas de términos.
 </ResponseField>
 
-<ResponseField name="idempotencyKey" type="string | null">
-  Idempotency key provisto por la app externa.
-</ResponseField>
-
 <ResponseField name="meta" type="Record<string, object> | null">
   Metadata adicional.
 </ResponseField>
@@ -704,10 +700,6 @@ Estado temporal de checkout a guardar.
   Firmas de términos.
 </ResponseField>
 
-<ResponseField name="idempotencyKey" type="string | null">
-  Key estable para reintentos del mismo checkout.
-</ResponseField>
-
 <ResponseField name="meta" type="Record<string, object> | null">
   Metadata adicional.
 </ResponseField>
@@ -719,14 +711,10 @@ Estado temporal de checkout a guardar.
 
 ### OrderingCreateOrderInput
 
-Payload para crear una orden.
+Payload para crear una orden. Es el único body aceptado por `POST /orders`; el resto de la orden sale del state guardado por Ordering API.
 
-<ResponseField name="customer" type="OrderingOrderCustomerInput | null">
-  Ver `OrderingOrderCustomerInput`.
-</ResponseField>
-
-<ResponseField name="order" type="OrderingOrderInput">
-  Ver `OrderingOrderInput`.
+<ResponseField name="idempotencyKey" type="string" required>
+  Key estable para crear o reintentar el mismo checkout.
 </ResponseField>
 
 
@@ -1032,132 +1020,6 @@ Menú publicado.
 
 <ResponseField name="categoryTree" type="OrderingCategoryTreeItem[]">
   Árbol de categorías.
-</ResponseField>
-
-
-### OrderingOrderCustomerInput
-
-Datos del customer a actualizar justo antes de crear la orden.
-
-<ResponseField name="email" type="string | null">
-  Email real del customer para Order.email y notificaciones.
-</ResponseField>
-
-<ResponseField name="phone" type="string | null">
-  Teléfono real del customer.
-</ResponseField>
-
-<ResponseField name="firstName" type="string | null">
-  Nombre del customer.
-</ResponseField>
-
-<ResponseField name="lastName" type="string | null">
-  Apellido del customer.
-</ResponseField>
-
-
-### OrderingOrderInput
-
-Datos finales de la orden. Si omites un campo, Ordering API usa preferencias o checkout-state cuando aplique.
-
-<ResponseField name="addressId" type="string | null">
-  ID de dirección para delivery.
-</ResponseField>
-
-<ResponseField name="storeId" type="string | null">
-  ID del local que preparará el pedido.
-</ResponseField>
-
-<ResponseField name="menuId" type="string | null">
-  ID del menú usado en el carrito.
-</ResponseField>
-
-<ResponseField name="deliveryType" type="delivery | go | serve | null">
-  Tipo de entrega.
-</ResponseField>
-
-<ResponseField name="time" type="string | null">
-  Horario final. Usa `now` o un `value` de cart/times.
-</ResponseField>
-
-<ResponseField name="paymentType" type="string | null">
-  Medio de pago final.
-</ResponseField>
-
-<ResponseField name="cashAmount" type="number | null">
-  Monto declarado para pago en efectivo.
-</ResponseField>
-
-<ResponseField name="couponCode" type="string | null">
-  Cupón a usar en la orden.
-</ResponseField>
-
-<ResponseField name="otherPaymentType" type="string | null">
-  Subtipo de pago, si aplica.
-</ResponseField>
-
-<ResponseField name="cardId" type="string | null">
-  ID de tarjeta guardada, si aplica.
-</ResponseField>
-
-<ResponseField name="tipAmount" type="number | null">
-  Monto final de propina.
-</ResponseField>
-
-<ResponseField name="dropOffType" type="string | null">
-  Tipo de entrega en destino.
-</ResponseField>
-
-<ResponseField name="tableName" type="string | null">
-  Mesa o identificador de consumo en local.
-</ResponseField>
-
-<ResponseField name="orderParams" type="Record<string, object> | null">
-  Parámetros adicionales del pedido.
-</ResponseField>
-
-<ResponseField name="billing" type="OrderingBillingInput | null">
-  Ver `OrderingBillingInput`.
-</ResponseField>
-
-<ResponseField name="termSignatures" type="object[] | null">
-  Firmas de términos.
-</ResponseField>
-
-<ResponseField name="idempotencyKey" type="string | null">
-  Key estable para reintentos del mismo checkout.
-</ResponseField>
-
-<ResponseField name="paymentData" type="Record<string, object> | null">
-  Datos del proveedor de pago.
-</ResponseField>
-
-<ResponseField name="paymentProviderConfig" type="Record<string, object> | null">
-  Configuración del proveedor de pago.
-</ResponseField>
-
-<ResponseField name="sessionBirthday" type="string | null">
-  Fecha de nacimiento de sesión.
-</ResponseField>
-
-<ResponseField name="gift" type="object | null">
-  Información de regalo.
-</ResponseField>
-
-<ResponseField name="websiteCoinsDiscount" type="number | null">
-  Website Coins a descontar.
-</ResponseField>
-
-<ResponseField name="justoCoinsDiscount" type="number | null">
-  Justo Coins a descontar.
-</ResponseField>
-
-<ResponseField name="meta" type="Record<string, object> | null">
-  Metadata adicional.
-</ResponseField>
-
-<ResponseField name="usePaymentsV3" type="boolean | null">
-  Indica si se debe usar Payments V3. Default true.
 </ResponseField>
 
 
