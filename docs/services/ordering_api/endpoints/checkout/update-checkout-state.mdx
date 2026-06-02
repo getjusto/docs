@@ -1,0 +1,176 @@
+---
+title: Update checkout state
+description: Actualiza datos temporales de checkout con TTL automático.
+---
+
+Actualiza datos temporales de checkout con TTL automático.
+
+Todas las llamadas usan `Authorization: Bearer <token>` con scope `orderingApi`.
+
+## Endpoint
+
+```http
+PATCH /v3/ordering/customers/{externalCustomerId}/websites/{domain}/checkout-state
+```
+
+## Path parameters
+
+<ParamField name="externalCustomerId" type="string" required>
+  ID del customer en el sistema externo. Es independiente por app.
+</ParamField>
+
+<ParamField name="domain" type="string" required>
+  Dominio canónico del website Justo, sin protocolo ni `www.`.
+</ParamField>
+
+## Body
+
+<ParamField name="selectedAddressId" type="string">
+  ID de dirección seleccionada.
+</ParamField>
+
+<ParamField name="billing" type="object">
+  Datos de facturación para el pedido.
+</ParamField>
+
+<ParamField name="tip" type="object">
+  Propina seleccionada. Usa `amount` para monto final.
+</ParamField>
+
+<ParamField name="cashAmount" type="number">
+  Monto declarado para efectivo.
+</ParamField>
+
+<ParamField name="gift" type="object">
+  Información de regalo.
+</ParamField>
+
+<ParamField name="orderParams" type="object">
+  Parámetros adicionales del pedido.
+</ParamField>
+
+<ParamField name="termSignatures" type="array">
+  Firmas de términos.
+</ParamField>
+
+<ParamField name="idempotencyKey" type="string">
+  Key estable para reintentos del mismo checkout.
+</ParamField>
+
+<ParamField name="meta" type="object">
+  Metadata adicional.
+</ParamField>
+
+<ParamField name="sessionBirthday" type="string">
+  Fecha de nacimiento de sesión.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indica si la llamada fue procesada correctamente.
+</ResponseField>
+
+<ResponseField name="data" type="OrderingCheckoutState" required>
+  Estado temporal actualizado.
+</ResponseField>
+
+## Data object
+
+### OrderingCheckoutState
+
+Estado temporal de checkout persistido por Ordering API.
+
+<ResponseField name="_id" type="string">
+  ID del estado temporal.
+</ResponseField>
+
+<ResponseField name="appId" type="string">
+  ID de la app Ordering API.
+</ResponseField>
+
+<ResponseField name="externalCustomerId" type="string">
+  ID del customer externo.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID del website.
+</ResponseField>
+
+<ResponseField name="selectedAddressId" type="string | null">
+  Dirección seleccionada.
+</ResponseField>
+
+<ResponseField name="billing" type="OrderingBilling | null">
+  Ver `OrderingBilling`.
+</ResponseField>
+
+<ResponseField name="tip" type="object | null">
+  Configuración de propina.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number | null">
+  Monto declarado para efectivo.
+</ResponseField>
+
+<ResponseField name="gift" type="object | null">
+  Información de regalo.
+</ResponseField>
+
+<ResponseField name="orderParams" type="Record<string, object> | null">
+  Parámetros adicionales del pedido.
+</ResponseField>
+
+<ResponseField name="termSignatures" type="object[] | null">
+  Firmas de términos.
+</ResponseField>
+
+<ResponseField name="idempotencyKey" type="string | null">
+  Idempotency key provisto por la app externa.
+</ResponseField>
+
+<ResponseField name="meta" type="Record<string, object> | null">
+  Metadata adicional.
+</ResponseField>
+
+<ResponseField name="sessionBirthday" type="string | null">
+  Fecha de nacimiento de sesión.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Fecha de creación.
+</ResponseField>
+
+<ResponseField name="updatedAt" type="string">
+  Fecha de actualización.
+</ResponseField>
+
+<ResponseField name="expiresAt" type="string">
+  Fecha de expiración TTL.
+</ResponseField>
+
+
+### OrderingBilling
+
+Datos de facturación guardados para el checkout.
+
+<ResponseField name="name" type="string | null">
+  Nombre o razón social.
+</ResponseField>
+
+<ResponseField name="document" type="string | null">
+  Documento tributario.
+</ResponseField>
+
+<ResponseField name="email" type="string | null">
+  Email de facturación.
+</ResponseField>
+
+<ResponseField name="address" type="string | null">
+  Dirección de facturación.
+</ResponseField>
+
+<ResponseField name="activityType" type="string | null">
+  Giro o actividad económica.
+</ResponseField>
+

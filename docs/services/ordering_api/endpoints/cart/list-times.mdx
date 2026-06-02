@@ -1,0 +1,53 @@
+---
+title: List times
+description: Lista horarios disponibles para el local y tipo de entrega seleccionados.
+---
+
+Lista horarios disponibles para el local y tipo de entrega seleccionados.
+
+Todas las llamadas usan `Authorization: Bearer <token>` con scope `orderingApi`.
+
+## Endpoint
+
+```http
+GET /v3/ordering/customers/{externalCustomerId}/websites/{domain}/cart/times
+```
+
+## Path parameters
+
+<ParamField name="externalCustomerId" type="string" required>
+  ID del customer en el sistema externo. Es independiente por app.
+</ParamField>
+
+<ParamField name="domain" type="string" required>
+  Dominio canónico del website Justo, sin protocolo ni `www.`.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indica si la llamada fue procesada correctamente.
+</ResponseField>
+
+<ResponseField name="data" type="OrderingTimeOption[]" required>
+  Horarios disponibles para el carrito.
+</ResponseField>
+
+## Data object
+
+### OrderingTimeOption
+
+Opción de horario disponible.
+
+<ResponseField name="value" type="string">
+  Valor que debe enviarse como `time`.
+</ResponseField>
+
+<ResponseField name="label" type="string">
+  Texto visible del horario.
+</ResponseField>
+
+<ResponseField name="disabled" type="boolean">
+  Indica si la opción no está disponible.
+</ResponseField>
+

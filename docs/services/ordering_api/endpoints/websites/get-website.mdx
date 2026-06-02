@@ -1,0 +1,32 @@
+---
+title: Get website
+description: Obtiene datos públicos del website, incluyendo el menú por defecto.
+---
+
+Obtiene datos públicos del website, incluyendo el menú por defecto.
+
+Todas las llamadas usan `Authorization: Bearer <token>` con scope `orderingApi`.
+
+## Endpoint
+
+```http
+GET /v3/ordering/websites/{domain}
+```
+
+## Path parameters
+
+<ParamField name="domain" type="string" required>
+  Dominio canónico del website Justo, sin protocolo ni `www.`.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indica si la llamada fue procesada correctamente.
+</ResponseField>
+
+<ResponseField name="data" type="OrderingWebsite" required>
+  Datos públicos del website.
+</ResponseField>
+
+

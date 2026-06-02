@@ -1,0 +1,36 @@
+---
+title: Get Justo Coins
+description: Obtiene el balance de Justo Coins del customer para el país del website.
+---
+
+Obtiene el balance de Justo Coins del customer para el país del website.
+
+Todas las llamadas usan `Authorization: Bearer <token>` con scope `orderingApi`.
+
+## Endpoint
+
+```http
+GET /v3/ordering/customers/{externalCustomerId}/websites/{domain}/justo-coins
+```
+
+## Path parameters
+
+<ParamField name="externalCustomerId" type="string" required>
+  ID del customer en el sistema externo. Es independiente por app.
+</ParamField>
+
+<ParamField name="domain" type="string" required>
+  Dominio canónico del website Justo, sin protocolo ni `www.`.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indica si la llamada fue procesada correctamente.
+</ResponseField>
+
+<ResponseField name="data" type="number" required>
+  Balance disponible de Justo Coins.
+</ResponseField>
+
+

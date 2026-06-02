@@ -1,0 +1,36 @@
+---
+title: Delete address
+description: Elimina una dirección del customer.
+---
+
+Elimina una dirección del customer.
+
+Todas las llamadas usan `Authorization: Bearer <token>` con scope `orderingApi`.
+
+## Endpoint
+
+```http
+DELETE /v3/ordering/customers/{externalCustomerId}/addresses/{addressId}
+```
+
+## Path parameters
+
+<ParamField name="externalCustomerId" type="string" required>
+  ID del customer en el sistema externo. Es independiente por app.
+</ParamField>
+
+<ParamField name="addressId" type="string" required>
+  ID de una dirección guardada por el customer.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indica si la llamada fue procesada correctamente.
+</ResponseField>
+
+<ResponseField name="data" type="boolean" required>
+  `true` si la dirección fue eliminada.
+</ResponseField>
+
+

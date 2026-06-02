@@ -1,0 +1,2069 @@
+---
+title: Modelos de datos
+description: Detalle de los objetos usados por Ordering API.
+---
+
+Estos modelos describen los objetos retornados en `data` y los objetos compuestos usados por Ordering API.
+
+### OrderingAddress
+
+Dirección guardada por el customer de Ordering API.
+
+<ResponseField name="_id" type="string">
+  ID de la dirección.
+</ResponseField>
+
+<ResponseField name="placeId" type="string">
+  Place ID usado por Justo para calcular cobertura y despacho.
+</ResponseField>
+
+<ResponseField name="address" type="string">
+  Dirección principal.
+</ResponseField>
+
+<ResponseField name="addressLine2" type="string | null">
+  Departamento, oficina u otra información secundaria.
+</ResponseField>
+
+<ResponseField name="addressSecondary" type="string | null">
+  Texto secundario de comuna, ciudad o referencia.
+</ResponseField>
+
+<ResponseField name="location" type="OrderingLocation">
+  Ver `OrderingLocation`.
+</ResponseField>
+
+<ResponseField name="acceptsNoLine2" type="boolean">
+  Indica si el customer confirmó que no tiene línea 2.
+</ResponseField>
+
+<ResponseField name="comment" type="string | null">
+  Comentario o instrucciones de entrega.
+</ResponseField>
+
+<ResponseField name="userId" type="string">
+  ID del usuario sintético dueño de la dirección.
+</ResponseField>
+
+<ResponseField name="deviceId" type="string | null">
+  Device ID usado al crear la dirección.
+</ResponseField>
+
+<ResponseField name="streetAddress" type="string | null">
+  Calle y numeración normalizada.
+</ResponseField>
+
+<ResponseField name="locality" type="string | null">
+  Localidad o comuna.
+</ResponseField>
+
+<ResponseField name="subLocality" type="string | null">
+  Sub-localidad.
+</ResponseField>
+
+<ResponseField name="region" type="string | null">
+  Región o estado.
+</ResponseField>
+
+<ResponseField name="postalCode" type="string | null">
+  Código postal.
+</ResponseField>
+
+<ResponseField name="countryCode" type="string | null">
+  Código de país ISO 3166-1 alpha-2.
+</ResponseField>
+
+<ResponseField name="countryName" type="string | null">
+  Nombre del país.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Fecha de creación.
+</ResponseField>
+
+
+### OrderingAddressInput
+
+Dirección a crear o actualizar para el customer.
+
+<ResponseField name="placeId" type="string">
+  Place ID normalizado usado para cobertura y despacho.
+</ResponseField>
+
+<ResponseField name="address" type="string">
+  Dirección principal visible para el customer.
+</ResponseField>
+
+<ResponseField name="addressLine2" type="string | null">
+  Departamento, oficina u otra información secundaria.
+</ResponseField>
+
+<ResponseField name="addressSecondary" type="string | null">
+  Texto secundario de comuna, ciudad o referencia.
+</ResponseField>
+
+<ResponseField name="location" type="OrderingLocation">
+  Ver `OrderingLocation`.
+</ResponseField>
+
+<ResponseField name="acceptsNoLine2" type="boolean | null">
+  Indica si el customer confirmó que no tiene línea 2.
+</ResponseField>
+
+<ResponseField name="comment" type="string | null">
+  Comentario o instrucciones de entrega.
+</ResponseField>
+
+<ResponseField name="streetAddress" type="string | null">
+  Calle y numeración normalizada.
+</ResponseField>
+
+<ResponseField name="locality" type="string | null">
+  Localidad o comuna.
+</ResponseField>
+
+<ResponseField name="subLocality" type="string | null">
+  Sub-localidad.
+</ResponseField>
+
+<ResponseField name="region" type="string | null">
+  Región o estado.
+</ResponseField>
+
+<ResponseField name="postalCode" type="string | null">
+  Código postal.
+</ResponseField>
+
+<ResponseField name="countryCode" type="string | null">
+  Código de país ISO 3166-1 alpha-2.
+</ResponseField>
+
+<ResponseField name="countryName" type="string | null">
+  Nombre del país.
+</ResponseField>
+
+
+### OrderingBilling
+
+Datos de facturación guardados para el checkout.
+
+<ResponseField name="name" type="string | null">
+  Nombre o razón social.
+</ResponseField>
+
+<ResponseField name="document" type="string | null">
+  Documento tributario.
+</ResponseField>
+
+<ResponseField name="email" type="string | null">
+  Email de facturación.
+</ResponseField>
+
+<ResponseField name="address" type="string | null">
+  Dirección de facturación.
+</ResponseField>
+
+<ResponseField name="activityType" type="string | null">
+  Giro o actividad económica.
+</ResponseField>
+
+
+### OrderingBillingInput
+
+Datos de facturación para el checkout.
+
+<ResponseField name="type" type="string | null">
+  Tipo de facturación elegido desde billingParamsSchema.
+</ResponseField>
+
+<ResponseField name="name" type="string | null">
+  Nombre o razón social.
+</ResponseField>
+
+<ResponseField name="document" type="string | null">
+  Documento tributario.
+</ResponseField>
+
+<ResponseField name="email" type="string | null">
+  Email de facturación.
+</ResponseField>
+
+<ResponseField name="address" type="string | null">
+  Dirección de facturación.
+</ResponseField>
+
+<ResponseField name="activityType" type="string | null">
+  Giro o actividad económica.
+</ResponseField>
+
+
+### OrderingBillingParams
+
+Parámetros de facturación requeridos por el website.
+
+<ResponseField name="billingParamsSchema" type="object[]">
+  Schema dinámico de campos de facturación.
+</ResponseField>
+
+<ResponseField name="orderBillingRequired" type="boolean">
+  Indica si la facturación es obligatoria.
+</ResponseField>
+
+<ResponseField name="countryCode" type="string">
+  Código de país del website.
+</ResponseField>
+
+
+### OrderingCart
+
+Carrito calculado.
+
+<ResponseField name="websiteId" type="string">
+  ID del website.
+</ResponseField>
+
+<ResponseField name="menuId" type="string | null">
+  ID del menú.
+</ResponseField>
+
+<ResponseField name="storeId" type="string | null">
+  ID del local.
+</ResponseField>
+
+<ResponseField name="deliveryType" type="delivery | go | serve | null">
+  Tipo de entrega.
+</ResponseField>
+
+<ResponseField name="placeId" type="string | null">
+  Place ID seleccionado.
+</ResponseField>
+
+<ResponseField name="couponCode" type="string | null">
+  Cupón aplicado.
+</ResponseField>
+
+<ResponseField name="paymentType" type="string | null">
+  Medio de pago seleccionado.
+</ResponseField>
+
+<ResponseField name="otherPaymentType" type="string | null">
+  Subtipo de pago, si aplica.
+</ResponseField>
+
+<ResponseField name="tipAmount" type="number | null">
+  Monto de propina seleccionado.
+</ResponseField>
+
+<ResponseField name="tipPercentage" type="number | null">
+  Porcentaje de propina seleccionado.
+</ResponseField>
+
+<ResponseField name="calculatedTipAmount" type="number | null">
+  Propina calculada por defecto.
+</ResponseField>
+
+<ResponseField name="justoCoinsToSpend" type="number | null">
+  Justo Coins a usar.
+</ResponseField>
+
+<ResponseField name="websiteCoinsToSpend" type="number | null">
+  Website Coins a usar.
+</ResponseField>
+
+<ResponseField name="items" type="OrderingCartItem[]">
+  Items del carrito.
+</ResponseField>
+
+<ResponseField name="acceptsTip" type="boolean">
+  Indica si el carrito acepta propina.
+</ResponseField>
+
+<ResponseField name="couponStatus" type="object | null">
+  Estado del cupón aplicado.
+</ResponseField>
+
+<ResponseField name="benefits" type="object[]">
+  Beneficios o promociones aplicadas.
+</ResponseField>
+
+<ResponseField name="deliveryFee" type="number">
+  Costo de despacho.
+</ResponseField>
+
+<ResponseField name="deliveryFeeWithoutDiscount" type="number">
+  Costo de despacho antes de descuentos.
+</ResponseField>
+
+<ResponseField name="itemsPrice" type="number">
+  Precio de productos.
+</ResponseField>
+
+<ResponseField name="itemsPriceWithoutDiscount" type="number">
+  Precio de productos antes de descuentos.
+</ResponseField>
+
+<ResponseField name="serviceFee" type="number">
+  Cargo de servicio.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  Total sin propina.
+</ResponseField>
+
+<ResponseField name="amountToPay" type="number">
+  Total a pagar.
+</ResponseField>
+
+
+### OrderingCartItem
+
+Item del carrito.
+
+<ResponseField name="_id" type="string">
+  ID del item del carrito.
+</ResponseField>
+
+<ResponseField name="productId" type="string">
+  ID del producto.
+</ResponseField>
+
+<ResponseField name="menuId" type="string | null">
+  ID del menú.
+</ResponseField>
+
+<ResponseField name="amount" type="number">
+  Cantidad del producto.
+</ResponseField>
+
+<ResponseField name="quantity" type="number">
+  Cantidad del producto en flujos v2.
+</ResponseField>
+
+<ResponseField name="comment" type="string | null">
+  Comentario del item.
+</ResponseField>
+
+<ResponseField name="modifiers" type="object[]">
+  Modificadores seleccionados.
+</ResponseField>
+
+<ResponseField name="product" type="object">
+  Producto asociado al item.
+</ResponseField>
+
+<ResponseField name="unitPrice" type="number">
+  Precio unitario.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  Precio total del item.
+</ResponseField>
+
+
+### OrderingCartItemInput
+
+Item a agregar o actualizar en el carrito.
+
+<ResponseField name="productId" type="string">
+  ID del producto.
+</ResponseField>
+
+<ResponseField name="menuId" type="string | null">
+  ID del menú desde el que se agrega el producto.
+</ResponseField>
+
+<ResponseField name="amount" type="number">
+  Cantidad del producto. Debe ser mayor a 0.
+</ResponseField>
+
+<ResponseField name="modifiers" type="OrderingCartModifierSelection[]">
+  Modificadores seleccionados.
+</ResponseField>
+
+<ResponseField name="comment" type="string | null">
+  Comentario del item.
+</ResponseField>
+
+
+### OrderingCartItemMutation
+
+Resultado de una mutación de item de carrito.
+
+<ResponseField name="item" type="OrderingCartItem">
+  Ver `OrderingCartItem`.
+</ResponseField>
+
+<ResponseField name="state" type="OrderingCartState">
+  Ver `OrderingCartState`.
+</ResponseField>
+
+
+### OrderingCartModifierSelection
+
+Selección de un modificador de producto.
+
+<ResponseField name="modifierId" type="string">
+  ID del modificador.
+</ResponseField>
+
+<ResponseField name="optionsIds" type="string[]">
+  IDs de opciones seleccionadas. Repite un ID si la opción permite más de una unidad.
+</ResponseField>
+
+
+### OrderingCartPreference
+
+Preferencias activas del carrito.
+
+<ResponseField name="websiteId" type="string">
+  ID del website.
+</ResponseField>
+
+<ResponseField name="userId" type="string">
+  ID del usuario sintético.
+</ResponseField>
+
+<ResponseField name="deviceId" type="string">
+  Device ID usado por Ordering API.
+</ResponseField>
+
+<ResponseField name="storeId" type="string | null">
+  ID del local seleccionado.
+</ResponseField>
+
+<ResponseField name="menuId" type="string | null">
+  ID del menú seleccionado.
+</ResponseField>
+
+<ResponseField name="placeId" type="string | null">
+  Place ID seleccionado.
+</ResponseField>
+
+<ResponseField name="deliveryType" type="delivery | go | serve | null">
+  Tipo de entrega.
+</ResponseField>
+
+<ResponseField name="paymentType" type="string | null">
+  Medio de pago seleccionado.
+</ResponseField>
+
+<ResponseField name="otherPaymentType" type="string | null">
+  Subtipo de pago, si aplica.
+</ResponseField>
+
+<ResponseField name="couponCode" type="string | null">
+  Código de cupón aplicado.
+</ResponseField>
+
+<ResponseField name="time" type="string | null">
+  Hora seleccionada. Usa `now` para pedidos inmediatos.
+</ResponseField>
+
+<ResponseField name="timeLabel" type="string | null">
+  Texto visible de la hora seleccionada.
+</ResponseField>
+
+<ResponseField name="dropOffType" type="string | null">
+  Tipo de entrega en destino.
+</ResponseField>
+
+<ResponseField name="tableName" type="string | null">
+  Mesa o identificador de consumo en local.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number | null">
+  Monto declarado para pago en efectivo.
+</ResponseField>
+
+<ResponseField name="cardId" type="string | null">
+  ID de tarjeta guardada.
+</ResponseField>
+
+<ResponseField name="justoCoinsToSpend" type="number | null">
+  Justo Coins a usar.
+</ResponseField>
+
+<ResponseField name="websiteCoinsToSpend" type="number | null">
+  Website Coins a usar.
+</ResponseField>
+
+
+### OrderingCartPreferencesInput
+
+Preferencias persistentes del carrito.
+
+<ResponseField name="storeId" type="string | null">
+  ID del local seleccionado.
+</ResponseField>
+
+<ResponseField name="menuId" type="string | null">
+  ID del menú seleccionado.
+</ResponseField>
+
+<ResponseField name="placeId" type="string | null">
+  Place ID seleccionado.
+</ResponseField>
+
+<ResponseField name="deliveryType" type="delivery | go | serve | null">
+  Tipo de entrega.
+</ResponseField>
+
+<ResponseField name="paymentType" type="string | null">
+  Medio de pago seleccionado.
+</ResponseField>
+
+<ResponseField name="otherPaymentType" type="string | null">
+  Subtipo de pago, si aplica.
+</ResponseField>
+
+<ResponseField name="couponCode" type="string | null">
+  Código de cupón aplicado.
+</ResponseField>
+
+<ResponseField name="time" type="string | null">
+  Hora seleccionada. Usa `now` o un `value` de cart/times.
+</ResponseField>
+
+<ResponseField name="dropOffType" type="string | null">
+  Tipo de entrega en destino.
+</ResponseField>
+
+<ResponseField name="tableName" type="string | null">
+  Mesa o identificador de consumo en local.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number | null">
+  Monto declarado para pago en efectivo.
+</ResponseField>
+
+<ResponseField name="cardId" type="string | null">
+  ID de tarjeta guardada.
+</ResponseField>
+
+<ResponseField name="justoCoinsToSpend" type="number | null">
+  Justo Coins a usar.
+</ResponseField>
+
+<ResponseField name="websiteCoinsToSpend" type="number | null">
+  Website Coins a usar.
+</ResponseField>
+
+
+### OrderingCartState
+
+Estado completo del carrito y checkout.
+
+<ResponseField name="preference" type="OrderingCartPreference">
+  Ver `OrderingCartPreference`.
+</ResponseField>
+
+<ResponseField name="address" type="OrderingAddress | null">
+  Ver `OrderingAddress`.
+</ResponseField>
+
+<ResponseField name="store" type="OrderingStore | null">
+  Ver `OrderingStore`.
+</ResponseField>
+
+<ResponseField name="timeOptions" type="OrderingTimeOption[]">
+  Horarios disponibles.
+</ResponseField>
+
+<ResponseField name="availablePaymentMethods" type="OrderingPaymentMethod[]">
+  Medios de pago disponibles.
+</ResponseField>
+
+<ResponseField name="cart" type="OrderingCart | null">
+  Ver `OrderingCart`.
+</ResponseField>
+
+
+### OrderingCategoryTreeItem
+
+Nodo del árbol de categorías.
+
+<ResponseField name="_id" type="string">
+  ID de la categoría.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre de la categoría.
+</ResponseField>
+
+<ResponseField name="subCategories" type="OrderingCategoryTreeItem[]">
+  Subcategorías.
+</ResponseField>
+
+<ResponseField name="translations" type="object | null">
+  Traducciones de la categoría.
+</ResponseField>
+
+
+### OrderingCheckoutState
+
+Estado temporal de checkout persistido por Ordering API.
+
+<ResponseField name="_id" type="string">
+  ID del estado temporal.
+</ResponseField>
+
+<ResponseField name="appId" type="string">
+  ID de la app Ordering API.
+</ResponseField>
+
+<ResponseField name="externalCustomerId" type="string">
+  ID del customer externo.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID del website.
+</ResponseField>
+
+<ResponseField name="selectedAddressId" type="string | null">
+  Dirección seleccionada.
+</ResponseField>
+
+<ResponseField name="billing" type="OrderingBilling | null">
+  Ver `OrderingBilling`.
+</ResponseField>
+
+<ResponseField name="tip" type="object | null">
+  Configuración de propina.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number | null">
+  Monto declarado para efectivo.
+</ResponseField>
+
+<ResponseField name="gift" type="object | null">
+  Información de regalo.
+</ResponseField>
+
+<ResponseField name="orderParams" type="Record<string, object> | null">
+  Parámetros adicionales del pedido.
+</ResponseField>
+
+<ResponseField name="termSignatures" type="object[] | null">
+  Firmas de términos.
+</ResponseField>
+
+<ResponseField name="idempotencyKey" type="string | null">
+  Idempotency key provisto por la app externa.
+</ResponseField>
+
+<ResponseField name="meta" type="Record<string, object> | null">
+  Metadata adicional.
+</ResponseField>
+
+<ResponseField name="sessionBirthday" type="string | null">
+  Fecha de nacimiento de sesión.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Fecha de creación.
+</ResponseField>
+
+<ResponseField name="updatedAt" type="string">
+  Fecha de actualización.
+</ResponseField>
+
+<ResponseField name="expiresAt" type="string">
+  Fecha de expiración TTL.
+</ResponseField>
+
+
+### OrderingCheckoutStateInput
+
+Estado temporal de checkout a guardar.
+
+<ResponseField name="selectedAddressId" type="string | null">
+  ID de dirección seleccionada.
+</ResponseField>
+
+<ResponseField name="billing" type="OrderingBillingInput | null">
+  Ver `OrderingBillingInput`.
+</ResponseField>
+
+<ResponseField name="tip" type="object | null">
+  Propina seleccionada.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number | null">
+  Monto declarado para efectivo.
+</ResponseField>
+
+<ResponseField name="gift" type="object | null">
+  Información de regalo.
+</ResponseField>
+
+<ResponseField name="orderParams" type="Record<string, object> | null">
+  Parámetros adicionales del pedido.
+</ResponseField>
+
+<ResponseField name="termSignatures" type="object[] | null">
+  Firmas de términos.
+</ResponseField>
+
+<ResponseField name="idempotencyKey" type="string | null">
+  Key estable para reintentos del mismo checkout.
+</ResponseField>
+
+<ResponseField name="meta" type="Record<string, object> | null">
+  Metadata adicional.
+</ResponseField>
+
+<ResponseField name="sessionBirthday" type="string | null">
+  Fecha de nacimiento de sesión.
+</ResponseField>
+
+
+### OrderingCreateOrderInput
+
+Payload para crear una orden.
+
+<ResponseField name="customer" type="OrderingOrderCustomerInput | null">
+  Ver `OrderingOrderCustomerInput`.
+</ResponseField>
+
+<ResponseField name="order" type="OrderingOrderInput">
+  Ver `OrderingOrderInput`.
+</ResponseField>
+
+
+### OrderingCustomer
+
+Customer propio de la app Ordering API.
+
+<ResponseField name="externalCustomerId" type="string">
+  ID del customer en el sistema externo.
+</ResponseField>
+
+<ResponseField name="email" type="string | null">
+  Email real del customer, usado para notificaciones.
+</ResponseField>
+
+<ResponseField name="phone" type="string | null">
+  Teléfono real del customer.
+</ResponseField>
+
+<ResponseField name="firstName" type="string | null">
+  Nombre del customer.
+</ResponseField>
+
+<ResponseField name="lastName" type="string | null">
+  Apellido del customer.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Fecha de creación del customer.
+</ResponseField>
+
+<ResponseField name="updatedAt" type="string">
+  Fecha de última actualización del customer.
+</ResponseField>
+
+
+### OrderingCustomerInput
+
+Datos reales del customer externo.
+
+<ResponseField name="email" type="string | null">
+  Email real del customer, usado para notificaciones.
+</ResponseField>
+
+<ResponseField name="phone" type="string | null">
+  Teléfono real del customer.
+</ResponseField>
+
+<ResponseField name="firstName" type="string | null">
+  Nombre del customer.
+</ResponseField>
+
+<ResponseField name="lastName" type="string | null">
+  Apellido del customer.
+</ResponseField>
+
+
+### OrderingFeaturedProduct
+
+Producto destacado de una card marketplace.
+
+<ResponseField name="_id" type="string">
+  ID del producto.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre del producto.
+</ResponseField>
+
+<ResponseField name="image" type="OrderingImage | null">
+  Ver `OrderingImage`.
+</ResponseField>
+
+<ResponseField name="price" type="number | null">
+  Precio final.
+</ResponseField>
+
+<ResponseField name="basePrice" type="number | null">
+  Precio base antes de descuentos.
+</ResponseField>
+
+<ResponseField name="available" type="boolean">
+  Indica si está disponible.
+</ResponseField>
+
+<ResponseField name="notAvailableMessage" type="string | null">
+  Motivo de no disponibilidad.
+</ResponseField>
+
+<ResponseField name="path" type="string">
+  Path del producto dentro del website.
+</ResponseField>
+
+
+### OrderingHumanSchedule
+
+Bloque de horario legible.
+
+<ResponseField name="days" type="string">
+  Días a los que aplica el horario.
+</ResponseField>
+
+<ResponseField name="schedule" type="string">
+  Horario legible.
+</ResponseField>
+
+
+### OrderingImage
+
+Imagen publicada por Justo o por el comercio.
+
+<ResponseField name="_id" type="string">
+  ID de la imagen.
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  URL original de la imagen.
+</ResponseField>
+
+<ResponseField name="colorsData" type="object">
+  Colores calculados de la imagen.
+</ResponseField>
+
+<ResponseField name="dimensions" type="object">
+  Dimensiones originales de la imagen.
+</ResponseField>
+
+<ResponseField name="resizedData" type="object">
+  URLs de versiones redimensionadas.
+</ResponseField>
+
+
+### OrderingLocation
+
+Coordenadas geográficas.
+
+<ResponseField name="lat" type="number">
+  Latitud.
+</ResponseField>
+
+<ResponseField name="lng" type="number">
+  Longitud.
+</ResponseField>
+
+
+### OrderingMarketplaceCard
+
+Card de restaurante en marketplace.
+
+<ResponseField name="_id" type="string">
+  ID interno de la card.
+</ResponseField>
+
+<ResponseField name="storeId" type="string">
+  ID del local recomendado.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID del website recomendado.
+</ResponseField>
+
+<ResponseField name="baseURL" type="string">
+  URL base del website.
+</ResponseField>
+
+<ResponseField name="websiteName" type="string">
+  Nombre comercial del website.
+</ResponseField>
+
+<ResponseField name="websiteMarketplaceStagingMode" type="boolean">
+  Indica si el website está en modo staging.
+</ResponseField>
+
+<ResponseField name="description" type="string | null">
+  Descripción del comercio.
+</ResponseField>
+
+<ResponseField name="foodCategoriesTags" type="string[]">
+  Tags de categorías gastronómicas.
+</ResponseField>
+
+<ResponseField name="foodCategoriesCodes" type="string[]">
+  Códigos de categorías gastronómicas.
+</ResponseField>
+
+<ResponseField name="searchWords" type="string[]">
+  Palabras de búsqueda indexadas.
+</ResponseField>
+
+<ResponseField name="averageReview" type="number">
+  Promedio de reviews.
+</ResponseField>
+
+<ResponseField name="reviewsCount" type="string">
+  Cantidad de reviews como texto público.
+</ResponseField>
+
+<ResponseField name="hasManagedDelivery" type="boolean">
+  Indica si tiene despacho gestionado.
+</ResponseField>
+
+<ResponseField name="logo" type="OrderingImage">
+  Ver `OrderingImage`.
+</ResponseField>
+
+<ResponseField name="image" type="OrderingImage">
+  Ver `OrderingImage`.
+</ResponseField>
+
+<ResponseField name="cityId" type="string">
+  ID de la ciudad marketplace.
+</ResponseField>
+
+<ResponseField name="cookingTime" type="number">
+  Tiempo estimado de cocina en minutos.
+</ResponseField>
+
+<ResponseField name="currentDeliveryDuration" type="number">
+  Duración actual de despacho en minutos.
+</ResponseField>
+
+<ResponseField name="currentPickupDuration" type="number">
+  Duración actual de retiro en minutos.
+</ResponseField>
+
+<ResponseField name="address" type="OrderingStoreAddress">
+  Ver `OrderingStoreAddress`.
+</ResponseField>
+
+<ResponseField name="disableNowOrders" type="boolean">
+  Indica si no acepta pedidos para ahora.
+</ResponseField>
+
+<ResponseField name="closedMessage" type="string | null">
+  Mensaje de cierre, si el local está cerrado.
+</ResponseField>
+
+<ResponseField name="dataForPlace" type="object">
+  Datos calculados para el placeId consultado.
+</ResponseField>
+
+<ResponseField name="featuredProducts" type="OrderingFeaturedProduct[]">
+  Productos destacados del comercio.
+</ResponseField>
+
+<ResponseField name="matchedProducts" type="object[]">
+  Productos que coincidieron con una búsqueda marketplace.
+</ResponseField>
+
+
+### OrderingMarketplacePage
+
+Página de resultados de marketplace.
+
+<ResponseField name="items" type="OrderingMarketplaceCard[]">
+  Restaurantes encontrados.
+</ResponseField>
+
+<ResponseField name="totalCount" type="number">
+  Total de resultados.
+</ResponseField>
+
+<ResponseField name="totalPages" type="number">
+  Total de páginas.
+</ResponseField>
+
+<ResponseField name="hasNextPage" type="boolean">
+  Indica si existe una página siguiente.
+</ResponseField>
+
+<ResponseField name="hasPreviousPage" type="boolean">
+  Indica si existe una página anterior.
+</ResponseField>
+
+
+### OrderingMenuData
+
+Menú publicado.
+
+<ResponseField name="menu" type="object">
+  Datos del menú.
+</ResponseField>
+
+<ResponseField name="products" type="Record<string, OrderingProduct>">
+  Productos indexados por ID.
+</ResponseField>
+
+<ResponseField name="categories" type="Record<string, OrderingProductCategory>">
+  Categorías indexadas por ID.
+</ResponseField>
+
+<ResponseField name="categoryTree" type="OrderingCategoryTreeItem[]">
+  Árbol de categorías.
+</ResponseField>
+
+
+### OrderingOrderCustomerInput
+
+Datos del customer a actualizar justo antes de crear la orden.
+
+<ResponseField name="email" type="string | null">
+  Email real del customer para Order.email y notificaciones.
+</ResponseField>
+
+<ResponseField name="phone" type="string | null">
+  Teléfono real del customer.
+</ResponseField>
+
+<ResponseField name="firstName" type="string | null">
+  Nombre del customer.
+</ResponseField>
+
+<ResponseField name="lastName" type="string | null">
+  Apellido del customer.
+</ResponseField>
+
+
+### OrderingOrderInput
+
+Datos finales de la orden. Si omites un campo, Ordering API usa preferencias o checkout-state cuando aplique.
+
+<ResponseField name="addressId" type="string | null">
+  ID de dirección para delivery.
+</ResponseField>
+
+<ResponseField name="storeId" type="string | null">
+  ID del local que preparará el pedido.
+</ResponseField>
+
+<ResponseField name="menuId" type="string | null">
+  ID del menú usado en el carrito.
+</ResponseField>
+
+<ResponseField name="deliveryType" type="delivery | go | serve | null">
+  Tipo de entrega.
+</ResponseField>
+
+<ResponseField name="time" type="string | null">
+  Horario final. Usa `now` o un `value` de cart/times.
+</ResponseField>
+
+<ResponseField name="paymentType" type="string | null">
+  Medio de pago final.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number | null">
+  Monto declarado para pago en efectivo.
+</ResponseField>
+
+<ResponseField name="couponCode" type="string | null">
+  Cupón a usar en la orden.
+</ResponseField>
+
+<ResponseField name="otherPaymentType" type="string | null">
+  Subtipo de pago, si aplica.
+</ResponseField>
+
+<ResponseField name="cardId" type="string | null">
+  ID de tarjeta guardada, si aplica.
+</ResponseField>
+
+<ResponseField name="tipAmount" type="number | null">
+  Monto final de propina.
+</ResponseField>
+
+<ResponseField name="dropOffType" type="string | null">
+  Tipo de entrega en destino.
+</ResponseField>
+
+<ResponseField name="tableName" type="string | null">
+  Mesa o identificador de consumo en local.
+</ResponseField>
+
+<ResponseField name="orderParams" type="Record<string, object> | null">
+  Parámetros adicionales del pedido.
+</ResponseField>
+
+<ResponseField name="billing" type="OrderingBillingInput | null">
+  Ver `OrderingBillingInput`.
+</ResponseField>
+
+<ResponseField name="termSignatures" type="object[] | null">
+  Firmas de términos.
+</ResponseField>
+
+<ResponseField name="idempotencyKey" type="string | null">
+  Key estable para reintentos del mismo checkout.
+</ResponseField>
+
+<ResponseField name="paymentData" type="Record<string, object> | null">
+  Datos del proveedor de pago.
+</ResponseField>
+
+<ResponseField name="paymentProviderConfig" type="Record<string, object> | null">
+  Configuración del proveedor de pago.
+</ResponseField>
+
+<ResponseField name="sessionBirthday" type="string | null">
+  Fecha de nacimiento de sesión.
+</ResponseField>
+
+<ResponseField name="gift" type="object | null">
+  Información de regalo.
+</ResponseField>
+
+<ResponseField name="websiteCoinsDiscount" type="number | null">
+  Website Coins a descontar.
+</ResponseField>
+
+<ResponseField name="justoCoinsDiscount" type="number | null">
+  Justo Coins a descontar.
+</ResponseField>
+
+<ResponseField name="meta" type="Record<string, object> | null">
+  Metadata adicional.
+</ResponseField>
+
+<ResponseField name="usePaymentsV3" type="boolean | null">
+  Indica si se debe usar Payments V3. Default true.
+</ResponseField>
+
+
+### OrderingOrdersPage
+
+Página de pedidos de un customer.
+
+<ResponseField name="items" type="apiOrder[]">
+  Pedidos de la página.
+</ResponseField>
+
+<ResponseField name="totalCount" type="number">
+  Total de pedidos.
+</ResponseField>
+
+<ResponseField name="totalPages" type="number">
+  Total de páginas.
+</ResponseField>
+
+<ResponseField name="hasNextPage" type="boolean">
+  Indica si existe una página siguiente.
+</ResponseField>
+
+<ResponseField name="hasPreviousPage" type="boolean">
+  Indica si existe una página anterior.
+</ResponseField>
+
+
+### OrderingPaymentMethod
+
+Medio de pago disponible.
+
+<ResponseField name="paymentMethod" type="string">
+  Código del medio de pago.
+</ResponseField>
+
+<ResponseField name="label" type="string">
+  Nombre visible del medio de pago.
+</ResponseField>
+
+<ResponseField name="canDeliver" type="boolean">
+  Indica si permite despacho.
+</ResponseField>
+
+<ResponseField name="isIntegration" type="boolean">
+  Indica si el pago depende de una integración externa.
+</ResponseField>
+
+<ResponseField name="allowedDeliveryTypes" type="delivery | go | serve[]">
+  Tipos de entrega permitidos para este medio de pago.
+</ResponseField>
+
+<ResponseField name="requiresRoundTrip" type="boolean">
+  Indica si requiere viaje ida y vuelta.
+</ResponseField>
+
+<ResponseField name="isAvailableInV3" type="boolean">
+  Indica si está disponible para API v3.
+</ResponseField>
+
+<ResponseField name="isSecure" type="boolean">
+  Indica si requiere validaciones seguras adicionales.
+</ResponseField>
+
+
+### OrderingProduct
+
+Producto de menú.
+
+<ResponseField name="_id" type="string">
+  ID del producto.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre del producto.
+</ResponseField>
+
+<ResponseField name="description" type="string | null">
+  Descripción del producto.
+</ResponseField>
+
+<ResponseField name="externalId" type="string | null">
+  ID externo configurado por el comercio.
+</ResponseField>
+
+<ResponseField name="priority" type="number">
+  Prioridad de ordenamiento.
+</ResponseField>
+
+<ResponseField name="informativeStamps" type="object | null">
+  Sellos informativos del producto.
+</ResponseField>
+
+<ResponseField name="availabilityAt" type="object">
+  Precio y disponibilidad del producto en el menú consultado.
+</ResponseField>
+
+<ResponseField name="nicknames" type="string[]">
+  Alias de búsqueda del producto.
+</ResponseField>
+
+<ResponseField name="categories" type="OrderingProductCategory[]">
+  Categorías del producto.
+</ResponseField>
+
+<ResponseField name="images" type="OrderingImage[]">
+  Imágenes del producto.
+</ResponseField>
+
+<ResponseField name="maxPurchaseQuantity" type="number | null">
+  Cantidad máxima por compra.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID del website.
+</ResponseField>
+
+<ResponseField name="websiteName" type="string">
+  Nombre del website.
+</ResponseField>
+
+<ResponseField name="menuId" type="string">
+  ID del menú consultado.
+</ResponseField>
+
+<ResponseField name="urlVideo" type="string | null">
+  URL de video del producto.
+</ResponseField>
+
+<ResponseField name="modifiers" type="OrderingProductModifier[]">
+  Modificadores del producto.
+</ResponseField>
+
+<ResponseField name="altImg" type="string | null">
+  Texto alt de imagen.
+</ResponseField>
+
+<ResponseField name="titleImg" type="string | null">
+  Título de imagen.
+</ResponseField>
+
+<ResponseField name="measurementUnit" type="string | null">
+  Unidad de medida.
+</ResponseField>
+
+<ResponseField name="measurementValue" type="number | null">
+  Valor de medida.
+</ResponseField>
+
+<ResponseField name="translations" type="object | null">
+  Traducciones del producto.
+</ResponseField>
+
+<ResponseField name="path" type="string">
+  Path del producto dentro del website.
+</ResponseField>
+
+
+### OrderingProductCategory
+
+Categoría de menú.
+
+<ResponseField name="_id" type="string">
+  ID de la categoría.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre de la categoría.
+</ResponseField>
+
+<ResponseField name="index" type="number">
+  Posición de la categoría.
+</ResponseField>
+
+<ResponseField name="translations" type="object | null">
+  Traducciones de la categoría.
+</ResponseField>
+
+
+### OrderingProductModifier
+
+Modificador de un producto.
+
+<ResponseField name="_id" type="string">
+  ID del modificador.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre del modificador.
+</ResponseField>
+
+<ResponseField name="shortName" type="string | null">
+  Nombre corto del modificador.
+</ResponseField>
+
+<ResponseField name="description" type="string | null">
+  Descripción del modificador.
+</ResponseField>
+
+<ResponseField name="isImageModifier" type="boolean">
+  Indica si se muestra como modificador visual.
+</ResponseField>
+
+<ResponseField name="min" type="number">
+  Mínimo de opciones a seleccionar.
+</ResponseField>
+
+<ResponseField name="max" type="number">
+  Máximo de opciones a seleccionar.
+</ResponseField>
+
+<ResponseField name="optional" type="boolean">
+  Indica si el modificador es opcional.
+</ResponseField>
+
+<ResponseField name="options" type="OrderingProductModifierOption[]">
+  Opciones del modificador.
+</ResponseField>
+
+<ResponseField name="translations" type="object | null">
+  Traducciones del modificador.
+</ResponseField>
+
+
+### OrderingProductModifierOption
+
+Opción seleccionable de un modificador.
+
+<ResponseField name="_id" type="string">
+  ID de la opción.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre de la opción.
+</ResponseField>
+
+<ResponseField name="availabilityAt" type="object">
+  Precio y disponibilidad de la opción en el menú.
+</ResponseField>
+
+<ResponseField name="images" type="OrderingImage[]">
+  Imágenes de la opción.
+</ResponseField>
+
+<ResponseField name="max" type="number">
+  Máximo seleccionable de esta opción.
+</ResponseField>
+
+<ResponseField name="requiresAtLeastOneModifierOption" type="boolean">
+  Indica si requiere otra opción seleccionada.
+</ResponseField>
+
+<ResponseField name="requiresModifierOptionIds" type="string[]">
+  IDs de opciones requeridas.
+</ResponseField>
+
+<ResponseField name="translations" type="object | null">
+  Traducciones de la opción.
+</ResponseField>
+
+
+### OrderingProductSearchData
+
+Resultado de búsqueda de productos.
+
+<ResponseField name="query" type="string">
+  Texto buscado.
+</ResponseField>
+
+<ResponseField name="categoryIds" type="string[]">
+  IDs de categorías incluidas en el resultado.
+</ResponseField>
+
+<ResponseField name="products" type="Record<string, OrderingProduct>">
+  Productos indexados por ID.
+</ResponseField>
+
+<ResponseField name="categories" type="Record<string, OrderingProductCategory>">
+  Categorías indexadas por ID.
+</ResponseField>
+
+
+### OrderingSelectedAddressInput
+
+Dirección seleccionada para el checkout del website.
+
+<ResponseField name="addressId" type="string">
+  ID de una dirección del customer.
+</ResponseField>
+
+
+### OrderingStore
+
+Local disponible para operar pedidos.
+
+<ResponseField name="_id" type="string">
+  ID del local.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID del website al que pertenece el local.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre del local.
+</ResponseField>
+
+<ResponseField name="timezone" type="string">
+  Zona horaria del local.
+</ResponseField>
+
+<ResponseField name="acceptDelivery" type="boolean">
+  Indica si acepta despacho.
+</ResponseField>
+
+<ResponseField name="acceptGo" type="boolean">
+  Indica si acepta retiro.
+</ResponseField>
+
+<ResponseField name="acceptServe" type="boolean">
+  Indica si acepta consumo en local.
+</ResponseField>
+
+<ResponseField name="acceptReservations" type="boolean">
+  Indica si acepta reservas.
+</ResponseField>
+
+<ResponseField name="acceptWaitingList" type="boolean">
+  Indica si acepta lista de espera.
+</ResponseField>
+
+<ResponseField name="minimumAnticipationDays" type="number">
+  Días mínimos de anticipación para pedidos programados.
+</ResponseField>
+
+<ResponseField name="hideTip" type="boolean">
+  Indica si se oculta la propina.
+</ResponseField>
+
+<ResponseField name="forceHideDeliveryTip" type="boolean">
+  Indica si se fuerza ocultar propina de delivery.
+</ResponseField>
+
+<ResponseField name="defaultsManagedDelivery" type="boolean">
+  Indica si el local usa despacho gestionado por defecto.
+</ResponseField>
+
+<ResponseField name="deliveryCostType" type="string">
+  Tipo de cálculo de costo de despacho.
+</ResponseField>
+
+<ResponseField name="cityId" type="string">
+  ID de la ciudad marketplace.
+</ResponseField>
+
+<ResponseField name="address" type="OrderingStoreAddress">
+  Ver `OrderingStoreAddress`.
+</ResponseField>
+
+<ResponseField name="humanSchedule" type="OrderingHumanSchedule[]">
+  Horario de atención legible.
+</ResponseField>
+
+<ResponseField name="reservationsHumanSchedule" type="OrderingHumanSchedule[]">
+  Horario de reservas legible.
+</ResponseField>
+
+<ResponseField name="zones" type="object[]">
+  Zonas de despacho del local.
+</ResponseField>
+
+<ResponseField name="availablePaymentMethodInfo" type="OrderingPaymentMethod[]">
+  Medios de pago disponibles para el local.
+</ResponseField>
+
+<ResponseField name="supportOptions" type="object">
+  Canales de soporte del local.
+</ResponseField>
+
+
+### OrderingStoreAddress
+
+Dirección pública de un local.
+
+<ResponseField name="placeId" type="string">
+  Place ID del local.
+</ResponseField>
+
+<ResponseField name="streetAddress" type="string">
+  Dirección principal.
+</ResponseField>
+
+<ResponseField name="extendedAddress" type="string | null">
+  Dirección extendida.
+</ResponseField>
+
+<ResponseField name="location" type="OrderingLocation">
+  Ver `OrderingLocation`.
+</ResponseField>
+
+<ResponseField name="locality" type="string | null">
+  Localidad o comuna.
+</ResponseField>
+
+<ResponseField name="countryName" type="string | null">
+  País.
+</ResponseField>
+
+
+### OrderingTimeOption
+
+Opción de horario disponible.
+
+<ResponseField name="value" type="string">
+  Valor que debe enviarse como `time`.
+</ResponseField>
+
+<ResponseField name="label" type="string">
+  Texto visible del horario.
+</ResponseField>
+
+<ResponseField name="disabled" type="boolean">
+  Indica si la opción no está disponible.
+</ResponseField>
+
+
+### apiOrder
+
+Pedido de ecommerce.
+
+<ResponseField name="_id" type="string">
+  ID del pedido.
+</ResponseField>
+
+<ResponseField name="orderStatus" type="pending | waiting | preparing | delivering | done | cancelled">
+  Estado operacional del pedido.
+</ResponseField>
+
+<ResponseField name="paymentStatus" type="pending | done | error | blocked | inReview | waitingForAdditionalPayment">
+  Estado del pago del pedido.
+</ResponseField>
+
+<ResponseField name="isScheduled" type="boolean">
+  Indica si el pedido es programado.
+</ResponseField>
+
+<ResponseField name="isConfirmed" type="boolean">
+  Indica si el pedido programado fue confirmado.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID de la marca.
+</ResponseField>
+
+<ResponseField name="storeId" type="string">
+  ID del local.
+</ResponseField>
+
+<ResponseField name="code" type="string">
+  Código único del pedido en Justo.
+</ResponseField>
+
+<ResponseField name="fullCode" type="string">
+  Código del pedido con el correlativo diario de la marca.
+</ResponseField>
+
+<ResponseField name="userId" type="string">
+  ID del usuario que creó el pedido.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Fecha de creación del pedido.
+</ResponseField>
+
+<ResponseField name="address" type="apiOrderAddress">
+  Ver `apiOrderAddress`.
+</ResponseField>
+
+<ResponseField name="menuId" type="string">
+  ID del menú desde el que se creó el pedido.
+</ResponseField>
+
+<ResponseField name="deliveryType" type="delivery | go | serve">
+  Tipo de entrega del pedido.
+</ResponseField>
+
+<ResponseField name="deliverAt" type="string">
+  Fecha en que el pedido debe ser entregado o retirado.
+</ResponseField>
+
+<ResponseField name="timeText" type="string">
+  Texto legible con la ventana estimada de entrega.
+</ResponseField>
+
+<ResponseField name="paymentType" type="string">
+  Medio de pago seleccionado.
+</ResponseField>
+
+<ResponseField name="paymentTypeLabel" type="string">
+  Nombre legible del medio de pago.
+</ResponseField>
+
+<ResponseField name="paymentTypeIsIntegration" type="boolean">
+  Indica si el medio de pago viene de una integración.
+</ResponseField>
+
+<ResponseField name="tipAmount" type="number">
+  Monto de propina.
+</ResponseField>
+
+<ResponseField name="amountToPay" type="number">
+  Monto total a pagar por el cliente, incluyendo propina.
+</ResponseField>
+
+<ResponseField name="deliveryFee" type="number">
+  Precio del despacho cobrado al cliente.
+</ResponseField>
+
+<ResponseField name="serviceFee" type="number">
+  Cargo de servicio cobrado al cliente.
+</ResponseField>
+
+<ResponseField name="itemsPrice" type="number">
+  Precio de los productos, sin propina ni despacho.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  Monto del pedido sin propina.
+</ResponseField>
+
+<ResponseField name="totalDiscount" type="number">
+  Monto total descontado del pedido.
+</ResponseField>
+
+<ResponseField name="expectedPreparationDuration" type="number">
+  Tiempo estimado de preparación en minutos.
+</ResponseField>
+
+<ResponseField name="deliveryDuration" type="number">
+  Tiempo estimado de despacho en minutos.
+</ResponseField>
+
+<ResponseField name="cashAmount" type="number">
+  Monto que el cliente declara pagar si el medio de pago es efectivo.
+</ResponseField>
+
+<ResponseField name="source" type="string">
+  Origen del pedido.
+</ResponseField>
+
+<ResponseField name="buyerName" type="string">
+  Nombre del cliente.
+</ResponseField>
+
+<ResponseField name="phone" type="string">
+  Teléfono del cliente.
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  Email del cliente.
+</ResponseField>
+
+<ResponseField name="couponId" type="string">
+  ID del cupón usado.
+</ResponseField>
+
+<ResponseField name="couponName" type="string">
+  Nombre del cupón usado.
+</ResponseField>
+
+<ResponseField name="couponCode" type="string">
+  Código del cupón usado.
+</ResponseField>
+
+<ResponseField name="couponDiscount" type="number">
+  Monto descontado por cupón.
+</ResponseField>
+
+<ResponseField name="flagColor" type="string">
+  Color de la bandera del pedido en POS.
+</ResponseField>
+
+<ResponseField name="items" type="apiOrderItem[]">
+  Detalle de los productos vendidos en el pedido.
+</ResponseField>
+
+<ResponseField name="transaction" type="apiOrderTransaction">
+  Ver `apiOrderTransaction`.
+</ResponseField>
+
+<ResponseField name="deliveries" type="apiOrderDelivery[]">
+  Despachos asociados al pedido.
+</ResponseField>
+
+<ResponseField name="orderParams" type="object">
+  Parámetros adicionales del pedido.
+</ResponseField>
+
+<ResponseField name="hasManagedDelivery" type="boolean">
+  Indica si el despacho es gestionado por Justo.
+</ResponseField>
+
+<ResponseField name="gift" type="object">
+  Información de regalo, si el pedido fue marcado como regalo.
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  Información de facturación del cliente.
+</ResponseField>
+
+<ResponseField name="cancellationInfo" type="object">
+  Información de cancelación del pedido.
+</ResponseField>
+
+<ResponseField name="deliveryZoneName" type="string">
+  Nombre de la zona de despacho aplicada al pedido.
+</ResponseField>
+
+
+### apiOrderAddress
+
+Dirección de entrega del pedido.
+
+<ResponseField name="_id" type="string">
+  ID de la dirección.
+</ResponseField>
+
+<ResponseField name="placeId" type="string">
+  ID del lugar asociado a la dirección.
+</ResponseField>
+
+<ResponseField name="address" type="string">
+  Dirección principal en formato legacy.
+</ResponseField>
+
+<ResponseField name="addressLine2" type="string">
+  Departamento, oficina u otra información complementaria.
+</ResponseField>
+
+<ResponseField name="addressSecondary" type="string">
+  Comuna, ciudad o referencia secundaria de la dirección.
+</ResponseField>
+
+<ResponseField name="location" type="object">
+  Coordenadas geográficas.
+</ResponseField>
+
+
+### apiOrderDelivery
+
+Información de un despacho asociado al pedido.
+
+<ResponseField name="_id" type="string">
+  ID del despacho.
+</ResponseField>
+
+<ResponseField name="price" type="number">
+  Precio del despacho.
+</ResponseField>
+
+<ResponseField name="status" type="active | canceled | cancelled | done | error | pending | scheduled | delivering | waiting | unconfirmed">
+  Estado del despacho.
+</ResponseField>
+
+<ResponseField name="placeName" type="string">
+  Nombre del lugar de destino.
+</ResponseField>
+
+<ResponseField name="isCash" type="boolean">
+  Indica si el despacho se paga en efectivo.
+</ResponseField>
+
+<ResponseField name="instructions" type="string">
+  Instrucciones para el despacho.
+</ResponseField>
+
+<ResponseField name="driverPassword" type="string">
+  Código que debe presentar el repartidor al retirar el pedido.
+</ResponseField>
+
+<ResponseField name="fromLocation" type="object">
+  Coordenadas geográficas.
+</ResponseField>
+
+<ResponseField name="toLocation" type="object">
+  Coordenadas geográficas.
+</ResponseField>
+
+<ResponseField name="trackingURL" type="string">
+  URL de seguimiento del despacho.
+</ResponseField>
+
+<ResponseField name="orderId" type="string">
+  ID del pedido asociado al despacho.
+</ResponseField>
+
+<ResponseField name="activatesAt" type="string">
+  Fecha en que se activa el despacho.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Fecha de creación del despacho.
+</ResponseField>
+
+<ResponseField name="forDate" type="string">
+  Fecha objetivo del despacho.
+</ResponseField>
+
+<ResponseField name="nearStoreAt" type="string">
+  Fecha en que el repartidor llegó cerca del local.
+</ResponseField>
+
+<ResponseField name="pickupAt" type="string">
+  Fecha de retiro del pedido.
+</ResponseField>
+
+<ResponseField name="nearClientAt" type="string">
+  Fecha en que el repartidor llegó cerca del cliente.
+</ResponseField>
+
+<ResponseField name="completedAt" type="string">
+  Fecha en que se completó el despacho.
+</ResponseField>
+
+<ResponseField name="canceledAt" type="string">
+  Fecha de cancelación del despacho.
+</ResponseField>
+
+<ResponseField name="deliveryExpectedAt" type="string">
+  Fecha estimada de entrega.
+</ResponseField>
+
+<ResponseField name="estimatedArrivalAtStoreAt" type="string">
+  Fecha estimada de llegada del driver al local.
+</ResponseField>
+
+<ResponseField name="driverReceivedAt" type="string">
+  Fecha en que el driver recibió el pedido, si aplica.
+</ResponseField>
+
+<ResponseField name="driverInformation" type="object">
+  Información del driver asignado, si está disponible.
+</ResponseField>
+
+<ResponseField name="deliveryInformation" type="object">
+  Información adicional del despacho, si está disponible.
+</ResponseField>
+
+<ResponseField name="externalId" type="string">
+  ID externo del despacho, si existe.
+</ResponseField>
+
+<ResponseField name="specialCode" type="string">
+  Código externo o especial del despacho, si existe.
+</ResponseField>
+
+
+### apiOrderDeliveryUpdatedWebhookData
+
+Datos del webhook de actualización de despacho de pedido.
+
+<ResponseField name="order" type="apiOrder">
+  Ver `apiOrder`.
+</ResponseField>
+
+<ResponseField name="delivery" type="apiOrderDelivery">
+  Ver `apiOrderDelivery`.
+</ResponseField>
+
+
+### apiOrderItem
+
+Producto vendido dentro del pedido.
+
+<ResponseField name="_id" type="string">
+  ID del item del pedido.
+</ResponseField>
+
+<ResponseField name="product" type="object">
+  Producto asociado al item.
+</ResponseField>
+
+<ResponseField name="unitPrice" type="number">
+  Precio unitario con descuento, sin incluir descuento de cupón.
+</ResponseField>
+
+<ResponseField name="baseUnitPrice" type="number">
+  Precio unitario original antes de descuentos.
+</ResponseField>
+
+<ResponseField name="productPrice" type="number">
+  Precio del producto con descuento.
+</ResponseField>
+
+<ResponseField name="baseProductPrice" type="number">
+  Precio original del producto antes de descuentos.
+</ResponseField>
+
+<ResponseField name="amount" type="number">
+  Cantidad de este producto en el pedido.
+</ResponseField>
+
+<ResponseField name="comment" type="string">
+  Instrucciones adicionales para este producto.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Resumen en texto de los modificadores e instrucciones del item.
+</ResponseField>
+
+<ResponseField name="promotionId" type="string">
+  ID de la promoción aplicada al item.
+</ResponseField>
+
+<ResponseField name="promotionDiscount" type="number">
+  Monto descontado por promoción en el item.
+</ResponseField>
+
+<ResponseField name="promotionType" type="string">
+  Tipo de promoción aplicada al item.
+</ResponseField>
+
+<ResponseField name="promotionLabel" type="string">
+  Etiqueta visible de la promoción aplicada al item.
+</ResponseField>
+
+<ResponseField name="modifiers" type="apiOrderItemModifier[]">
+  Modificadores seleccionados para el item.
+</ResponseField>
+
+
+### apiOrderItemModifier
+
+Modificador seleccionado para un item del pedido.
+
+<ResponseField name="modifierId" type="string">
+  ID Justo del modificador.
+</ResponseField>
+
+<ResponseField name="externalId" type="string">
+  ID externo del modificador configurado por la marca.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre del modificador.
+</ResponseField>
+
+<ResponseField name="shortName" type="string">
+  Nombre corto del modificador.
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Metadata del modificador escrita por API v3.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Resumen en texto de las opciones seleccionadas.
+</ResponseField>
+
+<ResponseField name="countById" type="Record<string, number>">
+  Cantidad seleccionada por ID Justo de opción.
+</ResponseField>
+
+<ResponseField name="countByExternalId" type="Record<string, number>">
+  Cantidad seleccionada por ID externo de opción.
+</ResponseField>
+
+<ResponseField name="options" type="object[]">
+  Opciones seleccionadas para este modificador.
+</ResponseField>
+
+
+### apiOrderStatusUpdatedWebhookData
+
+Datos del webhook de actualización de pedido. Si previousOrderStatus y newOrderStatus son iguales, el evento corresponde a un cambio importante del despacho asociado.
+
+<ResponseField name="order" type="apiOrder">
+  Ver `apiOrder`.
+</ResponseField>
+
+<ResponseField name="delivery" type="apiOrderDelivery">
+  Despacho actualizado. Se incluye cuando el evento se origina por un cambio importante del despacho, como cambio de estado o llegada del repartidor cerca del local o cliente.
+</ResponseField>
+
+<ResponseField name="previousOrderStatus" type="pending | waiting | preparing | delivering | done | cancelled">
+  Estado anterior del pedido.
+</ResponseField>
+
+<ResponseField name="newOrderStatus" type="pending | waiting | preparing | delivering | done | cancelled">
+  Nuevo estado del pedido.
+</ResponseField>
+
+
+### apiOrderTransaction
+
+Transacción de pago asociada al pedido.
+
+<ResponseField name="_id" type="string">
+  ID de la transacción.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  Monto total de la transacción.
+</ResponseField>
+
+<ResponseField name="paymentType" type="string">
+  Medio de pago usado en la transacción.
+</ResponseField>
+
+<ResponseField name="cardType" type="string">
+  Tipo de tarjeta usada, si aplica.
+</ResponseField>
+
+<ResponseField name="cardLast4" type="string">
+  Últimos cuatro dígitos de la tarjeta, si aplica.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Estado de la transacción.
+</ResponseField>
+

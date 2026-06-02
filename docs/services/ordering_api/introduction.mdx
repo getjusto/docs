@@ -1,0 +1,35 @@
+---
+title: Ordering API
+description: API pública para crear pedidos marketplace desde apps externas con identidad de customer propia por app.
+---
+
+Ordering API permite que una app externa opere como white label de Justo usando endpoints públicos bajo `/v3/ordering`.
+
+## Autenticación
+
+Todas las llamadas usan `Authorization: Bearer <token>` con un token de app que tenga el scope `orderingApi`. Esta API no usa sesiones web ni requiere un `userId` asociado al token.
+
+```http
+Authorization: Bearer eyJ...
+```
+
+## Identidad de customers
+
+Cada app identifica a sus clientes con `externalCustomerId`. El mismo `externalCustomerId` enviado por dos apps distintas representa customers distintos.
+
+Internamente Justo crea un usuario técnico para reutilizar direcciones, carro y flujos existentes. Ese usuario usa un email sintético determinístico con el formato `ordering+{safeAppId}+{externalCustomerHash}@getjusto.com`.
+
+<Warning>
+El email real del cliente no se guarda como email principal del usuario técnico. Si se informa `email` en el customer, Ordering API lo guarda separado y lo copia en `Order.email` al crear la orden.
+</Warning>
+
+## Estado de checkout
+
+Los datos temporales del checkout se guardan por `{ appId, externalCustomerId, websiteId }` y expiran automáticamente. Este estado puede contener `selectedAddressId`, `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `idempotencyKey`, `meta` y datos equivalentes.
+
+El carro, tipo de despacho, local, hora, método de pago, cupones y coins siguen usando los flujos existentes de preferencias y carro.
+
+## Órdenes
+
+Las órdenes creadas por Ordering API siempre quedan asociadas al app que las creó mediante `orderingAPIAppId`, se crean como órdenes marketplace y usan `embeddedVendor: orderingAPI`. Una app solo puede leer sus propios customers y órdenes.
+

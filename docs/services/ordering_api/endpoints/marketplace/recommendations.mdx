@@ -1,0 +1,249 @@
+---
+title: Recommendations
+description: Lista restaurantes recomendados para una ciudad y dirección.
+---
+
+Lista restaurantes recomendados para una ciudad y dirección.
+
+Todas las llamadas usan `Authorization: Bearer <token>` con scope `orderingApi`.
+
+## Endpoint
+
+```http
+GET /v3/ordering/marketplace/recommendations
+```
+
+## Query parameters
+
+<ParamField name="cityId" type="string" required>
+  ID de la ciudad marketplace donde se busca.
+</ParamField>
+
+<ParamField name="placeId" type="string" required>
+  Place ID usado para calcular cobertura y distancia.
+</ParamField>
+
+<ParamField name="type" type="string">
+  Tipo de recomendación o filtro marketplace.
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>
+  Indica si la llamada fue procesada correctamente.
+</ResponseField>
+
+<ResponseField name="data" type="OrderingMarketplaceCard[]" required>
+  Restaurantes recomendados para el lugar consultado.
+</ResponseField>
+
+## Data object
+
+### OrderingMarketplaceCard
+
+Card de restaurante en marketplace.
+
+<ResponseField name="_id" type="string">
+  ID interno de la card.
+</ResponseField>
+
+<ResponseField name="storeId" type="string">
+  ID del local recomendado.
+</ResponseField>
+
+<ResponseField name="websiteId" type="string">
+  ID del website recomendado.
+</ResponseField>
+
+<ResponseField name="baseURL" type="string">
+  URL base del website.
+</ResponseField>
+
+<ResponseField name="websiteName" type="string">
+  Nombre comercial del website.
+</ResponseField>
+
+<ResponseField name="websiteMarketplaceStagingMode" type="boolean">
+  Indica si el website está en modo staging.
+</ResponseField>
+
+<ResponseField name="description" type="string | null">
+  Descripción del comercio.
+</ResponseField>
+
+<ResponseField name="foodCategoriesTags" type="string[]">
+  Tags de categorías gastronómicas.
+</ResponseField>
+
+<ResponseField name="foodCategoriesCodes" type="string[]">
+  Códigos de categorías gastronómicas.
+</ResponseField>
+
+<ResponseField name="searchWords" type="string[]">
+  Palabras de búsqueda indexadas.
+</ResponseField>
+
+<ResponseField name="averageReview" type="number">
+  Promedio de reviews.
+</ResponseField>
+
+<ResponseField name="reviewsCount" type="string">
+  Cantidad de reviews como texto público.
+</ResponseField>
+
+<ResponseField name="hasManagedDelivery" type="boolean">
+  Indica si tiene despacho gestionado.
+</ResponseField>
+
+<ResponseField name="logo" type="OrderingImage">
+  Ver `OrderingImage`.
+</ResponseField>
+
+<ResponseField name="image" type="OrderingImage">
+  Ver `OrderingImage`.
+</ResponseField>
+
+<ResponseField name="cityId" type="string">
+  ID de la ciudad marketplace.
+</ResponseField>
+
+<ResponseField name="cookingTime" type="number">
+  Tiempo estimado de cocina en minutos.
+</ResponseField>
+
+<ResponseField name="currentDeliveryDuration" type="number">
+  Duración actual de despacho en minutos.
+</ResponseField>
+
+<ResponseField name="currentPickupDuration" type="number">
+  Duración actual de retiro en minutos.
+</ResponseField>
+
+<ResponseField name="address" type="OrderingStoreAddress">
+  Ver `OrderingStoreAddress`.
+</ResponseField>
+
+<ResponseField name="disableNowOrders" type="boolean">
+  Indica si no acepta pedidos para ahora.
+</ResponseField>
+
+<ResponseField name="closedMessage" type="string | null">
+  Mensaje de cierre, si el local está cerrado.
+</ResponseField>
+
+<ResponseField name="dataForPlace" type="object">
+  Datos calculados para el placeId consultado.
+</ResponseField>
+
+<ResponseField name="featuredProducts" type="OrderingFeaturedProduct[]">
+  Productos destacados del comercio.
+</ResponseField>
+
+<ResponseField name="matchedProducts" type="object[]">
+  Productos que coincidieron con una búsqueda marketplace.
+</ResponseField>
+
+
+### OrderingImage
+
+Imagen publicada por Justo o por el comercio.
+
+<ResponseField name="_id" type="string">
+  ID de la imagen.
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  URL original de la imagen.
+</ResponseField>
+
+<ResponseField name="colorsData" type="object">
+  Colores calculados de la imagen.
+</ResponseField>
+
+<ResponseField name="dimensions" type="object">
+  Dimensiones originales de la imagen.
+</ResponseField>
+
+<ResponseField name="resizedData" type="object">
+  URLs de versiones redimensionadas.
+</ResponseField>
+
+
+### OrderingStoreAddress
+
+Dirección pública de un local.
+
+<ResponseField name="placeId" type="string">
+  Place ID del local.
+</ResponseField>
+
+<ResponseField name="streetAddress" type="string">
+  Dirección principal.
+</ResponseField>
+
+<ResponseField name="extendedAddress" type="string | null">
+  Dirección extendida.
+</ResponseField>
+
+<ResponseField name="location" type="OrderingLocation">
+  Ver `OrderingLocation`.
+</ResponseField>
+
+<ResponseField name="locality" type="string | null">
+  Localidad o comuna.
+</ResponseField>
+
+<ResponseField name="countryName" type="string | null">
+  País.
+</ResponseField>
+
+
+### OrderingFeaturedProduct
+
+Producto destacado de una card marketplace.
+
+<ResponseField name="_id" type="string">
+  ID del producto.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Nombre del producto.
+</ResponseField>
+
+<ResponseField name="image" type="OrderingImage | null">
+  Ver `OrderingImage`.
+</ResponseField>
+
+<ResponseField name="price" type="number | null">
+  Precio final.
+</ResponseField>
+
+<ResponseField name="basePrice" type="number | null">
+  Precio base antes de descuentos.
+</ResponseField>
+
+<ResponseField name="available" type="boolean">
+  Indica si está disponible.
+</ResponseField>
+
+<ResponseField name="notAvailableMessage" type="string | null">
+  Motivo de no disponibilidad.
+</ResponseField>
+
+<ResponseField name="path" type="string">
+  Path del producto dentro del website.
+</ResponseField>
+
+
+### OrderingLocation
+
+Coordenadas geográficas.
+
+<ResponseField name="lat" type="number">
+  Latitud.
+</ResponseField>
+
+<ResponseField name="lng" type="number">
+  Longitud.
+</ResponseField>
+

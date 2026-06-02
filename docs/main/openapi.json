@@ -15733,6 +15733,2399 @@
         }
       }
     },
+    "/ordering/marketplace/recommendations": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingMarketplaceRecommendations",
+        "summary": "List marketplace recommendations",
+        "description": "Lista restaurantes recomendados para una ciudad y dirección.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cityId",
+            "required": true,
+            "description": "ID de la ciudad marketplace donde se busca.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "placeId",
+            "required": true,
+            "description": "Place ID usado para calcular cobertura y distancia.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "description": "Tipo de recomendación o filtro marketplace.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List marketplace recommendations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Restaurantes recomendados.",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderingMarketplaceCard"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/marketplace/search": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingMarketplaceSearch",
+        "summary": "Search marketplace restaurants",
+        "description": "Busca restaurantes marketplace y productos destacados para una ciudad y dirección.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cityId",
+            "required": true,
+            "description": "ID de la ciudad marketplace donde se busca.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "placeId",
+            "required": true,
+            "description": "Place ID usado para calcular cobertura y distancia.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "required": true,
+            "description": "Texto de búsqueda.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Página de resultados.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "description": "Cantidad máxima de resultados por página.",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search marketplace restaurants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingMarketplacePage"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/websites/{domain}": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetWebsite",
+        "summary": "Get website data",
+        "description": "Obtiene datos públicos del website, incluyendo el menú por defecto.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get website data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingWebsite"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/websites/{domain}/categories": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListWebsiteCategories",
+        "summary": "List website categories",
+        "description": "Lista categorías y árbol de categorías para un menú del website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "menuId",
+            "required": false,
+            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List website categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingMenuData"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/websites/{domain}/products": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListWebsiteProducts",
+        "summary": "List website products",
+        "description": "Lista productos, categorías y árbol del menú publicado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "menuId",
+            "required": false,
+            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List website products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingMenuData"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/websites/{domain}/products/search": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingSearchWebsiteProducts",
+        "summary": "Search website products",
+        "description": "Busca productos dentro de un menú del website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "menuId",
+            "required": false,
+            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "required": true,
+            "description": "Texto de búsqueda de productos.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search website products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingProductSearchData"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/websites/{domain}/products/{productId}": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetWebsiteProduct",
+        "summary": "Get website product",
+        "description": "Obtiene el detalle de un producto, incluyendo disponibilidad y modificadores.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "description": "ID del producto dentro del catálogo Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "menuId",
+            "required": false,
+            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get website product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingProduct"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/websites/{domain}/billing-params": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetBillingParams",
+        "summary": "Get billing params",
+        "description": "Obtiene la configuración dinámica de facturación del website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get billing params",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingBillingParams"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetCustomer",
+        "summary": "Get ordering customer",
+        "description": "Obtiene el customer propio de la app autenticada.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get ordering customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCustomer"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingUpsertCustomer",
+        "summary": "Create or update ordering customer",
+        "description": "Crea o actualiza el customer propio de la app autenticada.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos reales del customer externo.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingCustomerInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create or update ordering customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCustomer"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/addresses": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListCustomerAddresses",
+        "summary": "List customer addresses",
+        "description": "Lista direcciones reutilizables del customer en todos los websites.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List customer addresses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Direcciones guardadas del customer.",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderingAddress"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingCreateCustomerAddress",
+        "summary": "Create customer address",
+        "description": "Crea una dirección reutilizable para el customer.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dirección a crear.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingAddressInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create customer address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingAddress"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/addresses/{addressId}": {
+      "patch": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingUpdateCustomerAddress",
+        "summary": "Update customer address",
+        "description": "Actualiza una dirección del customer.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "addressId",
+            "required": true,
+            "description": "ID de una dirección guardada por el customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Campos de dirección a actualizar.",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingAddressInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update customer address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingAddress"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingDeleteCustomerAddress",
+        "summary": "Delete customer address",
+        "description": "Elimina una dirección del customer.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "addressId",
+            "required": true,
+            "description": "ID de una dirección guardada por el customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete customer address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/selected-address": {
+      "put": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingSetSelectedAddress",
+        "summary": "Set selected address",
+        "description": "Selecciona una dirección para el checkout de un website y actualiza placeId.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dirección a seleccionar.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingSelectedAddressInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Set selected address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCheckoutState"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetCart",
+        "summary": "Get cart state",
+        "description": "Obtiene preferencias, dirección, local, horarios, medios de pago y carrito calculado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get cart state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCartState"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart/items": {
+      "post": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingAddCartItem",
+        "summary": "Add cart item",
+        "description": "Agrega un producto al carrito del customer para el website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Producto y modificadores a agregar.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingCartItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add cart item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCartItemMutation"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart/items/{cartItemId}": {
+      "patch": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingUpdateCartItem",
+        "summary": "Update cart item",
+        "description": "Actualiza cantidad, modificadores o comentario de un item del carrito.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "cartItemId",
+            "required": true,
+            "description": "ID del item del carrito.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos actualizados del item.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingCartItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update cart item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCartItemMutation"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingDeleteCartItem",
+        "summary": "Delete cart item",
+        "description": "Elimina un item del carrito.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "cartItemId",
+            "required": true,
+            "description": "ID del item del carrito.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete cart item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart/preferences": {
+      "patch": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingUpdateCartPreferences",
+        "summary": "Update cart preferences",
+        "description": "Actualiza local, tipo de entrega, horario, medio de pago, cupón y coins.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Preferencias del carrito a guardar.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingCartPreferencesInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update cart preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCartState"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart/stores": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListCartStores",
+        "summary": "List cart stores",
+        "description": "Lista locales disponibles según website, dirección y tipo de entrega.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List cart stores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Locales disponibles para el carrito.",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderingStore"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart/times": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListCartTimes",
+        "summary": "List cart times",
+        "description": "Lista horarios disponibles para el local y tipo de entrega seleccionados.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List cart times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Horarios disponibles para el carrito.",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderingTimeOption"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/cart/payment-methods": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListPaymentMethods",
+        "summary": "List payment methods",
+        "description": "Lista medios de pago disponibles para el local y tipo de entrega.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List payment methods",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Medios de pago disponibles.",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderingPaymentMethod"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/checkout-state": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetCheckoutState",
+        "summary": "Get checkout state",
+        "description": "Obtiene el estado temporal de checkout guardado para customer y website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get checkout state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCheckoutState"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingUpdateCheckoutState",
+        "summary": "Update checkout state",
+        "description": "Actualiza datos temporales de checkout con TTL automático.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Estado temporal a guardar.",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingCheckoutStateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update checkout state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCheckoutState"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/billing": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetBilling",
+        "summary": "Get customer billing",
+        "description": "Obtiene billing guardado en checkout-state para customer y website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get customer billing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/OrderingBilling"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingSetBilling",
+        "summary": "Set customer billing",
+        "description": "Guarda billing en checkout-state para usarlo al crear la orden.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos de facturación a guardar.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingBillingInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Set customer billing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingCheckoutState"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/website-coins": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetWebsiteCoins",
+        "summary": "Get website coins balance",
+        "description": "Obtiene el balance de monedas propias del website para el customer.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get website coins balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "number",
+                      "description": "Balance disponible de Website Coins."
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/justo-coins": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetJustoCoins",
+        "summary": "Get Justo Coins balance",
+        "description": "Obtiene el balance de Justo Coins del customer para el país del website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Justo Coins balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "number",
+                      "description": "Balance disponible de Justo Coins."
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/products/favorites": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListFavoriteProducts",
+        "summary": "List favorite products",
+        "description": "Lista productos favoritos del customer en el website.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List favorite products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Productos favoritos del customer.",
+                      "items": {
+                        "$ref": "#/components/schemas/OrderingCartItem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/websites/{domain}/orders": {
+      "post": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingCreateOrder",
+        "summary": "Create order",
+        "description": "Crea una orden marketplace para el customer y website. Usa orderingAPIAppId como ownership.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "description": "Dominio canónico del website Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos finales para crear la orden.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderingCreateOrderInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiOrder"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/customers/{externalCustomerId}/orders": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingListCustomerOrders",
+        "summary": "List customer orders",
+        "description": "Lista órdenes creadas por la app autenticada para el customer.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalCustomerId",
+            "required": true,
+            "description": "ID del customer en el sistema externo. Es independiente por app.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Página de resultados.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "description": "Cantidad máxima de resultados por página.",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List customer orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrderingOrdersPage"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/ordering/orders/{orderId}": {
+      "get": {
+        "tags": [
+          "Ordering API"
+        ],
+        "operationId": "orderingGetOrder",
+        "summary": "Get order",
+        "description": "Obtiene una orden creada por la app autenticada.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "description": "ID de la orden Justo.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiOrder"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Invalid bearer token"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
     "/reservations/reservation": {
       "post": {
         "summary": "Crear reserva",
@@ -17933,6 +20326,14 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT Token"
+      }
+    },
     "schemas": {
       "tabsTab": {
         "type": "object",
@@ -19380,7 +21781,8 @@
               "type": "string",
               "enum": [
                 "admin",
-                "reservationsMarketplace"
+                "reservationsMarketplace",
+                "orderingApi"
               ]
             }
           },
@@ -21924,6 +24326,3377 @@
             "description": "Minuto del día en que termina el bloque."
           }
         }
+      },
+      "OrderingAddress": {
+        "type": "object",
+        "description": "Dirección guardada por el customer de Ordering API.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la dirección."
+          },
+          "placeId": {
+            "type": "string",
+            "description": "Place ID usado por Justo para calcular cobertura y despacho."
+          },
+          "address": {
+            "type": "string",
+            "description": "Dirección principal."
+          },
+          "addressLine2": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Departamento, oficina u otra información secundaria."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Departamento, oficina u otra información secundaria."
+          },
+          "addressSecondary": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Texto secundario de comuna, ciudad o referencia."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Texto secundario de comuna, ciudad o referencia."
+          },
+          "location": {
+            "$ref": "#/components/schemas/OrderingLocation"
+          },
+          "acceptsNoLine2": {
+            "type": "boolean",
+            "description": "Indica si el customer confirmó que no tiene línea 2."
+          },
+          "comment": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Comentario o instrucciones de entrega."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comentario o instrucciones de entrega."
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID del usuario sintético dueño de la dirección."
+          },
+          "deviceId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Device ID usado al crear la dirección."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Device ID usado al crear la dirección."
+          },
+          "streetAddress": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Calle y numeración normalizada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Calle y numeración normalizada."
+          },
+          "locality": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Localidad o comuna."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Localidad o comuna."
+          },
+          "subLocality": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Sub-localidad."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sub-localidad."
+          },
+          "region": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Región o estado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Código postal."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código postal."
+          },
+          "countryCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Código de país ISO 3166-1 alpha-2.",
+                "example": "CL"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código de país ISO 3166-1 alpha-2."
+          },
+          "countryName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre del país."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre del país."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación.",
+            "example": "2026-06-01T12:00:00.000Z"
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingBilling": {
+        "type": "object",
+        "description": "Datos de facturación guardados para el checkout.",
+        "properties": {
+          "name": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre o razón social."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre o razón social."
+          },
+          "document": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Documento tributario."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Documento tributario."
+          },
+          "email": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Email de facturación."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Email de facturación."
+          },
+          "address": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Dirección de facturación."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dirección de facturación."
+          },
+          "activityType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Giro o actividad económica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Giro o actividad económica."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingBillingParams": {
+        "type": "object",
+        "description": "Parámetros de facturación requeridos por el website.",
+        "properties": {
+          "billingParamsSchema": {
+            "type": "array",
+            "description": "Schema dinámico de campos de facturación.",
+            "items": {
+              "type": "object",
+              "description": "Campo de facturación.",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Tipo de campo."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "Etiqueta visible."
+                },
+                "schema": {
+                  "type": "object",
+                  "description": "Schema Orion/Justo del campo.",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "orderBillingRequired": {
+            "type": "boolean",
+            "description": "Indica si la facturación es obligatoria."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país del website.",
+            "example": "CL"
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCart": {
+        "type": "object",
+        "description": "Carrito calculado.",
+        "properties": {
+          "websiteId": {
+            "type": "string",
+            "description": "ID del website."
+          },
+          "menuId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del menú."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del menú."
+          },
+          "storeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del local."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del local."
+          },
+          "deliveryType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega.",
+                "enum": [
+                  "delivery",
+                  "go",
+                  "serve"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega."
+          },
+          "placeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Place ID seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Place ID seleccionado."
+          },
+          "couponCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Cupón aplicado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Cupón aplicado."
+          },
+          "paymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Medio de pago seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Medio de pago seleccionado."
+          },
+          "otherPaymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Subtipo de pago, si aplica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Subtipo de pago, si aplica."
+          },
+          "tipAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto de propina seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto de propina seleccionado."
+          },
+          "tipPercentage": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Porcentaje de propina seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Porcentaje de propina seleccionado."
+          },
+          "calculatedTipAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Propina calculada por defecto."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Propina calculada por defecto."
+          },
+          "justoCoinsToSpend": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Justo Coins a usar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Justo Coins a usar."
+          },
+          "websiteCoinsToSpend": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Website Coins a usar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Website Coins a usar."
+          },
+          "items": {
+            "type": "array",
+            "description": "Items del carrito.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingCartItem"
+            }
+          },
+          "acceptsTip": {
+            "type": "boolean",
+            "description": "Indica si el carrito acepta propina."
+          },
+          "couponStatus": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Estado del cupón aplicado.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Estado del cupón aplicado."
+          },
+          "benefits": {
+            "type": "array",
+            "description": "Beneficios o promociones aplicadas.",
+            "items": {
+              "type": "object",
+              "description": "Beneficio aplicado.",
+              "properties": {},
+              "additionalProperties": true
+            }
+          },
+          "deliveryFee": {
+            "type": "number",
+            "description": "Costo de despacho."
+          },
+          "deliveryFeeWithoutDiscount": {
+            "type": "number",
+            "description": "Costo de despacho antes de descuentos."
+          },
+          "itemsPrice": {
+            "type": "number",
+            "description": "Precio de productos."
+          },
+          "itemsPriceWithoutDiscount": {
+            "type": "number",
+            "description": "Precio de productos antes de descuentos."
+          },
+          "serviceFee": {
+            "type": "number",
+            "description": "Cargo de servicio."
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Total sin propina."
+          },
+          "amountToPay": {
+            "type": "number",
+            "description": "Total a pagar."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartItem": {
+        "type": "object",
+        "description": "Item del carrito.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del item del carrito."
+          },
+          "productId": {
+            "type": "string",
+            "description": "ID del producto."
+          },
+          "menuId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del menú."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del menú."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Cantidad del producto."
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Cantidad del producto en flujos v2."
+          },
+          "comment": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Comentario del item."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comentario del item."
+          },
+          "modifiers": {
+            "type": "array",
+            "description": "Modificadores seleccionados.",
+            "items": {
+              "type": "object",
+              "description": "Modificador seleccionado.",
+              "properties": {},
+              "additionalProperties": true
+            }
+          },
+          "product": {
+            "type": "object",
+            "description": "Producto asociado al item.",
+            "properties": {},
+            "additionalProperties": true
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Precio unitario."
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Precio total del item."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartItemMutation": {
+        "type": "object",
+        "description": "Resultado de una mutación de item de carrito.",
+        "properties": {
+          "item": {
+            "$ref": "#/components/schemas/OrderingCartItem"
+          },
+          "state": {
+            "$ref": "#/components/schemas/OrderingCartState"
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartPreference": {
+        "type": "object",
+        "description": "Preferencias activas del carrito.",
+        "properties": {
+          "websiteId": {
+            "type": "string",
+            "description": "ID del website."
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID del usuario sintético."
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "Device ID usado por Ordering API."
+          },
+          "storeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del local seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del local seleccionado."
+          },
+          "menuId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del menú seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del menú seleccionado."
+          },
+          "placeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Place ID seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Place ID seleccionado."
+          },
+          "deliveryType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega.",
+                "enum": [
+                  "delivery",
+                  "go",
+                  "serve"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega."
+          },
+          "paymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Medio de pago seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Medio de pago seleccionado."
+          },
+          "otherPaymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Subtipo de pago, si aplica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Subtipo de pago, si aplica."
+          },
+          "couponCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Código de cupón aplicado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código de cupón aplicado."
+          },
+          "time": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Hora seleccionada. Usa `now` para pedidos inmediatos."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Hora seleccionada. Usa `now` para pedidos inmediatos."
+          },
+          "timeLabel": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Texto visible de la hora seleccionada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Texto visible de la hora seleccionada."
+          },
+          "dropOffType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega en destino."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega en destino."
+          },
+          "tableName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Mesa o identificador de consumo en local."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Mesa o identificador de consumo en local."
+          },
+          "cashAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto declarado para pago en efectivo."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto declarado para pago en efectivo."
+          },
+          "cardId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID de tarjeta guardada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID de tarjeta guardada."
+          },
+          "justoCoinsToSpend": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Justo Coins a usar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Justo Coins a usar."
+          },
+          "websiteCoinsToSpend": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Website Coins a usar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Website Coins a usar."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartState": {
+        "type": "object",
+        "description": "Estado completo del carrito y checkout.",
+        "properties": {
+          "preference": {
+            "$ref": "#/components/schemas/OrderingCartPreference"
+          },
+          "address": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingAddress"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "store": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingStore"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "timeOptions": {
+            "type": "array",
+            "description": "Horarios disponibles.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingTimeOption"
+            }
+          },
+          "availablePaymentMethods": {
+            "type": "array",
+            "description": "Medios de pago disponibles.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingPaymentMethod"
+            }
+          },
+          "cart": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingCart"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCategoryTreeItem": {
+        "type": "object",
+        "description": "Nodo del árbol de categorías.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la categoría."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la categoría."
+          },
+          "subCategories": {
+            "type": "array",
+            "description": "Subcategorías.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingCategoryTreeItem"
+            }
+          },
+          "translations": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Traducciones de la categoría.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Traducciones de la categoría."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCheckoutState": {
+        "type": "object",
+        "description": "Estado temporal de checkout persistido por Ordering API.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del estado temporal."
+          },
+          "appId": {
+            "type": "string",
+            "description": "ID de la app Ordering API."
+          },
+          "externalCustomerId": {
+            "type": "string",
+            "description": "ID del customer externo."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID del website."
+          },
+          "selectedAddressId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Dirección seleccionada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dirección seleccionada."
+          },
+          "billing": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingBilling"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tip": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Configuración de propina.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Configuración de propina."
+          },
+          "cashAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto declarado para efectivo."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto declarado para efectivo."
+          },
+          "gift": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Información de regalo.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Información de regalo."
+          },
+          "orderParams": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Parámetros adicionales del pedido.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Parámetros adicionales del pedido."
+          },
+          "termSignatures": {
+            "oneOf": [
+              {
+                "type": "array",
+                "description": "Firmas de términos.",
+                "items": {
+                  "type": "object",
+                  "description": "Firma de términos.",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Firmas de términos."
+          },
+          "idempotencyKey": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Idempotency key provisto por la app externa."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Idempotency key provisto por la app externa."
+          },
+          "meta": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Metadata adicional.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Metadata adicional."
+          },
+          "sessionBirthday": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Fecha de nacimiento de sesión."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Fecha de nacimiento de sesión."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación.",
+            "example": "2026-06-01T12:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de actualización.",
+            "example": "2026-06-01T12:00:00.000Z"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de expiración TTL.",
+            "example": "2026-06-01T12:00:00.000Z"
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCustomer": {
+        "type": "object",
+        "description": "Customer propio de la app Ordering API.",
+        "properties": {
+          "externalCustomerId": {
+            "type": "string",
+            "description": "ID del customer en el sistema externo."
+          },
+          "email": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Email real del customer, usado para notificaciones."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Email real del customer, usado para notificaciones."
+          },
+          "phone": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Teléfono real del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Teléfono real del customer."
+          },
+          "firstName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre del customer."
+          },
+          "lastName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Apellido del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Apellido del customer."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación del customer.",
+            "example": "2026-06-01T12:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización del customer.",
+            "example": "2026-06-01T12:00:00.000Z"
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingFeaturedProduct": {
+        "type": "object",
+        "description": "Producto destacado de una card marketplace.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del producto."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del producto."
+          },
+          "image": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "price": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Precio final."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Precio final."
+          },
+          "basePrice": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Precio base antes de descuentos."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Precio base antes de descuentos."
+          },
+          "available": {
+            "type": "boolean",
+            "description": "Indica si está disponible."
+          },
+          "notAvailableMessage": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Motivo de no disponibilidad."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Motivo de no disponibilidad."
+          },
+          "path": {
+            "type": "string",
+            "description": "Path del producto dentro del website."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingHumanSchedule": {
+        "type": "object",
+        "description": "Bloque de horario legible.",
+        "properties": {
+          "days": {
+            "type": "string",
+            "description": "Días a los que aplica el horario."
+          },
+          "schedule": {
+            "type": "string",
+            "description": "Horario legible."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingImage": {
+        "type": "object",
+        "description": "Imagen publicada por Justo o por el comercio.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la imagen."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL original de la imagen."
+          },
+          "colorsData": {
+            "type": "object",
+            "description": "Colores calculados de la imagen.",
+            "properties": {
+              "blurhash": {
+                "type": "string",
+                "description": "Blurhash de la imagen."
+              },
+              "background": {
+                "type": "string",
+                "description": "Color de fondo sugerido."
+              },
+              "front": {
+                "type": "string",
+                "description": "Color frontal sugerido."
+              }
+            },
+            "additionalProperties": true
+          },
+          "dimensions": {
+            "type": "object",
+            "description": "Dimensiones originales de la imagen.",
+            "properties": {
+              "width": {
+                "type": "number",
+                "description": "Ancho en pixeles."
+              },
+              "height": {
+                "type": "number",
+                "description": "Alto en pixeles."
+              }
+            },
+            "additionalProperties": true
+          },
+          "resizedData": {
+            "type": "object",
+            "description": "URLs de versiones redimensionadas.",
+            "properties": {
+              "thumbnailURL": {
+                "type": "string",
+                "description": "URL thumbnail."
+              },
+              "smallURL": {
+                "type": "string",
+                "description": "URL pequeña."
+              },
+              "mediumURL": {
+                "type": "string",
+                "description": "URL mediana."
+              },
+              "largeURL": {
+                "type": "string",
+                "description": "URL grande."
+              },
+              "extraLargeURL": {
+                "type": "string",
+                "description": "URL extra grande."
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingLocation": {
+        "type": "object",
+        "description": "Coordenadas geográficas.",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "description": "Latitud.",
+            "example": -33.43219757080078
+          },
+          "lng": {
+            "type": "number",
+            "description": "Longitud.",
+            "example": -70.59982299804688
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingMarketplaceCard": {
+        "type": "object",
+        "description": "Card de restaurante en marketplace.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID interno de la card."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local recomendado."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID del website recomendado."
+          },
+          "baseURL": {
+            "type": "string",
+            "description": "URL base del website."
+          },
+          "websiteName": {
+            "type": "string",
+            "description": "Nombre comercial del website."
+          },
+          "websiteMarketplaceStagingMode": {
+            "type": "boolean",
+            "description": "Indica si el website está en modo staging."
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Descripción del comercio."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Descripción del comercio."
+          },
+          "foodCategoriesTags": {
+            "type": "array",
+            "description": "Tags de categorías gastronómicas.",
+            "items": {
+              "type": "string",
+              "description": "Tag."
+            }
+          },
+          "foodCategoriesCodes": {
+            "type": "array",
+            "description": "Códigos de categorías gastronómicas.",
+            "items": {
+              "type": "string",
+              "description": "Código."
+            }
+          },
+          "searchWords": {
+            "type": "array",
+            "description": "Palabras de búsqueda indexadas.",
+            "items": {
+              "type": "string",
+              "description": "Palabra."
+            }
+          },
+          "averageReview": {
+            "type": "number",
+            "description": "Promedio de reviews."
+          },
+          "reviewsCount": {
+            "type": "string",
+            "description": "Cantidad de reviews como texto público."
+          },
+          "hasManagedDelivery": {
+            "type": "boolean",
+            "description": "Indica si tiene despacho gestionado."
+          },
+          "logo": {
+            "$ref": "#/components/schemas/OrderingImage"
+          },
+          "image": {
+            "$ref": "#/components/schemas/OrderingImage"
+          },
+          "cityId": {
+            "type": "string",
+            "description": "ID de la ciudad marketplace."
+          },
+          "cookingTime": {
+            "type": "number",
+            "description": "Tiempo estimado de cocina en minutos."
+          },
+          "currentDeliveryDuration": {
+            "type": "number",
+            "description": "Duración actual de despacho en minutos."
+          },
+          "currentPickupDuration": {
+            "type": "number",
+            "description": "Duración actual de retiro en minutos."
+          },
+          "address": {
+            "$ref": "#/components/schemas/OrderingStoreAddress"
+          },
+          "disableNowOrders": {
+            "type": "boolean",
+            "description": "Indica si no acepta pedidos para ahora."
+          },
+          "closedMessage": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Mensaje de cierre, si el local está cerrado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Mensaje de cierre, si el local está cerrado."
+          },
+          "dataForPlace": {
+            "type": "object",
+            "description": "Datos calculados para el placeId consultado.",
+            "properties": {
+              "distance": {
+                "type": "number",
+                "description": "Distancia al placeId consultado en metros."
+              },
+              "orderDuration": {
+                "type": "number",
+                "description": "Duración estimada total del pedido en minutos."
+              },
+              "outOfBounds": {
+                "type": "boolean",
+                "description": "Indica si el placeId está fuera de cobertura."
+              }
+            },
+            "additionalProperties": true
+          },
+          "featuredProducts": {
+            "type": "array",
+            "description": "Productos destacados del comercio.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingFeaturedProduct"
+            }
+          },
+          "matchedProducts": {
+            "type": "array",
+            "description": "Productos que coincidieron con una búsqueda marketplace.",
+            "items": {
+              "type": "object",
+              "description": "Producto coincidente.",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "ID del producto."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nombre del producto."
+                },
+                "thumbnailURL": {
+                  "type": "string",
+                  "description": "URL thumbnail del producto."
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingMarketplacePage": {
+        "type": "object",
+        "description": "Página de resultados de marketplace.",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Restaurantes encontrados.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingMarketplaceCard"
+            }
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total de resultados."
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Total de páginas."
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica si existe una página siguiente."
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica si existe una página anterior."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingMenuData": {
+        "type": "object",
+        "description": "Menú publicado.",
+        "properties": {
+          "menu": {
+            "type": "object",
+            "description": "Datos del menú.",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "ID del menú."
+              },
+              "categoryIds": {
+                "type": "array",
+                "description": "IDs de categorías ordenadas.",
+                "items": {
+                  "type": "string",
+                  "description": "ID de categoría."
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          "products": {
+            "type": "object",
+            "description": "Productos indexados por ID.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/OrderingProduct"
+            }
+          },
+          "categories": {
+            "type": "object",
+            "description": "Categorías indexadas por ID.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/OrderingProductCategory"
+            }
+          },
+          "categoryTree": {
+            "type": "array",
+            "description": "Árbol de categorías.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingCategoryTreeItem"
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingOrdersPage": {
+        "type": "object",
+        "description": "Página de pedidos de un customer.",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Pedidos de la página.",
+            "items": {
+              "$ref": "#/components/schemas/apiOrder"
+            }
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total de pedidos."
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Total de páginas."
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica si existe una página siguiente."
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica si existe una página anterior."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingPaymentMethod": {
+        "type": "object",
+        "description": "Medio de pago disponible.",
+        "properties": {
+          "paymentMethod": {
+            "type": "string",
+            "description": "Código del medio de pago."
+          },
+          "label": {
+            "type": "string",
+            "description": "Nombre visible del medio de pago."
+          },
+          "canDeliver": {
+            "type": "boolean",
+            "description": "Indica si permite despacho."
+          },
+          "isIntegration": {
+            "type": "boolean",
+            "description": "Indica si el pago depende de una integración externa."
+          },
+          "allowedDeliveryTypes": {
+            "type": "array",
+            "description": "Tipos de entrega permitidos para este medio de pago.",
+            "items": {
+              "type": "string",
+              "description": "Tipo de entrega.",
+              "enum": [
+                "delivery",
+                "go",
+                "serve"
+              ]
+            }
+          },
+          "requiresRoundTrip": {
+            "type": "boolean",
+            "description": "Indica si requiere viaje ida y vuelta."
+          },
+          "isAvailableInV3": {
+            "type": "boolean",
+            "description": "Indica si está disponible para API v3."
+          },
+          "isSecure": {
+            "type": "boolean",
+            "description": "Indica si requiere validaciones seguras adicionales."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingProduct": {
+        "type": "object",
+        "description": "Producto de menú.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del producto."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del producto."
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Descripción del producto."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Descripción del producto."
+          },
+          "externalId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID externo configurado por el comercio."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID externo configurado por el comercio."
+          },
+          "priority": {
+            "type": "number",
+            "description": "Prioridad de ordenamiento."
+          },
+          "informativeStamps": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Sellos informativos del producto.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sellos informativos del producto."
+          },
+          "availabilityAt": {
+            "type": "object",
+            "description": "Precio y disponibilidad del producto en el menú consultado.",
+            "properties": {
+              "menuId": {
+                "type": "string",
+                "description": "ID del menú."
+              },
+              "basePrice": {
+                "type": "number",
+                "description": "Precio base."
+              },
+              "finalPrice": {
+                "type": "number",
+                "description": "Precio final."
+              },
+              "available": {
+                "type": "boolean",
+                "description": "Indica si está disponible."
+              },
+              "visible": {
+                "type": "boolean",
+                "description": "Indica si está visible."
+              },
+              "notAvailableMessage": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Mensaje de no disponibilidad."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Mensaje de no disponibilidad."
+              },
+              "hideDiscountBadge": {
+                "oneOf": [
+                  {
+                    "type": "boolean",
+                    "description": "Indica si se oculta el badge de descuento."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Indica si se oculta el badge de descuento."
+              }
+            },
+            "additionalProperties": true
+          },
+          "nicknames": {
+            "type": "array",
+            "description": "Alias de búsqueda del producto.",
+            "items": {
+              "type": "string",
+              "description": "Alias."
+            }
+          },
+          "categories": {
+            "type": "array",
+            "description": "Categorías del producto.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingProductCategory"
+            }
+          },
+          "images": {
+            "type": "array",
+            "description": "Imágenes del producto.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingImage"
+            }
+          },
+          "maxPurchaseQuantity": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Cantidad máxima por compra."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Cantidad máxima por compra."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID del website."
+          },
+          "websiteName": {
+            "type": "string",
+            "description": "Nombre del website."
+          },
+          "menuId": {
+            "type": "string",
+            "description": "ID del menú consultado."
+          },
+          "urlVideo": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "URL de video del producto."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "URL de video del producto."
+          },
+          "modifiers": {
+            "type": "array",
+            "description": "Modificadores del producto.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingProductModifier"
+            }
+          },
+          "altImg": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Texto alt de imagen."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Texto alt de imagen."
+          },
+          "titleImg": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Título de imagen."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Título de imagen."
+          },
+          "measurementUnit": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Unidad de medida."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Unidad de medida."
+          },
+          "measurementValue": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Valor de medida."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Valor de medida."
+          },
+          "translations": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Traducciones del producto.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Traducciones del producto."
+          },
+          "path": {
+            "type": "string",
+            "description": "Path del producto dentro del website."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingProductCategory": {
+        "type": "object",
+        "description": "Categoría de menú.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la categoría."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la categoría."
+          },
+          "index": {
+            "type": "number",
+            "description": "Posición de la categoría."
+          },
+          "translations": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Traducciones de la categoría.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Traducciones de la categoría."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingProductModifier": {
+        "type": "object",
+        "description": "Modificador de un producto.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del modificador."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del modificador."
+          },
+          "shortName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre corto del modificador."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre corto del modificador."
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Descripción del modificador."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Descripción del modificador."
+          },
+          "isImageModifier": {
+            "type": "boolean",
+            "description": "Indica si se muestra como modificador visual."
+          },
+          "min": {
+            "type": "number",
+            "description": "Mínimo de opciones a seleccionar."
+          },
+          "max": {
+            "type": "number",
+            "description": "Máximo de opciones a seleccionar."
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Indica si el modificador es opcional."
+          },
+          "options": {
+            "type": "array",
+            "description": "Opciones del modificador.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingProductModifierOption"
+            }
+          },
+          "translations": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Traducciones del modificador.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Traducciones del modificador."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingProductModifierOption": {
+        "type": "object",
+        "description": "Opción seleccionable de un modificador.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la opción."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la opción."
+          },
+          "availabilityAt": {
+            "type": "object",
+            "description": "Precio y disponibilidad de la opción en el menú.",
+            "properties": {
+              "menuId": {
+                "type": "string",
+                "description": "ID del menú."
+              },
+              "price": {
+                "type": "number",
+                "description": "Precio adicional."
+              },
+              "available": {
+                "type": "boolean",
+                "description": "Indica si está disponible."
+              }
+            },
+            "additionalProperties": true
+          },
+          "images": {
+            "type": "array",
+            "description": "Imágenes de la opción.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingImage"
+            }
+          },
+          "max": {
+            "type": "number",
+            "description": "Máximo seleccionable de esta opción."
+          },
+          "requiresAtLeastOneModifierOption": {
+            "type": "boolean",
+            "description": "Indica si requiere otra opción seleccionada."
+          },
+          "requiresModifierOptionIds": {
+            "type": "array",
+            "description": "IDs de opciones requeridas.",
+            "items": {
+              "type": "string",
+              "description": "ID de opción."
+            }
+          },
+          "translations": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Traducciones de la opción.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Traducciones de la opción."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingProductSearchData": {
+        "type": "object",
+        "description": "Resultado de búsqueda de productos.",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Texto buscado."
+          },
+          "categoryIds": {
+            "type": "array",
+            "description": "IDs de categorías incluidas en el resultado.",
+            "items": {
+              "type": "string",
+              "description": "ID."
+            }
+          },
+          "products": {
+            "type": "object",
+            "description": "Productos indexados por ID.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/OrderingProduct"
+            }
+          },
+          "categories": {
+            "type": "object",
+            "description": "Categorías indexadas por ID.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/OrderingProductCategory"
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingStore": {
+        "type": "object",
+        "description": "Local disponible para operar pedidos.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del local."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID del website al que pertenece el local."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del local."
+          },
+          "timezone": {
+            "type": "string",
+            "description": "Zona horaria del local.",
+            "example": "America/Santiago"
+          },
+          "acceptDelivery": {
+            "type": "boolean",
+            "description": "Indica si acepta despacho."
+          },
+          "acceptGo": {
+            "type": "boolean",
+            "description": "Indica si acepta retiro."
+          },
+          "acceptServe": {
+            "type": "boolean",
+            "description": "Indica si acepta consumo en local."
+          },
+          "acceptReservations": {
+            "type": "boolean",
+            "description": "Indica si acepta reservas."
+          },
+          "acceptWaitingList": {
+            "type": "boolean",
+            "description": "Indica si acepta lista de espera."
+          },
+          "minimumAnticipationDays": {
+            "type": "number",
+            "description": "Días mínimos de anticipación para pedidos programados."
+          },
+          "hideTip": {
+            "type": "boolean",
+            "description": "Indica si se oculta la propina."
+          },
+          "forceHideDeliveryTip": {
+            "type": "boolean",
+            "description": "Indica si se fuerza ocultar propina de delivery."
+          },
+          "defaultsManagedDelivery": {
+            "type": "boolean",
+            "description": "Indica si el local usa despacho gestionado por defecto."
+          },
+          "deliveryCostType": {
+            "type": "string",
+            "description": "Tipo de cálculo de costo de despacho."
+          },
+          "cityId": {
+            "type": "string",
+            "description": "ID de la ciudad marketplace."
+          },
+          "address": {
+            "$ref": "#/components/schemas/OrderingStoreAddress"
+          },
+          "humanSchedule": {
+            "type": "array",
+            "description": "Horario de atención legible.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingHumanSchedule"
+            }
+          },
+          "reservationsHumanSchedule": {
+            "type": "array",
+            "description": "Horario de reservas legible.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingHumanSchedule"
+            }
+          },
+          "zones": {
+            "type": "array",
+            "description": "Zonas de despacho del local.",
+            "items": {
+              "type": "object",
+              "description": "Zona de despacho.",
+              "properties": {},
+              "additionalProperties": true
+            }
+          },
+          "availablePaymentMethodInfo": {
+            "type": "array",
+            "description": "Medios de pago disponibles para el local.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingPaymentMethod"
+            }
+          },
+          "supportOptions": {
+            "type": "object",
+            "description": "Canales de soporte del local.",
+            "properties": {
+              "phone": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Teléfono de soporte."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Teléfono de soporte."
+              },
+              "whatsAppNumber": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "WhatsApp de soporte."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "WhatsApp de soporte."
+              },
+              "email": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "description": "Email de soporte."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Email de soporte."
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingStoreAddress": {
+        "type": "object",
+        "description": "Dirección pública de un local.",
+        "properties": {
+          "placeId": {
+            "type": "string",
+            "description": "Place ID del local."
+          },
+          "streetAddress": {
+            "type": "string",
+            "description": "Dirección principal."
+          },
+          "extendedAddress": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Dirección extendida."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dirección extendida."
+          },
+          "location": {
+            "$ref": "#/components/schemas/OrderingLocation"
+          },
+          "locality": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Localidad o comuna."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Localidad o comuna."
+          },
+          "countryName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "País."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "País."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingTimeOption": {
+        "type": "object",
+        "description": "Opción de horario disponible.",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Valor que debe enviarse como `time`."
+          },
+          "label": {
+            "type": "string",
+            "description": "Texto visible del horario."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Indica si la opción no está disponible."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingAddressInput": {
+        "type": "object",
+        "description": "Dirección a crear o actualizar para el customer.",
+        "properties": {
+          "placeId": {
+            "type": "string",
+            "description": "Place ID normalizado usado para cobertura y despacho."
+          },
+          "address": {
+            "type": "string",
+            "description": "Dirección principal visible para el customer."
+          },
+          "addressLine2": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Departamento, oficina u otra información secundaria."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Departamento, oficina u otra información secundaria."
+          },
+          "addressSecondary": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Texto secundario de comuna, ciudad o referencia."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Texto secundario de comuna, ciudad o referencia."
+          },
+          "location": {
+            "$ref": "#/components/schemas/OrderingLocation"
+          },
+          "acceptsNoLine2": {
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "Indica si el customer confirmó que no tiene línea 2."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Indica si el customer confirmó que no tiene línea 2."
+          },
+          "comment": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Comentario o instrucciones de entrega."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comentario o instrucciones de entrega."
+          },
+          "streetAddress": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Calle y numeración normalizada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Calle y numeración normalizada."
+          },
+          "locality": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Localidad o comuna."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Localidad o comuna."
+          },
+          "subLocality": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Sub-localidad."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sub-localidad."
+          },
+          "region": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Región o estado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Código postal."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código postal."
+          },
+          "countryCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Código de país ISO 3166-1 alpha-2.",
+                "example": "CL"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código de país ISO 3166-1 alpha-2."
+          },
+          "countryName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre del país."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre del país."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingBillingInput": {
+        "type": "object",
+        "description": "Datos de facturación para el checkout.",
+        "properties": {
+          "type": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de facturación elegido desde billingParamsSchema."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de facturación elegido desde billingParamsSchema."
+          },
+          "name": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre o razón social."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre o razón social."
+          },
+          "document": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Documento tributario."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Documento tributario."
+          },
+          "email": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Email de facturación."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Email de facturación."
+          },
+          "address": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Dirección de facturación."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dirección de facturación."
+          },
+          "activityType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Giro o actividad económica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Giro o actividad económica."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartItemInput": {
+        "type": "object",
+        "description": "Item a agregar o actualizar en el carrito.",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "ID del producto."
+          },
+          "menuId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del menú desde el que se agrega el producto."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del menú desde el que se agrega el producto."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Cantidad del producto. Debe ser mayor a 0."
+          },
+          "modifiers": {
+            "type": "array",
+            "description": "Modificadores seleccionados.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingCartModifierSelection"
+            }
+          },
+          "comment": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Comentario del item."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comentario del item."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartModifierSelection": {
+        "type": "object",
+        "description": "Selección de un modificador de producto.",
+        "properties": {
+          "modifierId": {
+            "type": "string",
+            "description": "ID del modificador."
+          },
+          "optionsIds": {
+            "type": "array",
+            "description": "IDs de opciones seleccionadas. Repite un ID si la opción permite más de una unidad.",
+            "items": {
+              "type": "string",
+              "description": "ID de opción."
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCartPreferencesInput": {
+        "type": "object",
+        "description": "Preferencias persistentes del carrito.",
+        "properties": {
+          "storeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del local seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del local seleccionado."
+          },
+          "menuId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del menú seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del menú seleccionado."
+          },
+          "placeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Place ID seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Place ID seleccionado."
+          },
+          "deliveryType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega.",
+                "enum": [
+                  "delivery",
+                  "go",
+                  "serve"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega."
+          },
+          "paymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Medio de pago seleccionado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Medio de pago seleccionado."
+          },
+          "otherPaymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Subtipo de pago, si aplica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Subtipo de pago, si aplica."
+          },
+          "couponCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Código de cupón aplicado."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código de cupón aplicado."
+          },
+          "time": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Hora seleccionada. Usa `now` o un `value` de cart/times."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Hora seleccionada. Usa `now` o un `value` de cart/times."
+          },
+          "dropOffType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega en destino."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega en destino."
+          },
+          "tableName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Mesa o identificador de consumo en local."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Mesa o identificador de consumo en local."
+          },
+          "cashAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto declarado para pago en efectivo."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto declarado para pago en efectivo."
+          },
+          "cardId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID de tarjeta guardada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID de tarjeta guardada."
+          },
+          "justoCoinsToSpend": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Justo Coins a usar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Justo Coins a usar."
+          },
+          "websiteCoinsToSpend": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Website Coins a usar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Website Coins a usar."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCheckoutStateInput": {
+        "type": "object",
+        "description": "Estado temporal de checkout a guardar.",
+        "properties": {
+          "selectedAddressId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID de dirección seleccionada."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID de dirección seleccionada."
+          },
+          "billing": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingBillingInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tip": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Propina seleccionada.",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "description": "Monto de propina."
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Propina seleccionada."
+          },
+          "cashAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto declarado para efectivo."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto declarado para efectivo."
+          },
+          "gift": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Información de regalo.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Información de regalo."
+          },
+          "orderParams": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Parámetros adicionales del pedido.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Parámetros adicionales del pedido."
+          },
+          "termSignatures": {
+            "oneOf": [
+              {
+                "type": "array",
+                "description": "Firmas de términos.",
+                "items": {
+                  "type": "object",
+                  "description": "Firma de términos.",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Firmas de términos."
+          },
+          "idempotencyKey": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Key estable para reintentos del mismo checkout."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Key estable para reintentos del mismo checkout."
+          },
+          "meta": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Metadata adicional.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Metadata adicional."
+          },
+          "sessionBirthday": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Fecha de nacimiento de sesión."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Fecha de nacimiento de sesión."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCreateOrderInput": {
+        "type": "object",
+        "description": "Payload para crear una orden.",
+        "properties": {
+          "customer": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingOrderCustomerInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "order": {
+            "$ref": "#/components/schemas/OrderingOrderInput"
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingCustomerInput": {
+        "type": "object",
+        "description": "Datos reales del customer externo.",
+        "properties": {
+          "email": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Email real del customer, usado para notificaciones."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Email real del customer, usado para notificaciones."
+          },
+          "phone": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Teléfono real del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Teléfono real del customer."
+          },
+          "firstName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre del customer."
+          },
+          "lastName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Apellido del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Apellido del customer."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingOrderCustomerInput": {
+        "type": "object",
+        "description": "Datos del customer a actualizar justo antes de crear la orden.",
+        "properties": {
+          "email": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Email real del customer para Order.email y notificaciones."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Email real del customer para Order.email y notificaciones."
+          },
+          "phone": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Teléfono real del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Teléfono real del customer."
+          },
+          "firstName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Nombre del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nombre del customer."
+          },
+          "lastName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Apellido del customer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Apellido del customer."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingOrderInput": {
+        "type": "object",
+        "description": "Datos finales de la orden. Si omites un campo, Ordering API usa preferencias o checkout-state cuando aplique.",
+        "properties": {
+          "addressId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID de dirección para delivery."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID de dirección para delivery."
+          },
+          "storeId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del local que preparará el pedido."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del local que preparará el pedido."
+          },
+          "menuId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID del menú usado en el carrito."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID del menú usado en el carrito."
+          },
+          "deliveryType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega.",
+                "enum": [
+                  "delivery",
+                  "go",
+                  "serve"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega."
+          },
+          "time": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Horario final. Usa `now` o un `value` de cart/times."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Horario final. Usa `now` o un `value` de cart/times."
+          },
+          "paymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Medio de pago final."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Medio de pago final."
+          },
+          "cashAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto declarado para pago en efectivo."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto declarado para pago en efectivo."
+          },
+          "couponCode": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Cupón a usar en la orden."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Cupón a usar en la orden."
+          },
+          "otherPaymentType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Subtipo de pago, si aplica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Subtipo de pago, si aplica."
+          },
+          "cardId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "ID de tarjeta guardada, si aplica."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID de tarjeta guardada, si aplica."
+          },
+          "tipAmount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto final de propina."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto final de propina."
+          },
+          "dropOffType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Tipo de entrega en destino."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tipo de entrega en destino."
+          },
+          "tableName": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Mesa o identificador de consumo en local."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Mesa o identificador de consumo en local."
+          },
+          "orderParams": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Parámetros adicionales del pedido.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Parámetros adicionales del pedido."
+          },
+          "billing": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingBillingInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "termSignatures": {
+            "oneOf": [
+              {
+                "type": "array",
+                "description": "Firmas de términos.",
+                "items": {
+                  "type": "object",
+                  "description": "Firma de términos.",
+                  "properties": {},
+                  "additionalProperties": true
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Firmas de términos."
+          },
+          "idempotencyKey": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Key estable para reintentos del mismo checkout."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Key estable para reintentos del mismo checkout."
+          },
+          "paymentData": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Datos del proveedor de pago.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Datos del proveedor de pago."
+          },
+          "paymentProviderConfig": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Configuración del proveedor de pago.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Configuración del proveedor de pago."
+          },
+          "sessionBirthday": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Fecha de nacimiento de sesión."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Fecha de nacimiento de sesión."
+          },
+          "gift": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Información de regalo.",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Información de regalo."
+          },
+          "websiteCoinsDiscount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Website Coins a descontar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Website Coins a descontar."
+          },
+          "justoCoinsDiscount": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Justo Coins a descontar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Justo Coins a descontar."
+          },
+          "meta": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Metadata adicional.",
+                "additionalProperties": {}
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Metadata adicional."
+          },
+          "usePaymentsV3": {
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "Indica si se debe usar Payments V3. Default true."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Indica si se debe usar Payments V3. Default true."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingSelectedAddressInput": {
+        "type": "object",
+        "description": "Dirección seleccionada para el checkout del website.",
+        "properties": {
+          "addressId": {
+            "type": "string",
+            "description": "ID de una dirección del customer."
+          }
+        },
+        "additionalProperties": true
       },
       "reservationsReservation": {
         "type": "object",
