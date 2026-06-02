@@ -15928,13 +15928,6 @@
                                         }
                                       }
                                     }
-                                  },
-                                  "productsStatus": {
-                                    "type": "object",
-                                    "description": "Mapa de productos o módulos activos para la marca o local.",
-                                    "additionalProperties": {
-                                      "type": "boolean"
-                                    }
                                   }
                                 }
                               },
@@ -23945,13 +23938,6 @@
                     }
                   }
                 }
-              },
-              "productsStatus": {
-                "type": "object",
-                "description": "Mapa de productos o módulos activos para la marca o local.",
-                "additionalProperties": {
-                  "type": "boolean"
-                }
               }
             }
           },
@@ -24018,13 +24004,6 @@
                   "description": "Venta total de la fuente en moneda local."
                 }
               }
-            }
-          },
-          "productsStatus": {
-            "type": "object",
-            "description": "Mapa de productos o módulos activos para la marca o local.",
-            "additionalProperties": {
-              "type": "boolean"
             }
           }
         }
@@ -24137,13 +24116,6 @@
                             "description": "Venta total de la fuente en moneda local."
                           }
                         }
-                      }
-                    },
-                    "productsStatus": {
-                      "type": "object",
-                      "description": "Mapa de productos o módulos activos para la marca o local.",
-                      "additionalProperties": {
-                        "type": "boolean"
                       }
                     }
                   }
