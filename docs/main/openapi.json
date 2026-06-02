@@ -15740,7 +15740,7 @@
         ],
         "operationId": "orderingMarketplaceRecommendations",
         "summary": "List marketplace recommendations",
-        "description": "Lista restaurantes recomendados para una ciudad y dirección.",
+        "description": "Lista restaurantes recomendados usando cityId/placeId explícitos o la dirección seleccionada del customer.",
         "security": [
           {
             "bearerAuth": []
@@ -15750,8 +15750,8 @@
           {
             "in": "query",
             "name": "cityId",
-            "required": true,
-            "description": "ID de la ciudad marketplace donde se busca.",
+            "required": false,
+            "description": "ID de la ciudad marketplace donde se busca. Si se omite, se usa la dirección seleccionada del externalCustomerId.",
             "schema": {
               "type": "string"
             }
@@ -15759,8 +15759,17 @@
           {
             "in": "query",
             "name": "placeId",
-            "required": true,
-            "description": "Place ID usado para calcular cobertura y distancia.",
+            "required": false,
+            "description": "Place ID usado para calcular cobertura y distancia. Si se omite, se usa la dirección seleccionada del externalCustomerId.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "description": "Customer usado para resolver cityId y placeId desde su dirección seleccionada cuando no se envían explícitamente.",
             "schema": {
               "type": "string"
             }
@@ -15821,7 +15830,7 @@
         ],
         "operationId": "orderingMarketplaceSearch",
         "summary": "Search marketplace restaurants",
-        "description": "Busca restaurantes marketplace y productos destacados para una ciudad y dirección.",
+        "description": "Busca restaurantes marketplace usando cityId/placeId explícitos o la dirección seleccionada del customer.",
         "security": [
           {
             "bearerAuth": []
@@ -15831,8 +15840,8 @@
           {
             "in": "query",
             "name": "cityId",
-            "required": true,
-            "description": "ID de la ciudad marketplace donde se busca.",
+            "required": false,
+            "description": "ID de la ciudad marketplace donde se busca. Si se omite, se usa la dirección seleccionada del externalCustomerId.",
             "schema": {
               "type": "string"
             }
@@ -15840,8 +15849,17 @@
           {
             "in": "query",
             "name": "placeId",
-            "required": true,
-            "description": "Place ID usado para calcular cobertura y distancia.",
+            "required": false,
+            "description": "Place ID usado para calcular cobertura y distancia. Si se omite, se usa la dirección seleccionada del externalCustomerId.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "description": "Customer usado para resolver cityId y placeId desde su dirección seleccionada cuando no se envían explícitamente.",
             "schema": {
               "type": "string"
             }
@@ -15975,7 +15993,7 @@
         ],
         "operationId": "orderingListWebsiteCategories",
         "summary": "List website categories",
-        "description": "Lista categorías y árbol de categorías para un menú del website.",
+        "description": "Lista categorías y árbol usando el menú guardado en preferences del customer.",
         "security": [
           {
             "bearerAuth": []
@@ -15993,9 +16011,9 @@
           },
           {
             "in": "query",
-            "name": "menuId",
+            "name": "externalCustomerId",
             "required": false,
-            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "description": "Customer usado para resolver menuId desde sus preferences. Si se omite, se usa el menú por defecto del website.",
             "schema": {
               "type": "string"
             }
@@ -16043,7 +16061,7 @@
         ],
         "operationId": "orderingListWebsiteProducts",
         "summary": "List website products",
-        "description": "Lista productos, categorías y árbol del menú publicado.",
+        "description": "Lista productos, categorías y árbol usando el menú guardado en preferences.",
         "security": [
           {
             "bearerAuth": []
@@ -16061,9 +16079,9 @@
           },
           {
             "in": "query",
-            "name": "menuId",
+            "name": "externalCustomerId",
             "required": false,
-            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "description": "Customer usado para resolver menuId desde sus preferences. Si se omite, se usa el menú por defecto del website.",
             "schema": {
               "type": "string"
             }
@@ -16111,7 +16129,7 @@
         ],
         "operationId": "orderingSearchWebsiteProducts",
         "summary": "Search website products",
-        "description": "Busca productos dentro de un menú del website.",
+        "description": "Busca productos usando el menú guardado en preferences del customer.",
         "security": [
           {
             "bearerAuth": []
@@ -16129,9 +16147,9 @@
           },
           {
             "in": "query",
-            "name": "menuId",
+            "name": "externalCustomerId",
             "required": false,
-            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "description": "Customer usado para resolver menuId desde sus preferences. Si se omite, se usa el menú por defecto del website.",
             "schema": {
               "type": "string"
             }
@@ -16215,9 +16233,9 @@
           },
           {
             "in": "query",
-            "name": "menuId",
+            "name": "externalCustomerId",
             "required": false,
-            "description": "ID del menú a consultar. Si se omite, se usa el menú por defecto del website.",
+            "description": "Customer usado para resolver menuId desde sus preferences. Si se omite, se usa el menú por defecto del website.",
             "schema": {
               "type": "string"
             }
@@ -16720,14 +16738,14 @@
         }
       }
     },
-    "/ordering/customers/{externalCustomerId}/websites/{domain}/selected-address": {
+    "/ordering/customers/{externalCustomerId}/selected-address": {
       "put": {
         "tags": [
           "Ordering API"
         ],
         "operationId": "orderingSetSelectedAddress",
         "summary": "Set selected address",
-        "description": "Selecciona una dirección para el checkout de un website y actualiza placeId.",
+        "description": "Selecciona una dirección global del customer para reutilizarla en websites.",
         "security": [
           {
             "bearerAuth": []
@@ -16739,15 +16757,6 @@
             "name": "externalCustomerId",
             "required": true,
             "description": "ID del customer en el sistema externo. Es independiente por app.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "domain",
-            "required": true,
-            "description": "Dominio canónico del website Justo.",
             "schema": {
               "type": "string"
             }
@@ -16776,7 +16785,7 @@
                       "type": "boolean"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/OrderingCheckoutState"
+                      "$ref": "#/components/schemas/OrderingCustomer"
                     }
                   },
                   "required": [
@@ -25437,6 +25446,42 @@
             ],
             "description": "Apellido del customer."
           },
+          "selectedAddressId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Dirección seleccionada globalmente por la app."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dirección seleccionada globalmente por la app."
+          },
+          "selectedPlaceId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Place ID seleccionado globalmente por la app."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Place ID seleccionado globalmente por la app."
+          },
+          "selectedCityId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "City ID seleccionado globalmente por la app."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "City ID seleccionado globalmente por la app."
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -26623,6 +26668,45 @@
         },
         "additionalProperties": true
       },
+      "OrderingWebsite": {
+        "type": "object",
+        "description": "Datos básicos de un website.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del website."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del website."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2."
+          },
+          "menuIds": {
+            "type": "array",
+            "description": "IDs de menús publicados.",
+            "items": {
+              "type": "string",
+              "description": "ID de menú."
+            }
+          },
+          "defaultMenuId": {
+            "type": "string",
+            "description": "ID del menú por defecto."
+          },
+          "supportedLanguages": {
+            "type": "array",
+            "description": "Idiomas soportados.",
+            "items": {
+              "type": "string",
+              "description": "Código de idioma."
+            }
+          }
+        },
+        "additionalProperties": true
+      },
       "OrderingAddressInput": {
         "type": "object",
         "description": "Dirección provista por la app externa. Ordering API la resuelve internamente a placeId y cityId.",
@@ -27645,11 +27729,31 @@
       },
       "OrderingSelectedAddressInput": {
         "type": "object",
-        "description": "Dirección seleccionada para el checkout del website.",
+        "description": "Dirección seleccionada globalmente para el customer y app. Debes enviar placeId o addressId.",
         "properties": {
           "placeId": {
-            "type": "string",
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Place ID retornado al crear o listar direcciones."
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Place ID retornado al crear o listar direcciones."
+          },
+          "addressId": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Alias de placeId para compatibilidad."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Alias de placeId para compatibilidad."
           }
         },
         "additionalProperties": true

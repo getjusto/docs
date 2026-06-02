@@ -27,9 +27,10 @@ El email real del cliente no se guarda como email principal del usuario técnico
 
 Los datos temporales del checkout se guardan por `{ appId, externalCustomerId, websiteId }` y expiran automáticamente. Este estado puede contener `selectedAddressId`, `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `idempotencyKey`, `meta` y datos equivalentes.
 
+La dirección seleccionada principal vive en el `OrderingCustomer`, con `selectedAddressId`, `selectedPlaceId` y `selectedCityId`. El `selectedAddressId` dentro de checkout-state es un snapshot del checkout actual y se mantiene para compatibilidad con los flujos por website.
+
 El carro, tipo de despacho, local, hora, método de pago, cupones y coins siguen usando los flujos existentes de preferencias y carro.
 
 ## Órdenes
 
 Las órdenes creadas por Ordering API siempre quedan asociadas al app que las creó mediante `orderingAPIAppId`, se crean como órdenes marketplace y usan `embeddedVendor: orderingAPI`. Una app solo puede leer sus propios customers y órdenes.
-

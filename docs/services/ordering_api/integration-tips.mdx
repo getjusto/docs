@@ -16,7 +16,7 @@ Usa siempre los valores retornados por Ordering API para `cityId`, `placeId`, `d
 ```mermaid
 flowchart TD
   A["Crear o actualizar customer"] --> B["Listar o crear dirección"]
-  B --> C["Obtener cityId y placeId"]
+  B --> C["Seleccionar dirección en Ordering API"]
   C --> D["Buscar y seleccionar website con marketplace"]
   D --> E["Obtener website, menú y estado de carrito"]
   E --> F["Agregar o editar productos"]
@@ -45,7 +45,7 @@ Envía `email`, `phone`, `firstName` y `lastName` cuando estén disponibles. El 
 }
 ```
 
-## 2. Dirección, cityId y placeId
+## 2. Dirección y ubicación seleccionada
 
 Para delivery, la app debe trabajar con una dirección normalizada. Primero lista direcciones existentes del customer y reutiliza una si corresponde.
 
@@ -73,25 +73,32 @@ POST /v3/ordering/customers/{externalCustomerId}/addresses
 }
 ```
 
-La dirección entrega el `placeId` y datos normalizados para cobertura. El `cityId` lo debe resolver tu app desde su selector de ciudad o geocoding externo y usarlo en marketplace. Para `go` o `serve`, puedes omitir dirección, pero igual debes seleccionar un local compatible.
+La dirección entrega el `placeId` y datos normalizados para cobertura. Cuando el servicio puede resolver `cityId`, Ordering API lo guarda junto a la dirección seleccionada. Para `go` o `serve`, puedes omitir dirección, pero igual debes seleccionar un local compatible.
 
-Cuando ya conozcas el website elegido, selecciona la dirección para ese website:
+Selecciona la dirección una vez para el customer:
 
 ```http
-PUT /v3/ordering/customers/{externalCustomerId}/websites/{domain}/selected-address
+PUT /v3/ordering/customers/{externalCustomerId}/selected-address
 ```
 
 ```json
 {
-  "addressId": "addressId"
+  "placeId": "placeId"
 }
 ```
 
-Esto guarda `selectedAddressId` en checkout-state y actualiza el `placeId` usado por el carrito.
+La selección queda guardada a nivel customer y app. No tienes que repetirla para cada website. Esto guarda `selectedAddressId`, `selectedPlaceId` y `selectedCityId` en el customer. Cuando leas o recalcules el carrito de cualquier website, Ordering API aplicará ese `selectedPlaceId` internamente.
 
 ## 3. Seleccionar website con marketplace
 
-Usa marketplace para mostrar comercios disponibles según ciudad, dirección y búsqueda.
+Usa marketplace para mostrar comercios disponibles según ciudad, dirección y búsqueda. Si ya seleccionaste una dirección, puedes enviar `externalCustomerId` y Ordering API resolverá `cityId` y `placeId` desde el customer.
+
+```http
+GET /v3/ordering/marketplace/recommendations?externalCustomerId={externalCustomerId}
+GET /v3/ordering/marketplace/search?externalCustomerId={externalCustomerId}&query={query}
+```
+
+También puedes enviar `cityId` y `placeId` explícitos. Cuando los envías juntos, esos valores ganan sobre la dirección guardada.
 
 ```http
 GET /v3/ordering/marketplace/recommendations?cityId={cityId}&placeId={placeId}
@@ -113,13 +120,13 @@ GET /v3/ordering/websites/{domain}
 
 ## 4. Obtener menú y estado del carro
 
-Obtén el menú del website antes de mostrar productos. Si omites `menuId`, Ordering API usa el menú por defecto del website.
+Obtén el menú del website antes de mostrar productos. Ordering API toma el `menuId` desde las preferences del customer. Si todavía no hay un menú guardado, usa el menú por defecto del website.
 
 ```http
-GET /v3/ordering/websites/{domain}/categories?menuId={menuId}
-GET /v3/ordering/websites/{domain}/products?menuId={menuId}
-GET /v3/ordering/websites/{domain}/products/search?menuId={menuId}&query={query}
-GET /v3/ordering/websites/{domain}/products/{productId}?menuId={menuId}
+GET /v3/ordering/websites/{domain}/categories?externalCustomerId={externalCustomerId}
+GET /v3/ordering/websites/{domain}/products?externalCustomerId={externalCustomerId}
+GET /v3/ordering/websites/{domain}/products/search?externalCustomerId={externalCustomerId}&query={query}
+GET /v3/ordering/websites/{domain}/products/{productId}?externalCustomerId={externalCustomerId}
 ```
 
 Para catálogos grandes, parte con búsqueda o categorías y carga el detalle solo cuando el customer abre un producto. El detalle trae `availabilityAt`, `maxPurchaseQuantity` y `modifiers`.
@@ -131,6 +138,8 @@ GET /v3/ordering/customers/{externalCustomerId}/websites/{domain}/cart
 ```
 
 La respuesta `OrderingCartState` contiene preferencias, dirección seleccionada, local, horarios, medios de pago y carrito calculado cuando ya hay items.
+
+Si el customer tiene `selectedPlaceId`, Ordering API lo aplica automáticamente al leer o recalcular el carrito. Si tu app envía un `placeId` explícito en preferencias, ese valor gana para el website actual.
 
 ## 5. Agregar o editar productos
 
@@ -186,7 +195,7 @@ PATCH /v3/ordering/customers/{externalCustomerId}/websites/{domain}/cart/prefere
 }
 ```
 
-Para delivery, selecciona dirección antes de listar locales. Para retiro o consumo en local, consulta locales y elige uno que acepte el tipo de entrega.
+Para delivery, selecciona una dirección del customer antes de listar locales. Para retiro o consumo en local, consulta locales y elige uno que acepte el tipo de entrega.
 
 ```http
 GET /v3/ordering/customers/{externalCustomerId}/websites/{domain}/cart/stores
@@ -270,7 +279,7 @@ PATCH /v3/ordering/customers/{externalCustomerId}/websites/{domain}/checkout-sta
 }
 ```
 
-Usa checkout-state para datos que no son parte estable del carrito: `selectedAddressId`, `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `termSignatures`, `idempotencyKey`, `meta` y datos equivalentes. Este estado expira automáticamente.
+Usa checkout-state para datos que no son parte estable del carrito: `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `termSignatures`, `idempotencyKey`, `meta` y datos equivalentes. También puedes guardar `selectedAddressId` como snapshot del checkout actual, pero la selección reutilizable vive en el customer. Este estado expira automáticamente.
 
 ## 8. Crear pedido
 
@@ -280,7 +289,7 @@ Antes de llamar `POST /orders`, valida que:
 - El carrito tenga items.
 - No haya productos o modificadores no disponibles.
 - `deliveryType`, `storeId`, `menuId`, `paymentType` y `time` estén definidos.
-- Para delivery, exista `selectedAddressId`.
+- Para delivery, exista una dirección seleccionada en el customer o un `placeId` explícito para el checkout.
 - Billing esté guardado si el website lo exige.
 - Custom params y firmas requeridas estén en `orderParams` y `termSignatures`.
 - `idempotencyKey` sea estable para reintentos del mismo checkout.
@@ -353,7 +362,7 @@ GET /v3/ordering/customers/{externalCustomerId}/websites/{domain}/justo-coins
 ## Errores comunes
 
 - `notFound` en website: revisa que `domain` sea el dominio canónico.
-- Sin comercios en marketplace: revisa `cityId`, `placeId` y cobertura.
+- Sin comercios en marketplace: si envías `cityId` y `placeId`, revisa cobertura. Si envías `externalCustomerId`, revisa que el customer tenga dirección seleccionada con `selectedPlaceId` y `selectedCityId`.
 - Sin locales disponibles: revisa `deliveryType`, dirección seleccionada y cobertura del `placeId`.
 - Sin horarios: selecciona primero `storeId` y usa un local abierto para el tipo de entrega elegido.
 - Producto no disponible: vuelve a leer el detalle del producto y valida `availabilityAt`.
