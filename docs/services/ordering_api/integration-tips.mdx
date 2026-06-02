@@ -246,7 +246,7 @@ PATCH /v3/ordering/customers/{externalCustomerId}/websites/{domain}/cart/prefere
 
 Usa `PATCH /cart/preferences` para guardar parámetros de checkout como `billing`, `tip`, `cashAmount`, `gift`, `orderParams`, `meta` y datos equivalentes. No envíes `selectedAddressId`, `cityId` ni `placeId` en este endpoint; la dirección siempre sale del customer. Estos datos vuelven como campos directos en `GET /cart` (`data.billing`, `data.tip`, `data.orderParams`, etc.) y expiran automáticamente.
 
-Ordering API maneja los términos legales igual que inDrive: `GET /cart` devuelve `data.options.terms.hidden: true` y `data.options.terms.checked: true`, y al crear la orden genera automáticamente las firmas vigentes para los términos pendientes del customer. No agregues un paso manual ni envíes `termSignatures` en el flujo normal.
+Antes de iniciar el flujo de compra, el integrador debe pedirle al usuario final que acepte los términos y condiciones de Justo. Para mostrar los términos del website seleccionado, usa [Términos y condiciones de Justo](https://proyectomica.getjusto.com/documentos-legales/termsAndConditions). Ordering API no muestra un checkbox propio dentro del checkout API.
 
 ## 8. Crear pedido
 
@@ -258,7 +258,7 @@ Antes de llamar `POST /orders`, valida que:
 - `deliveryType`, `storeId`, `paymentType` y `time` estén definidos en `orderPreferences`.
 - Para delivery, exista una dirección seleccionada en el customer.
 - Billing esté guardado si el website lo exige.
-- Custom params estén en `orderParams`. Los términos legales se auto-aceptan y se firman internamente como en inDrive.
+- Custom params estén en `orderParams` y el integrador ya haya obtenido la aceptación de términos del usuario final.
 - `idempotencyKey` sea estable para reintentos del mismo checkout.
 
 ```http

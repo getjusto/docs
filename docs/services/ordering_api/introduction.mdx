@@ -31,7 +31,7 @@ La dirección seleccionada principal vive en el `OrderingCustomer`, con `selecte
 
 El carro, tipo de despacho, local, hora, método de pago, cupones, horarios disponibles, medios de pago y opciones dinámicas como billing se leen desde `GET /cart`. Las escrituras del checkout se hacen con `PATCH /cart/preferences`.
 
-Ordering API auto-acepta los términos legales obligatorios del website igual que inDrive: `GET /cart` devuelve `data.options.terms.hidden: true` y `data.options.terms.checked: true`, y al crear la orden se firman internamente las versiones vigentes para el usuario técnico del customer. No agregues un paso manual de términos ni envíes `termSignatures` en el flujo normal.
+Es responsabilidad del integrador pedirle al usuario final que acepte los términos y condiciones de Justo antes de iniciar el flujo de compra. Para mostrar los términos del website, usa [Términos y condiciones de Justo](https://proyectomica.getjusto.com/documentos-legales/termsAndConditions). Ordering API no agrega un paso propio de aceptación dentro del checkout API.
 
 ## Órdenes
 

@@ -16648,7 +16648,7 @@
         ],
         "operationId": "orderingGetCart",
         "summary": "Get cart state",
-        "description": "Obtiene preferencias, dirección, local, horarios, medios de pago, términos auto-aceptados y carrito calculado.",
+        "description": "Obtiene preferencias, dirección, local, horarios, medios de pago, términos publicados y carrito calculado. El integrador debe pedir aceptación de los términos antes de iniciar el flujo de compra.",
         "security": [
           {
             "bearerAuth": []
@@ -16958,7 +16958,7 @@
         ],
         "operationId": "orderingUpdateCartPreferences",
         "summary": "Update cart preferences",
-        "description": "Actualiza local, tipo de entrega, horario, medio de pago, cupón y opciones de checkout como billing. Los términos legales se auto-aceptan al crear la orden.",
+        "description": "Actualiza local, tipo de entrega, horario, medio de pago, cupón y opciones de checkout como billing. La aceptación de términos debe gestionarla el integrador antes del flujo de compra.",
         "security": [
           {
             "bearerAuth": []
@@ -24320,7 +24320,7 @@
                 "oneOf": [
                   {
                     "type": "array",
-                    "description": "Firmas manuales guardadas para el checkout. Normalmente no se envían porque Ordering API acepta los términos automáticamente.",
+                    "description": "Firmas de términos guardadas para flujos avanzados. En el flujo estándar, el integrador debe pedir aceptación de los términos antes de iniciar la compra.",
                     "items": {
                       "$ref": "#/components/schemas/OrderingTermSignature"
                     }
@@ -24329,7 +24329,7 @@
                     "type": "null"
                   }
                 ],
-                "description": "Firmas manuales guardadas para el checkout. Normalmente no se envían porque Ordering API acepta los términos automáticamente."
+                "description": "Firmas de términos guardadas para flujos avanzados. En el flujo estándar, el integrador debe pedir aceptación de los términos antes de iniciar la compra."
               },
               "meta": {
                 "oneOf": [
@@ -27483,7 +27483,7 @@
         "properties": {
           "mode": {
             "type": "string",
-            "description": "Modo de aceptación de términos.",
+            "description": "Modo técnico de manejo de términos.",
             "enum": [
               "auto"
             ],
@@ -27491,15 +27491,15 @@
           },
           "hidden": {
             "type": "boolean",
-            "description": "Indica que Ordering API no requiere mostrar un checkbox manual."
+            "description": "Indica que Ordering API no muestra un checkbox propio."
           },
           "checked": {
             "type": "boolean",
-            "description": "Indica que los términos vienen auto-marcados como en inDrive."
+            "description": "Indica que Ordering API continúa el flujo asumiendo que el integrador ya obtuvo la aceptación del usuario."
           },
           "signatures": {
             "type": "array",
-            "description": "Firmas que Ordering API puede generar automáticamente.",
+            "description": "Versiones vigentes que aplican al checkout técnico.",
             "items": {
               "$ref": "#/components/schemas/OrderingTermSignature"
             }
@@ -27964,7 +27964,7 @@
             "oneOf": [
               {
                 "type": "array",
-                "description": "Firmas manuales de términos. Normalmente omite este campo; Ordering API auto-acepta los términos legales como inDrive.",
+                "description": "Firmas de términos para flujos avanzados. En el flujo estándar, el integrador debe pedir aceptación de los términos antes de iniciar la compra.",
                 "items": {
                   "$ref": "#/components/schemas/OrderingTermSignature"
                 }
@@ -27973,7 +27973,7 @@
                 "type": "null"
               }
             ],
-            "description": "Firmas manuales de términos. Normalmente omite este campo; Ordering API auto-acepta los términos legales como inDrive."
+            "description": "Firmas de términos para flujos avanzados. En el flujo estándar, el integrador debe pedir aceptación de los términos antes de iniciar la compra."
           },
           "sessionBirthday": {
             "oneOf": [
