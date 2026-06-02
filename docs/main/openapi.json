@@ -13911,8 +13911,8 @@
                 "type": "object",
                 "required": [
                   "storeId",
-                  "fromPlaceId",
-                  "toPlaceId",
+                  "fromAddress",
+                  "toAddress",
                   "fromName",
                   "toName"
                 ],
@@ -13933,13 +13933,11 @@
                     "type": "string",
                     "description": "ID Justo del local solicitante."
                   },
-                  "fromPlaceId": {
-                    "type": "string",
-                    "description": "Place ID de origen."
+                  "fromAddress": {
+                    "$ref": "#/components/schemas/apiDeliveryAddressInput"
                   },
-                  "toPlaceId": {
-                    "type": "string",
-                    "description": "Place ID de destino."
+                  "toAddress": {
+                    "$ref": "#/components/schemas/apiDeliveryAddressInput"
                   },
                   "fromName": {
                     "type": "string",
@@ -13956,14 +13954,6 @@
                   "toPhone": {
                     "type": "string",
                     "description": "Teléfono de destino. Debe venir fromPhone o toPhone."
-                  },
-                  "fromAddressLine2": {
-                    "type": "string",
-                    "description": "Complemento de dirección de origen."
-                  },
-                  "toAddressLine2": {
-                    "type": "string",
-                    "description": "Complemento de dirección de destino."
                   },
                   "instructions": {
                     "type": "string",
@@ -14072,70 +14062,52 @@
       }
     },
     "/admin/deliveries/quote": {
-      "get": {
+      "post": {
         "summary": "Quote delivery without order",
-        "description": "Cotiza una entrega sin pedido entre dos placeIds para un local de la marca autorizada. Como no existe un pedido de Justo Ecommerce asociado desde donde inferir local, dirección o datos de entrega, estos datos se envían explícitamente. No crea entregas, no modifica estado y no genera un pedido ecommerce.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "storeId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "ID Justo del local que solicita la entrega."
-          },
-          {
-            "in": "query",
-            "name": "fromPlaceId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Place ID de origen."
-          },
-          {
-            "in": "query",
-            "name": "toPlaceId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Place ID de destino."
-          },
-          {
-            "in": "query",
-            "name": "isCash",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Si es true, considera cobro en efectivo."
-          },
-          {
-            "in": "query",
-            "name": "amountToPay",
-            "schema": {
-              "type": "number"
-            },
-            "description": "Monto que debe cobrarse si isCash es true."
-          },
-          {
-            "in": "query",
-            "name": "isRoundTrip",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Si es true, considera vuelta al origen."
-          },
-          {
-            "in": "query",
-            "name": "useCarForDelivery",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Si es true, cotiza con vehículo tipo auto."
+        "description": "Cotiza una entrega sin pedido para un local de la marca autorizada. Envía fromAddress y toAddress con la misma estructura usada para crear direcciones en Ordering API; API resuelve los placeIds internamente. No crea entregas, no modifica estado y no genera un pedido ecommerce.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "storeId",
+                  "fromAddress",
+                  "toAddress"
+                ],
+                "properties": {
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID Justo del local solicitante."
+                  },
+                  "fromAddress": {
+                    "$ref": "#/components/schemas/apiDeliveryAddressInput"
+                  },
+                  "toAddress": {
+                    "$ref": "#/components/schemas/apiDeliveryAddressInput"
+                  },
+                  "isCash": {
+                    "type": "boolean",
+                    "description": "Si es true, considera cobro en efectivo."
+                  },
+                  "amountToPay": {
+                    "type": "number",
+                    "description": "Monto que debe cobrarse si isCash es true."
+                  },
+                  "isRoundTrip": {
+                    "type": "boolean",
+                    "description": "Si es true, considera vuelta al origen."
+                  },
+                  "useCarForDelivery": {
+                    "type": "boolean",
+                    "description": "Si es true, cotiza con vehículo tipo auto."
+                  }
+                }
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "The OpenAPI spec",
@@ -22076,6 +22048,64 @@
           }
         }
       },
+      "apiDeliveryAddressInput": {
+        "type": "object",
+        "description": "Dirección de origen o destino provista por la app externa. API la resuelve internamente a placeId.",
+        "required": [
+          "streetAddress",
+          "countryCode"
+        ],
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y numeración ingresada por el customer o sistema externo."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2.",
+            "example": "CL"
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina u otra información secundaria."
+          },
+          "location": {
+            "type": "object",
+            "description": "Coordenadas opcionales para mejorar la resolución de la dirección.",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud."
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud."
+              }
+            }
+          },
+          "acceptsNoLine2": {
+            "type": "boolean",
+            "description": "Indica si el customer confirmó que no tiene línea 2."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comentario o instrucciones de entrega."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Localidad o comuna."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Código postal."
+          }
+        },
+        "additionalProperties": false
+      },
       "apiDeliveryLocation": {
         "type": "object",
         "description": "Punto de origen o destino de una entrega sin pedido.",
@@ -27577,7 +27607,7 @@
       },
       "OrderingWebsite": {
         "type": "object",
-        "description": "Datos básicos de un website.",
+        "description": "Datos públicos de un website.",
         "properties": {
           "_id": {
             "type": "string",
@@ -27587,9 +27617,58 @@
             "type": "string",
             "description": "Nombre del website."
           },
+          "baseURL": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Dominio/base URL canónico del website."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dominio/base URL canónico del website."
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Descripción pública del website."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Descripción pública del website."
+          },
           "countryCode": {
             "type": "string",
             "description": "Código de país ISO 3166-1 alpha-2."
+          },
+          "timezone": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Zona horaria IANA del website.",
+                "example": "America/Santiago"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Zona horaria IANA del website."
+          },
+          "locale": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Locale por defecto del website."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Locale por defecto del website."
           },
           "menuIds": {
             "type": "array",
@@ -27610,6 +27689,255 @@
               "type": "string",
               "description": "Código de idioma."
             }
+          },
+          "deliveryTypes": {
+            "type": "array",
+            "description": "Tipos de entrega soportados.",
+            "items": {
+              "type": "string",
+              "description": "Tipo de entrega."
+            }
+          },
+          "minimumOrderPrice": {
+            "oneOf": [
+              {
+                "type": "number",
+                "description": "Monto mínimo de compra."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Monto mínimo de compra."
+          },
+          "logo": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "images": {
+            "$ref": "#/components/schemas/OrderingWebsiteImages"
+          },
+          "seo": {
+            "$ref": "#/components/schemas/OrderingWebsiteSeo"
+          },
+          "design": {
+            "$ref": "#/components/schemas/OrderingWebsiteDesign"
+          },
+          "stores": {
+            "type": "array",
+            "description": "Locales públicos del website.",
+            "items": {
+              "$ref": "#/components/schemas/OrderingStore"
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingWebsiteDesign": {
+        "type": "object",
+        "description": "Configuración visual pública mínima del website.",
+        "properties": {
+          "backgroundColor": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Color de fondo principal."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Color de fondo principal."
+          },
+          "primaryColor": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Color primario."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Color primario."
+          },
+          "productCardDesign": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Diseño de card de producto."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Diseño de card de producto."
+          },
+          "hideProductsDiscountBadge": {
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "Indica si oculta badges de descuento."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Indica si oculta badges de descuento."
+          },
+          "isDark": {
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "Indica si el diseño usa contraste oscuro."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Indica si el diseño usa contraste oscuro."
+          },
+          "navbarHidden": {
+            "oneOf": [
+              {
+                "type": "boolean",
+                "description": "Indica si el navbar está oculto."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Indica si el navbar está oculto."
+          },
+          "navbarBackgroundColor": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Color de fondo del navbar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Color de fondo del navbar."
+          },
+          "navbarTextColor": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Color de texto del navbar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Color de texto del navbar."
+          },
+          "importantMessageText": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Mensaje importante del navbar."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Mensaje importante del navbar."
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingWebsiteImages": {
+        "type": "object",
+        "description": "Imágenes públicas principales del website.",
+        "properties": {
+          "logo": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "seo": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "favicon": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "navbarLogo": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "footerLogo": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrderingImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "OrderingWebsiteSeo": {
+        "type": "object",
+        "description": "Metadata SEO pública del website.",
+        "properties": {
+          "title": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Título SEO."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Título SEO."
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Descripción SEO."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Descripción SEO."
           }
         },
         "additionalProperties": true

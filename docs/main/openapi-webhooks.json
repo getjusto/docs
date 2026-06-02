@@ -5176,6 +5176,64 @@
           }
         }
       },
+      "apiDeliveryAddressInput": {
+        "type": "object",
+        "description": "Dirección de origen o destino provista por la app externa. API la resuelve internamente a placeId.",
+        "required": [
+          "streetAddress",
+          "countryCode"
+        ],
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y numeración ingresada por el customer o sistema externo."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2.",
+            "example": "CL"
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina u otra información secundaria."
+          },
+          "location": {
+            "type": "object",
+            "description": "Coordenadas opcionales para mejorar la resolución de la dirección.",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud."
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud."
+              }
+            }
+          },
+          "acceptsNoLine2": {
+            "type": "boolean",
+            "description": "Indica si el customer confirmó que no tiene línea 2."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comentario o instrucciones de entrega."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Localidad o comuna."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Código postal."
+          }
+        },
+        "additionalProperties": false
+      },
       "apiDeliveryLocation": {
         "type": "object",
         "description": "Punto de origen o destino de una entrega sin pedido.",
