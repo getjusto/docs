@@ -510,6 +510,7 @@
 			"group": "Reportes",
 			"version": "v3",
 			"pages": [
+				"docs/crisp/reports/business-snapshots",
 				{
 					"group": "Ventas",
 					"pages": [

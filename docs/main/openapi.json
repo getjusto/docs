@@ -15705,6 +15705,299 @@
         }
       }
     },
+    "/data/reports/snapshots": {
+      "get": {
+        "summary": "Snapshots de negocio",
+        "description": "Consulta snapshots diarios, semanales o mensuales de métricas de negocio ya precalculadas para la marca autorizada. Esta es la fuente más eficiente para métricas históricas y debería usarse siempre que sus campos y filtros respondan la pregunta antes de pedir reportes más pesados. La data siempre queda limitada al website autorizado.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "scope",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "website",
+                "store"
+              ],
+              "description": "Usa website para snapshots agregados de marca o store para snapshots por local."
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeframeType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "week",
+                "month"
+              ],
+              "description": "Granularidad precalculada del snapshot."
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeframe",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Periodo exacto a buscar. Formatos: YYYY-MM-DD para day, YYYY-W## para week, YYYY-MM para month."
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "storeIds",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "IDs de locales. Solo aplica cuando scope=store."
+            }
+          },
+          {
+            "in": "query",
+            "name": "countryCode",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Código de país ISO 3166-1 alpha-2",
+              "example": "CL"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "description": "Página a retornar. Por defecto: 1."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "description": "Cantidad de snapshots por página. Por defecto: 100. Máximo: 500."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "description": "Snapshots encontrados.",
+                          "items": {
+                            "type": "object",
+                            "description": "Snapshot de métricas de negocio ya precalculadas para una marca o local autorizado.",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "description": "ID del snapshot."
+                              },
+                              "scope": {
+                                "type": "string",
+                                "description": "Nivel del snapshot.",
+                                "enum": [
+                                  "website",
+                                  "store"
+                                ]
+                              },
+                              "websiteId": {
+                                "type": "string",
+                                "description": "ID de la marca autorizada."
+                              },
+                              "storeId": {
+                                "type": "string",
+                                "description": "ID del local cuando scope=store."
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "Código de país ISO 3166-1 alpha-2."
+                              },
+                              "timeframeType": {
+                                "type": "string",
+                                "description": "Tipo de periodo precalculado.",
+                                "enum": [
+                                  "day",
+                                  "week",
+                                  "month"
+                                ]
+                              },
+                              "timeframe": {
+                                "type": "string",
+                                "description": "Periodo formateado. Ej: 2026-06-01, 2026-W23 o 2026-06."
+                              },
+                              "fromDate": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Inicio del periodo."
+                              },
+                              "toDate": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Fin del periodo."
+                              },
+                              "data": {
+                                "type": "object",
+                                "description": "Métricas públicas precalculadas del snapshot. No incluye márgenes ni revenue interno de Justo.",
+                                "properties": {
+                                  "storesCount": {
+                                    "type": "number",
+                                    "description": "Cantidad de locales considerados. Solo aplica a scope=website."
+                                  },
+                                  "storesWithOrders": {
+                                    "type": "number",
+                                    "description": "Locales con órdenes. Solo aplica a scope=website."
+                                  },
+                                  "ecommerceTotalOrderValue": {
+                                    "type": "number",
+                                    "description": "Venta total ecommerce en moneda local."
+                                  },
+                                  "ecommerceOrdersCount": {
+                                    "type": "number",
+                                    "description": "Cantidad de órdenes ecommerce."
+                                  },
+                                  "ecommerceAverageOrderValue": {
+                                    "type": "number",
+                                    "description": "Ticket promedio ecommerce en moneda local."
+                                  },
+                                  "justoDeliveryOrdersShare": {
+                                    "type": "number",
+                                    "description": "Participación de órdenes ecommerce con delivery Justo."
+                                  },
+                                  "pdvOrdersCount": {
+                                    "type": "number",
+                                    "description": "Cantidad de órdenes PDV."
+                                  },
+                                  "pdvTotalOrderValue": {
+                                    "type": "number",
+                                    "description": "Venta total PDV en moneda local."
+                                  },
+                                  "pdvOrderBySource": {
+                                    "type": "object",
+                                    "description": "Ventas PDV separadas por fuente o canal.",
+                                    "additionalProperties": {
+                                      "type": "object",
+                                      "properties": {
+                                        "ordersCount": {
+                                          "type": "number",
+                                          "description": "Cantidad de órdenes de la fuente."
+                                        },
+                                        "totalOrderValue": {
+                                          "type": "number",
+                                          "description": "Venta total de la fuente en moneda local."
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "productsStatus": {
+                                    "type": "object",
+                                    "description": "Mapa de productos o módulos activos para la marca o local.",
+                                    "additionalProperties": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                }
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Fecha de creación del snapshot."
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Fecha de última actualización del snapshot."
+                              }
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "description": "Página retornada."
+                        },
+                        "limit": {
+                          "type": "number",
+                          "description": "Límite usado."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ordering/customers/{externalCustomerId}/marketplace/recommendations": {
       "get": {
         "tags": [
@@ -23546,6 +23839,335 @@
           "toMinute": {
             "type": "number",
             "description": "Minuto del día en que termina el bloque."
+          }
+        }
+      },
+      "dataBusinessSnapshot": {
+        "type": "object",
+        "description": "Snapshot de métricas de negocio ya precalculadas para una marca o local autorizado.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID del snapshot."
+          },
+          "scope": {
+            "type": "string",
+            "description": "Nivel del snapshot.",
+            "enum": [
+              "website",
+              "store"
+            ]
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca autorizada."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local cuando scope=store."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2."
+          },
+          "timeframeType": {
+            "type": "string",
+            "description": "Tipo de periodo precalculado.",
+            "enum": [
+              "day",
+              "week",
+              "month"
+            ]
+          },
+          "timeframe": {
+            "type": "string",
+            "description": "Periodo formateado. Ej: 2026-06-01, 2026-W23 o 2026-06."
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Inicio del periodo."
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fin del periodo."
+          },
+          "data": {
+            "type": "object",
+            "description": "Métricas públicas precalculadas del snapshot. No incluye márgenes ni revenue interno de Justo.",
+            "properties": {
+              "storesCount": {
+                "type": "number",
+                "description": "Cantidad de locales considerados. Solo aplica a scope=website."
+              },
+              "storesWithOrders": {
+                "type": "number",
+                "description": "Locales con órdenes. Solo aplica a scope=website."
+              },
+              "ecommerceTotalOrderValue": {
+                "type": "number",
+                "description": "Venta total ecommerce en moneda local."
+              },
+              "ecommerceOrdersCount": {
+                "type": "number",
+                "description": "Cantidad de órdenes ecommerce."
+              },
+              "ecommerceAverageOrderValue": {
+                "type": "number",
+                "description": "Ticket promedio ecommerce en moneda local."
+              },
+              "justoDeliveryOrdersShare": {
+                "type": "number",
+                "description": "Participación de órdenes ecommerce con delivery Justo."
+              },
+              "pdvOrdersCount": {
+                "type": "number",
+                "description": "Cantidad de órdenes PDV."
+              },
+              "pdvTotalOrderValue": {
+                "type": "number",
+                "description": "Venta total PDV en moneda local."
+              },
+              "pdvOrderBySource": {
+                "type": "object",
+                "description": "Ventas PDV separadas por fuente o canal.",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "ordersCount": {
+                      "type": "number",
+                      "description": "Cantidad de órdenes de la fuente."
+                    },
+                    "totalOrderValue": {
+                      "type": "number",
+                      "description": "Venta total de la fuente en moneda local."
+                    }
+                  }
+                }
+              },
+              "productsStatus": {
+                "type": "object",
+                "description": "Mapa de productos o módulos activos para la marca o local.",
+                "additionalProperties": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación del snapshot."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización del snapshot."
+          }
+        }
+      },
+      "dataBusinessSnapshotData": {
+        "type": "object",
+        "description": "Métricas públicas precalculadas del snapshot. No incluye márgenes ni revenue interno de Justo.",
+        "properties": {
+          "storesCount": {
+            "type": "number",
+            "description": "Cantidad de locales considerados. Solo aplica a scope=website."
+          },
+          "storesWithOrders": {
+            "type": "number",
+            "description": "Locales con órdenes. Solo aplica a scope=website."
+          },
+          "ecommerceTotalOrderValue": {
+            "type": "number",
+            "description": "Venta total ecommerce en moneda local."
+          },
+          "ecommerceOrdersCount": {
+            "type": "number",
+            "description": "Cantidad de órdenes ecommerce."
+          },
+          "ecommerceAverageOrderValue": {
+            "type": "number",
+            "description": "Ticket promedio ecommerce en moneda local."
+          },
+          "justoDeliveryOrdersShare": {
+            "type": "number",
+            "description": "Participación de órdenes ecommerce con delivery Justo."
+          },
+          "pdvOrdersCount": {
+            "type": "number",
+            "description": "Cantidad de órdenes PDV."
+          },
+          "pdvTotalOrderValue": {
+            "type": "number",
+            "description": "Venta total PDV en moneda local."
+          },
+          "pdvOrderBySource": {
+            "type": "object",
+            "description": "Ventas PDV separadas por fuente o canal.",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "ordersCount": {
+                  "type": "number",
+                  "description": "Cantidad de órdenes de la fuente."
+                },
+                "totalOrderValue": {
+                  "type": "number",
+                  "description": "Venta total de la fuente en moneda local."
+                }
+              }
+            }
+          },
+          "productsStatus": {
+            "type": "object",
+            "description": "Mapa de productos o módulos activos para la marca o local.",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "dataBusinessSnapshotsPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Snapshots encontrados.",
+            "items": {
+              "type": "object",
+              "description": "Snapshot de métricas de negocio ya precalculadas para una marca o local autorizado.",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "ID del snapshot."
+                },
+                "scope": {
+                  "type": "string",
+                  "description": "Nivel del snapshot.",
+                  "enum": [
+                    "website",
+                    "store"
+                  ]
+                },
+                "websiteId": {
+                  "type": "string",
+                  "description": "ID de la marca autorizada."
+                },
+                "storeId": {
+                  "type": "string",
+                  "description": "ID del local cuando scope=store."
+                },
+                "countryCode": {
+                  "type": "string",
+                  "description": "Código de país ISO 3166-1 alpha-2."
+                },
+                "timeframeType": {
+                  "type": "string",
+                  "description": "Tipo de periodo precalculado.",
+                  "enum": [
+                    "day",
+                    "week",
+                    "month"
+                  ]
+                },
+                "timeframe": {
+                  "type": "string",
+                  "description": "Periodo formateado. Ej: 2026-06-01, 2026-W23 o 2026-06."
+                },
+                "fromDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Inicio del periodo."
+                },
+                "toDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Fin del periodo."
+                },
+                "data": {
+                  "type": "object",
+                  "description": "Métricas públicas precalculadas del snapshot. No incluye márgenes ni revenue interno de Justo.",
+                  "properties": {
+                    "storesCount": {
+                      "type": "number",
+                      "description": "Cantidad de locales considerados. Solo aplica a scope=website."
+                    },
+                    "storesWithOrders": {
+                      "type": "number",
+                      "description": "Locales con órdenes. Solo aplica a scope=website."
+                    },
+                    "ecommerceTotalOrderValue": {
+                      "type": "number",
+                      "description": "Venta total ecommerce en moneda local."
+                    },
+                    "ecommerceOrdersCount": {
+                      "type": "number",
+                      "description": "Cantidad de órdenes ecommerce."
+                    },
+                    "ecommerceAverageOrderValue": {
+                      "type": "number",
+                      "description": "Ticket promedio ecommerce en moneda local."
+                    },
+                    "justoDeliveryOrdersShare": {
+                      "type": "number",
+                      "description": "Participación de órdenes ecommerce con delivery Justo."
+                    },
+                    "pdvOrdersCount": {
+                      "type": "number",
+                      "description": "Cantidad de órdenes PDV."
+                    },
+                    "pdvTotalOrderValue": {
+                      "type": "number",
+                      "description": "Venta total PDV en moneda local."
+                    },
+                    "pdvOrderBySource": {
+                      "type": "object",
+                      "description": "Ventas PDV separadas por fuente o canal.",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "ordersCount": {
+                            "type": "number",
+                            "description": "Cantidad de órdenes de la fuente."
+                          },
+                          "totalOrderValue": {
+                            "type": "number",
+                            "description": "Venta total de la fuente en moneda local."
+                          }
+                        }
+                      }
+                    },
+                    "productsStatus": {
+                      "type": "object",
+                      "description": "Mapa de productos o módulos activos para la marca o local.",
+                      "additionalProperties": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Fecha de creación del snapshot."
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Fecha de última actualización del snapshot."
+                }
+              }
+            }
+          },
+          "page": {
+            "type": "number",
+            "description": "Página retornada."
+          },
+          "limit": {
+            "type": "number",
+            "description": "Límite usado."
           }
         }
       },
