@@ -1,3 +1,7 @@
 ---
 openapi: get /royalty/client-loyalty-balance
 ---
+
+Obtiene el balance actual de puntos de loyalty para un cliente específico de la marca autorizada.
+
+Envía `justoUserId`, `clientId` o `email` para identificar al cliente. La respuesta incluye el cliente, usuario Justo asociado cuando existe, email, balance actual y fecha de última actualización del valor. La búsqueda siempre queda limitada al website autorizado por el token de API.

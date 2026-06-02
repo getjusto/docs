@@ -1,0 +1,7 @@
+---
+openapi: post /ecommerce/coupons
+---
+
+Crea un cupón ecommerce para la marca autorizada. El `websiteId` se toma desde la autorización API, por lo que no debe enviarse en el body.
+
+Puede crear un código inicial usando `coupon.code`. Para crear muchos códigos o asociarlos a emails, usa el endpoint de creación de códigos del cupón.

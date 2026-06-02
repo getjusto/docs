@@ -1,0 +1,7 @@
+---
+openapi: get /ecommerce/coupons
+---
+
+Lista los cupones ecommerce de la marca autorizada. Usa este endpoint para auditar campañas, revisar cupones activos o buscar cupones por texto sin exponer ni aceptar `websiteId` en la request.
+
+La respuesta viene paginada. Para descargas completas desde Justo Admin MCP, usa `generate_data_file`; para una vista rápida usa `get_data`, que devuelve sólo una muestra.

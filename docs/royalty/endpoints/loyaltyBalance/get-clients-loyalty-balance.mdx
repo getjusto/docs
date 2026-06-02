@@ -1,3 +1,7 @@
 ---
 openapi: get /royalty/clients-loyalty-balance
 ---
+
+Lista de forma paginada los balances de puntos de loyalty de los clientes de la marca autorizada.
+
+Usa este endpoint para exportar o auditar saldos de puntos. Cada fila incluye `clientId`, `justoUserId` cuando existe y `balance`. La data siempre queda limitada al website autorizado por el token de API.

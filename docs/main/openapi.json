@@ -1930,6 +1930,80 @@
         }
       }
     },
+    "/tabs/{storeId}/invoices/{invoiceId}": {
+      "get": {
+        "summary": "Get invoice",
+        "description": "Obtiene el detalle de una factura o documento tributario de PDV asociado al local indicado.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/tabsTabInvoice"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tabs/{storeId}/payment-methods": {
       "get": {
         "summary": "List payment methods",
@@ -12947,6 +13021,1307 @@
         }
       }
     },
+    "/ecommerce/coupons": {
+      "get": {
+        "summary": "List ecommerce coupons",
+        "description": "Lista cupones ecommerce de la marca autorizada. Permite filtrar por texto y por locales. La data siempre queda limitada al website autorizado por el token.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Texto para buscar por nombre, código o externalId."
+          },
+          {
+            "in": "query",
+            "name": "storesIds",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Locales usados para filtrar cupones aplicables a esos locales."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/apiCoupon"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create ecommerce coupon",
+        "description": "Crea un cupón ecommerce para la marca autorizada. Si se envía code, se crea también un primer código asociado.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "coupon"
+                ],
+                "properties": {
+                  "coupon": {
+                    "$ref": "#/components/schemas/apiCouponInput"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiCoupon"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ecommerce/coupons/{couponId}": {
+      "get": {
+        "summary": "Get ecommerce coupon",
+        "description": "Obtiene un cupón ecommerce de la marca autorizada. Puede incluir sus códigos activos usando withCodes=true.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "couponId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo o externalId del cupón."
+          },
+          {
+            "in": "query",
+            "name": "withCodes",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Si es true, incluye los códigos activos del cupón."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/apiCoupon"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "codes": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/apiCouponCode"
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update ecommerce coupon",
+        "description": "Actualiza un cupón ecommerce de la marca autorizada. Solo puede modificar cupones del website autorizado.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "couponId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo o externalId del cupón."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "coupon"
+                ],
+                "properties": {
+                  "coupon": {
+                    "$ref": "#/components/schemas/apiCouponUpdateInput"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiCoupon"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Partially update ecommerce coupon",
+        "description": "Actualiza parcialmente un cupón ecommerce. Funciona igual que PUT, pero se documenta para integraciones que separan reemplazo y edición parcial.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "couponId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo o externalId del cupón."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "coupon"
+                ],
+                "properties": {
+                  "coupon": {
+                    "$ref": "#/components/schemas/apiCouponUpdateInput"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiCoupon"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ecommerce/coupons/{couponId}/codes": {
+      "get": {
+        "summary": "List ecommerce coupon codes",
+        "description": "Lista los códigos activos de un cupón ecommerce de la marca autorizada.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "couponId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo o externalId del cupón."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Texto para buscar por código."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/apiCouponCode"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create ecommerce coupon codes",
+        "description": "Crea uno o más códigos para un cupón ecommerce. Puede asociarlos a emails si useCodeWithEmail es true.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "couponId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo o externalId del cupón."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "codesWithEmail"
+                ],
+                "properties": {
+                  "codesWithEmail": {
+                    "type": "array",
+                    "description": "Códigos a crear y email opcional asociado.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "description": "Código canjeable."
+                        },
+                        "userEmail": {
+                          "type": "string",
+                          "description": "Email asociado al código."
+                        }
+                      }
+                    }
+                  },
+                  "useCodeWithEmail": {
+                    "type": "boolean",
+                    "description": "Si es true, cada código queda asociado al email indicado y solo ese email puede usarlo."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete ecommerce coupon codes",
+        "description": "Elimina lógicamente uno o más códigos de un cupón ecommerce. No elimina el cupón.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "couponId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo o externalId del cupón."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "couponCodesIds"
+                ],
+                "properties": {
+                  "couponCodesIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "IDs Justo de los códigos a eliminar."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deliveries": {
+      "get": {
+        "summary": "List deliveries without order",
+        "description": "Lista entregas solicitadas desde Website Admin que no están asociadas a un pedido ecommerce. La data siempre queda limitada al website autorizado.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Busca por specialCode o externalId."
+          },
+          {
+            "in": "query",
+            "name": "includeActive",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Si es true, incluye entregas activas. Por defecto lista solo terminadas o canceladas."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create delivery without order",
+        "description": "Solicita una entrega sin pedido usando el flujo de Website Admin. Requiere origen, destino, local y datos de contacto. Si la cotización cambió, puede requerir confirmation=true.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "storeId",
+                  "fromPlaceId",
+                  "toPlaceId",
+                  "fromName",
+                  "toName"
+                ],
+                "anyOf": [
+                  {
+                    "required": [
+                      "fromPhone"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "toPhone"
+                    ]
+                  }
+                ],
+                "properties": {
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID Justo del local solicitante."
+                  },
+                  "fromPlaceId": {
+                    "type": "string",
+                    "description": "Place ID de origen."
+                  },
+                  "toPlaceId": {
+                    "type": "string",
+                    "description": "Place ID de destino."
+                  },
+                  "fromName": {
+                    "type": "string",
+                    "description": "Nombre de contacto de origen."
+                  },
+                  "toName": {
+                    "type": "string",
+                    "description": "Nombre de contacto de destino."
+                  },
+                  "fromPhone": {
+                    "type": "string",
+                    "description": "Teléfono de origen. Debe venir fromPhone o toPhone."
+                  },
+                  "toPhone": {
+                    "type": "string",
+                    "description": "Teléfono de destino. Debe venir fromPhone o toPhone."
+                  },
+                  "fromAddressLine2": {
+                    "type": "string",
+                    "description": "Complemento de dirección de origen."
+                  },
+                  "toAddressLine2": {
+                    "type": "string",
+                    "description": "Complemento de dirección de destino."
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Instrucciones para el repartidor."
+                  },
+                  "isCash": {
+                    "type": "boolean",
+                    "description": "Si es true, el repartidor debe cobrar efectivo."
+                  },
+                  "amountToPay": {
+                    "type": "number",
+                    "description": "Monto que debe cobrar el repartidor si isCash es true."
+                  },
+                  "cashAmount": {
+                    "type": "number",
+                    "description": "Efectivo estimado que entregará el cliente."
+                  },
+                  "isRoundTrip": {
+                    "type": "boolean",
+                    "description": "Si es true, el repartidor vuelve al origen."
+                  },
+                  "tipAmount": {
+                    "type": "number",
+                    "description": "Propina para el repartidor."
+                  },
+                  "toExpectedDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha esperada de entrega."
+                  },
+                  "deliveryPriority": {
+                    "type": "number",
+                    "description": "Prioridad logística. 2 alta, 3 normal, 4 baja."
+                  },
+                  "sendNotificationToReceiver": {
+                    "type": "boolean",
+                    "description": "Si es true, envía notificación al receptor."
+                  },
+                  "useCarForDelivery": {
+                    "type": "boolean",
+                    "description": "Si es true, solicita vehículo tipo auto."
+                  },
+                  "confirmation": {
+                    "type": "boolean",
+                    "description": "Confirma creación cuando el precio requiere confirmación explícita."
+                  },
+                  "externalId": {
+                    "type": "string",
+                    "description": "Identificador externo para idempotencia o conciliación."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deliveries/quote": {
+      "get": {
+        "summary": "Quote delivery without order",
+        "description": "Cotiza una entrega sin pedido entre dos placeIds para un local de la marca autorizada. No crea la entrega.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo del local que solicita la entrega."
+          },
+          {
+            "in": "query",
+            "name": "fromPlaceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Place ID de origen."
+          },
+          {
+            "in": "query",
+            "name": "toPlaceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Place ID de destino."
+          },
+          {
+            "in": "query",
+            "name": "isCash",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Si es true, considera cobro en efectivo."
+          },
+          {
+            "in": "query",
+            "name": "amountToPay",
+            "schema": {
+              "type": "number"
+            },
+            "description": "Monto que debe cobrarse si isCash es true."
+          },
+          {
+            "in": "query",
+            "name": "isRoundTrip",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Si es true, considera vuelta al origen."
+          },
+          {
+            "in": "query",
+            "name": "useCarForDelivery",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Si es true, cotiza con vehículo tipo auto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiDeliveryWithoutOrderQuote"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deliveries/{deliveryId}": {
+      "get": {
+        "summary": "Get delivery without order",
+        "description": "Obtiene el detalle de una entrega sin pedido de la marca autorizada.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deliveryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo, specialCode o externalId de la entrega sin pedido."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deliveries/{deliveryId}/cancel": {
+      "post": {
+        "summary": "Cancel delivery without order",
+        "description": "Cancela una entrega sin pedido de la marca autorizada. Si existe cargo asociado sin payout, se anula en finanzas.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deliveryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID Justo, specialCode o externalId de la entrega sin pedido."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/menu": {
       "get": {
         "summary": "List menus",
@@ -17207,6 +18582,21 @@
             "example": "openFactura",
             "description": "El ID del proveedor al que pertenece la factura."
           },
+          "storeId": {
+            "type": "string",
+            "example": "sto-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID del local asociado al documento tributario."
+          },
+          "tabId": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID de la cuenta PDV asociada al documento, si existe."
+          },
+          "inventorySaleId": {
+            "type": "string",
+            "example": "isale-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID de la venta de inventario asociada al documento, si existe."
+          },
           "createdAt": {
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
@@ -17234,6 +18624,11 @@
             "type": "string",
             "example": "123456",
             "description": "El ID de la factura en el sistema externo."
+          },
+          "externalVoidInvoiceId": {
+            "type": "string",
+            "example": "654321",
+            "description": "El ID de la anulación en el sistema externo, si existe."
           },
           "errorMessage": {
             "type": "string",
@@ -18395,6 +19790,882 @@
             "type": "object",
             "description": "Metadata del item escrita por API v3.",
             "additionalProperties": true
+          }
+        }
+      },
+      "apiCoupon": {
+        "type": "object",
+        "description": "Cupón ecommerce de la marca autorizada. La data siempre queda limitada al website autorizado.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID Justo del cupón."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca dueña del cupón."
+          },
+          "code": {
+            "type": "string",
+            "description": "Primer código activo asociado al cupón, si existe."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible del cupón."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción interna o visible del beneficio."
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de descuento.",
+            "enum": [
+              "percentage",
+              "percentageOnDiscount",
+              "fixed",
+              "fixedOnDelivery",
+              "fixedItemPrice"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indica si el cupón está activo."
+          },
+          "percentageOff": {
+            "type": "number",
+            "description": "Porcentaje de descuento para cupones porcentuales."
+          },
+          "maxPercentageOffDiscount": {
+            "type": "number",
+            "description": "Tope de descuento para cupones porcentuales."
+          },
+          "discountAmount": {
+            "type": "number",
+            "description": "Monto fijo de descuento."
+          },
+          "fixedAmount": {
+            "type": "number",
+            "description": "Precio fijo aplicado a productos seleccionados."
+          },
+          "fromDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha desde la que el cupón puede usarse."
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha hasta la que el cupón puede usarse."
+          },
+          "maxRedemptions": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes totales."
+          },
+          "maxRedemptionsPerUser": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes por usuario."
+          },
+          "maxRedemptionsPerUserPerDay": {
+            "type": "boolean",
+            "description": "Si es true, permite máximo un canje diario."
+          },
+          "maxRedemptionsPerCode": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes por código."
+          },
+          "totalRedemptions": {
+            "type": "number",
+            "description": "Cantidad total de canjes realizados."
+          },
+          "onlyForNewUsers": {
+            "type": "boolean",
+            "description": "Si es true, aplica solo a usuarios nuevos."
+          },
+          "onlyForProductsWithoutDiscount": {
+            "type": "boolean",
+            "description": "Si es true, no aplica sobre productos con descuento."
+          },
+          "requirePhoneVerification": {
+            "type": "boolean",
+            "description": "Si es true, exige teléfono verificado."
+          },
+          "requiresCategoriesIds": {
+            "type": "array",
+            "description": "Categorías requeridas para aplicar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresProductsIds": {
+            "type": "array",
+            "description": "Productos requeridos para aplicar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresStoresIds": {
+            "type": "array",
+            "description": "Locales donde puede usarse el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresMenusIds": {
+            "type": "array",
+            "description": "Menús donde puede usarse el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresPaymentTypes": {
+            "type": "array",
+            "description": "Medios de pago requeridos.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requireChannels": {
+            "type": "array",
+            "description": "Canales requeridos para usar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredBINs": {
+            "type": "array",
+            "description": "BINs de tarjeta admitidos.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minimumOrderPrice": {
+            "type": "number",
+            "description": "Monto mínimo del pedido."
+          },
+          "maximumOrderPrice": {
+            "type": "number",
+            "description": "Monto máximo del pedido."
+          },
+          "dontApplyToProductsIds": {
+            "type": "array",
+            "description": "Productos excluidos del descuento.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dontApplyDiscountToOptions": {
+            "type": "boolean",
+            "description": "Si es true, no aplica descuento sobre opciones/modificadores."
+          },
+          "isHidden": {
+            "type": "boolean",
+            "description": "Si es true, oculta el cupón de listados públicos."
+          },
+          "allowedEmails": {
+            "type": "array",
+            "description": "Emails autorizados para usar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Identificador externo del cupón."
+          },
+          "isBirthdayCoupon": {
+            "type": "boolean",
+            "description": "Si es true, es un cupón de cumpleaños."
+          },
+          "onlyRedeemOnBirthday": {
+            "type": "boolean",
+            "description": "Si es true, solo se canjea el día del cumpleaños."
+          },
+          "autoRecommend": {
+            "type": "boolean",
+            "description": "Si es true, Justo puede recomendarlo automáticamente."
+          },
+          "applyDeliveryDiscount": {
+            "type": "boolean",
+            "description": "Si es true, aplica descuento al despacho."
+          },
+          "deliveryDiscountValue": {
+            "type": "number",
+            "description": "Valor del descuento de despacho."
+          },
+          "deliveryDiscountType": {
+            "type": "string",
+            "description": "Tipo de descuento de despacho."
+          },
+          "deliveryDiscountPercentage": {
+            "type": "number",
+            "description": "Porcentaje de descuento de despacho."
+          },
+          "maxProductsPerOrder": {
+            "type": "number",
+            "description": "Máximo de productos a los que se aplica el cupón."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación."
+          },
+          "deletedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de eliminación lógica."
+          }
+        }
+      },
+      "apiCouponCode": {
+        "type": "object",
+        "description": "Código canjeable asociado a un cupón ecommerce.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID Justo del código."
+          },
+          "code": {
+            "type": "string",
+            "description": "Código que ingresa el cliente."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca dueña del código."
+          },
+          "couponId": {
+            "type": "string",
+            "description": "ID del cupón al que pertenece."
+          },
+          "totalRedemptions": {
+            "type": "number",
+            "description": "Cantidad de canjes realizados con este código."
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "Email asociado cuando el código es de uso por email."
+          },
+          "sentToEmail": {
+            "type": "string",
+            "description": "Email al que se envió el código, si aplica."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación."
+          },
+          "deletedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de eliminación lógica."
+          }
+        }
+      },
+      "apiCouponInput": {
+        "type": "object",
+        "description": "Campos para crear o actualizar un cupón ecommerce.",
+        "required": [
+          "name",
+          "description",
+          "type",
+          "active"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Código inicial opcional para crear junto al cupón."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible del cupón."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción interna o visible del beneficio."
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de descuento.",
+            "enum": [
+              "percentage",
+              "percentageOnDiscount",
+              "fixed",
+              "fixedOnDelivery",
+              "fixedItemPrice"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indica si el cupón queda activo."
+          },
+          "percentageOff": {
+            "type": "number",
+            "description": "Porcentaje de descuento para cupones porcentuales."
+          },
+          "maxPercentageOffDiscount": {
+            "type": "number",
+            "description": "Tope de descuento para cupones porcentuales."
+          },
+          "discountAmount": {
+            "type": "number",
+            "description": "Monto fijo de descuento."
+          },
+          "fixedAmount": {
+            "type": "number",
+            "description": "Precio fijo aplicado a productos seleccionados."
+          },
+          "fromDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha desde la que el cupón puede usarse."
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha hasta la que el cupón puede usarse."
+          },
+          "maxRedemptions": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes totales."
+          },
+          "maxRedemptionsPerUser": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes por usuario."
+          },
+          "maxRedemptionsPerUserPerDay": {
+            "type": "boolean",
+            "description": "Si es true, permite máximo un canje diario."
+          },
+          "maxRedemptionsPerCode": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes por código."
+          },
+          "onlyForNewUsers": {
+            "type": "boolean",
+            "description": "Si es true, aplica solo a usuarios nuevos."
+          },
+          "onlyForProductsWithoutDiscount": {
+            "type": "boolean",
+            "description": "Si es true, no aplica sobre productos con descuento."
+          },
+          "requirePhoneVerification": {
+            "type": "boolean",
+            "description": "Si es true, exige teléfono verificado."
+          },
+          "requiresCategoriesIds": {
+            "type": "array",
+            "description": "Categorías requeridas para aplicar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresProductsIds": {
+            "type": "array",
+            "description": "Productos requeridos para aplicar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresStoresIds": {
+            "type": "array",
+            "description": "Locales donde puede usarse el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresMenusIds": {
+            "type": "array",
+            "description": "Menús donde puede usarse el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresPaymentTypes": {
+            "type": "array",
+            "description": "Medios de pago requeridos.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requireChannels": {
+            "type": "array",
+            "description": "Canales requeridos para usar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredBINs": {
+            "type": "array",
+            "description": "BINs de tarjeta admitidos.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minimumOrderPrice": {
+            "type": "number",
+            "description": "Monto mínimo del pedido."
+          },
+          "maximumOrderPrice": {
+            "type": "number",
+            "description": "Monto máximo del pedido."
+          },
+          "dontApplyToProductsIds": {
+            "type": "array",
+            "description": "Productos excluidos del descuento.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dontApplyDiscountToOptions": {
+            "type": "boolean",
+            "description": "Si es true, no aplica descuento sobre opciones/modificadores."
+          },
+          "isHidden": {
+            "type": "boolean",
+            "description": "Si es true, oculta el cupón de listados públicos."
+          },
+          "allowedEmails": {
+            "type": "array",
+            "description": "Emails autorizados para usar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Identificador externo del cupón."
+          },
+          "isBirthdayCoupon": {
+            "type": "boolean",
+            "description": "Si es true, es un cupón de cumpleaños."
+          },
+          "onlyRedeemOnBirthday": {
+            "type": "boolean",
+            "description": "Si es true, solo se canjea el día del cumpleaños."
+          },
+          "autoRecommend": {
+            "type": "boolean",
+            "description": "Si es true, Justo puede recomendarlo automáticamente."
+          },
+          "applyDeliveryDiscount": {
+            "type": "boolean",
+            "description": "Si es true, aplica descuento al despacho."
+          },
+          "deliveryDiscountValue": {
+            "type": "number",
+            "description": "Valor del descuento de despacho."
+          },
+          "deliveryDiscountType": {
+            "type": "string",
+            "description": "Tipo de descuento de despacho."
+          },
+          "deliveryDiscountPercentage": {
+            "type": "number",
+            "description": "Porcentaje de descuento de despacho."
+          },
+          "maxProductsPerOrder": {
+            "type": "number",
+            "description": "Máximo de productos a los que se aplica el cupón."
+          }
+        }
+      },
+      "apiCouponUpdateInput": {
+        "type": "object",
+        "description": "Campos para actualizar un cupón ecommerce. Todos los campos son opcionales.",
+        "required": [],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Código inicial opcional para crear junto al cupón."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible del cupón."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción interna o visible del beneficio."
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de descuento.",
+            "enum": [
+              "percentage",
+              "percentageOnDiscount",
+              "fixed",
+              "fixedOnDelivery",
+              "fixedItemPrice"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indica si el cupón queda activo."
+          },
+          "percentageOff": {
+            "type": "number",
+            "description": "Porcentaje de descuento para cupones porcentuales."
+          },
+          "maxPercentageOffDiscount": {
+            "type": "number",
+            "description": "Tope de descuento para cupones porcentuales."
+          },
+          "discountAmount": {
+            "type": "number",
+            "description": "Monto fijo de descuento."
+          },
+          "fixedAmount": {
+            "type": "number",
+            "description": "Precio fijo aplicado a productos seleccionados."
+          },
+          "fromDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha desde la que el cupón puede usarse."
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha hasta la que el cupón puede usarse."
+          },
+          "maxRedemptions": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes totales."
+          },
+          "maxRedemptionsPerUser": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes por usuario."
+          },
+          "maxRedemptionsPerUserPerDay": {
+            "type": "boolean",
+            "description": "Si es true, permite máximo un canje diario."
+          },
+          "maxRedemptionsPerCode": {
+            "type": "number",
+            "description": "Cantidad máxima de canjes por código."
+          },
+          "onlyForNewUsers": {
+            "type": "boolean",
+            "description": "Si es true, aplica solo a usuarios nuevos."
+          },
+          "onlyForProductsWithoutDiscount": {
+            "type": "boolean",
+            "description": "Si es true, no aplica sobre productos con descuento."
+          },
+          "requirePhoneVerification": {
+            "type": "boolean",
+            "description": "Si es true, exige teléfono verificado."
+          },
+          "requiresCategoriesIds": {
+            "type": "array",
+            "description": "Categorías requeridas para aplicar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresProductsIds": {
+            "type": "array",
+            "description": "Productos requeridos para aplicar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresStoresIds": {
+            "type": "array",
+            "description": "Locales donde puede usarse el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresMenusIds": {
+            "type": "array",
+            "description": "Menús donde puede usarse el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresPaymentTypes": {
+            "type": "array",
+            "description": "Medios de pago requeridos.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requireChannels": {
+            "type": "array",
+            "description": "Canales requeridos para usar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredBINs": {
+            "type": "array",
+            "description": "BINs de tarjeta admitidos.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minimumOrderPrice": {
+            "type": "number",
+            "description": "Monto mínimo del pedido."
+          },
+          "maximumOrderPrice": {
+            "type": "number",
+            "description": "Monto máximo del pedido."
+          },
+          "dontApplyToProductsIds": {
+            "type": "array",
+            "description": "Productos excluidos del descuento.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dontApplyDiscountToOptions": {
+            "type": "boolean",
+            "description": "Si es true, no aplica descuento sobre opciones/modificadores."
+          },
+          "isHidden": {
+            "type": "boolean",
+            "description": "Si es true, oculta el cupón de listados públicos."
+          },
+          "allowedEmails": {
+            "type": "array",
+            "description": "Emails autorizados para usar el cupón.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Identificador externo del cupón."
+          },
+          "isBirthdayCoupon": {
+            "type": "boolean",
+            "description": "Si es true, es un cupón de cumpleaños."
+          },
+          "onlyRedeemOnBirthday": {
+            "type": "boolean",
+            "description": "Si es true, solo se canjea el día del cumpleaños."
+          },
+          "autoRecommend": {
+            "type": "boolean",
+            "description": "Si es true, Justo puede recomendarlo automáticamente."
+          },
+          "applyDeliveryDiscount": {
+            "type": "boolean",
+            "description": "Si es true, aplica descuento al despacho."
+          },
+          "deliveryDiscountValue": {
+            "type": "number",
+            "description": "Valor del descuento de despacho."
+          },
+          "deliveryDiscountType": {
+            "type": "string",
+            "description": "Tipo de descuento de despacho."
+          },
+          "deliveryDiscountPercentage": {
+            "type": "number",
+            "description": "Porcentaje de descuento de despacho."
+          },
+          "maxProductsPerOrder": {
+            "type": "number",
+            "description": "Máximo de productos a los que se aplica el cupón."
+          }
+        }
+      },
+      "apiDeliveryLocation": {
+        "type": "object",
+        "description": "Punto de origen o destino de una entrega sin pedido.",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Dirección principal."
+          },
+          "addressSecondary": {
+            "type": "string",
+            "description": "Comuna, ciudad o referencia secundaria."
+          },
+          "placeId": {
+            "type": "string",
+            "description": "ID del lugar."
+          },
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y número."
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina o referencia."
+          },
+          "contactPhone": {
+            "type": "string",
+            "description": "Teléfono de contacto del punto."
+          },
+          "contactName": {
+            "type": "string",
+            "description": "Nombre de contacto del punto."
+          },
+          "lat": {
+            "type": "number",
+            "description": "Latitud."
+          },
+          "lng": {
+            "type": "number",
+            "description": "Longitud."
+          }
+        }
+      },
+      "apiDeliveryWithoutOrder": {
+        "type": "object",
+        "description": "Entrega solicitada desde Website Admin sin estar asociada a un pedido ecommerce.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID Justo de la entrega."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca autorizada."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID Justo del local que solicita la entrega."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "Siempre null para entregas sin pedido."
+          },
+          "partner": {
+            "type": "string",
+            "description": "Partner logístico usado para la entrega."
+          },
+          "status": {
+            "type": "string",
+            "description": "Estado actual de la entrega.",
+            "enum": [
+              "active",
+              "canceled",
+              "done",
+              "error",
+              "pending",
+              "scheduled",
+              "delivering",
+              "waiting",
+              "unconfirmed"
+            ]
+          },
+          "specialCode": {
+            "type": "string",
+            "description": "Código corto de entrega especial."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Identificador externo opcional enviado por la integración."
+          },
+          "price": {
+            "type": "number",
+            "description": "Precio final con impuestos."
+          },
+          "priceWithoutTax": {
+            "type": "number",
+            "description": "Precio sin impuestos."
+          },
+          "isCash": {
+            "type": "boolean",
+            "description": "Indica si el repartidor debe cobrar efectivo."
+          },
+          "isRoundTrip": {
+            "type": "boolean",
+            "description": "Indica si el repartidor debe volver al origen."
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Instrucciones operativas para el repartidor."
+          },
+          "fromName": {
+            "type": "string",
+            "description": "Nombre de contacto en origen."
+          },
+          "toName": {
+            "type": "string",
+            "description": "Nombre de contacto en destino."
+          },
+          "fromPlaceId": {
+            "type": "string",
+            "description": "Place ID de origen."
+          },
+          "toPlaceId": {
+            "type": "string",
+            "description": "Place ID de destino."
+          },
+          "fromAddressLine2": {
+            "type": "string",
+            "description": "Complemento de dirección de origen."
+          },
+          "toAddressLine2": {
+            "type": "string",
+            "description": "Complemento de dirección de destino."
+          },
+          "fromLocation": {
+            "$ref": "#/components/schemas/apiDeliveryLocation"
+          },
+          "toLocation": {
+            "$ref": "#/components/schemas/apiDeliveryLocation"
+          },
+          "driverPassword": {
+            "type": "string",
+            "description": "Código de verificación del repartidor, si aplica."
+          },
+          "trackingURL": {
+            "type": "string",
+            "description": "URL de tracking público de la entrega."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación."
+          },
+          "forDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha programada de la entrega."
+          },
+          "canceledAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de cancelación."
+          },
+          "completedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de término."
+          }
+        }
+      },
+      "apiDeliveryWithoutOrderQuote": {
+        "type": "object",
+        "description": "Cotización de una entrega sin pedido.",
+        "properties": {
+          "price": {
+            "type": "number",
+            "description": "Precio estimado sin impuestos."
+          },
+          "priceWithTax": {
+            "type": "number",
+            "description": "Precio estimado con impuestos."
           }
         }
       },

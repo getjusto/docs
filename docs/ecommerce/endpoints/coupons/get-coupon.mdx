@@ -1,0 +1,7 @@
+---
+openapi: get /ecommerce/coupons/{couponId}
+---
+
+Obtiene el detalle de un cupón ecommerce de la marca autorizada. El identificador puede ser el `_id` interno o el `externalId` cuando exista.
+
+Usa `withCodes=true` sólo cuando necesites incluir códigos asociados en la misma respuesta. Para auditar códigos en forma paginada, usa el endpoint de listado de códigos.

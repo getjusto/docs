@@ -1,3 +1,7 @@
 ---
 openapi: get /tabs/{storeId}/invoices
 ---
+
+Lista los documentos tributarios generados desde el PDV para un local autorizado.
+
+Usa este endpoint para revisar boletas, facturas y anulaciones asociadas a cuentas o ventas de inventario. La respuesta incluye identificadores externos, estado de generación, montos netos, impuestos y total. La data siempre queda limitada al website autorizado por el token de API.

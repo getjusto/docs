@@ -1,0 +1,7 @@
+---
+openapi: post /admin/deliveries/{deliveryId}/cancel
+---
+
+Cancela una entrega sin pedido de la marca autorizada. El identificador puede ser `_id`, `externalId` o `specialCode`.
+
+En Justo Admin MCP esta operación requiere confirmación explícita del usuario porque cambia el estado de una entrega.

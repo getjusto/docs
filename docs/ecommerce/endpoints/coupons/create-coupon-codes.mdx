@@ -1,0 +1,7 @@
+---
+openapi: post /ecommerce/coupons/{couponId}/codes
+---
+
+Crea uno o más códigos para un cupón ecommerce de la marca autorizada. Puedes asociar cada código a un email con `userEmail` y activar `useCodeWithEmail` para que el uso quede limitado a ese email.
+
+En Justo Admin MCP esta operación requiere confirmación explícita del usuario porque crea códigos que pueden aplicar descuentos.

@@ -65,6 +65,10 @@
 			"url": "docs/ecommerce"
 		},
 		{
+			"name": "Admin",
+			"url": "docs/admin"
+		},
+		{
 			"name": "Royalty",
 			"url": "docs/royalty"
 		},
@@ -320,10 +324,40 @@
 					]
 				},
 				{
+					"group": "Cupones",
+					"pages": [
+						"docs/ecommerce/endpoints/coupons/list-coupons",
+						"docs/ecommerce/endpoints/coupons/get-coupon",
+						"docs/ecommerce/endpoints/coupons/create-coupon",
+						"docs/ecommerce/endpoints/coupons/update-coupon",
+						"docs/ecommerce/endpoints/coupons/partially-update-coupon",
+						"docs/ecommerce/endpoints/coupons/list-coupon-codes",
+						"docs/ecommerce/endpoints/coupons/create-coupon-codes",
+						"docs/ecommerce/endpoints/coupons/delete-coupon-codes"
+					]
+				},
+				{
 					"group": "Webhooks",
 					"pages": [
 						"docs/ecommerce/webhooks/orders/created",
 						"docs/ecommerce/webhooks/orders/status-updated"
+					]
+				}
+			]
+		},
+		{
+			"group": "Admin",
+			"version": "v3",
+			"pages": [
+				"docs/admin/introduction",
+				{
+					"group": "Delivery",
+					"pages": [
+						"docs/admin/delivery/list",
+						"docs/admin/delivery/get",
+						"docs/admin/delivery/quote",
+						"docs/admin/delivery/create",
+						"docs/admin/delivery/cancel"
 					]
 				}
 			]
@@ -415,7 +449,8 @@
 				{
 					"group": "Facturación",
 					"pages": [
-						"docs/crisp/endpoints/invoices/list-invoices"
+						"docs/crisp/endpoints/invoices/list-invoices",
+						"docs/crisp/endpoints/invoices/get-invoice"
 					]
 				}
 			]

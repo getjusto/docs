@@ -1,0 +1,9 @@
+---
+openapi: post /admin/deliveries
+---
+
+Crea una entrega sin pedido para la marca autorizada. Se usa para pedir un despacho manual sin asociarlo a una orden ecommerce.
+
+El `storeId` debe pertenecer a la marca autorizada. Debes enviar al menos un teléfono de contacto en `fromPhone` o `toPhone` para que la operación pueda coordinar la entrega.
+
+En Justo Admin MCP esta operación requiere confirmación explícita del usuario porque crea una entrega real.

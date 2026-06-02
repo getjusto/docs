@@ -1,0 +1,7 @@
+---
+openapi: get /tabs/{storeId}/invoices/{invoiceId}
+---
+
+Obtiene el detalle de un documento tributario generado desde el PDV.
+
+Usa este endpoint cuando ya tienes el `invoiceId` desde el listado de facturación y necesitas revisar el proveedor, cuenta PDV o venta de inventario asociada, estado actual, identificadores externos, URL de descarga y montos del documento. La data siempre queda limitada al website autorizado por el token de API y el documento debe pertenecer al local enviado en `storeId`.
