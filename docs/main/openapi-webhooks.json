@@ -5873,6 +5873,10 @@
             "type": "number",
             "description": "Precio del despacho cobrado al cliente."
           },
+          "deliveryFeeWithoutDiscount": {
+            "type": "number",
+            "description": "Precio original del despacho antes de descuentos aplicados sobre el costo de entrega. Es un campo opcional de compatibilidad y solo se informa para integraciones legacy específicas."
+          },
           "serviceFee": {
             "type": "number",
             "description": "Cargo de servicio cobrado al cliente."
@@ -5885,9 +5889,45 @@
             "type": "number",
             "description": "Monto del pedido sin propina."
           },
+          "baseItemsPrice": {
+            "type": "number",
+            "description": "Precio original de los productos antes de descuentos de producto, promociones, cupón, puntos o Justo Coins. Corresponde a la suma de amount * baseUnitPrice de los items."
+          },
+          "baseTotalPrice": {
+            "type": "number",
+            "description": "Total original del pedido antes de descuentos, sin propina. Se calcula como baseItemsPrice + deliveryFee + serviceFee, usando el deliveryFee ya neto si el cupón descontó el despacho."
+          },
+          "itemsPriceBeforeDiscountsAfterProductDiscount": {
+            "type": "number",
+            "description": "Precio de los productos después de descuentos propios del producto o promociones de producto, pero antes de cupón, puntos, Justo Coins y otros descuentos posteriores."
+          },
+          "totalPriceBeforeDiscountsAfterProductDiscount": {
+            "type": "number",
+            "description": "Total del pedido después de descuentos propios del producto o promociones de producto, pero antes de cupón, puntos, Justo Coins y otros descuentos posteriores. Se calcula como itemsPriceBeforeDiscountsAfterProductDiscount + deliveryFee + serviceFee."
+          },
+          "discountedAmountAfterProductDiscount": {
+            "type": "number",
+            "description": "Monto descontado después de aplicar descuentos propios del producto o promociones de producto y antes de separar quién financia el descuento. Se calcula como totalPriceBeforeDiscountsAfterProductDiscount - totalPrice e incluye descuentos posteriores como cupón, puntos de la marca y Justo Coins."
+          },
+          "justoCoinsDiscount": {
+            "type": "number",
+            "description": "Monto descontado usando Justo Coins. Se limita al precio disponible del carrito después de cupón y otros descuentos aplicables, para evitar descontar más que el saldo pagable."
+          },
+          "websiteCoinsDiscount": {
+            "type": "number",
+            "description": "Monto descontado usando puntos o coins del programa de fidelidad de la marca. Se limita al precio disponible del carrito después de cupón, Justo Coins y otros descuentos aplicables."
+          },
           "totalDiscount": {
             "type": "number",
-            "description": "Monto total descontado del pedido."
+            "description": "Monto total descontado del pedido frente al precio base. Es un campo derivado y se calcula como baseTotalPrice - totalPrice."
+          },
+          "amountFinancedByWebsite": {
+            "type": "number",
+            "description": "Parte del descuento total financiada por la marca. Se calcula desde discountedAmountAfterProductDiscount restando la parte financiada por Justo."
+          },
+          "amountFinancedByJusto": {
+            "type": "number",
+            "description": "Parte del descuento total financiada por Justo. Incluye Justo Coins y la porción del cupón financiada por Justo cuando aplica."
           },
           "expectedPreparationDuration": {
             "type": "number",
@@ -5929,9 +5969,32 @@
             "type": "string",
             "description": "Código del cupón usado."
           },
+          "couponExternalId": {
+            "type": "string",
+            "description": "ID externo del cupón usado, si el cupón lo tiene configurado."
+          },
           "couponDiscount": {
             "type": "number",
-            "description": "Monto descontado por cupón."
+            "description": "Monto descontado por cupón. Puede incluir descuento sobre productos y, según el tipo de cupón, descuento sobre el despacho."
+          },
+          "couponPercentageOff": {
+            "type": "number",
+            "description": "Porcentaje de descuento configurado en el cupón, cuando el cupón es porcentual."
+          },
+          "couponType": {
+            "type": "string",
+            "description": "Tipo de cupón usado para calcular el descuento."
+          },
+          "promotionDiscount": {
+            "type": "number",
+            "description": "Monto total descontado por promociones aplicadas a productos del pedido. Se calcula sumando items[].promotionDiscount."
+          },
+          "promotionIds": {
+            "type": "array",
+            "description": "IDs únicos de las promociones aplicadas a los items del pedido.",
+            "items": {
+              "type": "string"
+            }
           },
           "flagColor": {
             "type": "string",
