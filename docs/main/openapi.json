@@ -13505,6 +13505,36 @@
           "driverInformation": {
             "type": "object",
             "description": "Información del driver asignado, si está disponible.",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Tipo de vehículo o repartidor, por ejemplo moto.",
+                "example": "moto"
+              },
+              "phone": {
+                "type": "string",
+                "description": "Teléfono del repartidor, si está disponible.",
+                "example": "+56999999999"
+              },
+              "name": {
+                "type": "string",
+                "description": "Nombre del repartidor, si está disponible.",
+                "example": "Peter"
+              },
+              "image": {
+                "type": "string",
+                "description": "URL de la foto del repartidor, si está disponible.",
+                "example": "https://example.com/driver.png"
+              },
+              "code": {
+                "type": "string",
+                "description": "Código interno o identificador del repartidor, si el proveedor lo entrega."
+              },
+              "categoryId": {
+                "type": "string",
+                "description": "ID de categoría del repartidor, si el proveedor lo entrega."
+              }
+            },
             "additionalProperties": true
           },
           "deliveryInformation": {

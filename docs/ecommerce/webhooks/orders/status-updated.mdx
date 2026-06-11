@@ -48,10 +48,29 @@ No se envía un webhook por cada cambio de ubicación del repartidor.
       "_id": "delivery-id",
       "status": "active",
       "nearStoreAt": "2026-05-28T15:30:00.000Z",
-      "estimatedArrivalAtStoreAt": "2026-05-28T15:35:00.000Z"
+      "estimatedArrivalAtStoreAt": "2026-05-28T15:35:00.000Z",
+      "driverInformation": {
+        "type": "moto",
+        "phone": "+56999999999",
+        "name": "Peter",
+        "image": "https://example.com/driver.png"
+      }
     }
   }
 }
 ```
+
+### Información del repartidor
+
+Cuando hay un repartidor asignado y el proveedor de despacho entrega sus datos, Justo envía la información en `data.delivery.driverInformation`.
+
+| Campo | Significado |
+| --- | --- |
+| `type` | Tipo de vehículo o repartidor, por ejemplo `moto`. |
+| `phone` | Teléfono del repartidor, si está disponible. |
+| `name` | Nombre del repartidor, si está disponible. |
+| `image` | URL de la foto del repartidor, si está disponible. |
+
+El objeto puede venir ausente si todavía no hay repartidor asignado o si el proveedor de despacho no entrega esa información. Algunos proveedores pueden enviar campos adicionales, como `code` o `categoryId`.
 
 Para sincronizar una orden, usa siempre `data.order._id`. Si necesitas el estado del despacho o datos del repartidor, revisa `data.delivery` cuando venga presente.
