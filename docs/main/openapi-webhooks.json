@@ -4150,7 +4150,22 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": true
+              "additionalProperties": true,
+              "properties": {
+                "app_menu_id": {
+                  "type": "string"
+                },
+                "menu_name": {
+                  "type": "string"
+                },
+                "app_category_ids": {
+                  "type": "array",
+                  "description": "Categorías del menú en orden de visualización. El adapter usa este orden para el índice de categorías.",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           },
           "categories": {
@@ -4173,7 +4188,8 @@
                   "type": "array",
                   "items": {
                     "type": "string"
-                  }
+                  },
+                  "description": "Items contenidos en la categoría en orden de visualización. Los productos visibles reciben prioridad siguiendo este orden."
                 }
               }
             }
@@ -4197,7 +4213,8 @@
                   "type": "string"
                 },
                 "price": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "Precio final del item."
                 },
                 "status": {
                   "type": "number"
@@ -4214,6 +4231,10 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "original_price": {
+                  "type": "number",
+                  "description": "Precio original o tachado del producto. Solo aplica a productos vendidos por separado y se usa cuando es mayor que price."
                 }
               }
             }

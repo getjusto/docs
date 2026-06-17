@@ -51,7 +51,7 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | --- | --- | --- | --- |
 | `app_menu_id` | `string` | Sí | Identificador del menú McDonald's. Se usa para construir `externalId = {storeId}:{app_menu_id}` y queda guardado sin prefijo en `metadata.id`. |
 | `menu_name` | `string` | Sí | Nombre base del menú/precio Justo. Justo guarda el menú como `{menu_name} ({storeId})` para identificar el local en el admin. |
-| `app_category_ids` | `array<string>` | Sí | Categorías que componen el menú. Define qué categorías, productos y modificadores entran en la carga. |
+| `app_category_ids` | `array<string>` | Sí | Categorías que componen el menú, en orden de visualización. Define qué categorías, productos y modificadores entran en la carga. |
 
 ## `categories[]`
 
@@ -60,7 +60,16 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | `app_category_id` | `string` | Sí | Identificador de la categoría McDonald's. Se usa para construir `externalId = {storeId}:{app_category_id}` y queda guardado sin prefijo en `metadata.id`. |
 | `category_name` | `string` | Sí | Nombre de la categoría Justo. |
 | `head_img` | `string` | No | URL de imagen. Si viene, se guarda como imagen de la categoría. |
-| `app_item_ids` | `array<string>` | Sí | Items contenidos en la categoría. Solo los items con `is_sold_separately: true` se convierten en productos visibles. |
+| `app_item_ids` | `array<string>` | Sí | Items contenidos en la categoría, en orden de visualización. Solo los items con `is_sold_separately: true` se convierten en productos visibles. |
+
+### Orden de categorías y productos
+
+El adapter respeta el orden de los arrays recibidos:
+
+- Las categorías se ordenan según `menus[].app_category_ids`.
+- Los productos visibles se ordenan según `categories[].app_item_ids`.
+
+Justo guarda una sola prioridad por producto. Si el mismo producto aparece en más de una categoría con posiciones distintas, se usa la primera aparición según el orden del menú y de sus categorías.
 
 ## `items[]`
 
@@ -71,11 +80,29 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 | `short_desc` | `string` | No | Descripción del producto Justo. En opciones de modificador se acepta, pero no se expone como descripción principal. |
 | `sold_info_intl` | `array<SoldInfo>` | No | Horarios de venta del origen. Actualmente se aceptan pero no se transforman a horarios Justo. |
 | `head_img` | `string` | No | URL de imagen. Si viene, se agrega como primera imagen del producto u opción. |
-| `price` | `number` | No | Precio del producto u opción. Si no viene, se usa `0`. |
+| `price` | `number` | No | Precio final del producto u opción. Si no viene, se usa `0`. |
+| `original_price` | `number` | No | Precio original o tachado del producto. Solo aplica a productos visibles (`is_sold_separately: true`) y se usa cuando es mayor que `price`. En opciones de modificador se ignora. |
 | `status` | `number` | No | Disponibilidad del origen. `1` se importa como disponible; cualquier otro valor se importa como no disponible. |
 | `is_sold_separately` | `boolean` | No | Si es `true`, el item puede convertirse en producto visible si está en una categoría del menú. Si es `false`, normalmente se usa como opción de modificador. |
 | `as_modifier_max_quantity` | `number` | No | Máximo de unidades seleccionables cuando el item se importa como opción de modificador. Si no viene, Justo usa `1`. Ejemplo: una opción `Extra: Queso` puede enviar `2` para permitir pedir dos quesos dentro del mismo grupo. |
 | `app_modifier_group_ids` | `array<string>` | No | Grupos de modificadores asociados al producto. Se convierten a `modifiersExternalIds` con prefijo `{storeId}:`. |
+
+### Ejemplo de precio tachado
+
+`price` representa el precio final que paga el cliente. Si McDonald's necesita mostrar un precio tachado, puede enviar `original_price` con el precio original del producto.
+
+```json
+{
+  "app_item_id": "PRODUCT-BIG-MAC",
+  "item_name": "Big Mac",
+  "price": 3990,
+  "original_price": 4990,
+  "status": 1,
+  "is_sold_separately": true
+}
+```
+
+En este caso Justo guarda `4990` como precio base/tachado y `3990` como precio final. Si `original_price` no viene, es igual o menor que `price`, se ignora.
 
 ## `items[].sold_info_intl[]`
 
