@@ -15,6 +15,49 @@ noindex: true
 PUT /v3/adapters/menu-put-mcd-v1/stores/{storeId}
 ```
 
+## Procesamiento async
+
+El endpoint responde `202 Accepted` cuando el payload fue autenticado, validado y aceptado para procesamiento. La respuesta incluye un `jobId`; guarda ese valor para consultar el resultado final.
+
+```json
+{
+  "success": true,
+  "data": {
+    "jobId": "ap-async-job-abc123",
+    "status": "queued",
+    "service": "adapters",
+    "operation": "menu-put-mcd-v1",
+    "storeId": "{storeId}",
+    "preview": {
+      "menus": [
+        {
+          "menuId": "{storeId}:ADSA-PE-PILOTO SP1-DLV",
+          "categories": 13,
+          "products": 160,
+          "modifiers": 80,
+          "options": 1479
+        }
+      ]
+    }
+  }
+}
+```
+
+Para consultar el estado:
+
+```http
+GET /v3/adapters/jobs/{jobId}
+```
+
+Estados posibles:
+
+| Estado | Significado |
+| --- | --- |
+| `queued` | El payload fue aceptado y el job está esperando ejecución. |
+| `processing` | Justo está creando o actualizando menús, productos, modificadores y opciones. |
+| `completed` | La carga terminó correctamente. `result` contiene el resumen final, incluyendo `cleanup`. |
+| `failed` | La carga falló. Revisa `errorMessage`. |
+
 ## Autenticación
 
 Envía el API key como bearer token.
@@ -28,7 +71,7 @@ El API key debe tener permisos `admin` y acceso al local indicado en `storeId`. 
 
 ## Comportamiento
 
-- La llamada carga el menú completo de McDonald's para el local indicado en `{storeId}`.
+- La llamada valida y acepta el menú completo de McDonald's para el local indicado en `{storeId}`. La carga se procesa de forma asincrónica.
 - Cada local mantiene su propio menú, productos, categorías, modificadores y opciones.
 - Si un producto u opción deja de venir en el payload, se deja no disponible solo para los menús del local importado.
 - Las categorías se mantienen separadas por local.
@@ -200,6 +243,10 @@ curl -X PUT \
   -H "Authorization: Bearer <API_KEY>" \
   -H "Content-Type: application/json" \
   --data-binary @catalogo-local.json
+
+curl -X GET \
+  "https://api.service.getjusto.com/v3/adapters/jobs/{jobId}" \
+  -H "Authorization: Bearer <API_KEY>"
 ```
 
 ## Detalles internos de integración

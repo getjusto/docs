@@ -4063,6 +4063,99 @@
           }
         }
       },
+      "apiAsyncJobAcceptedResult": {
+        "type": "object",
+        "description": "Job async aceptado para procesamiento.",
+        "properties": {
+          "jobId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "adapters",
+              "ecommerce",
+              "admin",
+              "ordering"
+            ]
+          },
+          "operation": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "string"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Resumen validado de la operación antes de ejecutarla."
+          }
+        }
+      },
+      "apiAsyncJobStatusResult": {
+        "type": "object",
+        "description": "Estado de un job async del API.",
+        "properties": {
+          "jobId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "processing",
+              "completed",
+              "failed"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "adapters",
+              "ecommerce",
+              "admin",
+              "ordering"
+            ]
+          },
+          "operation": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Respuesta final de la operación cuando status es completed."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Mensaje de error cuando status es failed."
+          }
+        }
+      },
       "apiAuthorizationStatus": {
         "type": "object",
         "properties": {
@@ -4186,10 +4279,10 @@
                 },
                 "app_item_ids": {
                   "type": "array",
+                  "description": "Items contenidos en la categoría en orden de visualización. Los productos visibles reciben prioridad siguiendo este orden.",
                   "items": {
                     "type": "string"
-                  },
-                  "description": "Items contenidos en la categoría en orden de visualización. Los productos visibles reciben prioridad siguiendo este orden."
+                  }
                 }
               }
             }
@@ -4216,6 +4309,10 @@
                   "type": "number",
                   "description": "Precio final del item."
                 },
+                "original_price": {
+                  "type": "number",
+                  "description": "Precio original o tachado del producto. Solo aplica a productos vendidos por separado y se usa cuando es mayor que price."
+                },
                 "status": {
                   "type": "number"
                 },
@@ -4231,10 +4328,6 @@
                   "items": {
                     "type": "string"
                   }
-                },
-                "original_price": {
-                  "type": "number",
-                  "description": "Precio original o tachado del producto. Solo aplica a productos vendidos por separado y se usa cuando es mayor que price."
                 }
               }
             }
@@ -4317,6 +4410,17 @@
                 "options": {
                   "type": "number"
                 }
+              }
+            }
+          },
+          "cleanup": {
+            "type": "object",
+            "properties": {
+              "productsModified": {
+                "type": "number"
+              },
+              "modifierOptionsModified": {
+                "type": "number"
               }
             }
           }
@@ -6267,36 +6371,6 @@
           "driverInformation": {
             "type": "object",
             "description": "Información del driver asignado, si está disponible.",
-            "properties": {
-              "type": {
-                "type": "string",
-                "description": "Tipo de vehículo o repartidor, por ejemplo moto.",
-                "example": "moto"
-              },
-              "phone": {
-                "type": "string",
-                "description": "Teléfono del repartidor, si está disponible.",
-                "example": "+56999999999"
-              },
-              "name": {
-                "type": "string",
-                "description": "Nombre del repartidor, si está disponible.",
-                "example": "Peter"
-              },
-              "image": {
-                "type": "string",
-                "description": "URL de la foto del repartidor, si está disponible.",
-                "example": "https://example.com/driver.png"
-              },
-              "code": {
-                "type": "string",
-                "description": "Código interno o identificador del repartidor, si el proveedor lo entrega."
-              },
-              "categoryId": {
-                "type": "string",
-                "description": "ID de categoría del repartidor, si el proveedor lo entrega."
-              }
-            },
             "additionalProperties": true
           },
           "deliveryInformation": {

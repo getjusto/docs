@@ -2344,7 +2344,7 @@
     "/adapters/menu-put-mcd-v1/stores/{storeId}": {
       "put": {
         "summary": "MCD menu adapter v1",
-        "description": "Carga un menú MCD para un local específico. Crea un precio/menú asociado al local, usa externalIds con prefijo storeId y desactiva productos/opciones ausentes solo para ese local.",
+        "description": "Valida y acepta un menú MCD para un local específico. La carga se procesa de forma async; usa el jobId para consultar el estado.",
         "parameters": [
           {
             "in": "path",
@@ -2367,6 +2367,73 @@
           }
         },
         "responses": {
+          "202": {
+            "description": "Job accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/apiAsyncJobAcceptedResult"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/adapters/jobs/{jobId}": {
+      "get": {
+        "summary": "Adapter async job status",
+        "description": "Obtiene el estado de un job async iniciado por un endpoint de adapters.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID del job devuelto por el endpoint async."
+          }
+        ],
+        "responses": {
           "200": {
             "description": "The OpenAPI spec",
             "content": {
@@ -2379,7 +2446,7 @@
                       "example": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/apiMcdMenuAdapterResult"
+                      "$ref": "#/components/schemas/apiAsyncJobStatusResult"
                     }
                   }
                 }
@@ -11322,6 +11389,99 @@
           }
         }
       },
+      "apiAsyncJobAcceptedResult": {
+        "type": "object",
+        "description": "Job async aceptado para procesamiento.",
+        "properties": {
+          "jobId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "adapters",
+              "ecommerce",
+              "admin",
+              "ordering"
+            ]
+          },
+          "operation": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "string"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Resumen validado de la operación antes de ejecutarla."
+          }
+        }
+      },
+      "apiAsyncJobStatusResult": {
+        "type": "object",
+        "description": "Estado de un job async del API.",
+        "properties": {
+          "jobId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "processing",
+              "completed",
+              "failed"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "adapters",
+              "ecommerce",
+              "admin",
+              "ordering"
+            ]
+          },
+          "operation": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preview": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Respuesta final de la operación cuando status es completed."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Mensaje de error cuando status es failed."
+          }
+        }
+      },
       "apiAuthorizationStatus": {
         "type": "object",
         "properties": {
@@ -11445,10 +11605,10 @@
                 },
                 "app_item_ids": {
                   "type": "array",
+                  "description": "Items contenidos en la categoría en orden de visualización. Los productos visibles reciben prioridad siguiendo este orden.",
                   "items": {
                     "type": "string"
-                  },
-                  "description": "Items contenidos en la categoría en orden de visualización. Los productos visibles reciben prioridad siguiendo este orden."
+                  }
                 }
               }
             }
@@ -11475,6 +11635,10 @@
                   "type": "number",
                   "description": "Precio final del item."
                 },
+                "original_price": {
+                  "type": "number",
+                  "description": "Precio original o tachado del producto. Solo aplica a productos vendidos por separado y se usa cuando es mayor que price."
+                },
                 "status": {
                   "type": "number"
                 },
@@ -11490,10 +11654,6 @@
                   "items": {
                     "type": "string"
                   }
-                },
-                "original_price": {
-                  "type": "number",
-                  "description": "Precio original o tachado del producto. Solo aplica a productos vendidos por separado y se usa cuando es mayor que price."
                 }
               }
             }
@@ -11576,6 +11736,17 @@
                 "options": {
                   "type": "number"
                 }
+              }
+            }
+          },
+          "cleanup": {
+            "type": "object",
+            "properties": {
+              "productsModified": {
+                "type": "number"
+              },
+              "modifierOptionsModified": {
+                "type": "number"
               }
             }
           }
@@ -13526,36 +13697,6 @@
           "driverInformation": {
             "type": "object",
             "description": "Información del driver asignado, si está disponible.",
-            "properties": {
-              "type": {
-                "type": "string",
-                "description": "Tipo de vehículo o repartidor, por ejemplo moto.",
-                "example": "moto"
-              },
-              "phone": {
-                "type": "string",
-                "description": "Teléfono del repartidor, si está disponible.",
-                "example": "+56999999999"
-              },
-              "name": {
-                "type": "string",
-                "description": "Nombre del repartidor, si está disponible.",
-                "example": "Peter"
-              },
-              "image": {
-                "type": "string",
-                "description": "URL de la foto del repartidor, si está disponible.",
-                "example": "https://example.com/driver.png"
-              },
-              "code": {
-                "type": "string",
-                "description": "Código interno o identificador del repartidor, si el proveedor lo entrega."
-              },
-              "categoryId": {
-                "type": "string",
-                "description": "ID de categoría del repartidor, si el proveedor lo entrega."
-              }
-            },
             "additionalProperties": true
           },
           "deliveryInformation": {
