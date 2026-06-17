@@ -11417,6 +11417,12 @@
           "storeId": {
             "type": "string"
           },
+          "attempts": {
+            "type": "number"
+          },
+          "maxAttempts": {
+            "type": "number"
+          },
           "preview": {
             "type": "object",
             "additionalProperties": true,
@@ -11455,6 +11461,12 @@
           "storeId": {
             "type": "string"
           },
+          "attempts": {
+            "type": "number"
+          },
+          "maxAttempts": {
+            "type": "number"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -11462,6 +11474,15 @@
           "startedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastAttemptStartedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "nextRetryAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha del próximo reintento cuando el job volvió a queued."
           },
           "completedAt": {
             "type": "string",
@@ -11479,6 +11500,10 @@
           "errorMessage": {
             "type": "string",
             "description": "Mensaje de error cuando status es failed."
+          },
+          "lastErrorMessage": {
+            "type": "string",
+            "description": "Último error transitorio cuando el job será reintentado."
           }
         }
       },
