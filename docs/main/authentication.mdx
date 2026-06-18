@@ -41,3 +41,44 @@ fetch('https://api.service.getjusto.com/v3/api/me', {
 ```
 
 </CodeGroup>
+
+## Autenticación de Webhooks
+
+Justo firma cada webhook con el secreto configurado al crear el webhook. La firma permite validar que el request fue enviado por Justo y que el payload no fue modificado.
+
+La firma se envía en el header `X-Hub-Signature`:
+
+```http
+X-Hub-Signature: sha256=<firma_en_hex>
+```
+
+Para validar un webhook:
+
+1. Lee el body crudo del request, antes de parsearlo como JSON.
+2. Calcula `HMAC-SHA256(rawBody, webhookSecret)`.
+3. Convierte el resultado a hexadecimal.
+4. Compara el resultado con el valor del header, removiendo el prefijo `sha256=`.
+
+No reconstruyas el payload con `JSON.stringify(req.body)` para validar la firma. Cambios de espacios, orden de propiedades o formato de fechas pueden producir una firma distinta. Usa siempre el body exacto recibido por HTTP.
+
+<CodeGroup>
+
+```javascript Node.js
+import crypto from 'crypto'
+
+function verifyJustoWebhook(rawBody, signatureHeader, webhookSecret) {
+  const receivedSignature = signatureHeader.replace('sha256=', '')
+
+  const expectedSignature = crypto
+    .createHmac('sha256', webhookSecret)
+    .update(rawBody)
+    .digest('hex')
+
+  return crypto.timingSafeEqual(
+    Buffer.from(receivedSignature, 'utf8'),
+    Buffer.from(expectedSignature, 'utf8'),
+  )
+}
+```
+
+</CodeGroup>
