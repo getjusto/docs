@@ -44,7 +44,11 @@ fetch('https://api.service.getjusto.com/v3/api/me', {
 
 ## Autenticación de Webhooks
 
-Justo firma cada webhook con el secreto configurado al crear el webhook. La firma permite validar que el request fue enviado por Justo y que el payload no fue modificado.
+Al configurar un webhook puedes elegir el método de autenticación que usará Justo al llamar tu endpoint. Por defecto se usa firma HMAC.
+
+### Firma HMAC
+
+Justo firma cada webhook con el token del webhook. La firma permite validar que el request fue enviado por Justo y que el payload no fue modificado.
 
 La firma se envía en el header `X-Hub-Signature`:
 
@@ -82,3 +86,13 @@ function verifyJustoWebhook(rawBody, signatureHeader, webhookSecret) {
 ```
 
 </CodeGroup>
+
+### Token en Authorization
+
+También puedes configurar el webhook para que Justo envíe el token del webhook directamente en el header `Authorization`, usando el mismo formato que se usa para autenticar requests hacia Justo:
+
+```http
+Authorization: Bearer <token_del_webhook>
+```
+
+Este método no firma el payload. Úsalo cuando tu integración espera validar el token del webhook en el header de autorización.
