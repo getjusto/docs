@@ -89,10 +89,20 @@ function verifyJustoWebhook(rawBody, signatureHeader, webhookSecret) {
 
 ### Token en Authorization
 
-También puedes configurar el webhook para que Justo envíe el token del webhook directamente en el header `Authorization`, usando el mismo formato que se usa para autenticar requests hacia Justo:
+También puedes configurar el webhook para que Justo envíe el token del webhook directamente en el header `Authorization`:
 
 ```http
 Authorization: Bearer <token_del_webhook>
 ```
 
 Este método no firma el payload. Úsalo cuando tu integración espera validar el token del webhook en el header de autorización.
+
+### Token de API en Authorization
+
+También puedes configurar el webhook para que Justo envíe exactamente el mismo token que tu integración usa para autenticar requests hacia nuestra API:
+
+```http
+Authorization: Bearer <token_de_api>
+```
+
+Este token corresponde a la autorización asociada al webhook. Si el token fue generado antes de que esta opción estuviera disponible, Justo lo guardará la próxima vez que tu integración haga un request válido a la API con ese token. Si todavía no existe un token guardado, el webhook no podrá enviarse con este método hasta que hagan un request válido o generen un token nuevo.
