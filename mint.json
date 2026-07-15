@@ -229,7 +229,9 @@
 								"docs/services/reservations/endpoints/reservations/post-reservations",
 								"docs/services/reservations/endpoints/reservations/get-reservations",
 								"docs/services/reservations/endpoints/reservations/update-reservations",
-								"docs/services/reservations/endpoints/reservations/delete-reservations"
+								"docs/services/reservations/endpoints/reservations/delete-reservations",
+								"docs/services/reservations/endpoints/storeLayout/get-sectors",
+								"docs/services/reservations/endpoints/storeLayout/get-tables"
 							]
 						},
 						{
