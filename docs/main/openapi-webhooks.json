@@ -8176,6 +8176,102 @@
             }
           }
         }
+      },
+      "reservationsSector": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Identificador único del sector",
+            "example": "sec-abc123def456"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local al que pertenece el sector",
+            "example": "store-abc123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible del sector",
+            "example": "Terraza"
+          },
+          "disabledForReservations": {
+            "type": "boolean",
+            "description": "Indica si el sector está deshabilitado para reservas",
+            "example": false
+          },
+          "disabledForReservationsDays": {
+            "type": "array",
+            "description": "Días de la semana en los que el sector no acepta reservas (0 = domingo, 6 = sábado)",
+            "items": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          "customMessage": {
+            "type": "string",
+            "description": "Mensaje opcional mostrado al cliente al elegir este sector",
+            "example": "Esta terraza no está techada"
+          }
+        }
+      },
+      "reservationsTable": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Identificador único de la mesa",
+            "example": "tbl-abc123def456"
+          },
+          "code": {
+            "type": "string",
+            "description": "Código interno de la mesa",
+            "example": "A1"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local al que pertenece la mesa",
+            "example": "store-abc123"
+          },
+          "sectorId": {
+            "type": "string",
+            "description": "ID del sector al que pertenece la mesa",
+            "example": "sec-abc123def456"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible de la mesa",
+            "example": "Mesa 1"
+          },
+          "minimumCapacity": {
+            "type": "number",
+            "description": "Capacidad mínima de personas",
+            "example": 2
+          },
+          "maximumCapacity": {
+            "type": "number",
+            "description": "Capacidad máxima de personas",
+            "example": 4
+          },
+          "disabledForReservations": {
+            "type": "boolean",
+            "description": "Indica si la mesa está deshabilitada para reservas",
+            "example": false
+          },
+          "disabledForReservationsDays": {
+            "type": "array",
+            "description": "Días de la semana en los que la mesa no acepta reservas (0 = domingo, 6 = sábado)",
+            "items": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          "hasEquipment": {
+            "type": "boolean",
+            "description": "Indica si la mesa tiene equipamiento asociado",
+            "example": false
+          }
+        }
       }
     }
   }
