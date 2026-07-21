@@ -477,7 +477,12 @@
 					"pages": [
 						"docs/crisp/endpoints/inventory/get-current-inventory",
 						"docs/crisp/endpoints/inventory/list-ingredients",
-						"docs/crisp/endpoints/inventory/get-menu-costs"
+						"docs/crisp/endpoints/inventory/list-recipes",
+						"docs/crisp/endpoints/inventory/get-menu-costs",
+						"docs/crisp/endpoints/audits/get-audit",
+						"docs/crisp/endpoints/audits/list-audits",
+						"docs/crisp/endpoints/wasteIncidents/get-waste-incident",
+						"docs/crisp/endpoints/wasteIncidents/list-waste-incidents"
 					]
 				},
 				{

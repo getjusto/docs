@@ -1541,7 +1541,7 @@
     },
     "/tabs/{storeId}/audits": {
       "get": {
-        "summary": "List audits",
+        "summary": "Listado de recuentos",
         "parameters": [
           {
             "in": "path",
@@ -1700,7 +1700,7 @@
     },
     "/tabs/{storeId}/audits/{auditId}": {
       "get": {
-        "summary": "Get audit details",
+        "summary": "Detalles de un recuento",
         "parameters": [
           {
             "in": "path",
@@ -2141,6 +2141,238 @@
         }
       }
     },
+    "/tabs/{storeId}/waste-incidents": {
+      "get": {
+        "summary": "Listado de mermas",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de inicio de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2020-01-01T00:00:00.000Z",
+              "format": "date-time",
+              "description": "Fecha de fin de la búsqueda."
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "date"
+              ],
+              "example": "date",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"date\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsWasteIncident"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tabs/{storeId}/waste-incidents/{wasteIncidentId}": {
+      "get": {
+        "summary": "Detalles de una merma",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "wasteIncidentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/tabsWasteIncident"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/me": {
       "get": {
         "summary": "Token info",
@@ -2485,7 +2717,7 @@
         }
       }
     },
-    "/menu/categories": {
+    "/ecommerce/categories": {
       "get": {
         "summary": "List categories",
         "responses": {
@@ -2543,7 +2775,7 @@
         }
       }
     },
-    "/menu/categories/{categoryId}": {
+    "/ecommerce/categories/{categoryId}": {
       "get": {
         "summary": "Category",
         "parameters": [
@@ -2683,7 +2915,7 @@
         }
       }
     },
-    "/menu/products": {
+    "/ecommerce/products": {
       "get": {
         "summary": "List products",
         "responses": {
@@ -2741,7 +2973,7 @@
         }
       }
     },
-    "/menu/products/{productId}": {
+    "/ecommerce/products/{productId}": {
       "get": {
         "summary": "Product",
         "parameters": [
@@ -2881,7 +3113,7 @@
         }
       }
     },
-    "/menu/modifiers": {
+    "/ecommerce/modifiers": {
       "get": {
         "summary": "List modifiers",
         "responses": {
@@ -2939,7 +3171,7 @@
         }
       }
     },
-    "/menu/modifiers/{modifierId}": {
+    "/ecommerce/modifiers/{modifierId}": {
       "get": {
         "summary": "Modifier",
         "parameters": [
@@ -3079,7 +3311,7 @@
         }
       }
     },
-    "/menu/modifier-options": {
+    "/ecommerce/modifier-options": {
       "get": {
         "summary": "List modifier options",
         "responses": {
@@ -3137,7 +3369,7 @@
         }
       }
     },
-    "/menu/modifier-options/{modifierOptionId}": {
+    "/ecommerce/modifier-options/{modifierOptionId}": {
       "get": {
         "summary": "Modifier option",
         "parameters": [
@@ -3277,7 +3509,7 @@
         }
       }
     },
-    "/menu/prices": {
+    "/ecommerce/prices": {
       "get": {
         "summary": "List prices",
         "responses": {
@@ -3335,7 +3567,7 @@
         }
       }
     },
-    "/menu/prices/{priceId}": {
+    "/ecommerce/prices/{priceId}": {
       "get": {
         "summary": "Price",
         "parameters": [
@@ -4748,7 +4980,7 @@
         }
       }
     },
-    "/menu": {
+    "/ecommerce/menu": {
       "get": {
         "summary": "List menus",
         "parameters": [
@@ -4817,7 +5049,7 @@
         }
       }
     },
-    "/menu/{menuId}": {
+    "/ecommerce/menu/{menuId}": {
       "head": {
         "summary": "Menu exists",
         "parameters": [
@@ -8131,6 +8363,148 @@
         }
       }
     },
+    "/reservations/stores/{storeId}/sectors": {
+      "get": {
+        "summary": "Listar sectores del local",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID del local",
+              "example": "store-abc123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/reservationsSector"
+                      },
+                      "description": "Sectores del local"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservations/stores/{storeId}/tables": {
+      "get": {
+        "summary": "Listar mesas del local",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID del local",
+              "example": "store-abc123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/reservationsTable"
+                      },
+                      "description": "Mesas del local"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/royalty/coins-redeem-codes/{coinsRedeemCodeId}": {
       "get": {
         "summary": "Redeem Code",
@@ -9940,148 +10314,6 @@
           }
         ]
       }
-    },
-    "/reservations/stores/{storeId}/sectors": {
-      "get": {
-        "summary": "Listar sectores del local",
-        "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "ID del local",
-              "example": "store-abc123"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The OpenAPI spec",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/reservationsSector"
-                      },
-                      "description": "Sectores del local"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Errors",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/reservations/stores/{storeId}/tables": {
-      "get": {
-        "summary": "Listar mesas del local",
-        "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "ID del local",
-              "example": "store-abc123"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The OpenAPI spec",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/reservationsTable"
-                      },
-                      "description": "Mesas del local"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Errors",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -11528,6 +11760,67 @@
               }
             },
             "description": "Ingredientes requeridos para la receta."
+          }
+        }
+      },
+      "tabsWasteIncident": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "tab-4c48bf33-1411-4c3f-adac-db39b4631cb8",
+            "description": "El ID de la merma."
+          },
+          "storeId": {
+            "type": "string",
+            "example": "Li4eEa3W2hiuGGCFa",
+            "description": "El ID de la tienda al que pertenece la merma."
+          },
+          "code": {
+            "type": "string",
+            "example": "AAAAA",
+            "description": "El código de la merma."
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "La fecha de la merma."
+          },
+          "voidedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "La fecha en que se anuló la merma."
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredientId": {
+                  "type": "string",
+                  "example": "ing-1234567890",
+                  "description": "El ID del ingrediente."
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Tomate",
+                  "description": "El nombre del ingrediente."
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 500,
+                  "description": "La cantidad del ingrediente en la merma."
+                },
+                "unitOfMeasurement": {
+                  "type": "string",
+                  "example": "kg",
+                  "description": "La unidad de medida del ingrediente."
+                }
+              }
+            },
+            "description": "Lista de ingredientes incluidos en la merma."
           }
         }
       },
@@ -13911,7 +14204,7 @@
               },
               "name": {
                 "type": "string",
-                "description": "Nombre del producto.",
+                "description": "Nombre del producto al momento de la compra",
                 "example": "Hamburguesa"
               },
               "externalId": {
@@ -19540,6 +19833,102 @@
           }
         }
       },
+      "reservationsSector": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Identificador único del sector",
+            "example": "sec-abc123def456"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local al que pertenece el sector",
+            "example": "store-abc123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible del sector",
+            "example": "Terraza"
+          },
+          "disabledForReservations": {
+            "type": "boolean",
+            "description": "Indica si el sector está deshabilitado para reservas",
+            "example": false
+          },
+          "disabledForReservationsDays": {
+            "type": "array",
+            "description": "Días de la semana en los que el sector no acepta reservas (0 = domingo, 6 = sábado)",
+            "items": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          "customMessage": {
+            "type": "string",
+            "description": "Mensaje opcional mostrado al cliente al elegir este sector",
+            "example": "Esta terraza no está techada"
+          }
+        }
+      },
+      "reservationsTable": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Identificador único de la mesa",
+            "example": "tbl-abc123def456"
+          },
+          "code": {
+            "type": "string",
+            "description": "Código interno de la mesa",
+            "example": "A1"
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local al que pertenece la mesa",
+            "example": "store-abc123"
+          },
+          "sectorId": {
+            "type": "string",
+            "description": "ID del sector al que pertenece la mesa",
+            "example": "sec-abc123def456"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre visible de la mesa",
+            "example": "Mesa 1"
+          },
+          "minimumCapacity": {
+            "type": "number",
+            "description": "Capacidad mínima de personas",
+            "example": 2
+          },
+          "maximumCapacity": {
+            "type": "number",
+            "description": "Capacidad máxima de personas",
+            "example": 4
+          },
+          "disabledForReservations": {
+            "type": "boolean",
+            "description": "Indica si la mesa está deshabilitada para reservas",
+            "example": false
+          },
+          "disabledForReservationsDays": {
+            "type": "array",
+            "description": "Días de la semana en los que la mesa no acepta reservas (0 = domingo, 6 = sábado)",
+            "items": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          "hasEquipment": {
+            "type": "boolean",
+            "description": "Indica si la mesa tiene equipamiento asociado",
+            "example": false
+          }
+        }
+      },
       "ReservationServiceWebhook": {
         "type": "object",
         "title": "Service Webhook de Reservas",
@@ -20514,102 +20903,6 @@
           "justoUserId",
           "balance"
         ]
-      },
-      "reservationsSector": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Identificador único del sector",
-            "example": "sec-abc123def456"
-          },
-          "storeId": {
-            "type": "string",
-            "description": "ID del local al que pertenece el sector",
-            "example": "store-abc123"
-          },
-          "name": {
-            "type": "string",
-            "description": "Nombre visible del sector",
-            "example": "Terraza"
-          },
-          "disabledForReservations": {
-            "type": "boolean",
-            "description": "Indica si el sector está deshabilitado para reservas",
-            "example": false
-          },
-          "disabledForReservationsDays": {
-            "type": "array",
-            "description": "Días de la semana en los que el sector no acepta reservas (0 = domingo, 6 = sábado)",
-            "items": {
-              "type": "number",
-              "example": 1
-            }
-          },
-          "customMessage": {
-            "type": "string",
-            "description": "Mensaje opcional mostrado al cliente al elegir este sector",
-            "example": "Esta terraza no está techada"
-          }
-        }
-      },
-      "reservationsTable": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Identificador único de la mesa",
-            "example": "tbl-abc123def456"
-          },
-          "code": {
-            "type": "string",
-            "description": "Código interno de la mesa",
-            "example": "A1"
-          },
-          "storeId": {
-            "type": "string",
-            "description": "ID del local al que pertenece la mesa",
-            "example": "store-abc123"
-          },
-          "sectorId": {
-            "type": "string",
-            "description": "ID del sector al que pertenece la mesa",
-            "example": "sec-abc123def456"
-          },
-          "name": {
-            "type": "string",
-            "description": "Nombre visible de la mesa",
-            "example": "Mesa 1"
-          },
-          "minimumCapacity": {
-            "type": "number",
-            "description": "Capacidad mínima de personas",
-            "example": 2
-          },
-          "maximumCapacity": {
-            "type": "number",
-            "description": "Capacidad máxima de personas",
-            "example": 4
-          },
-          "disabledForReservations": {
-            "type": "boolean",
-            "description": "Indica si la mesa está deshabilitada para reservas",
-            "example": false
-          },
-          "disabledForReservationsDays": {
-            "type": "array",
-            "description": "Días de la semana en los que la mesa no acepta reservas (0 = domingo, 6 = sábado)",
-            "items": {
-              "type": "number",
-              "example": 1
-            }
-          },
-          "hasEquipment": {
-            "type": "boolean",
-            "description": "Indica si la mesa tiene equipamiento asociado",
-            "example": false
-          }
-        }
       }
     }
   }
