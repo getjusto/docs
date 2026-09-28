@@ -510,6 +510,13 @@
 						"docs/crisp/endpoints/invoices/list-invoices",
 						"docs/crisp/endpoints/invoices/get-invoice"
 					]
+				},
+				{
+					"group": "Cocinas (KDS)",
+					"pages": [
+						"docs/crisp/endpoints/kds/list-kds-locations",
+						"docs/crisp/endpoints/kds/list-kds-orders"
+					]
 				}
 			]
 		},

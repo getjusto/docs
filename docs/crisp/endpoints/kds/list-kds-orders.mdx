@@ -1,0 +1,7 @@
+---
+openapi: get /tabs/{storeId}/kds-locations/{kdsLocationId}/orders
+---
+
+Lista las comandas asociadas a un centro de cocina, junto con sus productos y tiempos operativos.
+
+Puedes filtrar por `fromDate` y `toDate`. El rango se aplica a la fecha de entrada de la comanda a cocina. La respuesta usa paginación y ordena por fecha de creación de forma descendente por defecto.
