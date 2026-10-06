@@ -1,0 +1,70 @@
+---
+title: MCP de Justo Entregas
+description: Conecta un asistente para cotizar y gestionar despachos sin pedido.
+---
+
+El MCP de Justo Entregas permite operar despachos desde un asistente compatible con MCP y OAuth. Cada conexión se autoriza para una marca.
+
+<Note>
+Disponible después del despliegue de la funcionalidad MCP Entregas en API y de su pantalla de autorización en Admin.
+</Note>
+
+## Conexión
+
+Agrega un servidor MCP remoto con transporte Streamable HTTP:
+
+```text
+https://api.getjusto.com/mcp/entregas
+```
+
+Puedes preseleccionar una marca agregando `?websiteId=ID_DE_LA_MARCA`. Inicia sesión en Justo y autoriza la conexión con una cuenta que pueda administrar las integraciones de esa marca (`api.edit`). El consentimiento permite consultar locales, cotizar, crear, consultar y cancelar despachos. La creación puede generar cargos.
+
+La conexión es exclusiva para Entregas: su token no permite usar el MCP de Admin (`/mcp`). Las conexiones existentes de Admin conservan sus herramientas y requieren una autorización separada para Entregas. Las conexiones pueden revocarse desde la administración MCP de la marca.
+
+## Herramientas
+
+Todas reciben un objeto `params`, incluso cuando está vacío. Los campos, validaciones y respuestas se reutilizan de la API pública. La marca proviene de la autorización; no se acepta `websiteId` como parámetro.
+
+| Herramienta | Parámetros principales | Resultado |
+| --- | --- | --- |
+| `list_stores` | `{}` | Locales de la marca, con dirección y teléfono. |
+| `quote_delivery` | `storeId`, `fromAddress`, `toAddress`; opciones de efectivo, ida y vuelta o auto | Precio estimado sin impuestos y con impuestos. |
+| `create_delivery` | Origen, destino, local, nombres, al menos un teléfono y `externalId` obligatorio | Despacho creado, código y seguimiento. |
+| `list_deliveries` | `filter`, `includeActive`, `page`, `limit` | Lista paginada. Incluye activos por defecto; máximo 100 por página. |
+| `get_delivery` | `deliveryId` | Detalle del despacho. Acepta ID Justo, código especial sin el prefijo visual `E`, o `externalId`. |
+| `cancel_delivery` | `deliveryId` | Despacho cancelado, sujeto al estado y reglas vigentes. |
+
+Las respuestas usan `structuredContent` con el formato de la API: `{success, data}` o `{success: false, error}`. Los errores se marcan con `isError: true`. Las herramientas de creación y cancelación declaran que requieren confirmación; el asistente debe pedirla antes de ejecutarlas.
+
+## Ejemplo de flujo
+
+1. Ejecuta `list_stores` con `{"params": {}}`.
+2. Cotiza con `quote_delivery`:
+
+```json
+{
+  "params": {
+    "storeId": "ID_DEL_LOCAL",
+    "fromAddress": {
+      "streetAddress": "Avenida Providencia 1208",
+      "countryCode": "CL",
+      "locality": "Providencia",
+      "acceptsNoLine2": true
+    },
+    "toAddress": {
+      "streetAddress": "Avenida Providencia 1600",
+      "countryCode": "CL",
+      "locality": "Providencia",
+      "extendedAddress": "Oficina 402"
+    }
+  }
+}
+```
+
+3. Muestra el precio al usuario y pide confirmación. Para crear, usa los mismos parámetros de la cotización y agrega `fromName`, `toName`, `fromPhone` o `toPhone` y un `externalId` único. Los teléfonos deben incluir código de país.
+4. Conserva el mismo `externalId` y `storeId` si reintentas esa solicitud. El identificador reutiliza la protección contra duplicados de la API. Si cambia el precio y la API pide `confirmation=true`, confirma nuevamente con el usuario.
+5. Consulta el estado con `get_delivery`. Antes de cancelar, pide confirmación y ejecuta `cancel_delivery`.
+
+Usa el código de país correspondiente y consulta cobertura/precio mediante la cotización. Consulta los campos completos en [cotizar](/docs/admin/delivery/quote), [crear](/docs/admin/delivery/create) y [cancelar](/docs/admin/delivery/cancel).
+
+El MCP reutiliza los permisos, límites de uso y registros de llamadas del MCP de Admin. Solo opera entregas sin pedido; no permite modificar pedidos de Ecommerce ni ejecutar rutas arbitrarias de la API.
