@@ -385,6 +385,12 @@
 					]
 				},
 				{
+					"group": "Valoraciones",
+					"pages": [
+						"docs/ecommerce/endpoints/reviews/list-reviews"
+					]
+				},
+				{
 					"group": "Productos",
 					"pages": [
 						"docs/ecommerce/endpoints/products/set-product-out-of-stock"
