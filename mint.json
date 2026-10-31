@@ -343,7 +343,10 @@
 						"docs/menu-catalog/endpoints/menu/get-menu",
 						"docs/menu-catalog/endpoints/menu/create-menu",
 						"docs/menu-catalog/endpoints/menu/update-menu",
-						"docs/menu-catalog/endpoints/menu/partially-update-menu"
+						"docs/menu-catalog/endpoints/menu/partially-update-menu",
+						"docs/menu-catalog/endpoints/menu/create-empty-menu",
+						"docs/menu-catalog/endpoints/menu/clone-menu",
+						"docs/menu-catalog/endpoints/menu/delete-menu"
 					]
 				},
 				{
@@ -351,10 +354,15 @@
 					"pages": [
 						"docs/menu-catalog/endpoints/catalog/list-categories",
 						"docs/menu-catalog/endpoints/catalog/get-category",
+						"docs/menu-catalog/endpoints/catalog/create-category",
 						"docs/menu-catalog/endpoints/catalog/update-category",
+						"docs/menu-catalog/endpoints/catalog/delete-category",
 						"docs/menu-catalog/endpoints/catalog/list-products",
 						"docs/menu-catalog/endpoints/catalog/get-product",
+						"docs/menu-catalog/endpoints/catalog/create-product",
 						"docs/menu-catalog/endpoints/catalog/update-product",
+						"docs/menu-catalog/endpoints/catalog/delete-product",
+						"docs/menu-catalog/endpoints/catalog/update-product-menu-price",
 						"docs/menu-catalog/endpoints/catalog/list-modifiers",
 						"docs/menu-catalog/endpoints/catalog/get-modifier",
 						"docs/menu-catalog/endpoints/catalog/update-modifier",
@@ -363,7 +371,48 @@
 						"docs/menu-catalog/endpoints/catalog/update-modifier-option",
 						"docs/menu-catalog/endpoints/catalog/list-prices",
 						"docs/menu-catalog/endpoints/catalog/get-price",
-						"docs/menu-catalog/endpoints/catalog/update-price"
+						"docs/menu-catalog/endpoints/catalog/update-price",
+						"docs/menu-catalog/endpoints/catalog/create-modifier",
+						"docs/menu-catalog/endpoints/catalog/delete-modifier",
+						"docs/menu-catalog/endpoints/catalog/create-modifier-option",
+						"docs/menu-catalog/endpoints/catalog/delete-modifier-option"
+					]
+				},
+				{
+					"group": "Configuración de locales",
+					"pages": [
+						"docs/menu-catalog/endpoints/store-configuration/get-configuration",
+						"docs/menu-catalog/endpoints/store-configuration/update-details",
+						"docs/menu-catalog/endpoints/store-configuration/update-phones",
+						"docs/menu-catalog/endpoints/store-configuration/update-delivery-settings",
+						"docs/menu-catalog/endpoints/store-configuration/update-delivery-options",
+						{
+							"group": "Mesas",
+							"pages": [
+								"docs/menu-catalog/endpoints/store-configuration/list-tables",
+								"docs/menu-catalog/endpoints/store-configuration/create-table",
+								"docs/menu-catalog/endpoints/store-configuration/update-table",
+								"docs/menu-catalog/endpoints/store-configuration/delete-table"
+							]
+						},
+						{
+							"group": "Descuentos",
+							"pages": [
+								"docs/menu-catalog/endpoints/store-configuration/list-discount-methods",
+								"docs/menu-catalog/endpoints/store-configuration/create-discount-method",
+								"docs/menu-catalog/endpoints/store-configuration/update-discount-method",
+								"docs/menu-catalog/endpoints/store-configuration/delete-discount-method"
+							]
+						},
+						{
+							"group": "Medios de pago",
+							"pages": [
+								"docs/menu-catalog/endpoints/store-configuration/list-payment-methods",
+								"docs/menu-catalog/endpoints/store-configuration/create-payment-method",
+								"docs/menu-catalog/endpoints/store-configuration/update-payment-method",
+								"docs/menu-catalog/endpoints/store-configuration/delete-payment-method"
+							]
+						}
 					]
 				}
 			]
@@ -381,13 +430,17 @@
 						"docs/ecommerce/endpoints/orders/accept-order",
 						"docs/ecommerce/endpoints/orders/reject-order",
 						"docs/ecommerce/endpoints/orders/mark-order-preparing",
-						"docs/ecommerce/endpoints/orders/mark-order-prepared"
+						"docs/ecommerce/endpoints/orders/mark-order-prepared",
+						"docs/ecommerce/endpoints/orders/cancel-order",
+						"docs/ecommerce/endpoints/orders/update-order-deliver-at"
 					]
 				},
 				{
 					"group": "Productos",
 					"pages": [
-						"docs/ecommerce/endpoints/products/set-product-out-of-stock"
+						"docs/ecommerce/endpoints/products/set-product-out-of-stock",
+						"docs/ecommerce/endpoints/products/set-modifier-option-out-of-stock",
+						"docs/ecommerce/endpoints/products/list-out-of-stock-items"
 					]
 				},
 				{
@@ -396,7 +449,8 @@
 						"docs/ecommerce/endpoints/stores/list-stores",
 						"docs/ecommerce/endpoints/stores/get-store",
 						"docs/ecommerce/endpoints/stores/temporary-close-store",
-						"docs/ecommerce/endpoints/stores/update-current-preparation-duration"
+						"docs/ecommerce/endpoints/stores/update-current-preparation-duration",
+						"docs/ecommerce/endpoints/stores/update-store-schedule"
 					]
 				},
 				{
@@ -460,7 +514,34 @@
 					"group": "Cuentas",
 					"pages": [
 						"docs/crisp/endpoints/tabs/get-tab",
-						"docs/crisp/endpoints/tabs/list-tabs"
+						"docs/crisp/endpoints/tabs/list-tabs",
+						"docs/crisp/endpoints/tabs/open-tab",
+						"docs/crisp/endpoints/tabs/update-tab",
+						"docs/crisp/endpoints/tabs/close-tab",
+						"docs/crisp/endpoints/tabs/reopen-tab",
+						"docs/crisp/endpoints/tabs/cancel-tab",
+						"docs/crisp/endpoints/tabs/send-tab-to-kitchen",
+						"docs/crisp/endpoints/tabs/list-tab-items",
+						"docs/crisp/endpoints/tabs/add-tab-item",
+						"docs/crisp/endpoints/tabs/delete-tab-item",
+						"docs/crisp/endpoints/tabs/update-tab-item",
+						"docs/crisp/endpoints/tabs/move-tab-item",
+						"docs/crisp/endpoints/tabs/list-tab-discounts",
+						"docs/crisp/endpoints/tabs/add-tab-discount",
+						"docs/crisp/endpoints/tabs/void-tab-discount",
+						"docs/crisp/endpoints/tabs/list-tab-payments",
+						"docs/crisp/endpoints/tabs/add-tab-payment",
+						"docs/crisp/endpoints/tabs/void-tab-payment"
+					]
+				},
+				{
+					"group": "Configuración del PDV",
+					"pages": [
+						"docs/crisp/endpoints/pos/list-pos-menus",
+						"docs/crisp/endpoints/pos/get-pos-menu-product",
+						"docs/crisp/endpoints/pos/list-tables",
+						"docs/crisp/endpoints/pos/list-item-deletion-categories",
+						"docs/crisp/endpoints/pos/list-discount-methods"
 					]
 				},
 				{
@@ -470,6 +551,18 @@
 						"docs/crisp/endpoints/shifts/list-shifts",
 						"docs/crisp/endpoints/shifts/list-shift-tabs",
 						"docs/crisp/endpoints/shifts/get-shift-tab"
+					]
+				},
+				{
+					"group": "Caja",
+					"pages": [
+						"docs/crisp/endpoints/cash/list-cash-registers",
+						"docs/crisp/endpoints/cash/open-cash-register",
+						"docs/crisp/endpoints/cash/cash-register-closing-preview",
+						"docs/crisp/endpoints/cash/close-cash-register",
+						"docs/crisp/endpoints/cash/list-cash-movements",
+						"docs/crisp/endpoints/cash/create-cash-movement",
+						"docs/crisp/endpoints/cash/close-shift"
 					]
 				},
 				{
@@ -483,6 +576,113 @@
 						"docs/crisp/endpoints/audits/list-audits",
 						"docs/crisp/endpoints/wasteIncidents/get-waste-incident",
 						"docs/crisp/endpoints/wasteIncidents/list-waste-incidents"
+					]
+				},
+				{
+					"group": "Administración de inventario",
+					"pages": [
+						{
+							"group": "Ingredientes",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/ingredients/list-ingredients",
+								"docs/crisp/endpoints/inventory-management/ingredients/get-ingredient",
+								"docs/crisp/endpoints/inventory-management/ingredients/create-ingredient",
+								"docs/crisp/endpoints/inventory-management/ingredients/update-ingredient",
+								"docs/crisp/endpoints/inventory-management/ingredients/delete-ingredient"
+							]
+						},
+						{
+							"group": "Proveedores",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/providers/list-providers",
+								"docs/crisp/endpoints/inventory-management/providers/get-provider",
+								"docs/crisp/endpoints/inventory-management/providers/create-provider",
+								"docs/crisp/endpoints/inventory-management/providers/update-provider",
+								"docs/crisp/endpoints/inventory-management/providers/delete-provider"
+							]
+						},
+						{
+							"group": "Bodegas",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/stock-rooms/list-stock-rooms",
+								"docs/crisp/endpoints/inventory-management/stock-rooms/get-stock-room",
+								"docs/crisp/endpoints/inventory-management/stock-rooms/create-stock-room",
+								"docs/crisp/endpoints/inventory-management/stock-rooms/update-stock-room",
+								"docs/crisp/endpoints/inventory-management/stock-rooms/delete-stock-room",
+								"docs/crisp/endpoints/inventory-management/stock-rooms/set-default-stock-room"
+							]
+						},
+						{
+							"group": "Categorías de ingredientes",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/ingredient-categories/list-ingredient-categories",
+								"docs/crisp/endpoints/inventory-management/ingredient-categories/get-ingredient-category",
+								"docs/crisp/endpoints/inventory-management/ingredient-categories/create-ingredient-category",
+								"docs/crisp/endpoints/inventory-management/ingredient-categories/update-ingredient-category",
+								"docs/crisp/endpoints/inventory-management/ingredient-categories/delete-ingredient-category"
+							]
+						},
+						{
+							"group": "Categorías de merma",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/waste-categories/list-waste-categories",
+								"docs/crisp/endpoints/inventory-management/waste-categories/get-waste-category",
+								"docs/crisp/endpoints/inventory-management/waste-categories/create-waste-category",
+								"docs/crisp/endpoints/inventory-management/waste-categories/update-waste-category",
+								"docs/crisp/endpoints/inventory-management/waste-categories/delete-waste-category",
+								"docs/crisp/endpoints/inventory-management/waste-categories/restore-waste-category"
+							]
+						},
+						{
+							"group": "Tipos de recuento",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/audit-types/list-audit-types",
+								"docs/crisp/endpoints/inventory-management/audit-types/get-audit-type",
+								"docs/crisp/endpoints/inventory-management/audit-types/create-audit-type",
+								"docs/crisp/endpoints/inventory-management/audit-types/update-audit-type",
+								"docs/crisp/endpoints/inventory-management/audit-types/delete-audit-type"
+							]
+						},
+						{
+							"group": "Mermas",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/waste-incidents/get-waste-incident",
+								"docs/crisp/endpoints/inventory-management/waste-incidents/create-waste-incident",
+								"docs/crisp/endpoints/inventory-management/waste-incidents/update-waste-incident",
+								"docs/crisp/endpoints/inventory-management/waste-incidents/void-waste-incident"
+							]
+						},
+						{
+							"group": "Recuentos",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/audits/get-audit",
+								"docs/crisp/endpoints/inventory-management/audits/create-audit",
+								"docs/crisp/endpoints/inventory-management/audits/update-audit",
+								"docs/crisp/endpoints/inventory-management/audits/void-audit"
+							]
+						},
+						{
+							"group": "Compras",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/purchases/get-purchase",
+								"docs/crisp/endpoints/inventory-management/purchases/create-purchase",
+								"docs/crisp/endpoints/inventory-management/purchases/update-purchase",
+								"docs/crisp/endpoints/inventory-management/purchases/void-purchase",
+								"docs/crisp/endpoints/inventory-management/purchases/create-purchase-from-documents"
+							]
+						},
+						{
+							"group": "Órdenes de compra y guías",
+							"pages": [
+								"docs/crisp/endpoints/inventory-management/purchase-documents/list-purchase-documents",
+								"docs/crisp/endpoints/inventory-management/purchase-documents/get-purchase-document",
+								"docs/crisp/endpoints/inventory-management/purchase-documents/create-purchase-document",
+								"docs/crisp/endpoints/inventory-management/purchase-documents/update-purchase-document",
+								"docs/crisp/endpoints/inventory-management/purchase-documents/approve-purchase-document",
+								"docs/crisp/endpoints/inventory-management/purchase-documents/void-purchase-document"
+							]
+						},
+						"docs/crisp/endpoints/inventory-management/list-accounting-categories"
 					]
 				},
 				{
@@ -515,7 +715,18 @@
 					"group": "Cocinas (KDS)",
 					"pages": [
 						"docs/crisp/endpoints/kds/list-kds-locations",
-						"docs/crisp/endpoints/kds/list-kds-orders"
+						"docs/crisp/endpoints/kds/list-kds-orders",
+						"docs/crisp/endpoints/kds/complete-kds-order"
+					]
+				},
+				{
+					"group": "Operación de pedidos de canales",
+					"pages": [
+						"docs/crisp/endpoints/channel-orders/list-rejection-reasons",
+						"docs/crisp/endpoints/channel-orders/accept-order",
+						"docs/crisp/endpoints/channel-orders/reject-order",
+						"docs/crisp/endpoints/channel-orders/update-preparation-time",
+						"docs/crisp/endpoints/channel-orders/ready-to-pickup"
 					]
 				}
 			]
