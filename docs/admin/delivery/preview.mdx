@@ -1,0 +1,12 @@
+---
+title: "Consultar cotización y ruta"
+openapi: post /admin/deliveries/preview
+---
+
+Devuelve la cotización y una ruta referencial para una entrega sin pedido, sin solicitar un despacho. Envía un local autorizado en `storeId` y las direcciones en `fromAddress` y `toAddress`.
+
+La respuesta incluye `quote`, las coordenadas disponibles de origen y destino y `route`: puntos del recorrido, distancia en metros y duración estimada de conducción en segundos. La duración no incluye la espera de un repartidor ni garantiza una hora de llegada. En ida y vuelta, el precio incluye la vuelta, pero la ruta describe solo la ida.
+
+Si el cálculo de ruta falla después de cotizar, la respuesta conserva `success: true`, la cotización y las coordenadas resueltas; incluye `routeError` y omite `route`.
+
+La cotización no reserva el precio ni genera un `quoteId`. Al crear el despacho se aplican los precios y validaciones vigentes.

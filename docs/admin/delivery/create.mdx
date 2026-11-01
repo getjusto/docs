@@ -6,6 +6,12 @@ Crea una entrega sin pedido para la marca autorizada. Esta operación pide un de
 
 Usa este endpoint cuando la marca ya tomó la venta o la solicitud en otro canal y solo necesita que Justo coordine el retiro y la entrega. Por ejemplo, un pedido ingresado por teléfono, WhatsApp, POS, backoffice o una integración externa.
 
-El `storeId` debe pertenecer a la marca autorizada. Debes enviar al menos un teléfono de contacto en `fromPhone` o `toPhone` para que la operación pueda coordinar la entrega.
+El `storeId` debe pertenecer a la marca y los locales autorizados. Debes enviar al menos un teléfono de contacto en `fromPhone` o `toPhone` para que la operación pueda coordinar la entrega.
 
 En Justo Admin MCP esta operación requiere confirmación explícita del usuario porque crea una entrega real.
+
+La cotización previa no reserva el precio. `confirmation=true` acepta el aviso de costo según el umbral del local y no fija el total de una cotización previa.
+
+Para reintentar una solicitud, conserva el mismo `externalId`, `storeId` y marca. Sin `externalId`, consulta primero el listado si el resultado de una creación es incierto para evitar duplicados.
+
+Los problemas reconocidos de pago, facturación o deuda conservan el error original y agregan `resolutionCode`, `resolveUrl` y `resolveMessage` para indicar cómo resolverlos.

@@ -486,6 +486,7 @@
 						"docs/admin/delivery/list",
 						"docs/admin/delivery/get",
 						"docs/admin/delivery/quote",
+						"docs/admin/delivery/preview",
 						"docs/admin/delivery/create",
 						"docs/admin/delivery/cancel"
 					]
