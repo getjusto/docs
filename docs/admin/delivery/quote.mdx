@@ -1,7 +1,10 @@
 ---
-openapi: get /admin/deliveries/quote
+title: "Cotizar entrega sin pedido"
+openapi: post /admin/deliveries/quote
 ---
 
-Cotiza una entrega sin pedido antes de crearla. Como no existe un pedido de Justo Ecommerce asociado desde donde tomar local, dirección o datos de entrega, debes enviar un local autorizado y los `placeId` de origen y destino.
+Cotiza una entrega sin pedido antes de crearla. Envía un local autorizado en `storeId` y las direcciones en `fromAddress` y `toAddress`, con `streetAddress` y `countryCode`. API resuelve los identificadores de lugar internamente.
 
-Usa esta operación para mostrar o validar el costo de despacho antes de crear una entrega manual o externa. No crea entregas, no modifica estado y no genera un pedido ecommerce.
+`tipAmount` agrega la propina a `priceWithTax` para calcular `totalAmount`. Usa el mismo monto de propina al crear el despacho.
+
+Esta operación no crea entregas ni reserva el precio. Para obtener además coordenadas y ruta, usa [Consultar cotización y ruta](/docs/admin/delivery/preview).

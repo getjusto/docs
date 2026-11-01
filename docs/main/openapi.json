@@ -6390,6 +6390,20 @@
                         "type": "string",
                         "maxLength": 300
                       },
+                      "description": {
+                        "description": "Descripción para Google y al compartir el enlace, entre 70 y 160 caracteres. Envía \"\" para usar la descripción global del sitio.",
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "const": ""
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 70,
+                            "maxLength": 160
+                          }
+                        ]
+                      },
                       "disabled": {
                         "type": "boolean"
                       },
@@ -6825,6 +6839,20 @@
                               "title": {
                                 "type": "string",
                                 "maxLength": 300
+                              },
+                              "description": {
+                                "description": "Descripción para Google y al compartir el enlace, entre 70 y 160 caracteres. Envía \"\" para usar la descripción global del sitio.",
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "const": ""
+                                  },
+                                  {
+                                    "type": "string",
+                                    "minLength": 70,
+                                    "maxLength": 160
+                                  }
+                                ]
                               },
                               "disabled": {
                                 "type": "boolean"
@@ -9723,8 +9751,8 @@
     },
     "/admin/deliveries": {
       "get": {
-        "summary": "List deliveries without order",
-        "description": "Lista entregas sin pedido de la marca autorizada. Una entrega sin pedido es un despacho de Justo Delivery que no tiene asociado un pedido de Justo Ecommerce; se crea desde Justo Admin, API o una integración externa para coordinar logística fuera del checkout de Justo.",
+        "summary": "Listar entregas sin pedido",
+        "description": "Lista entregas sin pedido de la marca y los locales autorizados. Una entrega sin pedido es un despacho de Justo Delivery que no tiene asociado un pedido de Justo Ecommerce; se crea desde Justo Admin, API o una integración externa para coordinar logística fuera del checkout de Justo. Para consultar también despachos en curso, enviar includeActive=true.",
         "parameters": [
           {
             "in": "query",
@@ -9738,7 +9766,8 @@
             "in": "query",
             "name": "includeActive",
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": false
             },
             "description": "Si es true, incluye entregas activas. Por defecto lista solo terminadas o canceladas."
           },
@@ -9809,30 +9838,21 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Solicitud rechazada por validación, autorización o reglas de la operación. Los problemas de pago y deuda reconocidos incluyen información para resolverlos.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al procesar la solicitud. Un error o timeout de creación no garantiza que el despacho no se haya creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
                 }
               }
             }
@@ -9840,8 +9860,8 @@
         }
       },
       "post": {
-        "summary": "Create delivery without order",
-        "description": "Crea una entrega sin pedido para la marca autorizada. Esta operación solicita un despacho de Justo Delivery sin crear ni asociar un pedido de Justo Ecommerce, útil para ventas tomadas por teléfono, WhatsApp, POS, backoffice o integraciones externas. Requiere origen, destino, local y datos de contacto. Para agregar propina, envía tipAmount con el monto elegido al crear el despacho; no necesitas usar el navegador. Cotiza primero con ese mismo tipAmount y confirma el total con el usuario. Si la cotización cambió, puede requerir confirmation=true.",
+        "summary": "Crear entrega sin pedido",
+        "description": "Crea una entrega sin pedido para la marca y el local autorizados. Solicita logística y puede generar cargos, sin crear ni asociar un pedido de Justo Ecommerce. Requiere origen, destino, local y contactos. tipAmount registra la propina por separado del precio del despacho. La cotización previa es una estimación: no se guarda un quoteId ni se reserva el precio; al crear se aplican los precios y validaciones vigentes. confirmation=true acepta el aviso de costo definido por el local, no fija el total cotizado. Para evitar duplicados al reintentar, conservar el mismo externalId, storeId y marca; un externalId identifica una solicitud, no una nueva entrega. Sin externalId, no repetir una creación cuyo resultado sea incierto: consultar primero el listado.",
         "requestBody": {
           "required": true,
           "content": {
@@ -9938,11 +9958,11 @@
                   },
                   "confirmation": {
                     "type": "boolean",
-                    "description": "Confirma creación cuando el precio requiere confirmación explícita."
+                    "description": "Acepta el aviso cuando el costo supera el umbral de confirmación configurado. No acepta ni reserva un precio de una cotización previa."
                   },
                   "externalId": {
                     "type": "string",
-                    "description": "Identificador externo para idempotencia o conciliación."
+                    "description": "Identificador externo opcional de la solicitud. Reutilizar el mismo valor, local y marca en los reintentos para recuperar la entrega existente. Sin este identificador no hay garantía de deduplicación entre solicitudes; no reintentar una creación de resultado incierto sin consultar primero el listado."
                   }
                 }
               }
@@ -9970,30 +9990,21 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Solicitud rechazada por validación, autorización o reglas de la operación. Los problemas de pago y deuda reconocidos incluyen información para resolverlos.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al procesar la solicitud. Un error o timeout de creación no garantiza que el despacho no se haya creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
                 }
               }
             }
@@ -10003,8 +10014,8 @@
     },
     "/admin/deliveries/quote": {
       "post": {
-        "summary": "Quote delivery without order",
-        "description": "Cotiza una entrega sin pedido para un local de la marca autorizada. Envía fromAddress y toAddress con la misma estructura usada para crear direcciones en Ordering API; API resuelve los placeIds internamente. Si el usuario pide propina, envía tipAmount y muestra totalAmount antes de confirmar. No crea entregas, no modifica estado y no genera un pedido ecommerce.",
+        "summary": "Cotizar entrega sin pedido",
+        "description": "Cotiza una entrega sin pedido para un local de la marca autorizada. fromAddress y toAddress usan la estructura de direcciones de Ordering API; API resuelve los placeIds internamente. tipAmount se agrega a priceWithTax para calcular totalAmount. No crea entregas ni pedidos ecommerce, y no reserva un precio ni produce un quoteId. El costo se calcula nuevamente al crear el despacho. Para obtener además coordenadas, distancia, duración y geometría de la ruta, usar POST /admin/deliveries/preview.",
         "requestBody": {
           "required": true,
           "content": {
@@ -10074,7 +10085,101 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Solicitud rechazada por validación, autorización o reglas de la operación. Los problemas de pago y deuda reconocidos incluyen información para resolverlos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al procesar la solicitud. Un error o timeout de creación no garantiza que el despacho no se haya creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deliveries/preview": {
+      "post": {
+        "summary": "Consultar cotización y ruta de una entrega sin pedido",
+        "description": "Devuelve la cotización junto con coordenadas de origen y destino, distancia en metros, duración estimada de conducción en segundos y puntos de la ruta. Requiere un local autorizado, cuyo ID se obtiene en GET /ecommerce/stores. No solicita un despacho ni reserva el precio. La duración no incluye la espera de un repartidor y no es una promesa de llegada o vehículo. En ida y vuelta, el precio incluye la vuelta, pero la ruta y su duración describen solo la ida. Si falla el cálculo de ruta después de cotizar, devuelve success=true con quote y routeError, sin route, conservando las coordenadas que se hayan resuelto.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "storeId",
+                  "fromAddress",
+                  "toAddress"
+                ],
+                "properties": {
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID Justo del local solicitante."
+                  },
+                  "fromAddress": {
+                    "$ref": "#/components/schemas/apiDeliveryPreviewAddressInput"
+                  },
+                  "toAddress": {
+                    "$ref": "#/components/schemas/apiDeliveryPreviewAddressInput"
+                  },
+                  "isCash": {
+                    "type": "boolean",
+                    "description": "Si es true, considera cobro en efectivo."
+                  },
+                  "amountToPay": {
+                    "type": "number",
+                    "description": "Monto que debe cobrarse si isCash es true."
+                  },
+                  "tipAmount": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Propina para el repartidor en moneda del local. Se suma al precio con impuestos para obtener totalAmount. Usa el mismo tipAmount al crear el despacho."
+                  },
+                  "isRoundTrip": {
+                    "type": "boolean",
+                    "description": "Si es true, considera vuelta al origen."
+                  },
+                  "useCarForDelivery": {
+                    "type": "boolean",
+                    "description": "Si es true, cotiza con vehículo tipo auto."
+                  }
+                },
+                "additionalProperties": false,
+                "example": {
+                  "storeId": "ID_DEL_LOCAL",
+                  "fromAddress": {
+                    "streetAddress": "Avenida Providencia 1208",
+                    "countryCode": "CL",
+                    "locality": "Providencia",
+                    "acceptsNoLine2": true
+                  },
+                  "toAddress": {
+                    "streetAddress": "Avenida Providencia 1600",
+                    "countryCode": "CL",
+                    "locality": "Providencia",
+                    "extendedAddress": "Oficina 402"
+                  },
+                  "tipAmount": 1000,
+                  "isRoundTrip": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
             "content": {
               "application/json": {
                 "schema": {
@@ -10082,22 +10187,32 @@
                   "properties": {
                     "success": {
                       "type": "boolean",
-                      "example": "false"
+                      "example": true
                     },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
+                    "data": {
+                      "$ref": "#/components/schemas/apiDeliveryPreview"
                     }
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud rechazada por validación, autorización o reglas de la operación. Los problemas de pago y deuda reconocidos incluyen información para resolverlos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al procesar la solicitud. Un error o timeout de creación no garantiza que el despacho no se haya creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
                 }
               }
             }
@@ -10107,8 +10222,8 @@
     },
     "/admin/deliveries/{deliveryId}": {
       "get": {
-        "summary": "Get delivery without order",
-        "description": "Obtiene el detalle de una entrega sin pedido de la marca autorizada. Estas entregas son despachos de Justo Delivery creados sin un pedido de Justo Ecommerce asociado, por lo que el seguimiento se hace directamente sobre la entrega y no sobre una orden ecommerce. Incluye receiveProofImage (URL de la foto de retiro) y deliverProofImage (URL de la foto de entrega). Cuando el usuario pida evidencias o comprobantes, entrega estos enlaces tal como vienen en la respuesta. Un campo null o ausente significa que no hay una imagen registrada para ese paso; no inventes enlaces ni interpretes la falta de foto como falta de entrega.",
+        "summary": "Consultar entrega sin pedido",
+        "description": "Obtiene el detalle de una entrega sin pedido de la marca y los locales autorizados. Incluye el estado, trackingURL, la última ubicación GPS disponible y URLs de evidencias: receiveProofImage corresponde al retiro y deliverProofImage a la entrega. Un campo null o ausente significa que no hay imagen registrada para ese paso y no modifica el estado logístico. location.updatedAt es la fecha del reporte GPS; no implica una ubicación tomada al consultar. La ubicación se omite al finalizar el despacho.",
         "parameters": [
           {
             "in": "path",
@@ -10141,30 +10256,21 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Solicitud rechazada por validación, autorización o reglas de la operación. Los problemas de pago y deuda reconocidos incluyen información para resolverlos.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al procesar la solicitud. Un error o timeout de creación no garantiza que el despacho no se haya creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
                 }
               }
             }
@@ -10174,8 +10280,8 @@
     },
     "/admin/deliveries/{deliveryId}/cancel": {
       "post": {
-        "summary": "Cancel delivery without order",
-        "description": "Cancela una entrega sin pedido de la marca autorizada. Esta operación afecta solo el despacho de Justo Delivery; no cancela pedidos de Justo Ecommerce porque estas entregas no tienen un pedido ecommerce asociado. Si existe cargo asociado sin payout, se anula en finanzas.",
+        "summary": "Cancelar entrega sin pedido",
+        "description": "Cancela una entrega sin pedido de la marca y los locales autorizados, sujeto al estado y reglas vigentes. Afecta solo el despacho de Justo Delivery; no cancela pedidos de Justo Ecommerce porque estas entregas no tienen un pedido ecommerce asociado. Si existe cargo asociado sin payout, se anula en finanzas.",
         "parameters": [
           {
             "in": "path",
@@ -10208,30 +10314,21 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Solicitud rechazada por validación, autorización o reglas de la operación. Los problemas de pago y deuda reconocidos incluyen información para resolverlos.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": "false"
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string",
-                          "example": "error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "The request has an error"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al procesar la solicitud. Un error o timeout de creación no garantiza que el despacho no se haya creado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/apiDeliveryErrorResponse"
                 }
               }
             }
@@ -12368,6 +12465,141 @@
                     },
                     "data": {
                       "$ref": "#/components/schemas/apiModifierOptionOutOfStock"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ecommerce/reviews": {
+      "get": {
+        "summary": "List order reviews",
+        "description": "Lista las valoraciones de pedidos ecommerce de la marca autorizada: nota de la comida, nota del delivery, NPS, motivos, comentarios y preguntas personalizadas. Se ordenan de la más reciente a la más antigua. La data siempre queda limitada a la marca y a los locales de la autorización.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storesIds",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Un arreglo con el ID o ID externo de los locales."
+            }
+          },
+          {
+            "in": "query",
+            "name": "fromDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Incluir valoraciones creadas desde esta fecha."
+            }
+          },
+          {
+            "in": "query",
+            "name": "toDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Incluir valoraciones creadas hasta esta fecha."
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/apiReview"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
                     }
                   }
                 }
@@ -34764,6 +34996,83 @@
         },
         "additionalProperties": false
       },
+      "apiDeliveryCoordinates": {
+        "type": "object",
+        "description": "Coordenadas geográficas válidas de un punto del recorrido.",
+        "required": [
+          "lat",
+          "lng"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "lat": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90,
+            "description": "Latitud en grados."
+          },
+          "lng": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180,
+            "description": "Longitud en grados."
+          }
+        }
+      },
+      "apiDeliveryErrorResponse": {
+        "type": "object",
+        "description": "Error de una operación de entregas. Conserva el error original; cuando se reconoce un problema de pago o deuda, agrega una clasificación estable y un enlace para resolverlo.",
+        "required": [
+          "success",
+          "error"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "description": "La operación no fue exitosa."
+          },
+          "error": {
+            "type": "object",
+            "description": "Código y mensaje originales del error de la operación.",
+            "properties": {
+              "error": {
+                "type": "string",
+                "description": "Código original del error."
+              },
+              "message": {
+                "type": "string",
+                "description": "Descripción del error."
+              },
+              "details": {
+                "description": "Información adicional disponible en el error original."
+              }
+            }
+          },
+          "resolutionCode": {
+            "type": "string",
+            "description": "Problema reconocido que requiere una acción del comercio.",
+            "enum": [
+              "insufficientFunds",
+              "paymentMethodRequired",
+              "paymentFailed",
+              "billingReceiverRequired",
+              "websiteBlockedByDebt"
+            ]
+          },
+          "resolveUrl": {
+            "type": "string",
+            "description": "Enlace para resolver el problema de pago, facturación o deuda.",
+            "format": "uri"
+          },
+          "resolveMessage": {
+            "type": "string",
+            "description": "Descripción de la acción disponible en resolveUrl."
+          }
+        }
+      },
       "apiDeliveryLocation": {
         "type": "object",
         "description": "Punto de origen o destino de una entrega sin pedido.",
@@ -34805,6 +35114,208 @@
             "description": "Longitud."
           }
         }
+      },
+      "apiDeliveryPreview": {
+        "type": "object",
+        "description": "Cotización y ruta referencial de una entrega sin pedido, sin crear un despacho. Si el cálculo de ruta falla, conserva la cotización y las coordenadas resueltas, omite route e incluye routeError.",
+        "required": [
+          "kind",
+          "quote",
+          "from",
+          "to",
+          "isRoundTrip"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "Tipo de resultado.",
+            "enum": [
+              "preview"
+            ]
+          },
+          "quote": {
+            "$ref": "#/components/schemas/apiDeliveryWithoutOrderQuote"
+          },
+          "from": {
+            "$ref": "#/components/schemas/apiDeliveryPreviewAddress"
+          },
+          "to": {
+            "$ref": "#/components/schemas/apiDeliveryPreviewAddress"
+          },
+          "isRoundTrip": {
+            "type": "boolean",
+            "description": "Indica si el precio incluye vuelta al origen. La geometría y duración describen solo la ida."
+          },
+          "route": {
+            "type": "object",
+            "description": "Recorrido referencial en vehículo. No incluye espera ni asignación de repartidor y no garantiza una hora de llegada o un tipo de vehículo.",
+            "required": [
+              "path",
+              "distance",
+              "duration"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "array",
+                "description": "Puntos ordenados de la ruta, desde el origen hasta el destino.",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/components/schemas/apiDeliveryCoordinates"
+                }
+              },
+              "distance": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Distancia del recorrido de ida, en metros."
+              },
+              "duration": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Duración estimada de conducción de ida, en segundos."
+              }
+            }
+          },
+          "routeError": {
+            "type": "string",
+            "description": "Descripción del problema al calcular la ruta. Solo está presente cuando route no está disponible; la cotización sigue siendo válida como estimación."
+          }
+        },
+        "example": {
+          "kind": "preview",
+          "quote": {
+            "price": 3000,
+            "priceWithTax": 3570,
+            "tipAmount": 1000,
+            "totalAmount": 4570
+          },
+          "from": {
+            "streetAddress": "Avenida Providencia 1208",
+            "countryCode": "CL",
+            "location": {
+              "lat": -33.4293,
+              "lng": -70.6206
+            }
+          },
+          "to": {
+            "streetAddress": "Avenida Providencia 1600",
+            "countryCode": "CL",
+            "location": {
+              "lat": -33.4271,
+              "lng": -70.6144
+            }
+          },
+          "isRoundTrip": false,
+          "route": {
+            "path": [
+              {
+                "lat": -33.4293,
+                "lng": -70.6206
+              },
+              {
+                "lat": -33.4271,
+                "lng": -70.6144
+              }
+            ],
+            "distance": 750,
+            "duration": 180
+          }
+        }
+      },
+      "apiDeliveryPreviewAddress": {
+        "type": "object",
+        "description": "Dirección recibida, acompañada de las coordenadas resueltas cuando están disponibles. Si la geocodificación falla, conserva los datos de la dirección sin inventar coordenadas.",
+        "required": [
+          "streetAddress",
+          "countryCode"
+        ],
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y numeración ingresada por el customer o sistema externo."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2.",
+            "example": "CL"
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina u otra información secundaria."
+          },
+          "location": {
+            "$ref": "#/components/schemas/apiDeliveryCoordinates"
+          },
+          "acceptsNoLine2": {
+            "type": "boolean",
+            "description": "Indica si el customer confirmó que no tiene línea 2."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comentario o instrucciones de entrega."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Localidad o comuna."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Código postal."
+          }
+        },
+        "additionalProperties": false
+      },
+      "apiDeliveryPreviewAddressInput": {
+        "type": "object",
+        "description": "Dirección para cotizar y calcular la ruta. Las coordenadas son opcionales; si se envían, deben incluir latitud y longitud válidas.",
+        "required": [
+          "streetAddress",
+          "countryCode"
+        ],
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y numeración ingresada por el customer o sistema externo."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Código de país ISO 3166-1 alpha-2.",
+            "example": "CL"
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina u otra información secundaria."
+          },
+          "location": {
+            "$ref": "#/components/schemas/apiDeliveryCoordinates"
+          },
+          "acceptsNoLine2": {
+            "type": "boolean",
+            "description": "Indica si el customer confirmó que no tiene línea 2."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comentario o instrucciones de entrega."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Localidad o comuna."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región o estado."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Código postal."
+          }
+        },
+        "additionalProperties": false
       },
       "apiDeliveryWithoutOrder": {
         "type": "object",
@@ -35007,7 +35518,7 @@
       },
       "apiDeliveryWithoutOrderQuote": {
         "type": "object",
-        "description": "Cotización de una entrega sin pedido.",
+        "description": "Cotización estimada de una entrega sin pedido. No reserva un precio ni genera un identificador de cotización; el precio se calcula nuevamente al crear el despacho.",
         "properties": {
           "price": {
             "type": "number",
@@ -36629,6 +37140,164 @@
           "stock": {
             "type": "number",
             "description": "Stock disponible configurado para el producto."
+          }
+        }
+      },
+      "apiReview": {
+        "type": "object",
+        "description": "Valoración de un pedido ecommerce, la misma que se muestra en la pestaña Valoraciones del panel. Los campos sin respuesta del cliente no se incluyen.",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la valoración."
+          },
+          "websiteId": {
+            "type": "string",
+            "description": "ID de la marca."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local del pedido."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "ID del pedido. Sirve para consultar GET /ecommerce/orders/{orderId}."
+          },
+          "orderCode": {
+            "type": "string",
+            "description": "Código del pedido que se muestra en el panel.",
+            "example": "#1234-05"
+          },
+          "orderDate": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de entrega del pedido."
+          },
+          "rating": {
+            "type": "number",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "description": "Nota de la comida (o de los productos, en tiendas), de 1 a 5."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comentario sobre la comida."
+          },
+          "ratingReason": {
+            "$ref": "#/components/schemas/apiReviewRatingReason"
+          },
+          "deliveryRating": {
+            "type": "number",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "description": "Nota del delivery, de 1 a 5."
+          },
+          "deliveryComment": {
+            "type": "string",
+            "description": "Comentario sobre el delivery."
+          },
+          "ratingDeliveryReason": {
+            "$ref": "#/components/schemas/apiReviewRatingReason"
+          },
+          "npsRating": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10,
+            "description": "Probabilidad de recomendar la marca (NPS), de 0 a 10."
+          },
+          "hasManagedDelivery": {
+            "type": "boolean",
+            "description": "Si el despacho lo hizo Justo."
+          },
+          "customReviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/apiCustomReview"
+            },
+            "description": "Respuestas a las preguntas personalizadas de la marca."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que el cliente empezó la valoración."
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Última modificación de la valoración."
+          },
+          "completedAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha en que el cliente terminó la valoración. Si no viene, el cliente todavía puede modificarla (hasta 2 horas desde la última respuesta)."
+          }
+        }
+      },
+      "apiReviewRatingReason": {
+        "type": "object",
+        "description": "Motivo que eligió el cliente para explicar la nota.",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Identificador del motivo.",
+            "example": "disliked"
+          },
+          "label": {
+            "type": "string",
+            "description": "Texto que vio el cliente.",
+            "example": "No me gustó."
+          },
+          "resumeLabel": {
+            "type": "string",
+            "description": "Texto corto del motivo, el mismo que muestra el panel.",
+            "example": "No gustó el pedido"
+          }
+        }
+      },
+      "apiCustomReview": {
+        "type": "object",
+        "description": "Respuesta a una pregunta personalizada de valoración configurada por la marca.",
+        "properties": {
+          "reviewQuestionId": {
+            "type": "string",
+            "description": "ID de la pregunta."
+          },
+          "question": {
+            "type": "string",
+            "description": "Texto de la pregunta."
+          },
+          "rating": {
+            "type": "number",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "description": "Nota de 1 a 5."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Motivo elegido, si la pregunta tiene motivos."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comentario del cliente."
           }
         }
       },
