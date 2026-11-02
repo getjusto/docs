@@ -1,0 +1,19 @@
+---
+openapi: get /ecommerce/reviews
+---
+
+Lista las valoraciones de los pedidos ecommerce de la marca autorizada: la nota de la comida, la nota del delivery, el NPS, los motivos, los comentarios y las respuestas a las preguntas personalizadas. Es la misma información que muestra la pestaña **Valoraciones** del panel de Justo.
+
+Requiere el permiso `admin`. La data queda siempre limitada a la marca y a los locales de la autorización, sin enviar `websiteId` en la request.
+
+## Paginación
+
+Las valoraciones vienen ordenadas de la más reciente a la más antigua, con un orden estable entre páginas. Usa `page` y `limit` (20 por defecto, máximo 100) y avanza mientras `hasNextPage` sea `true`.
+
+## Sincronizar valoraciones nuevas
+
+Para traer valoraciones periódicamente, consulta con `fromDate` igual a la fecha de tu última sincronización y recorre todas las páginas.
+
+El cliente puede modificar su valoración hasta 2 horas después de su última respuesta. Si la valoración viene sin `completedAt`, el cliente no la marcó como terminada y puede seguir cambiando. Para tener la versión final, vuelve a consultar ese período pasadas 2 horas. Hay valoraciones que nunca se marcan como terminadas: si filtras solo las que traen `completedAt`, las pierdes. Usa `_id` para actualizar valoraciones que ya guardaste en vez de duplicarlas.
+
+Cada valoración trae el `orderId`, con el que puedes obtener el detalle del pedido en [Obtener pedido](/docs/ecommerce/endpoints/orders/get-order).
