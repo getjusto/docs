@@ -1,0 +1,8 @@
+---
+title: "Crear transferencia entre bodegas"
+openapi: post /tabs/{storeId}/stock-room-transfers
+---
+
+Este endpoint crea los movimientos de salida y entrada para los ingredientes indicados. Si recibes `stockRoomTransferPending`, consulta la transferencia por ID y contacta a soporte antes de continuar con procesos dependientes.
+
+No reintentes automáticamente el POST: cada solicitud puede crear una transferencia nueva.

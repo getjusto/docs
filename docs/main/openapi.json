@@ -3296,6 +3296,294 @@
         }
       }
     },
+    "/tabs/{storeId}/stock-room-transfers": {
+      "get": {
+        "summary": "Transferencias entre bodegas",
+        "description": "Lista las transferencias del local. Una transferencia pending no confirma ambos movimientos. Si una creación queda pendiente, no repitas el POST; contacta a soporte con el ID de la transferencia antes de continuar con procesos dependientes.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 1,
+              "description": "Número de página."
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "description": "Número de items por página. Max 100. Por defecto: 10."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "date"
+              ],
+              "example": "date",
+              "description": "Campo por el cual se ordenará la lista. Por defecto: \"date\"."
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortType",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "desc",
+              "description": "Tipo de ordenamiento."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/tabsStockRoomTransfer"
+                          },
+                          "description": "Items de la lista."
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página siguiente."
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "description": "Indica si hay una página anterior."
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "description": "Total de páginas."
+                        },
+                        "totalCount": {
+                          "type": "number",
+                          "description": "Total de items."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear transferencia entre bodegas",
+        "description": "Crea los movimientos de salida y entrada. Si recibes un error stockRoomTransferPending, no repitas el POST porque cada solicitud puede crear una transferencia nueva. Consulta la transferencia por ID y contacta a soporte antes de continuar con procesos dependientes.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tabsCreateStockRoomTransferInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/tabsStockRoomTransfer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "La operación quedó pendiente. No repitas automáticamente el POST."
+          }
+        }
+      }
+    },
+    "/tabs/{storeId}/stock-room-transfers/{stockRoomTransferId}": {
+      "get": {
+        "summary": "Detalle de transferencia entre bodegas",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "stockRoomTransferId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI spec",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/tabsStockRoomTransfer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "The request has an error"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tabs/{storeId}/menu-costs": {
       "get": {
         "summary": "Costos de menu",
@@ -24499,6 +24787,131 @@
             "description": "Lista de ingredientes incluidos en la merma."
           }
         }
+      },
+      "tabsStockRoomTransfer": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la transferencia."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local."
+          },
+          "code": {
+            "type": "string",
+            "description": "Código de la transferencia."
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación."
+          },
+          "comments": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Comentario de la transferencia."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "completed"
+            ],
+            "description": "Estado de la transferencia. Solo completed confirma ambos movimientos."
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredientId": {
+                  "type": "string"
+                },
+                "ingredientName": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "unitOfMeasurement": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "fromStockRoomId": {
+                  "type": "string"
+                },
+                "toStockRoomId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ingredientId",
+                "quantity",
+                "fromStockRoomId",
+                "toStockRoomId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "storeId",
+          "code",
+          "date",
+          "status",
+          "ingredients"
+        ]
+      },
+      "tabsCreateStockRoomTransferInput": {
+        "type": "object",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "ingredients": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredientId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "fromStockRoomId": {
+                  "type": "string"
+                },
+                "toStockRoomId": {
+                  "type": "string"
+                },
+                "conversionName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ingredientId",
+                "quantity",
+                "fromStockRoomId",
+                "toStockRoomId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ingredients"
+        ]
       },
       "tabsCreateTabInput": {
         "type": "object",
