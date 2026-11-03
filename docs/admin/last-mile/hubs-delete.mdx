@@ -1,0 +1,8 @@
+---
+title: "Eliminar un hub"
+openapi: delete /admin/last-mile/hubs/{hubId}
+---
+
+Elimina un hub de tu cuenta. Después de eliminarlo ya no se puede cotizar desde él, pero su historial de entregas se conserva.
+
+No se puede eliminar un hub mientras tenga entregas en curso: en ese caso responde `hubHasOpenDeliveries`. Espera a que terminen o cancélalas con [Cancelar una entrega](/docs/admin/delivery/cancel).

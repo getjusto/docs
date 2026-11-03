@@ -501,6 +501,37 @@
 			]
 		},
 		{
+			"group": "Última milla",
+			"version": "v3",
+			"pages": [
+				"docs/admin/last-mile/introduction",
+				{
+					"group": "Envíos",
+					"pages": [
+						"docs/admin/last-mile/quote",
+						"docs/admin/last-mile/get-quote",
+						"docs/admin/last-mile/create-delivery"
+					]
+				},
+				{
+					"group": "Hubs",
+					"pages": [
+						"docs/admin/last-mile/hubs-list",
+						"docs/admin/last-mile/hubs-create",
+						"docs/admin/last-mile/hubs-get",
+						"docs/admin/last-mile/hubs-update",
+						"docs/admin/last-mile/hubs-delete"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/admin/last-mile/webhooks/delivery-updated"
+					]
+				}
+			]
+		},
+		{
 			"group": "Empezando",
 			"version": "v3",
 			"pages": [

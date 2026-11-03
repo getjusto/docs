@@ -1,0 +1,8 @@
+---
+title: "Obtener una cotización"
+openapi: get /admin/last-mile/quotes/{quoteId}
+---
+
+Devuelve una cotización guardada con su estado: `open` (se puede aceptar), `accepting` (se está creando la entrega), `accepted` (ya tiene entrega) o `expired` (venció sin aceptarse). Si ya se aceptó, incluye el `deliveryId` de la entrega creada.
+
+Úsalo para resolver un reintento incierto: si la creación de la entrega no respondió, consulta la cotización y, si está `accepted`, sigue la entrega con su `deliveryId` en lugar de crearla de nuevo. Las cotizaciones se guardan 30 días; después responde `quoteNotFound`.

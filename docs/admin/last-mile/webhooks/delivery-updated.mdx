@@ -1,0 +1,33 @@
+---
+openapi: post /deliveries.delivery.updated
+---
+
+Este webhook se envía cuando una entrega sin pedido cambia de estado (asignada, en retiro, en camino, entregada o cancelada) o cuando cambia la información del repartidor. El objeto `data.delivery` tiene el mismo formato que [Obtener una entrega](/docs/admin/delivery/get).
+
+Las entregas creadas desde una cotización de [última milla](/docs/admin/last-mile/introduction) traen `lastMileQuoteId`, el `id` de la cotización que aceptaste. Úsalo junto con `externalId` para cruzar el evento con el envío en tu sistema. `storeId` es el `hubId` desde donde sale el paquete.
+
+```json
+{
+  "type": "deliveries.delivery.updated",
+  "websiteId": "website-id",
+  "storeId": "Xb7kQ2mN9pL4tR8sW",
+  "date": "2026-11-03T13:16:00.000Z",
+  "eventId": "event-id",
+  "data": {
+    "delivery": {
+      "_id": "delivery-id",
+      "status": "active",
+      "externalId": "FL-000123",
+      "lastMileQuoteId": "lmq-6f3a91c2d4e8b7a1",
+      "trackingURL": "https://...",
+      "driverInformation": {
+        "type": "moto",
+        "name": "Peter",
+        "phone": "+56999999999"
+      }
+    }
+  }
+}
+```
+
+Para conocer la última ubicación del repartidor, consulta la entrega con [Obtener una entrega](/docs/admin/delivery/get). Para validar que el webhook viene de Justo, revisa la [autenticación de webhooks](/docs/main/authentication).
