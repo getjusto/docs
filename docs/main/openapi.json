@@ -10844,7 +10844,7 @@
     "/admin/last-mile/deliveries": {
       "post": {
         "summary": "Crear un envío desde una cotización",
-        "description": "Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Se cobra a tu cuenta (si tu cuenta usa saldo prepago, debe alcanzar). Puedes reintentar sin riesgo: la misma cotización siempre devuelve la misma entrega. Responde 409 si la cotización venció. Para seguir la entrega usa GET /deliveries/{deliveryId}, el webhook `deliveries.delivery.updated` y POST /deliveries/{deliveryId}/cancel para cancelarla.",
+        "description": "Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Se cobra a tu cuenta (si tu cuenta usa saldo prepago, debe alcanzar). Puedes reintentar sin riesgo: la misma cotización siempre devuelve la misma entrega. Responde 409 si la cotización venció. Si recibes un error 500 o un timeout, reintenta con la misma cotización: si la entrega alcanzó a crearse, la recibes (en el peor caso, tras 5 minutos). Un externalId ya usado en otra entrega responde `externalIdAlreadyUsed`. Para seguir la entrega usa GET /deliveries/{deliveryId}, el webhook `deliveries.delivery.updated` y POST /deliveries/{deliveryId}/cancel para cancelarla.",
         "requestBody": {
           "required": true,
           "content": {

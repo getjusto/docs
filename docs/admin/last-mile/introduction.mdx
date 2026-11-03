@@ -32,7 +32,7 @@ Cada cotización trae un `pickupAt`: la hora garantizada a la que la flota de Ju
 - el `pickupAt` que envías al cotizar, que indica desde cuándo el paquete está listo; o
 - el momento en que aceptas la cotización, si no envías `pickupAt`.
 
-El largo de la ventana se configura para tu cuenta (por ejemplo, de 0 a 90 minutos). El retiro nunca queda antes de 15 minutos desde el momento de cotizar, que es lo mínimo que necesita un repartidor para llegar al hub.
+El largo de la ventana se configura para tu cuenta (por ejemplo, de 0 a 90 minutos). El retiro nunca queda antes de 20 minutos desde el momento de cotizar o de aceptar, que es lo mínimo que necesita un repartidor para llegar al hub.
 
 <Info>
   Si cotizas sin `pickupAt` y tardas más de 5 minutos en aceptar, la hora de retiro se corre en bloques de 5 minutos según lo que tardaste. La hora definitiva viene en `quote.pickupAt` de la respuesta al crear la entrega.
@@ -147,7 +147,7 @@ curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/deliveries \
 
 ## Reintentos e idempotencia
 
-Crear la entrega es idempotente por cotización: si la respuesta no te llegó (timeout, error de red), reintenta con el mismo `quoteId` y recibirás la misma entrega, sin duplicarla. Si dos solicitudes con el mismo `quoteId` llegan a la vez, una crea la entrega y la otra responde `409` con `quoteBeingAccepted`; reintenta en unos segundos o consulta la cotización con [Obtener una cotización](/docs/admin/last-mile/get-quote).
+Crear la entrega es idempotente por cotización: si la respuesta no te llegó (timeout, error de red), reintenta con el mismo `quoteId` y recibirás la misma entrega, sin duplicarla. Si dos solicitudes con el mismo `quoteId` llegan a la vez, una crea la entrega y la otra responde `409` con `quoteBeingAccepted`; reintenta en unos segundos o consulta la cotización con [Obtener una cotización](/docs/admin/last-mile/get-quote). Si una creación quedó sin respuesta (timeout o error `500`), la cotización puede quedar en proceso hasta 5 minutos: después de eso, reintentar con el mismo `quoteId` devuelve la entrega si alcanzó a crearse, o la crea si no.
 
 Si la cotización venció, la creación responde `409` con `quoteExpired`. Pide una cotización nueva: el precio o la hora de retiro pueden haber cambiado.
 
@@ -179,7 +179,8 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | `noTariff` | No hay una tarifa de despachos configurada para ese hub. | Contacta a Justo. |
 | `quoteNotFound` | La cotización no existe o no es de tu cuenta. | Revisa el `quoteId`. |
 | `quoteExpired` | La cotización venció antes de aceptarla (`409`). | Pide una cotización nueva. |
-| `quoteBeingAccepted` | Otra solicitud está creando la entrega con la misma cotización (`409`). | Reintenta en unos segundos. |
+| `quoteBeingAccepted` | Otra solicitud está creando la entrega con la misma cotización (`409`). | Reintenta en unos segundos (hasta 5 minutos si la anterior quedó sin respuesta). |
+| `externalIdAlreadyUsed` | El `externalId` ya se usó en una entrega creada desde otra cotización. | Usa un `externalId` distinto por envío. |
 | `hubAlreadyExists` | Ya tienes un hub con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el hub existente. |
 | `hubHasOpenDeliveries` | Intentaste eliminar un hub con entregas en curso. | Espera a que terminen o cancélalas. |
 | `noPermissions` | La autorización no es de una marca, o está limitada a algunos locales e intentaste crear un hub. | Usa una autorización de toda la cuenta. |
