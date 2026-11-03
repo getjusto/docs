@@ -300,10 +300,15 @@
                   },
                   "data": {
                     "type": "object",
-                    "description": "Se envía cuando una entrega sin pedido cambia de estado (asignada, en retiro, en camino, entregada o cancelada) o cuando cambia la información del repartidor. Las entregas creadas desde una cotización de última milla traen `lastMileQuoteId`.",
+                    "description": "Se envía cuando una entrega sin pedido cambia de estado (asignada, en retiro, en camino, entregada o cancelada) o cuando cambia la información del repartidor. Las entregas creadas desde una cotización de última milla traen `lastMileQuoteId`. Dos eventos de la misma entrega pueden llegar desordenados (por ejemplo, `pending` y `canceled` al cancelar): quédate con el de `occurredAt` más reciente.",
                     "properties": {
                       "delivery": {
                         "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+                      },
+                      "occurredAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Momento en que Justo registró este estado de la entrega. Úsalo para ordenar los eventos de una misma entrega y descartar los que lleguen atrasados."
                       }
                     }
                   },

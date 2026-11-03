@@ -25,9 +25,12 @@ Las entregas creadas desde una cotización de [última milla](/docs/admin/last-m
         "name": "Peter",
         "phone": "+56999999999"
       }
-    }
+    },
+    "occurredAt": "2026-11-03T13:15:58.412Z"
   }
 }
 ```
+
+Los eventos de una misma entrega pueden llegar desordenados: por ejemplo, al cancelar puede llegar primero `canceled` y después un `pending` anterior. Guarda el `occurredAt` del último evento que procesaste para cada entrega y descarta los que traigan uno más antiguo. No uses `date` para esto: es el momento en que se envió el webhook, no el del cambio de estado.
 
 Para conocer la última ubicación del repartidor, consulta la entrega con [Obtener una entrega](/docs/admin/delivery/get). Para validar que el webhook viene de Justo, revisa la [autenticación de webhooks](/docs/main/authentication).
