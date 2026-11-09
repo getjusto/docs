@@ -1,0 +1,115 @@
+---
+title: "Despachos de prueba"
+description: "Crea entregas reales que atiende un repartidor simulado, para probar tu integración sin mover a un repartidor de verdad"
+---
+
+## Para qué sirve
+
+Un despacho de prueba es una entrega real dentro de Justo que, en vez de ofrecerse a repartidores de
+verdad, la atiende un repartidor simulado: acepta, se mueve hasta el local reportando su GPS,
+retira, viaja hasta el cliente y entrega. Recorre los mismos estados que una entrega real y dispara
+los mismos webhooks, así que puedes probar tu integración de punta a punta, incluidos los casos de
+falla.
+
+<Note>
+  Un despacho de prueba nunca se cobra, no exige saldo prepago, nunca se ofrece a un repartidor
+  real y nunca se terceriza a un operador logístico.
+</Note>
+
+## Quién puede usarlo
+
+Los despachos de prueba están disponibles **solo para marcas que todavía no están activas** en
+Justo. Si tu marca ya opera, pide a tu contacto en Justo un **website de pruebas**: una marca
+inactiva con su propio local, pensada para esto. Una marca activa que envía `simulation` recibe un
+error explícito.
+
+El simulador además se habilita por zona: si la zona del local no lo tiene encendido, la creación
+falla con un error en vez de dejarte esperando un repartidor que no va a llegar.
+
+## Cómo se pide
+
+Es la misma llamada de [Crear entrega sin pedido](/docs/admin/delivery/create), con el campo
+`simulation`:
+
+```bash cURL
+curl --request POST \
+  --url https://api.service.getjusto.com/v3/admin/deliveries \
+  --header 'Authorization: Bearer <token-de-tu-website-de-pruebas>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "storeId": "<local-de-pruebas>",
+    "fromName": "Local de pruebas",
+    "fromAddress": {"streetAddress": "Avenida Borde Laguna 1800, Curauma", "countryCode": "CL"},
+    "toName": "Javiera Pérez",
+    "toPhone": "+56912345678",
+    "toAddress": {"streetAddress": "Avenida Las Cumbres 2400, Curauma", "countryCode": "CL"},
+    "externalId": "PRUEBA-1",
+    "simulation": {
+      "mode": "custom",
+      "scenario": "driverCancels",
+      "timings": {"acceptAfterSeconds": 10, "pickupAfterSeconds": 20}
+    }
+  }'
+```
+
+La respuesta es la de una entrega real. Si no envías `simulation`, nada cambia: la entrega es real y
+se ofrece a repartidores de verdad.
+
+También puedes crear un despacho de prueba sin integración, desde el panel de Entregas: si tu marca
+todavía no está activa, el formulario muestra el interruptor **Despacho de prueba** y un selector de
+escenario.
+
+## El campo `simulation`
+
+| Campo | Qué hace |
+| --- | --- |
+| `mode` | `auto` (tiempos por defecto) o `custom` (tú defines los tiempos en `timings`). Obligatorio. |
+| `scenario` | Escenario de falla: `none` (por defecto), `driverCancels`, `notDelivered` o `returnToStore`. |
+| `timings` | Solo con `custom`. Segundos de cada paso, de 0 a 600: `acceptAfterSeconds`, `arriveAtPickupAfterSeconds`, `pickupAfterSeconds`, `arriveAtDropoffAfterSeconds` y `deliverAfterSeconds`. Lo que no envíes usa los tiempos de `auto`. |
+| `group` | Agrupa varios despachos de prueba en un mismo repartidor: `{"key": "...", "type": "multi" \| "stack", "size": 2}`. |
+
+## Qué pasa, paso a paso
+
+1. **Asignación.** Un repartidor simulado toma la entrega (en `custom`, después de
+   `acceptAfterSeconds`). El nombre del repartidor viene con el prefijo `[SIM]`; su teléfono es
+   `No disponible`.
+2. **Camino al local.** Aparece a unos 800 metros del local y avanza en línea recta, reportando su
+   GPS cada 30 segundos.
+3. **Retiro.** Espera en el local (`pickupAfterSeconds`, 30 s por defecto) y retira.
+4. **Camino al cliente.** Avanza en línea recta hasta el cliente, reportando su GPS.
+5. **Entrega.** Espera (`deliverAfterSeconds`, 30 s por defecto) y entrega.
+
+En `auto`, cada tramo dura lo que tomaría a la velocidad de la zona (30 km/h por defecto), con un
+mínimo de 1 minuto y un máximo de 3. En `custom`, `arriveAtPickupAfterSeconds` y
+`arriveAtDropoffAfterSeconds` fijan la duración de cada tramo.
+
+El simulador avanza cada 30 segundos: cada paso ocurre en la primera vuelta después de que se
+cumple su tiempo, así que puede llegar hasta 30 segundos más tarde de lo que pediste.
+
+## Escenarios de falla
+
+- `driverCancels`: apenas acepta, el repartidor libera la entrega, que vuelve a buscar repartidor.
+  Unos 30 segundos después la toma **otro** repartidor simulado, que la completa.
+- `notDelivered`: el repartidor llega al cliente y no logra entregar. La entrega se cierra como no
+  entregada con el motivo "No se pudo contactar al cliente".
+- `returnToStore`: el repartidor no logra entregar y el pedido vuelve al local.
+
+También puedes [cancelar la entrega](/docs/admin/delivery/cancel) en cualquier momento: el
+repartidor simulado abandona en su siguiente paso.
+
+## Varios despachos en un repartidor
+
+- `multi`: el simulador espera a que existan `size` despachos de prueba con la misma `key` (hasta un
+  minuto por defecto; después sale con los que haya) y se los da a un solo repartidor.
+- `stack`: el primer despacho con la `key` sale normalmente; los siguientes se le suman a ese mismo
+  repartidor mientras siga en ruta.
+
+La `key` la eliges tú y solo agrupa despachos de tu propio website.
+
+## Límites
+
+- Hay un tope de despachos de prueba simultáneos por zona y por marca (por defecto 5 y 2). Si lo
+  pasas, el despacho nuevo espera buscando repartidor hasta que termine alguno; no se rechaza.
+- Un despacho de prueba que no termina en una hora se cierra solo. Si la simulación falla, se
+  cierra como no entregado: tu integración siempre recibe un estado final.
+- Los webhooks de los despachos de prueba llegan a las mismas URLs configuradas para tu website.
