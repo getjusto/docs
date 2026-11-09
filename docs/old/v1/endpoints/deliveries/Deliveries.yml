@@ -108,6 +108,55 @@ paths:
                   type: boolean
                   description: Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo. Esto significa que se podrá generar un y sólo un delivery con el mismo externalId. Si este flag se encuentra activo y se intenta generar un nuevo delivery con un externalId que ya había sido utilizado previamente, se retornará la información del delivery anteriormente generado y no creará uno nuevo. Opcional (defecto false).
                   default: false
+                simulation:
+                  type: object
+                  description: 'Despacho de prueba atendido por una flota de repartidores simulada (ver Despachos de prueba). Solo disponible para marcas que todavía no están activas; una marca activa debe usar un website de pruebas. Si no se envía, nada cambia: una llave de prueba sigue recibiendo la respuesta de ejemplo de siempre.'
+                  properties:
+                    mode:
+                      type: string
+                      description: auto usa los tiempos por defecto; custom usa los de timings. En ambos el repartidor se mueve en línea recta reportando su GPS cada 30 segundos.
+                      enum:
+                        - auto
+                        - custom
+                    scenario:
+                      type: string
+                      description: Escenario de falla.
+                      enum:
+                        - none
+                        - driverCancels
+                        - notDelivered
+                        - returnToStore
+                    timings:
+                      type: object
+                      description: Solo con mode custom. Segundos de cada paso, de 0 a 600.
+                      properties:
+                        acceptAfterSeconds:
+                          type: number
+                        arriveAtPickupAfterSeconds:
+                          type: number
+                        pickupAfterSeconds:
+                          type: number
+                        arriveAtDropoffAfterSeconds:
+                          type: number
+                        deliverAfterSeconds:
+                          type: number
+                    group:
+                      type: object
+                      description: Agrupa despachos de prueba en un mismo repartidor (multi o stack).
+                      properties:
+                        key:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                            - multi
+                            - stack
+                        size:
+                          type: integer
+                          minimum: 2
+                          maximum: 3
+                  required:
+                    - mode
               required: 
                 - storeId
                 - contents
@@ -291,6 +340,55 @@ paths:
                   type: boolean
                   description:  Cuando este flag se encuentra activo se utilizará el parámetro externalId como un identificador de idempotencia en los sistemas de Justo. Esto significa que se podrá generar un y sólo un delivery con el mismo externalId. Si este flag se encuentra activo y se intenta generar un nuevo delivery con un externalId que ya había sido utilizado previamente, se retornará la información del delivery anteriormente generado y no creará uno nuevo. Opcional (defecto false)
                   default: false
+                simulation:
+                  type: object
+                  description: 'Despacho de prueba atendido por una flota de repartidores simulada (ver Despachos de prueba). Solo disponible para marcas que todavía no están activas; una marca activa debe usar un website de pruebas. Si no se envía, nada cambia: una llave de prueba sigue recibiendo la respuesta de ejemplo de siempre.'
+                  properties:
+                    mode:
+                      type: string
+                      description: auto usa los tiempos por defecto; custom usa los de timings. En ambos el repartidor se mueve en línea recta reportando su GPS cada 30 segundos.
+                      enum:
+                        - auto
+                        - custom
+                    scenario:
+                      type: string
+                      description: Escenario de falla.
+                      enum:
+                        - none
+                        - driverCancels
+                        - notDelivered
+                        - returnToStore
+                    timings:
+                      type: object
+                      description: Solo con mode custom. Segundos de cada paso, de 0 a 600.
+                      properties:
+                        acceptAfterSeconds:
+                          type: number
+                        arriveAtPickupAfterSeconds:
+                          type: number
+                        pickupAfterSeconds:
+                          type: number
+                        arriveAtDropoffAfterSeconds:
+                          type: number
+                        deliverAfterSeconds:
+                          type: number
+                    group:
+                      type: object
+                      description: Agrupa despachos de prueba en un mismo repartidor (multi o stack).
+                      properties:
+                        key:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                            - multi
+                            - stack
+                        size:
+                          type: integer
+                          minimum: 2
+                          maximum: 3
+                  required:
+                    - mode
               required:
                 - storeId
                 - originAddress 

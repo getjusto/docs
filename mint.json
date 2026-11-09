@@ -157,7 +157,8 @@
 						"docs/old/v2/endpoints/deliveries/createDelivery",
 						"docs/old/v2/endpoints/deliveries/get",
 						"docs/old/v2/endpoints/deliveries/cancelDelivery",
-						"docs/old/v2/endpoints/deliveries/createExternalDelivery"
+						"docs/old/v2/endpoints/deliveries/createExternalDelivery",
+						"docs/old/v2/endpoints/deliveries/testDispatches"
 					]
 				},
 				{
