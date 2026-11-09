@@ -10251,6 +10251,90 @@
                   "externalId": {
                     "type": "string",
                     "description": "Identificador externo opcional de la solicitud. Reutilizar el mismo valor, local y marca en los reintentos para recuperar la entrega existente. Sin este identificador no hay garantía de deduplicación entre solicitudes; no reintentar una creación de resultado incierto sin consultar primero el listado."
+                  },
+                  "simulation": {
+                    "type": "object",
+                    "required": [
+                      "mode"
+                    ],
+                    "description": "Despacho de prueba atendido por la flota simulada de Justo: no se ofrece a repartidores reales ni se cobra, y dispara los mismos webhooks que un despacho real. Solo está disponible para marcas que todavía no están activas; si tu marca ya opera, pide a Justo un website de pruebas. El simulador se habilita por zona.",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "auto",
+                          "custom"
+                        ],
+                        "description": "auto: un repartidor simulado acepta, viaja en línea recta reportando su GPS cada 30 segundos, retira y entrega por sí solo. custom: igual, con la duración de cada paso que envíes en timings."
+                      },
+                      "scenario": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "driverCancels",
+                          "notDelivered",
+                          "returnToStore"
+                        ],
+                        "description": "Escenario de falla. driverCancels: el repartidor libera el despacho antes de retirar y lo toma otro. notDelivered: no se pudo entregar y se cierra como no entregado. returnToStore: no se pudo entregar y el pedido vuelve al local."
+                      },
+                      "timings": {
+                        "type": "object",
+                        "description": "Solo con mode custom. Segundos de cada paso (0 a 600); lo que no envíes usa los tiempos de auto.",
+                        "properties": {
+                          "acceptAfterSeconds": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 600
+                          },
+                          "arriveAtPickupAfterSeconds": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 600
+                          },
+                          "pickupAfterSeconds": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 600
+                          },
+                          "arriveAtDropoffAfterSeconds": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 600
+                          },
+                          "deliverAfterSeconds": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 600
+                          }
+                        }
+                      },
+                      "group": {
+                        "type": "object",
+                        "required": [
+                          "key",
+                          "type"
+                        ],
+                        "description": "Agrupa despachos de prueba en un mismo repartidor simulado. multi: espera a que existan size despachos con la misma key y los toma juntos. stack: los siguientes despachos con la key se suman al repartidor del primero mientras sigue en ruta.",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "maxLength": 64
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "multi",
+                              "stack"
+                            ]
+                          },
+                          "size": {
+                            "type": "integer",
+                            "minimum": 2,
+                            "maximum": 3
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
