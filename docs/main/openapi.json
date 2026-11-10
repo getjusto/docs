@@ -10711,7 +10711,7 @@
     "/admin/last-mile/quotes": {
       "post": {
         "summary": "Cotizar un envío de última milla",
-        "description": "Cotiza un paquete desde uno de tus locales hasta una dirección y guarda la cotización con un `id`. La cotización garantiza el precio y la hora de retiro (`pickupAt`) hasta `expiresAt` (20 minutos por defecto). Justo ubica la dirección (si no envías coordenadas), elige el local candidato más cercano que esté abierto y mide la distancia por calle. `pickupAt` es la hora de retiro que Justo asegura. También puedes retirar en una dirección que no es un local (`pickupAddress`). El precio sale de la tarifa acordada con tu cuenta. Cotizar no reserva nada ni tiene costo: solo las cotizaciones aceptadas cuentan. Errores: `addressNotFound`, `storeNotFound`, `storeClosed` (ningún local está abierto para el retiro; el mensaje dice cuándo abre), `pickupTooFar`, `distanceTooLong` (más de 20 km), `packageTooLarge`, `vehicleNotAvailable`, `noTariff`.",
+        "description": "Cotiza un paquete desde uno de tus locales hasta una dirección y guarda la cotización con un `id`. La cotización garantiza el precio y la hora de retiro (`pickupAt`) hasta `expiresAt` (20 minutos por defecto). Justo ubica la dirección (si no envías coordenadas), elige el local candidato más cercano que esté abierto y mide la distancia por calle. `pickupAt` es la hora de retiro que Justo asegura. El precio sale de la tarifa acordada con tu cuenta. Errores: `addressNotFound`, `storeNotFound`, `storeClosed` (ningún local está abierto para el retiro; el mensaje dice cuándo abre), `distanceTooLong` (más de 20 km), `packageTooLarge`, `vehicleNotAvailable`, `noTariff`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -10777,7 +10777,7 @@
     "/admin/last-mile/quotes/{quoteId}": {
       "get": {
         "summary": "Obtener una cotización de última milla",
-        "description": "Devuelve una cotización con su estado (`open`, `accepted`, `expired`) y, si ya se aceptó, el `deliveryId` de la entrega creada. Las cotizaciones se guardan 30 días.",
+        "description": "Devuelve una cotización con su estado (`open`, `accepted`, `expired`) y, si ya se aceptó, el `deliveryId` de la entrega creada.",
         "parameters": [
           {
             "in": "path",
@@ -10844,7 +10844,7 @@
     "/admin/last-mile/deliveries": {
       "post": {
         "summary": "Crear un envío desde una cotización",
-        "description": "Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Se cobra a tu cuenta (si tu cuenta usa saldo prepago, debe alcanzar). Puedes reintentar sin riesgo: la misma cotización siempre devuelve la misma entrega. Responde 409 si la cotización venció. Si aceptas tarde, la hora de retiro puede correrse; si el local ya no está abierto para retirar, responde `storeClosed`. Si recibes un error 500 o un timeout, reintenta con la misma cotización: si la entrega alcanzó a crearse, la recibes (en el peor caso, tras 5 minutos). Un externalId ya usado en otra entrega responde `externalIdAlreadyUsed`. Para seguir la entrega usa GET /deliveries/{deliveryId}, el webhook `deliveries.delivery.updated` y POST /deliveries/{deliveryId}/cancel para cancelarla.",
+        "description": "Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Se cobra a tu cuenta (si tu cuenta usa saldo prepago, debe alcanzar). Puedes reintentar sin riesgo: la misma cotización siempre devuelve la misma entrega. Responde 409 si la cotización venció. Si aceptas tarde, la hora de retiro puede correrse; si el local ya no está abierto para retirar, responde `storeClosed`. La entrega trae `requiresDeliveryVerificationCode`: el código que tu cliente debe decirle al repartidor para cerrar la entrega. Entrégaselo a tu cliente (por ejemplo, en el seguimiento o en un mensaje). Si recibes un error 500 o un timeout, reintenta con la misma cotización: si la entrega alcanzó a crearse, la recibes (en el peor caso, tras 5 minutos). Un externalId ya usado en otra entrega responde `externalIdAlreadyUsed`. Para seguir la entrega usa GET /deliveries/{deliveryId}, el webhook `deliveries.delivery.updated` y POST /deliveries/{deliveryId}/cancel para cancelarla.",
         "requestBody": {
           "required": true,
           "content": {
@@ -34561,7 +34561,7 @@
       },
       "apiLastMilePackage": {
         "type": "object",
-        "description": "Paquete a despachar. Según su peso y sus medidas, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete necesita un auto, el local debe tener `acceptsCar: true`.",
+        "description": "Paquete a despachar. Según su peso y sus medidas, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete necesita un auto, el local debe tener `acceptsCar: true` y el precio incluye un recargo fijo por auto.",
         "required": [
           "weightKg",
           "lengthCm",
@@ -34629,10 +34629,6 @@
             },
             "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto para el retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
           },
-          "pickupAddress": {
-            "$ref": "#/components/schemas/apiLastMileAddressInput",
-            "description": "Retira en una dirección que no es un local (un proveedor, un domicilio). El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). No aplica el horario del local."
-          },
           "toAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
           },
@@ -34699,7 +34695,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Hora de retiro que Justo asegura, en el local (o en `pickupAddress`) y dentro de su horario. Si cotizaste sin `pickupAt` y aceptas varios minutos después, se corre en la misma medida: la hora definitiva viene al crear la entrega."
+            "description": "Hora de retiro que Justo asegura, en el local y dentro de su horario. Si cotizaste sin `pickupAt` y aceptas varios minutos después, se corre en la misma medida: la hora definitiva viene al crear la entrega."
           },
           "estimatedDeliveryAt": {
             "type": "string",
@@ -34709,7 +34705,7 @@
           },
           "store": {
             "type": "object",
-            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos. Con `pickupAddress`, el local que cobra y factura la entrega.",
+            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos.",
             "properties": {
               "storeId": {
                 "type": "string",
@@ -34744,7 +34740,7 @@
           },
           "price": {
             "type": "number",
-            "description": "Precio sin impuestos."
+            "description": "Precio sin impuestos. Si el paquete necesita auto, incluye el recargo fijo por auto."
           },
           "priceWithTax": {
             "type": "number",
@@ -36865,6 +36861,10 @@
           "trackingURL": {
             "type": "string",
             "description": "URL de tracking público de la entrega."
+          },
+          "requiresDeliveryVerificationCode": {
+            "type": "string",
+            "description": "Código de entrega que el destinatario debe decirle al repartidor para que pueda cerrar la entrega. Las entregas de última milla siempre lo traen: entrégaselo a tu cliente."
           },
           "lastMileQuoteId": {
             "type": "string",

@@ -21,17 +21,11 @@ Puedes identificar un local con el ID que le asigna Justo (`storeId`) o con tu p
 
 Una cotización calcula el precio y la hora de retiro de un paquete desde uno de tus locales hasta una dirección, y queda guardada con un `id`. Mientras no venza (`expiresAt`, 20 minutos por defecto), Justo **garantiza el precio y la hora de retiro** cotizados: al crear la entrega no se recalcula nada.
 
-Cotizar no tiene costo ni reserva capacidad. Puedes cotizar todas las veces que necesites (por ejemplo, en cada paso del checkout de tu cliente) y solo se cobra la cotización que aceptas al crear la entrega. Las cotizaciones se pueden consultar durante 30 días.
-
 Si envías varios locales candidatos en `storeIds` (por ejemplo, los que tienen stock del producto), Justo cotiza desde el más cercano al destino que esté abierto para el retiro. Sin `storeId` ni `storeIds` considera todos los locales de tu cuenta que piden despachos. La distancia se mide por calle y no puede superar los 20 km.
 
 ### Horario de atención de los locales
 
 Justo solo promete retiros cuando el local está abierto. Un local creado con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store) parte abierto siempre; configura su horario semanal, sus días cerrados y sus horarios especiales con [Actualizar el horario del local](/docs/ecommerce/endpoints/stores/update-store-schedule). Si ningún local candidato está abierto para el retiro, la cotización responde `storeClosed` y el mensaje dice cuándo abre el más cercano: vuelve a cotizar con un `pickupAt` desde esa hora.
-
-### Retirar en una dirección que no es un local
-
-Si el paquete está en una dirección que no es uno de tus locales (un proveedor, un domicilio), envía `pickupAddress` en vez de crear un local. El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). Ese retiro no tiene horario de atención.
 
 ### Hora de retiro
 
@@ -43,7 +37,7 @@ Cada cotización trae un `pickupAt`: la hora de retiro que Justo te asegura. Si 
 
 ### Vehículo
 
-Con el peso y las medidas del paquete, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete no cabe en una moto, el local debe tener `acceptsCar: true` (si no, la cotización responde `vehicleNotAvailable`). Un paquete que no cabe en un auto no se puede despachar por esta API (`packageTooLarge`).
+Con el peso y las medidas del paquete, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete no cabe en una moto, se despacha en auto: el local debe tener `acceptsCar: true` (si no, la cotización responde `vehicleNotAvailable`) y el precio incluye un recargo fijo por auto, que ya viene en la cotización. Un paquete que no cabe en un auto no se puede despachar por esta API (`packageTooLarge`).
 
 ### Paquetes de alto valor
 
@@ -120,7 +114,14 @@ curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/deliveries \
 
     La respuesta trae la cotización aceptada en `quote` (con `status: "accepted"` y el `deliveryId`) y la entrega creada en `delivery`.
   </Step>
+  <Step title="Entrega el código de entrega a tu cliente">
+    La entrega trae `requiresDeliveryVerificationCode`: el código que tu cliente debe decirle al repartidor al recibir el paquete. Sin ese código el repartidor no puede cerrar la entrega. Muéstraselo a tu cliente en el seguimiento o envíaselo en un mensaje.
+  </Step>
 </Steps>
+
+## Código de entrega
+
+Toda entrega de última milla tiene un código de entrega (`requiresDeliveryVerificationCode`). Al llegar al destino, el repartidor se lo pide a quien recibe y solo puede cerrar la entrega con el código correcto. Así el paquete se entrega a la persona que tiene el código. El código viene en la respuesta de [Crear un envío](/docs/admin/last-mile/create-delivery), en [Obtener una entrega](/docs/admin/delivery/get) y en el webhook [`deliveries.delivery.updated`](/docs/admin/last-mile/webhooks/delivery-updated). No lo compartas con el repartidor ni con el local.
 
 ## Reintentos e idempotencia
 
@@ -151,7 +152,6 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | `invalidAddress` | El destino está en otro país que el local, o no se pudo registrar la dirección del local. | Revisa `countryCode` y la dirección. |
 | `storeNotFound` | Ninguno de los locales indicados existe en tu cuenta, tiene dirección y pide despachos. | Revisa los IDs con [Listar locales](/docs/ecommerce/endpoints/stores/list-stores). |
 | `storeClosed` | Ningún local candidato está abierto para el retiro, o aceptaste tarde y el local ya no está abierto a la nueva hora de retiro. El mensaje dice cuándo abre el local. | Cotiza con un `pickupAt` desde esa hora o revisa el horario del local. |
-| `pickupTooFar` | La `pickupAddress` queda a más de 20 km de tus locales. | Crea un local en esa zona con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store). |
 | `distanceTooLong` | La distancia por calle entre el retiro y el destino supera los 20 km. El mensaje dice dónde quedó ubicado el destino. | Revisa la dirección o cotiza desde un local más cercano. |
 | `packageTooLarge` | El paquete supera la capacidad de un auto. | Divide el envío en paquetes más chicos. |
 | `vehicleNotAvailable` | El paquete necesita auto y el local no acepta despachos en auto. | Activa `acceptsCar` en el local o cotiza desde otro local. |

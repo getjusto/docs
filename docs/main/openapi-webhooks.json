@@ -13564,7 +13564,7 @@
       },
       "apiLastMilePackage": {
         "type": "object",
-        "description": "Paquete a despachar. Según su peso y sus medidas, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete necesita un auto, el local debe tener `acceptsCar: true`.",
+        "description": "Paquete a despachar. Según su peso y sus medidas, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete necesita un auto, el local debe tener `acceptsCar: true` y el precio incluye un recargo fijo por auto.",
         "required": [
           "weightKg",
           "lengthCm",
@@ -13632,10 +13632,6 @@
             },
             "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto para el retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
           },
-          "pickupAddress": {
-            "$ref": "#/components/schemas/apiLastMileAddressInput",
-            "description": "Retira en una dirección que no es un local (un proveedor, un domicilio). El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). No aplica el horario del local."
-          },
           "toAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
           },
@@ -13702,7 +13698,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Hora de retiro que Justo asegura, en el local (o en `pickupAddress`) y dentro de su horario. Si cotizaste sin `pickupAt` y aceptas varios minutos después, se corre en la misma medida: la hora definitiva viene al crear la entrega."
+            "description": "Hora de retiro que Justo asegura, en el local y dentro de su horario. Si cotizaste sin `pickupAt` y aceptas varios minutos después, se corre en la misma medida: la hora definitiva viene al crear la entrega."
           },
           "estimatedDeliveryAt": {
             "type": "string",
@@ -13712,7 +13708,7 @@
           },
           "store": {
             "type": "object",
-            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos. Con `pickupAddress`, el local que cobra y factura la entrega.",
+            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos.",
             "properties": {
               "storeId": {
                 "type": "string",
@@ -13747,7 +13743,7 @@
           },
           "price": {
             "type": "number",
-            "description": "Precio sin impuestos."
+            "description": "Precio sin impuestos. Si el paquete necesita auto, incluye el recargo fijo por auto."
           },
           "priceWithTax": {
             "type": "number",
@@ -15868,6 +15864,10 @@
           "trackingURL": {
             "type": "string",
             "description": "URL de tracking público de la entrega."
+          },
+          "requiresDeliveryVerificationCode": {
+            "type": "string",
+            "description": "Código de entrega que el destinatario debe decirle al repartidor para que pueda cerrar la entrega. Las entregas de última milla siempre lo traen: entrégaselo a tu cliente."
           },
           "lastMileQuoteId": {
             "type": "string",
