@@ -7,7 +7,7 @@ Crea un local desde donde la flota de Justo retira los paquetes de [última mill
 
 Envía un `name` y un `externalId` únicos en tu cuenta (si se repiten, responde `storeAlreadyExists`). El `externalId` te permite usar tu propio identificador como `storeId` en el resto de la API.
 
-La dirección acepta los mismos formatos que el destino de una cotización: en una línea, por campos o con coordenadas. Si no envías coordenadas, Justo ubica la dirección. Activa `acceptsCar` si desde el local salen paquetes que no caben en una moto.
+La dirección acepta los mismos formatos que el destino de una cotización: en una línea, por campos o con coordenadas. Si no envías coordenadas, Justo ubica la dirección. Activa `acceptsCar` si desde el local salen paquetes que no caben en una moto: permite que Justo envíe un repartidor en auto. Sin él, esos paquetes no se pueden cotizar (`vehicleNotAvailable`).
 
 La respuesta tiene el mismo formato que [Obtener un local](/docs/ecommerce/endpoints/stores/get-store). Revisa las coordenadas de `address` para confirmar que el local quedó bien ubicado.
 

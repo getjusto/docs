@@ -13564,7 +13564,7 @@
       },
       "apiLastMilePackage": {
         "type": "object",
-        "description": "Paquete a despachar. Con el peso, las medidas y el valor Justo elige el vehículo (moto hasta 12 kg, 50 cm por lado y 45 litros; si no, auto) y el repartidor que puede llevarlo.",
+        "description": "Paquete a despachar. Según su peso y sus medidas, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete necesita un auto, el local debe tener `acceptsCar: true`.",
         "required": [
           "weightKg",
           "lengthCm",
@@ -13630,11 +13630,11 @@
             "items": {
               "type": "string"
             },
-            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto durante la ventana de retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
+            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto para el retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
           },
           "pickupAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput",
-            "description": "Retira en una dirección que no es un local (un proveedor, un domicilio). El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). No aplica el horario del local ni se junta con los retiros del local."
+            "description": "Retira en una dirección que no es un local (un proveedor, un domicilio). El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). No aplica el horario del local."
           },
           "toAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
@@ -13646,7 +13646,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Desde cuándo el paquete está listo para retirarse. Justo lo retira dentro de la ventana configurada para tu cuenta a partir de esa hora (por ejemplo 0 a 90 minutos). Si no lo envías, la ventana corre desde que aceptas la cotización."
+            "description": "Desde cuándo el paquete está listo para retirarse. Si no lo envías, desde ahora."
           },
           "externalId": {
             "type": "string",
@@ -13702,25 +13702,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el local (o en `pickupAddress`). Siempre cae dentro del horario del local. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
-          },
-          "pickupWindow": {
-            "type": "object",
-            "description": "Ventana en la que el planificador podía fijar el retiro.",
-            "properties": {
-              "startsAt": {
-                "type": "string",
-                "example": "2020-01-01T00:00:00.000Z",
-                "format": "date-time",
-                "description": "Inicio de la ventana."
-              },
-              "endsAt": {
-                "type": "string",
-                "example": "2020-01-01T00:00:00.000Z",
-                "format": "date-time",
-                "description": "Fin de la ventana."
-              }
-            }
+            "description": "Hora de retiro que Justo asegura, en el local (o en `pickupAddress`) y dentro de su horario. Si cotizaste sin `pickupAt` y aceptas varios minutos después, se corre en la misma medida: la hora definitiva viene al crear la entrega."
           },
           "estimatedDeliveryAt": {
             "type": "string",
@@ -13757,7 +13739,7 @@
               "moto",
               "car"
             ],
-            "description": "Vehículo que necesita el paquete."
+            "description": "Tipo de vehículo que puede transportar el paquete."
           },
           "distanceMeters": {
             "type": "integer",
@@ -13774,32 +13756,6 @@
           "currency": {
             "type": "string",
             "description": "Moneda (CLP, COP, MXN, PEN…)."
-          },
-          "plan": {
-            "type": "object",
-            "description": "Decisión del planificador.",
-            "properties": {
-              "waveSize": {
-                "type": "integer",
-                "description": "Cuántos paquetes del mismo local salen en ese retiro contando este (las entregas ya aceptadas, no las cotizaciones abiertas)."
-              },
-              "vehicleType": {
-                "type": "string",
-                "enum": [
-                  "moto",
-                  "car"
-                ],
-                "description": "Vehículo de la ruta planificada. Puede ser mayor que el que necesita el paquete (por ejemplo, si no hay motos conectadas); el precio se calcula con el vehículo del paquete."
-              },
-              "routeId": {
-                "type": "string",
-                "description": "Ruta planificada a la que se suma el paquete. En una cotización solo aparece si se suma a una ruta existente; al aceptar siempre queda una."
-              },
-              "sequence": {
-                "type": "integer",
-                "description": "Orden de la entrega dentro de la ruta (1 = primera)."
-              }
-            }
           },
           "externalId": {
             "type": "string",
@@ -13914,7 +13870,7 @@
           },
           "acceptsCar": {
             "type": "boolean",
-            "description": "Habilita despachos en auto para paquetes grandes. Por defecto false."
+            "description": "Permite que Justo envíe un repartidor en auto a este local. Actívalo si despachas paquetes que no caben en una moto: sin él, esos paquetes no se pueden cotizar (`vehicleNotAvailable`). Por defecto false."
           },
           "address": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
