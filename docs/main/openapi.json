@@ -172,7 +172,7 @@
     },
     "/tabs/{storeId}/shifts/{shiftId}": {
       "get": {
-        "summary": "Shift",
+        "summary": "Consultar turno",
         "parameters": [
           {
             "in": "path",
@@ -474,7 +474,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}": {
       "get": {
-        "summary": "Tab",
+        "summary": "Consultar cuenta",
         "parameters": [
           {
             "in": "path",
@@ -1076,7 +1076,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/reopen": {
       "post": {
-        "summary": "Reopen tab",
+        "summary": "Reabrir cuenta",
         "description": "Reabre una cuenta cerrada para corregirla. Una boleta ya emitida no se anula. No aplica a cuentas anuladas.",
         "parameters": [
           {
@@ -2615,7 +2615,7 @@
     },
     "/tabs/{storeId}/cash-registers/{cashRegisterId}/closing-preview": {
       "get": {
-        "summary": "Cash register closing preview",
+        "summary": "Consultar montos esperados para el cierre de caja",
         "description": "Muestra cuánto debería haber por medio de pago si la caja se cierra ahora, para compararlo con lo contado. Solo para cajas abiertas.",
         "parameters": [
           {
@@ -3087,7 +3087,7 @@
     },
     "/tabs/{websiteId}/ingredients": {
       "get": {
-        "summary": "Ingredients",
+        "summary": "Ingredientes del sitio",
         "parameters": [
           {
             "in": "path",
@@ -3586,7 +3586,7 @@
     },
     "/tabs/{storeId}/menu-costs": {
       "get": {
-        "summary": "Costos de menu",
+        "summary": "Costos de menú",
         "parameters": [
           {
             "in": "path",
@@ -3667,7 +3667,7 @@
     },
     "/tabs/{websiteId}/recipes": {
       "get": {
-        "summary": "Recipes",
+        "summary": "Recetas del sitio",
         "parameters": [
           {
             "in": "path",
@@ -3757,7 +3757,7 @@
     },
     "/tabs/{storeId}/accounting-movements/{accountingMovementId}": {
       "get": {
-        "summary": "Accounting Movement",
+        "summary": "Consultar movimiento contable",
         "parameters": [
           {
             "in": "path",
@@ -7333,7 +7333,7 @@
     },
     "/api/me": {
       "get": {
-        "summary": "Token info",
+        "summary": "Información del token",
         "parameters": [],
         "responses": {
           "200": {
@@ -7533,7 +7533,7 @@
     },
     "/adapters/menu-put-mcd-v1/stores/{storeId}": {
       "put": {
-        "summary": "MCD menu adapter v1",
+        "summary": "Adaptador de menú MCD v1",
         "description": "Valida y acepta un menú MCD para un local específico. La carga se procesa de forma async; usa el jobId para consultar el estado.",
         "parameters": [
           {
@@ -7799,7 +7799,7 @@
     },
     "/ecommerce/categories/{categoryId}": {
       "get": {
-        "summary": "Category",
+        "summary": "Consultar categoría",
         "parameters": [
           {
             "in": "path",
@@ -8127,7 +8127,7 @@
     },
     "/ecommerce/products/{productId}": {
       "get": {
-        "summary": "Product",
+        "summary": "Consultar producto",
         "description": "Devuelve el producto de la marca autorizada, incluyendo seoTitle, seoDescription, seoImageURL, richContent sanitizado y richContentPosition. Los campos SEO son overrides guardados, no metadatos calculados. Un valor null indica generación automática. menus trae el precio y la disponibilidad en cada menú. Acepta ID Justo o externo.",
         "parameters": [
           {
@@ -8609,7 +8609,7 @@
         }
       },
       "get": {
-        "summary": "Modifier",
+        "summary": "Consultar modificador",
         "parameters": [
           {
             "in": "path",
@@ -8937,7 +8937,7 @@
         }
       },
       "get": {
-        "summary": "Modifier option",
+        "summary": "Consultar opción de modificador",
         "parameters": [
           {
             "in": "path",
@@ -9136,7 +9136,7 @@
     },
     "/ecommerce/prices/{priceId}": {
       "get": {
-        "summary": "Menu (price)",
+        "summary": "Consultar menú (precio)",
         "description": "Devuelve un menú con las condiciones que deciden cuándo aplica. Los precios de cada producto en este menú están en menus de los productos.",
         "parameters": [
           {
@@ -10909,7 +10909,7 @@
         }
       },
       "head": {
-        "summary": "Menu exists",
+        "summary": "Verificar si existe un menú",
         "parameters": [
           {
             "in": "path",
@@ -10973,7 +10973,7 @@
         }
       },
       "get": {
-        "summary": "Menu",
+        "summary": "Consultar menú",
         "parameters": [
           {
             "in": "path",
@@ -12107,7 +12107,7 @@
     },
     "/ecommerce/orders/{orderId}": {
       "get": {
-        "summary": "Order",
+        "summary": "Consultar pedido",
         "parameters": [
           {
             "in": "path",
@@ -13070,7 +13070,7 @@
     },
     "/ecommerce/stores/{storeId}": {
       "get": {
-        "summary": "Store",
+        "summary": "Consultar local",
         "parameters": [
           {
             "in": "path",
@@ -21426,7 +21426,7 @@
     },
     "/royalty/coins-redeem-codes/{coinsRedeemCodeId}": {
       "get": {
-        "summary": "Redeem Code",
+        "summary": "Consultar código de canje",
         "parameters": [
           {
             "in": "path",
@@ -21489,7 +21489,7 @@
         }
       },
       "delete": {
-        "summary": "Redeem Code",
+        "summary": "Eliminar código de canje",
         "parameters": [
           {
             "in": "path",
@@ -21554,7 +21554,7 @@
     },
     "/royalty/coins-redeem-codes": {
       "post": {
-        "summary": "Redeem Code",
+        "summary": "Crear código de canje",
         "requestBody": {
           "description": "Datos del código de canje",
           "content": {
