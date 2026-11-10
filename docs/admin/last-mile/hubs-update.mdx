@@ -1,8 +1,0 @@
----
-title: "Actualizar un hub"
-openapi: patch /admin/last-mile/hubs/{hubId}
----
-
-Cambia el nombre, el `externalId`, el teléfono, si acepta autos o la dirección de un hub. Solo cambian los campos que envías; el resto se mantiene. El `hubId` puede ser el ID de Justo o tu `externalId`.
-
-Las cotizaciones ya emitidas mantienen la dirección anterior hasta que vencen. Si cambias la dirección, las nuevas cotizaciones salen desde la dirección nueva.

@@ -3,8 +3,8 @@ title: "Cotizar un envío"
 openapi: post /admin/last-mile/quotes
 ---
 
-Cotiza un paquete desde uno de tus hubs hasta una dirección y guarda la cotización con un `id`. La cotización garantiza el precio (`priceWithTax`) y la hora de retiro (`pickupAt`) hasta `expiresAt`, que por defecto es 20 minutos después de cotizar. Para usarla, envía su `id` a [Crear un envío](/docs/admin/last-mile/create-delivery) antes de que venza.
+Cotiza un paquete desde uno de tus locales hasta una dirección y guarda la cotización con un `id`. La cotización garantiza el precio (`priceWithTax`) y la hora de retiro (`pickupAt`) hasta `expiresAt`, que por defecto es 20 minutos después de cotizar. Para usarla, envía su `id` a [Crear un envío](/docs/admin/last-mile/create-delivery) antes de que venza.
 
-Indica el origen con `hubId` o con varios candidatos en `hubIds` (hasta 20); Justo cotiza desde el más cercano al destino. Sin ninguno de los dos, considera todos los hubs de tu cuenta. Con el peso, las medidas y el valor del paquete, Justo elige el vehículo y el planificador fija la hora de retiro dentro de tu ventana, juntando tu paquete con otros del mismo hub cuando puede. Envía `pickupAt` si el paquete estará listo más tarde; si no, la ventana corre desde que aceptas la cotización.
+Indica el local de origen con `storeId` o con varios candidatos en `storeIds` (hasta 20); Justo cotiza desde el más cercano al destino. Sin ninguno de los dos, considera todos los locales de tu cuenta que piden despachos. Con el peso, las medidas y el valor del paquete, Justo elige el vehículo y el planificador fija la hora de retiro dentro de tu ventana, juntando tu paquete con otros del mismo local cuando puede. Envía `pickupAt` si el paquete estará listo más tarde; si no, la ventana corre desde que aceptas la cotización.
 
 Cotizar no tiene costo ni reserva capacidad. Revisa los códigos de error y los formatos de dirección en la [introducción](/docs/admin/last-mile/introduction#errores).

@@ -1,0 +1,8 @@
+---
+title: "Actualizar los datos de retiro de un local"
+openapi: patch /ecommerce/stores/{storeId}
+---
+
+Cambia el nombre, el `externalId`, el teléfono, si acepta despachos en auto (`acceptsCar`) o la dirección de un local. Solo cambian los campos que envías; el resto se mantiene. El `storeId` puede ser el ID de Justo o tu `externalId`.
+
+Las cotizaciones de [última milla](/docs/admin/last-mile/introduction) ya emitidas mantienen la dirección anterior hasta que vencen. Si cambias la dirección, las cotizaciones nuevas salen desde la dirección nueva.

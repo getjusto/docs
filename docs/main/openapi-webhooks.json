@@ -13552,13 +13552,13 @@
           "geocoder": {
             "type": "string",
             "enum": [
-              "hub",
+              "store",
               "client",
               "trailrune",
               "aws",
               "google"
             ],
-            "description": "Quién obtuvo las coordenadas: `hub` (dirección del hub), `client` (las enviaste tú), `trailrune` (geocodificador de Justo), `aws` o `google`."
+            "description": "Quién obtuvo las coordenadas: `store` (dirección del local), `client` (las enviaste tú), `trailrune` (geocodificador de Justo), `aws` o `google`."
           }
         }
       },
@@ -13597,7 +13597,7 @@
           "valueAmount": {
             "type": "number",
             "minimum": 0,
-            "description": "Valor declarado del contenido, en la moneda del país del hub."
+            "description": "Valor declarado del contenido, en la moneda del país del local."
           },
           "description": {
             "type": "string",
@@ -13620,17 +13620,17 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "hubId": {
+          "storeId": {
             "type": "string",
-            "description": "Hub desde donde sale el paquete (ID Justo o tu externalId). Ver GET /last-mile/hubs."
+            "description": "Local desde donde sale el paquete (ID Justo o tu externalId). Ver GET /stores y POST /stores."
           },
-          "hubIds": {
+          "storeIds": {
             "type": "array",
             "maxItems": 20,
             "items": {
               "type": "string"
             },
-            "description": "Varios hubs candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino. Sin hubId ni hubIds, considera todos los hubs de la cuenta."
+            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino. Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
           },
           "toAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
@@ -13650,9 +13650,9 @@
           }
         },
         "example": {
-          "hubIds": [
-            "hub-providencia",
-            "hub-las-condes"
+          "storeIds": [
+            "bodega-providencia",
+            "bodega-las-condes"
           ],
           "toAddress": {
             "line": "Av. Apoquindo 4500, depto 1203, Las Condes",
@@ -13698,7 +13698,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el hub. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
+            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el local. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
           },
           "pickupWindow": {
             "type": "object",
@@ -13724,17 +13724,17 @@
             "format": "date-time",
             "description": "Hora estimada de entrega en el destino."
           },
-          "hub": {
+          "store": {
             "type": "object",
-            "description": "Hub elegido: el más cercano al destino entre los candidatos.",
+            "description": "Local elegido: el más cercano al destino entre los candidatos.",
             "properties": {
-              "hubId": {
+              "storeId": {
                 "type": "string",
-                "description": "ID Justo del hub."
+                "description": "ID Justo del local."
               },
               "name": {
                 "type": "string",
-                "description": "Nombre del hub."
+                "description": "Nombre del local."
               }
             }
           },
@@ -13757,7 +13757,7 @@
           },
           "distanceMeters": {
             "type": "integer",
-            "description": "Distancia por calle del hub al destino."
+            "description": "Distancia por calle del local al destino."
           },
           "price": {
             "type": "number",
@@ -13777,7 +13777,7 @@
             "properties": {
               "waveSize": {
                 "type": "integer",
-                "description": "Cuántos paquetes del mismo hub salen en ese retiro contando este (las entregas ya aceptadas, no las cotizaciones abiertas)."
+                "description": "Cuántos paquetes del mismo local salen en ese retiro contando este (las entregas ya aceptadas, no las cotizaciones abiertas)."
               },
               "vehicleType": {
                 "type": "string",
@@ -13847,7 +13847,7 @@
           "sender": {
             "type": "object",
             "additionalProperties": false,
-            "description": "Contacto en el hub. Por defecto, el nombre y el teléfono del hub.",
+            "description": "Contacto en el local. Por defecto, el nombre y el teléfono del local.",
             "properties": {
               "name": {
                 "type": "string",
@@ -13892,56 +13892,17 @@
           }
         }
       },
-      "apiLastMileHub": {
-        "type": "object",
-        "description": "Hub: punto de retiro de tu cuenta (bodega, tienda o centro de distribución). En Justo es un local que solo pide despachos; los despachos se facturan a tu cuenta.",
-        "properties": {
-          "hubId": {
-            "type": "string",
-            "description": "ID Justo del hub."
-          },
-          "name": {
-            "type": "string",
-            "description": "Nombre."
-          },
-          "externalId": {
-            "type": "string",
-            "description": "Tu identificador del hub."
-          },
-          "phone": {
-            "type": "string",
-            "description": "Teléfono de contacto del hub."
-          },
-          "timezone": {
-            "type": "string",
-            "description": "Zona horaria."
-          },
-          "acceptsCar": {
-            "type": "boolean",
-            "description": "Si acepta despachos en auto (paquetes que no caben en una moto)."
-          },
-          "address": {
-            "$ref": "#/components/schemas/apiLastMileAddress"
-          },
-          "createdAt": {
-            "type": "string",
-            "example": "2020-01-01T00:00:00.000Z",
-            "format": "date-time",
-            "description": "Fecha de creación."
-          }
-        }
-      },
-      "apiLastMileHubInput": {
+      "apiStoreInput": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
-            "description": "Nombre del hub. Único en tu cuenta."
+            "description": "Nombre del local. Único en tu cuenta."
           },
           "externalId": {
             "type": "string",
-            "description": "Tu identificador del hub. Sirve como hubId en el resto de la API."
+            "description": "Tu identificador del local. Sirve como storeId en el resto de la API."
           },
           "phone": {
             "type": "string",
@@ -13957,7 +13918,7 @@
         },
         "example": {
           "name": "Bodega Providencia",
-          "externalId": "hub-providencia",
+          "externalId": "bodega-providencia",
           "phone": "+56222222222",
           "acceptsCar": true,
           "address": {

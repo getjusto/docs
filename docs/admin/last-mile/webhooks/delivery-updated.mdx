@@ -4,7 +4,7 @@ openapi: post /deliveries.delivery.updated
 
 Este webhook se envía cuando una entrega sin pedido cambia de estado (asignada, en retiro, en camino, entregada o cancelada) o cuando cambia la información del repartidor. El objeto `data.delivery` tiene el mismo formato que [Obtener una entrega](/docs/admin/delivery/get).
 
-Las entregas creadas desde una cotización de [última milla](/docs/admin/last-mile/introduction) traen `lastMileQuoteId`, el `id` de la cotización que aceptaste. Úsalo junto con `externalId` para cruzar el evento con el envío en tu sistema. `storeId` es el `hubId` desde donde sale el paquete.
+Las entregas creadas desde una cotización de [última milla](/docs/admin/last-mile/introduction) traen `lastMileQuoteId`, el `id` de la cotización que aceptaste. Úsalo junto con `externalId` para cruzar el evento con el envío en tu sistema. `storeId` es el local desde donde sale el paquete, el mismo de la cotización.
 
 ```json
 {

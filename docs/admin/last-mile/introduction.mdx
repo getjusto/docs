@@ -1,38 +1,38 @@
 ---
 title: Última milla
-description: 'Pide la flota de Justo para despachar paquetes desde tus hubs'
+description: 'Pide la flota de Justo para despachar paquetes desde tus locales'
 ---
 
 La API de última milla permite que un integrador (una plataforma logística, un agregador de flotas o una marca con bodegas propias) pida la flota de Justo para llevar paquetes desde sus puntos de retiro hasta la dirección de sus clientes.
 
-El flujo tiene tres pasos: registras tus **hubs**, **cotizas** cada envío y **creas la entrega** desde la cotización. Justo ubica la dirección, elige el vehículo según el tamaño del paquete, planifica el retiro y asigna al repartidor. Las entregas se facturan a tu cuenta de integrador, no a las marcas o clientes que atiendes.
+El flujo tiene tres pasos: registras tus **locales de retiro**, **cotizas** cada envío y **creas la entrega** desde la cotización. Justo ubica la dirección, elige el vehículo según el tamaño del paquete, planifica el retiro y asigna al repartidor. Las entregas se facturan a tu cuenta de integrador, no a las marcas o clientes que atiendes.
 
-Los endpoints están bajo `https://api.service.getjusto.com/v3/admin/last-mile` y se autentican con el token de tu aplicación en el header `Authorization: Bearer <token>` (ver [Autenticación](/docs/main/authentication)). La autorización debe tener el permiso `admin` sobre tu cuenta de integrador.
+Las cotizaciones y los envíos están bajo `https://api.service.getjusto.com/v3/admin/last-mile`; los locales se administran con los endpoints de [Locales](/docs/ecommerce/endpoints/stores/list-stores) (`/v3/ecommerce/stores`). Todos se autentican con el token de tu aplicación en el header `Authorization: Bearer <token>` (ver [Autenticación](/docs/main/authentication)). La autorización debe tener el permiso `admin` sobre tu cuenta de integrador.
 
 ## Conceptos
 
-### Hub
+### Local
 
-Un hub es un punto de retiro: una bodega, una tienda o un centro de distribución desde donde sale el paquete. Cada hub tiene una dirección, un teléfono de contacto y define si acepta despachos en auto (`acceptsCar`) para paquetes que no caben en una moto.
+Los paquetes salen desde los locales de tu cuenta, los mismos locales que usa el resto de Justo. Un local de retiro puede ser una bodega, una tienda o un centro de distribución. Lo creas con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store): queda habilitado solo para pedir despachos, con una dirección, un teléfono de contacto y la opción de aceptar despachos en auto (`acceptsCar`) para paquetes que no caben en una moto.
 
-Puedes identificar un hub con el ID que le asigna Justo (`hubId`) o con tu propio identificador (`externalId`). Ambos sirven en cualquier parámetro `hubId` de la API.
+Puedes identificar un local con el ID que le asigna Justo (`storeId`) o con tu propio identificador (`externalId`). Ambos sirven en cualquier parámetro `storeId` de la API.
 
 ### Cotización
 
-Una cotización calcula el precio y la hora de retiro de un paquete desde uno de tus hubs hasta una dirección, y queda guardada con un `id`. Mientras no venza (`expiresAt`, 20 minutos por defecto), Justo **garantiza el precio y la hora de retiro** cotizados: al crear la entrega no se recalcula nada.
+Una cotización calcula el precio y la hora de retiro de un paquete desde uno de tus locales hasta una dirección, y queda guardada con un `id`. Mientras no venza (`expiresAt`, 20 minutos por defecto), Justo **garantiza el precio y la hora de retiro** cotizados: al crear la entrega no se recalcula nada.
 
 Cotizar no tiene costo ni reserva capacidad. Puedes cotizar todas las veces que necesites (por ejemplo, en cada paso del checkout de tu cliente) y solo se cobra la cotización que aceptas al crear la entrega. Las cotizaciones se pueden consultar durante 30 días.
 
-Si envías varios hubs candidatos en `hubIds` (por ejemplo, los que tienen stock del producto), Justo cotiza desde el más cercano al destino. Sin `hubId` ni `hubIds` considera todos los hubs de tu cuenta. La distancia se mide por calle y no puede superar los 20 km.
+Si envías varios locales candidatos en `storeIds` (por ejemplo, los que tienen stock del producto), Justo cotiza desde el más cercano al destino. Sin `storeId` ni `storeIds` considera todos los locales de tu cuenta que piden despachos. La distancia se mide por calle y no puede superar los 20 km.
 
 ### Ventana de retiro
 
-Cada cotización trae un `pickupAt`: la hora garantizada a la que la flota de Justo retira el paquete en el hub. Justo la fija dentro de una ventana (`pickupWindow`) que se cuenta desde:
+Cada cotización trae un `pickupAt`: la hora garantizada a la que la flota de Justo retira el paquete en el local. Justo la fija dentro de una ventana (`pickupWindow`) que se cuenta desde:
 
 - el `pickupAt` que envías al cotizar, que indica desde cuándo el paquete está listo; o
 - el momento en que aceptas la cotización, si no envías `pickupAt`.
 
-El largo de la ventana se configura para tu cuenta (por ejemplo, de 0 a 90 minutos). El retiro nunca queda antes de 20 minutos desde el momento de cotizar o de aceptar, que es lo mínimo que necesita un repartidor para llegar al hub.
+El largo de la ventana se configura para tu cuenta (por ejemplo, de 0 a 90 minutos). El retiro nunca queda antes de 20 minutos desde el momento de cotizar o de aceptar, que es lo mínimo que necesita un repartidor para llegar al local.
 
 <Info>
   Si cotizas sin `pickupAt` y tardas más de 5 minutos en aceptar, la hora de retiro se corre en bloques de 5 minutos según lo que tardaste. La hora definitiva viene en `quote.pickupAt` de la respuesta al crear la entrega.
@@ -40,13 +40,13 @@ El largo de la ventana se configura para tu cuenta (por ejemplo, de 0 a 90 minut
 
 ### Planificador de rutas
 
-Justo no despacha cada paquete por separado. Un planificador junta los paquetes de un mismo hub que salen en horarios compatibles en una sola ruta (un retiro y varias entregas con el mismo repartidor) cuando eso no retrasa demasiado ninguna entrega. Por eso la hora de retiro puede no ser la más temprana posible: el planificador puede esperar unos minutos para sumar tu paquete a una ruta.
+Justo no despacha cada paquete por separado. Un planificador junta los paquetes de un mismo local que salen en horarios compatibles en una sola ruta (un retiro y varias entregas con el mismo repartidor) cuando eso no retrasa demasiado ninguna entrega. Por eso la hora de retiro puede no ser la más temprana posible: el planificador puede esperar unos minutos para sumar tu paquete a una ruta.
 
 La cotización muestra esa decisión en `plan`:
 
 | Campo | Significado |
 | --- | --- |
-| `waveSize` | Cuántos paquetes del hub salen en ese retiro, contando el tuyo. Solo cuenta entregas ya creadas, no cotizaciones abiertas. |
+| `waveSize` | Cuántos paquetes del local salen en ese retiro, contando el tuyo. Solo cuenta entregas ya creadas, no cotizaciones abiertas. |
 | `vehicleType` | Vehículo de la ruta. Puede ser mayor que el que necesita tu paquete (por ejemplo, un auto si no hay motos disponibles). |
 | `routeId` y `sequence` | Ruta a la que se suma el paquete y su orden de entrega dentro de ella. |
 
@@ -61,25 +61,25 @@ Con el peso y las medidas del paquete Justo elige el vehículo más chico donde 
 | Moto | 12 kg | 50 cm | 45 litros |
 | Auto | 150 kg | 120 cm | 400 litros |
 
-Un paquete que necesita auto solo se puede cotizar desde un hub con `acceptsCar: true`. Un paquete que no cabe en un auto no se puede despachar por esta API (`packageTooLarge`).
+Un paquete que necesita auto solo se puede cotizar desde un local con `acceptsCar: true`. Un paquete que no cabe en un auto no se puede despachar por esta API (`packageTooLarge`).
 
 ### Paquetes de alto valor
 
-Declara siempre el valor real del contenido en `package.valueAmount`, en la moneda del país del hub. Justo usa ese valor para asignar los paquetes de mayor valor solo a repartidores de confianza, con historial y verificaciones suficientes en la plataforma. Si en ese momento no hay repartidores con ese nivel conectados, el planificador despacha el paquete en una ruta propia en lugar de sumarlo a otra.
+Declara siempre el valor real del contenido en `package.valueAmount`, en la moneda del país del local. Justo usa ese valor para asignar los paquetes de mayor valor solo a repartidores de confianza, con historial y verificaciones suficientes en la plataforma. Si en ese momento no hay repartidores con ese nivel conectados, el planificador despacha el paquete en una ruta propia en lugar de sumarlo a otra.
 
 ## Flujo de un envío
 
 <Steps>
-  <Step title="Crea tus hubs">
-    Registra cada punto de retiro una sola vez con [Crear un hub](/docs/admin/last-mile/hubs-create). Usa tu propio `externalId` para no tener que guardar el ID de Justo.
+  <Step title="Crea tus locales de retiro">
+    Registra cada punto de retiro una sola vez con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store). Usa tu propio `externalId` para no tener que guardar el ID de Justo. Si tu cuenta ya tiene locales con dirección y despachos habilitados, puedes cotizar desde ellos sin crear nada.
 
 ```bash
-curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/hubs \
+curl -X POST https://api.service.getjusto.com/v3/ecommerce/stores \
   -H "Authorization: Bearer $JUSTO_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Bodega Providencia",
-    "externalId": "hub-providencia",
+    "externalId": "bodega-providencia",
     "phone": "+56222222222",
     "acceptsCar": true,
     "address": {"line": "Av. Providencia 1234, Providencia", "countryCode": "CL"}
@@ -94,7 +94,7 @@ curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/quotes \
   -H "Authorization: Bearer $JUSTO_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "hubIds": ["hub-providencia", "hub-las-condes"],
+    "storeIds": ["bodega-providencia", "bodega-las-condes"],
     "toAddress": {"line": "Av. Apoquindo 4500, depto 1203, Las Condes", "countryCode": "CL"},
     "package": {"weightKg": 1.2, "lengthCm": 30, "widthCm": 20, "heightCm": 10, "valueAmount": 25990},
     "pickupAt": "2026-11-03T13:00:00.000Z",
@@ -115,7 +115,7 @@ curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/quotes \
       "endsAt": "2026-11-03T14:30:00.000Z"
     },
     "estimatedDeliveryAt": "2026-11-03T13:42:00.000Z",
-    "hub": {"hubId": "Xb7kQ2mN9pL4tR8sW", "name": "Bodega Providencia"},
+    "store": {"storeId": "Xb7kQ2mN9pL4tR8sW", "name": "Bodega Providencia"},
     "vehicleType": "moto",
     "distanceMeters": 4870,
     "price": 3500,
@@ -162,7 +162,7 @@ Los errores responden con `success: false` y un objeto `error` con un código es
   "success": false,
   "error": {
     "error": "distanceTooLong",
-    "message": "El destino está a 23.4 km del hub más cercano; el máximo es 20 km"
+    "message": "El destino quedó ubicado en \"Av. Apoquindo 4500, Las Condes\" (-33.41300, -70.58500), a 23.4 km del local más cercano; el máximo es 20 km. Si la dirección no es esa, revísala o envía toAddress.location"
   }
 }
 ```
@@ -171,19 +171,20 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | --- | --- | --- |
 | `invalidBody` | Falta un campo obligatorio, un campo tiene un formato inválido o enviaste un campo desconocido. | Corrige la request según el mensaje. |
 | `addressNotFound` | Justo no pudo ubicar la dirección de destino con certeza. | Revisa la dirección o envía las coordenadas en `location`. |
-| `invalidAddress` | El destino está en otro país que el hub, o no se pudo registrar la dirección del hub. | Revisa `countryCode` y la dirección. |
-| `hubNotFound` | El hub no existe en tu cuenta, o ninguno de los `hubIds` tiene dirección. | Revisa los IDs con [Listar hubs](/docs/admin/last-mile/hubs-list). |
-| `distanceTooLong` | La distancia por calle entre el hub y el destino supera los 20 km. | Cotiza desde un hub más cercano. |
+| `invalidAddress` | El destino está en otro país que el local, o no se pudo registrar la dirección del local. | Revisa `countryCode` y la dirección. |
+| `storeNotFound` | Ninguno de los locales indicados existe en tu cuenta, tiene dirección y pide despachos. | Revisa los IDs con [Listar locales](/docs/ecommerce/endpoints/stores/list-stores). |
+| `distanceTooLong` | La distancia por calle entre el local y el destino supera los 20 km. El mensaje dice dónde quedó ubicado el destino. | Revisa la dirección o cotiza desde un local más cercano. |
 | `packageTooLarge` | El paquete supera la capacidad de un auto. | Divide el envío en paquetes más chicos. |
-| `vehicleNotAvailable` | El paquete necesita auto y el hub no acepta despachos en auto. | Activa `acceptsCar` en el hub o cotiza desde otro hub. |
-| `noTariff` | No hay una tarifa de despachos configurada para ese hub. | Contacta a Justo. |
+| `vehicleNotAvailable` | El paquete necesita auto y el local no acepta despachos en auto. | Activa `acceptsCar` en el local o cotiza desde otro local. |
+| `noTariff` | No hay una tarifa de despachos configurada para ese local. | Contacta a Justo. |
 | `quoteNotFound` | La cotización no existe o no es de tu cuenta. | Revisa el `quoteId`. |
 | `quoteExpired` | La cotización venció antes de aceptarla (`409`). | Pide una cotización nueva. |
 | `quoteBeingAccepted` | Otra solicitud está creando la entrega con la misma cotización (`409`). | Reintenta en unos segundos (hasta 5 minutos si la anterior quedó sin respuesta). |
 | `externalIdAlreadyUsed` | El `externalId` ya se usó en una entrega creada desde otra cotización. | Usa un `externalId` distinto por envío. |
-| `hubAlreadyExists` | Ya tienes un hub con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el hub existente. |
-| `hubHasOpenDeliveries` | Intentaste eliminar un hub con entregas en curso. | Espera a que terminen o cancélalas. |
-| `noPermissions` | La autorización no es de una marca, o está limitada a algunos locales e intentaste crear un hub. | Usa una autorización de toda la cuenta. |
+| `storeAlreadyExists` | Ya tienes un local con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el local existente. |
+| `storeHasOpenDeliveries` | Intentaste eliminar un local con entregas en curso. | Espera a que terminen o cancélalas. |
+| `storeSells` | Intentaste eliminar por API un local que vende por delivery, retiro o consumo en el local. | Elimínalo desde el administrador. |
+| `noPermissions` | La autorización no es de una marca, o está limitada a algunos locales e intentaste crear un local. | Usa una autorización de toda la cuenta. |
 
 Si tu cuenta usa saldo prepago y no alcanza para la entrega, o la cuenta tiene pagos pendientes, la creación de la entrega falla con un mensaje que explica cómo resolverlo.
 
@@ -197,7 +198,7 @@ La entrega creada es una [entrega sin pedido](/docs/admin/introduction) de Justo
 
 ## Formatos de dirección
 
-Las direcciones (`toAddress` al cotizar y `address` del hub) siempre llevan `countryCode` (ISO 3166-1 alfa-2: `CL`, `CO`, `MX`, `PE`…) y se pueden enviar de tres formas:
+Las direcciones (`toAddress` al cotizar y `address` del local) siempre llevan `countryCode` (ISO 3166-1 alfa-2: `CL`, `CO`, `MX`, `PE`…) y se pueden enviar de tres formas:
 
 <CodeGroup>
 

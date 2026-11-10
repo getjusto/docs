@@ -3,7 +3,7 @@ title: "Crear un envío"
 openapi: post /admin/last-mile/deliveries
 ---
 
-Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Envía el `quoteId` y los datos de quien recibe en `receiver` (nombre y teléfono con código de país). El contacto en el hub (`sender`) usa por defecto el nombre y el teléfono del hub.
+Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Envía el `quoteId` y los datos de quien recibe en `receiver` (nombre y teléfono con código de país). El contacto en el local de retiro (`sender`) usa por defecto el nombre y el teléfono del local.
 
 La entrega se cobra a tu cuenta de integrador. Si tu cuenta usa saldo prepago, debe alcanzar para cubrirla. La respuesta incluye la cotización aceptada en `quote` (con `status: "accepted"`, el `deliveryId` y la hora de retiro definitiva) y la entrega en `delivery`, con el mismo formato que [Obtener una entrega](/docs/admin/delivery/get).
 
