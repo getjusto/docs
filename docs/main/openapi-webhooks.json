@@ -13630,7 +13630,11 @@
             "items": {
               "type": "string"
             },
-            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino. Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
+            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto durante la ventana de retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
+          },
+          "pickupAddress": {
+            "$ref": "#/components/schemas/apiLastMileAddressInput",
+            "description": "Retira en una dirección que no es un local (un proveedor, un domicilio). El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). No aplica el horario del local ni se junta con los retiros del local."
           },
           "toAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
@@ -13698,7 +13702,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el local. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
+            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el local (o en `pickupAddress`). Siempre cae dentro del horario del local. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
           },
           "pickupWindow": {
             "type": "object",
@@ -13726,7 +13730,7 @@
           },
           "store": {
             "type": "object",
-            "description": "Local elegido: el más cercano al destino entre los candidatos.",
+            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos. Con `pickupAddress`, el local que cobra y factura la entrega.",
             "properties": {
               "storeId": {
                 "type": "string",

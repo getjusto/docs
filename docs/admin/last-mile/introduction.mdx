@@ -23,7 +23,15 @@ Una cotización calcula el precio y la hora de retiro de un paquete desde uno de
 
 Cotizar no tiene costo ni reserva capacidad. Puedes cotizar todas las veces que necesites (por ejemplo, en cada paso del checkout de tu cliente) y solo se cobra la cotización que aceptas al crear la entrega. Las cotizaciones se pueden consultar durante 30 días.
 
-Si envías varios locales candidatos en `storeIds` (por ejemplo, los que tienen stock del producto), Justo cotiza desde el más cercano al destino. Sin `storeId` ni `storeIds` considera todos los locales de tu cuenta que piden despachos. La distancia se mide por calle y no puede superar los 20 km.
+Si envías varios locales candidatos en `storeIds` (por ejemplo, los que tienen stock del producto), Justo cotiza desde el más cercano al destino que esté abierto durante la ventana de retiro. Sin `storeId` ni `storeIds` considera todos los locales de tu cuenta que piden despachos. La distancia se mide por calle y no puede superar los 20 km.
+
+### Horario de atención de los locales
+
+Justo solo promete retiros cuando el local está abierto. Un local creado con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store) parte abierto siempre; configura su horario semanal, sus días cerrados y sus horarios especiales con [Actualizar el horario del local](/docs/ecommerce/endpoints/stores/update-store-schedule). Si ningún local candidato abre durante la ventana, la cotización responde `storeClosed` y el mensaje dice cuándo abre el más cercano: vuelve a cotizar con un `pickupAt` desde esa hora.
+
+### Retirar en una dirección que no es un local
+
+Si el paquete está en una dirección que no es uno de tus locales (un proveedor, un domicilio), envía `pickupAddress` en vez de crear un local. El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). Ese retiro no tiene horario de atención ni se junta con los retiros de tus locales.
 
 ### Ventana de retiro
 
@@ -173,7 +181,9 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | `addressNotFound` | Justo no pudo ubicar la dirección de destino con certeza. | Revisa la dirección o envía las coordenadas en `location`. |
 | `invalidAddress` | El destino está en otro país que el local, o no se pudo registrar la dirección del local. | Revisa `countryCode` y la dirección. |
 | `storeNotFound` | Ninguno de los locales indicados existe en tu cuenta, tiene dirección y pide despachos. | Revisa los IDs con [Listar locales](/docs/ecommerce/endpoints/stores/list-stores). |
-| `distanceTooLong` | La distancia por calle entre el local y el destino supera los 20 km. El mensaje dice dónde quedó ubicado el destino. | Revisa la dirección o cotiza desde un local más cercano. |
+| `storeClosed` | Ningún local candidato abre durante la ventana de retiro, o al crear la entrega tarde la hora de retiro corrida ya no cae dentro del horario. El mensaje dice cuándo abre el local. | Cotiza con un `pickupAt` desde esa hora o revisa el horario del local. |
+| `pickupTooFar` | La `pickupAddress` queda a más de 20 km de tus locales. | Crea un local en esa zona con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store). |
+| `distanceTooLong` | La distancia por calle entre el retiro y el destino supera los 20 km. El mensaje dice dónde quedó ubicado el destino. | Revisa la dirección o cotiza desde un local más cercano. |
 | `packageTooLarge` | El paquete supera la capacidad de un auto. | Divide el envío en paquetes más chicos. |
 | `vehicleNotAvailable` | El paquete necesita auto y el local no acepta despachos en auto. | Activa `acceptsCar` en el local o cotiza desde otro local. |
 | `noTariff` | No hay una tarifa de despachos configurada para ese local. | Contacta a Justo. |
@@ -244,7 +254,7 @@ Justo configura para tu cuenta:
 
 - **Vigencia de las cotizaciones**: cuánto dura una cotización antes de vencer (20 minutos por defecto).
 - **Ventana de retiro**: cuántos minutos después de que el paquete está listo puede quedar el retiro (90 minutos por defecto).
-- **Precio**: un precio base, un valor por kilómetro y un precio mínimo propios de tu cuenta, o una tarifa por distancia.
+- **Precio**: la tarifa acordada con tu cuenta, por ejemplo por tramos de distancia.
 - **Saldo prepago**: si tus entregas se descuentan de un saldo prepago que debe alcanzar al crear cada entrega.
 
 Para cambiar alguno de estos valores, contacta a tu ejecutivo de Justo.

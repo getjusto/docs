@@ -10711,7 +10711,7 @@
     "/admin/last-mile/quotes": {
       "post": {
         "summary": "Cotizar un envío de última milla",
-        "description": "Cotiza un paquete desde uno de tus locales hasta una dirección y guarda la cotización con un `id`. La cotización garantiza el precio y la hora de retiro (`pickupAt`) hasta `expiresAt` (20 minutos por defecto). Justo ubica la dirección (si no envías coordenadas), elige el local candidato más cercano, el vehículo según el paquete, mide la distancia por calle y su planificador fija la hora de retiro dentro de tu ventana, juntando tu paquete con otros del mismo local cuando puede. Cotizar no reserva nada ni tiene costo: solo las cotizaciones aceptadas cuentan. Errores: `addressNotFound`, `storeNotFound`, `distanceTooLong` (más de 20 km), `packageTooLarge`, `vehicleNotAvailable`, `noTariff`.",
+        "description": "Cotiza un paquete desde uno de tus locales hasta una dirección y guarda la cotización con un `id`. La cotización garantiza el precio y la hora de retiro (`pickupAt`) hasta `expiresAt` (20 minutos por defecto). Justo ubica la dirección (si no envías coordenadas), elige el local candidato más cercano que esté abierto, el vehículo según el paquete, mide la distancia por calle y su planificador fija la hora de retiro dentro de tu ventana y del horario del local, juntando tu paquete con otros del mismo local cuando puede. También puedes retirar en una dirección que no es un local (`pickupAddress`). El precio sale de la tarifa acordada con tu cuenta. Cotizar no reserva nada ni tiene costo: solo las cotizaciones aceptadas cuentan. Errores: `addressNotFound`, `storeNotFound`, `storeClosed` (ningún local abre en la ventana; el mensaje dice cuándo abre), `pickupTooFar`, `distanceTooLong` (más de 20 km), `packageTooLarge`, `vehicleNotAvailable`, `noTariff`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -10844,7 +10844,7 @@
     "/admin/last-mile/deliveries": {
       "post": {
         "summary": "Crear un envío desde una cotización",
-        "description": "Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Se cobra a tu cuenta (si tu cuenta usa saldo prepago, debe alcanzar). Puedes reintentar sin riesgo: la misma cotización siempre devuelve la misma entrega. Responde 409 si la cotización venció. Si recibes un error 500 o un timeout, reintenta con la misma cotización: si la entrega alcanzó a crearse, la recibes (en el peor caso, tras 5 minutos). Un externalId ya usado en otra entrega responde `externalIdAlreadyUsed`. Para seguir la entrega usa GET /deliveries/{deliveryId}, el webhook `deliveries.delivery.updated` y POST /deliveries/{deliveryId}/cancel para cancelarla.",
+        "description": "Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Se cobra a tu cuenta (si tu cuenta usa saldo prepago, debe alcanzar). Puedes reintentar sin riesgo: la misma cotización siempre devuelve la misma entrega. Responde 409 si la cotización venció. Si aceptas tarde y la hora de retiro corrida cae cuando el local está cerrado, se mueve a la siguiente hora abierta de la ventana, o responde `storeClosed`. Si recibes un error 500 o un timeout, reintenta con la misma cotización: si la entrega alcanzó a crearse, la recibes (en el peor caso, tras 5 minutos). Un externalId ya usado en otra entrega responde `externalIdAlreadyUsed`. Para seguir la entrega usa GET /deliveries/{deliveryId}, el webhook `deliveries.delivery.updated` y POST /deliveries/{deliveryId}/cancel para cancelarla.",
         "requestBody": {
           "required": true,
           "content": {
@@ -13299,7 +13299,7 @@
       },
       "post": {
         "summary": "Crear un local de retiro",
-        "description": "Crea un local desde donde la flota de Justo retira paquetes de [última milla](/docs/admin/last-mile/introduction): una bodega, una tienda o un centro de distribución. El local solo pide despachos (no vende por e-commerce) y sus despachos se facturan a tu cuenta. Justo ubica la dirección si no envías coordenadas. El nombre y el externalId no se pueden repetir (`storeAlreadyExists`). Una autorización limitada a algunos locales no puede crear locales.",
+        "description": "Crea un local desde donde la flota de Justo retira paquetes de [última milla](/docs/admin/last-mile/introduction): una bodega, una tienda o un centro de distribución. El local solo pide despachos (no vende por e-commerce) y sus despachos se facturan a tu cuenta. Justo ubica la dirección si no envías coordenadas. El nombre y el externalId no se pueden repetir (`storeAlreadyExists`). Una autorización limitada a algunos locales no puede crear locales. El local parte abierto siempre: configura su horario de atención con PATCH /ecommerce/stores/{storeId}/schedule, y las cotizaciones solo prometen retiros dentro de ese horario.",
         "requestBody": {
           "required": true,
           "content": {
@@ -34627,7 +34627,11 @@
             "items": {
               "type": "string"
             },
-            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino. Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
+            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto durante la ventana de retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
+          },
+          "pickupAddress": {
+            "$ref": "#/components/schemas/apiLastMileAddressInput",
+            "description": "Retira en una dirección que no es un local (un proveedor, un domicilio). El local candidato más cercano a esa dirección cobra y factura la entrega con su tarifa, por eso debe estar a 20 km o menos (si no, responde `pickupTooFar`). No aplica el horario del local ni se junta con los retiros del local."
           },
           "toAddress": {
             "$ref": "#/components/schemas/apiLastMileAddressInput"
@@ -34695,7 +34699,7 @@
             "type": "string",
             "example": "2020-01-01T00:00:00.000Z",
             "format": "date-time",
-            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el local. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
+            "description": "Hora garantizada a la que la flota de Justo retira el paquete en el local (o en `pickupAddress`). Siempre cae dentro del horario del local. Si cotizaste sin `pickupAt`, se corre lo que tardes en aceptar."
           },
           "pickupWindow": {
             "type": "object",
@@ -34723,7 +34727,7 @@
           },
           "store": {
             "type": "object",
-            "description": "Local elegido: el más cercano al destino entre los candidatos.",
+            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos. Con `pickupAddress`, el local que cobra y factura la entrega.",
             "properties": {
               "storeId": {
                 "type": "string",
