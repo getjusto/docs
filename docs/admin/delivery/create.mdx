@@ -14,4 +14,6 @@ La cotización previa no reserva el precio. `confirmation=true` acepta el aviso 
 
 Para reintentar una solicitud, conserva el mismo `externalId`, `storeId` y marca. Sin `externalId`, consulta primero el listado si el resultado de una creación es incierto para evitar duplicados.
 
+Si tu marca todavía no está activa, puedes enviar `simulation` para crear un despacho de prueba: lo atiende un repartidor simulado, no se cobra y dispara los mismos webhooks que una entrega real. Ver [Despachos de prueba](/docs/admin/delivery/test-dispatches).
+
 Los problemas reconocidos de pago, facturación o deuda conservan el error original y agregan `resolutionCode`, `resolveUrl` y `resolveMessage` para indicar cómo resolverlos.
