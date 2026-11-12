@@ -498,6 +498,7 @@
 						"docs/admin/delivery/quote",
 						"docs/admin/delivery/preview",
 						"docs/admin/delivery/create",
+						"docs/admin/delivery/test-dispatches",
 						"docs/admin/delivery/cancel"
 					]
 				}
