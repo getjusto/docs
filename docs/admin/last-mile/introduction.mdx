@@ -41,7 +41,7 @@ Con el peso y las medidas del paquete, Justo envía un repartidor en un vehícul
 
 ### Paquetes de alto valor
 
-Declara siempre el valor real del contenido en `package.valueAmount`, en la moneda del país del local. Justo usa ese valor para asignar los paquetes de mayor valor a repartidores con historial y verificaciones suficientes en la plataforma.
+Declara siempre el valor real del contenido en `package.valueAmount`, en la moneda del país del local. Justo usa ese valor para cuidar los envíos de mayor valor.
 
 ## Flujo de un envío
 
@@ -164,7 +164,7 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | `storeAlreadyExists` | Ya tienes un local con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el local existente. |
 | `storeHasOpenDeliveries` | Intentaste eliminar un local con entregas en curso. | Espera a que terminen o cancélalas. |
 | `storeSells` | Intentaste eliminar por API un local que vende por delivery, retiro o consumo en el local. | Elimínalo desde el administrador. |
-| `noPermissions` | La autorización no es de una marca, o está limitada a algunos locales e intentaste crear un local. | Usa una autorización de toda la cuenta. |
+| `noPermissions` | La autorización no corresponde a una cuenta, o está limitada a algunos locales e intentaste crear un local. | Usa una autorización de toda la cuenta. |
 
 Si tu cuenta usa saldo prepago y no alcanza para la entrega, o la cuenta tiene pagos pendientes, la creación de la entrega falla con un mensaje que explica cómo resolverlo.
 
@@ -214,7 +214,7 @@ Las direcciones (`toAddress` al cotizar y `address` del local) siempre llevan `c
 - **Por campos**: `streetAddress` (calle y número) es obligatorio si no envías `line`. Agrega `locality` y `region` para evitar ambigüedades entre comunas o ciudades con calles del mismo nombre.
 - **Con coordenadas** (`location`): si ya las tienes (por ejemplo, de un pin en el mapa), Justo las usa tal cual, sin geocodificar. Es la opción más precisa.
 
-Sin coordenadas, Justo ubica la dirección con sus geocodificadores. La cotización devuelve las coordenadas que usó en `toAddress.location` y quién las obtuvo en `toAddress.geocoder`. Si la dirección no se puede ubicar con certeza, la cotización responde `addressNotFound`.
+Sin coordenadas, Justo ubica la dirección. La cotización devuelve las coordenadas que usó en `toAddress.location`. Si la dirección no se puede ubicar con certeza, la cotización responde `addressNotFound`.
 
 El departamento u oficina (`extendedAddress`) no cambia el precio. Si no lo tenías al cotizar, puedes enviarlo al crear la entrega.
 
