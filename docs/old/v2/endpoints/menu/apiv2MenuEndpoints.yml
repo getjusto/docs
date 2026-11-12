@@ -407,4 +407,4 @@ components:
             $ref: '#/components/schemas/option'
   responses:
     UnauthorizedError:
-      description: Access token is missing or invalid
+      description: Token de acceso ausente o inválido

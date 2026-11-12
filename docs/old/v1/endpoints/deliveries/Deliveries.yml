@@ -180,7 +180,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'
         '400':
-          description: Access token is missing or invalid 
+          description: Token de acceso ausente o inválido 
 
   /cancelDelivery:
     post:
@@ -224,7 +224,7 @@ paths:
                         type: string
                         description: ID externo del despacho cancelado.
         '400':
-          description: Access token is missing or invalid 
+          description: Token de acceso ausente o inválido 
 
   /createExternalDelivery:
     post:
@@ -408,7 +408,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'
         '401':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /delivery:
     post:
@@ -442,7 +442,7 @@ paths:
                   data: 
                     $ref: '#/components/schemas/result'                      
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 components:
   schemas:
     result:

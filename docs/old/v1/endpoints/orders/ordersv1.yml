@@ -56,7 +56,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'               
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /acceptOrder:
     post:
@@ -92,7 +92,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'                    
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /activateDelivery:
     post:
@@ -128,7 +128,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/deliveries'                    
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /order:
     post:
@@ -168,7 +168,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'                    
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /setOrderFlagColor:
     post:
@@ -210,7 +210,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'                    
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /setOrderManagedDelivery:
     post:
@@ -251,7 +251,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'                  
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /updateOrderStatus:
     post:
@@ -307,7 +307,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/result'                    
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /pendingOrders:
     post:
@@ -348,7 +348,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/result'   
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /orders:
     post:
@@ -438,7 +438,7 @@ paths:
                         items:
                           $ref: '#/components/schemas/result'               
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /deliveryVerificationCode:
     post:
@@ -492,7 +492,7 @@ paths:
                         description: Código alfanumérico (A-Z 0-9) de mínimo 4 caracteres y máximo 6. Los caracteres alfabéticos se transformarán automáticamente a mayúsculas.
                         example: PERRO
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
 components:
   schemas:

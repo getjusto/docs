@@ -7,13 +7,13 @@
   "servers": [
     {
       "url": "https://api.service.getjusto.com/v3",
-      "description": "Production server"
+      "description": "Servidor de producción"
     }
   ],
   "paths": {
     "/tabs/{storeId}/shifts": {
       "get": {
-        "summary": "List Shifts",
+        "summary": "Listar turnos",
         "parameters": [
           {
             "in": "path",
@@ -95,7 +95,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -139,7 +139,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -172,7 +172,7 @@
     },
     "/tabs/{storeId}/shifts/{shiftId}": {
       "get": {
-        "summary": "Shift",
+        "summary": "Consultar turno",
         "parameters": [
           {
             "in": "path",
@@ -194,7 +194,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -213,7 +213,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -246,7 +246,7 @@
     },
     "/tabs/{storeId}/shifts/{shiftId}/tabs": {
       "get": {
-        "summary": "Tabs in shift",
+        "summary": "Cuentas del turno",
         "parameters": [
           {
             "in": "path",
@@ -315,7 +315,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -359,7 +359,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -392,7 +392,7 @@
     },
     "/tabs/{storeId}/shifts/{shiftId}/tabs/{tabCounter}": {
       "get": {
-        "summary": "Tab by counter at Shift",
+        "summary": "Cuenta por número en el turno",
         "parameters": [
           {
             "in": "path",
@@ -422,7 +422,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -441,7 +441,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -474,7 +474,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}": {
       "get": {
-        "summary": "Tab",
+        "summary": "Consultar cuenta",
         "parameters": [
           {
             "in": "path",
@@ -495,7 +495,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -514,7 +514,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -545,7 +545,7 @@
         }
       },
       "patch": {
-        "summary": "Update tab",
+        "summary": "Actualizar cuenta",
         "description": "Cambia el nombre, los comentarios o las mesas de una cuenta abierta, igual que en el PDV. Al cambiar las mesas puede cambiar el tipo de entrega (en el local o para llevar) y se recalculan las promociones.",
         "parameters": [
           {
@@ -579,7 +579,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -598,7 +598,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -631,7 +631,7 @@
     },
     "/tabs/{storeId}/tabs": {
       "get": {
-        "summary": "List tabs",
+        "summary": "Listar cuentas",
         "parameters": [
           {
             "in": "path",
@@ -762,7 +762,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -806,7 +806,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -837,7 +837,7 @@
         }
       },
       "post": {
-        "summary": "Open tab",
+        "summary": "Abrir cuenta",
         "description": "Abre una cuenta en el PDV del local, como un garzón o cajero. El local debe tener un turno abierto. La cuenta aparece de inmediato en el PDV.\n\nFlujo de una cuenta:\n1. Abre la cuenta con este endpoint.\n2. Agrega productos con POST /tabs/{storeId}/tabs/{tabId}/items.\n3. Envíalos a cocina con POST /tabs/{storeId}/tabs/{tabId}/send-to-kitchen.\n4. Aplica descuentos si corresponde con POST /tabs/{storeId}/tabs/{tabId}/discounts.\n5. Registra los pagos con POST /tabs/{storeId}/tabs/{tabId}/payments hasta que amountDue sea 0.\n6. Cierra la cuenta con POST /tabs/{storeId}/tabs/{tabId}/close.",
         "parameters": [
           {
@@ -862,7 +862,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -881,7 +881,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -914,7 +914,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/close": {
       "post": {
-        "summary": "Close tab",
+        "summary": "Cerrar cuenta",
         "description": "Cierra la cuenta, igual que en el PDV. Solo se puede cerrar si amountDue es 0. Si el local emite boletas al cerrar, se emite la boleta. Si la cuenta ya está cerrada, la devuelve sin cambios.",
         "parameters": [
           {
@@ -938,7 +938,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -957,7 +957,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -990,7 +990,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/cancel": {
       "post": {
-        "summary": "Cancel tab",
+        "summary": "Anular cuenta",
         "description": "Anula una cuenta, abierta o cerrada, igual que en el PDV: sus productos quedan anulados y se quita de cocina. Solo aplica a cuentas sin pagos: anula primero los pagos. No aplica a pedidos de canales de venta.",
         "parameters": [
           {
@@ -1024,7 +1024,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1043,7 +1043,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1076,7 +1076,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/reopen": {
       "post": {
-        "summary": "Reopen tab",
+        "summary": "Reabrir cuenta",
         "description": "Reabre una cuenta cerrada para corregirla. Una boleta ya emitida no se anula. No aplica a cuentas anuladas.",
         "parameters": [
           {
@@ -1100,7 +1100,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1119,7 +1119,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1152,7 +1152,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/send-to-kitchen": {
       "post": {
-        "summary": "Send tab items to kitchen",
+        "summary": "Enviar productos de la cuenta a cocina",
         "description": "Envía a cocina los productos que aún no se envían, igual que el botón del PDV: aparecen en las pantallas de cocina y se imprimen las comandas configuradas. Si el local exige pagar antes de enviar a cocina, la cuenta debe estar pagada.",
         "parameters": [
           {
@@ -1186,7 +1186,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1205,7 +1205,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1238,7 +1238,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/items": {
       "get": {
-        "summary": "List tab items",
+        "summary": "Listar productos de la cuenta",
         "description": "Lista los productos de la cuenta, con sus opciones. Son los mismos items de GET /tabs/{storeId}/tabs/{tabId}.",
         "parameters": [
           {
@@ -1262,7 +1262,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1284,7 +1284,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1315,7 +1315,7 @@
         }
       },
       "post": {
-        "summary": "Add tab item",
+        "summary": "Agregar producto a la cuenta",
         "description": "Agrega un producto a una cuenta abierta. El precio sale del menú. Si la cuenta tiene una línea del mismo producto, con las mismas opciones y comentario, que aún no se envía a cocina, se suma a esa línea. No se envía a cocina: usa POST /tabs/{storeId}/tabs/{tabId}/send-to-kitchen.",
         "parameters": [
           {
@@ -1349,7 +1349,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1368,7 +1368,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1401,7 +1401,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/items/{tabItemId}": {
       "delete": {
-        "summary": "Delete tab item",
+        "summary": "Eliminar producto de la cuenta",
         "description": "Quita un producto de una cuenta abierta. Si ya se envió a cocina, se imprime la anulación en cocina. El motivo queda en el historial de la cuenta.",
         "parameters": [
           {
@@ -1444,7 +1444,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1463,7 +1463,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1494,7 +1494,7 @@
         }
       },
       "patch": {
-        "summary": "Update tab item",
+        "summary": "Actualizar producto de la cuenta",
         "description": "Cambia la cantidad o el comentario de un producto de una cuenta abierta. Si baja la cantidad de un producto ya enviado a cocina, se registra la baja con su motivo y se imprime en cocina.",
         "parameters": [
           {
@@ -1537,7 +1537,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1556,7 +1556,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1589,7 +1589,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/items/{tabItemId}/move": {
       "post": {
-        "summary": "Move tab item",
+        "summary": "Mover producto de la cuenta",
         "description": "Mueve un producto, con sus opciones, a otra cuenta abierta del mismo local. Ambas cuentas deben estar abiertas.",
         "parameters": [
           {
@@ -1632,7 +1632,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1651,7 +1651,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1684,7 +1684,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/discounts": {
       "get": {
-        "summary": "List tab discounts",
+        "summary": "Listar descuentos de la cuenta",
         "description": "Lista los descuentos activos de la cuenta. Son los mismos discounts de GET /tabs/{storeId}/tabs/{tabId}.",
         "parameters": [
           {
@@ -1708,7 +1708,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1730,7 +1730,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1761,7 +1761,7 @@
         }
       },
       "post": {
-        "summary": "Add tab discount",
+        "summary": "Agregar descuento a la cuenta",
         "description": "Aplica a una cuenta abierta uno de los descuentos configurados en el local. No se puede crear un descuento libre.",
         "parameters": [
           {
@@ -1795,7 +1795,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1814,7 +1814,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1847,7 +1847,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/discounts/{tabDiscountId}": {
       "delete": {
-        "summary": "Void tab discount",
+        "summary": "Anular descuento de la cuenta",
         "description": "Quita un descuento de una cuenta abierta. Si el descuento usó puntos de fidelización, se devuelven al cliente.",
         "parameters": [
           {
@@ -1880,7 +1880,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1899,7 +1899,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1932,7 +1932,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/payments": {
       "get": {
-        "summary": "List tab payments",
+        "summary": "Listar pagos de la cuenta",
         "description": "Lista los pagos de la cuenta, incluidos los anulados (voidedAt). Son los mismos payments de GET /tabs/{storeId}/tabs/{tabId}.",
         "parameters": [
           {
@@ -1956,7 +1956,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -1978,7 +1978,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2009,7 +2009,7 @@
         }
       },
       "post": {
-        "summary": "Add tab payment",
+        "summary": "Agregar pago a la cuenta",
         "description": "Registra un pago que ya se cobró fuera de Justo. No cobra al cliente. No acepta efectivo, porque mueve la caja: los pagos en efectivo se registran en el PDV. Si el pago deja amountDue en 0 y el local emite boletas al pagar, se emite la boleta. No cierra la cuenta: usa POST /tabs/{storeId}/tabs/{tabId}/close.",
         "parameters": [
           {
@@ -2043,7 +2043,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2062,7 +2062,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2095,7 +2095,7 @@
     },
     "/tabs/{storeId}/tabs/{tabId}/payments/{tabPaymentId}/void": {
       "post": {
-        "summary": "Void tab payment",
+        "summary": "Anular pago de la cuenta",
         "description": "Anula un pago de una cuenta abierta para corregir un registro. No devuelve dinero: si el cliente ya pagó, la devolución se hace por fuera, en el terminal o en efectivo. No aplica a pagos cobrados a través de un proveedor, como pagos en línea, Justo Coins o dispositivos de pago.",
         "parameters": [
           {
@@ -2128,7 +2128,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2147,7 +2147,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2180,7 +2180,7 @@
     },
     "/tabs/{storeId}/menus": {
       "get": {
-        "summary": "List POS menus",
+        "summary": "Listar menús del PDV",
         "description": "Lista los menús que el PDV ofrece en el local, en el mismo orden. Para precios y disponibilidad de productos, usa GET /ecommerce/products o GET /tabs/{storeId}/menus/{menuId}/products/{productId}.",
         "parameters": [
           {
@@ -2195,7 +2195,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2217,7 +2217,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2250,7 +2250,7 @@
     },
     "/tabs/{storeId}/menus/{menuId}/products/{productId}": {
       "get": {
-        "summary": "POS menu product",
+        "summary": "Producto de un menú del PDV",
         "description": "Devuelve el precio de un producto en un menú del PDV y sus grupos de opciones, para armar modifiers al agregarlo a una cuenta. Falla si el producto no está disponible en ese menú.",
         "parameters": [
           {
@@ -2283,7 +2283,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2302,7 +2302,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2335,7 +2335,7 @@
     },
     "/tabs/{storeId}/tables": {
       "get": {
-        "summary": "List tables",
+        "summary": "Listar mesas",
         "description": "Lista las mesas del local con su sector, para abrir cuentas en una mesa.",
         "parameters": [
           {
@@ -2350,7 +2350,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2372,7 +2372,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2405,7 +2405,7 @@
     },
     "/tabs/{storeId}/item-deletion-categories": {
       "get": {
-        "summary": "List item deletion reasons",
+        "summary": "Listar motivos de eliminación de productos",
         "description": "Lista los motivos que la marca usa al quitar productos de una cuenta.",
         "parameters": [
           {
@@ -2420,7 +2420,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2442,7 +2442,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2475,7 +2475,7 @@
     },
     "/tabs/{storeId}/discount-methods": {
       "get": {
-        "summary": "List discount methods",
+        "summary": "Listar métodos de descuento",
         "description": "Lista los descuentos que el personal puede aplicar en el local. No incluye promociones automáticas ni cupones.",
         "parameters": [
           {
@@ -2490,7 +2490,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2512,7 +2512,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2545,7 +2545,7 @@
     },
     "/tabs/{storeId}/cash-registers": {
       "get": {
-        "summary": "List cash registers",
+        "summary": "Listar cajas",
         "description": "Lista las cajas del local y su estado en el turno actual. El turno del local se abre con la primera caja que se abre.",
         "parameters": [
           {
@@ -2560,7 +2560,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2582,7 +2582,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2615,7 +2615,7 @@
     },
     "/tabs/{storeId}/cash-registers/{cashRegisterId}/closing-preview": {
       "get": {
-        "summary": "Cash register closing preview",
+        "summary": "Consultar montos esperados para el cierre de caja",
         "description": "Muestra cuánto debería haber por medio de pago si la caja se cierra ahora, para compararlo con lo contado. Solo para cajas abiertas.",
         "parameters": [
           {
@@ -2639,7 +2639,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2661,7 +2661,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2694,7 +2694,7 @@
     },
     "/tabs/{storeId}/cash-registers/{cashRegisterId}/open": {
       "post": {
-        "summary": "Open cash register",
+        "summary": "Abrir caja",
         "description": "Abre la caja en el turno actual. Si el local no tiene turno abierto, también abre el turno. Queda registrado a nombre del usuario que conectó el MCP de administración y usa sus permisos, como en el PDV. Con un token de la API responde userRequired.",
         "parameters": [
           {
@@ -2728,7 +2728,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2747,7 +2747,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2780,7 +2780,7 @@
     },
     "/tabs/{storeId}/cash-registers/{cashRegisterId}/close": {
       "post": {
-        "summary": "Close cash register",
+        "summary": "Cerrar caja",
         "description": "Cierra la caja con los montos contados, igual que el cierre de caja del PDV. Después de cerrarla no se puede volver a abrir en el mismo turno, salvo que el local permita varias aperturas. Queda registrado a nombre del usuario que conectó el MCP de administración y usa sus permisos, como en el PDV. Con un token de la API responde userRequired.",
         "parameters": [
           {
@@ -2814,7 +2814,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2833,7 +2833,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2866,7 +2866,7 @@
     },
     "/tabs/{storeId}/cash-movements": {
       "get": {
-        "summary": "List cash movements",
+        "summary": "Listar movimientos de caja",
         "description": "Lista los retiros e ingresos de efectivo de un turno, sin los pagos de cuentas ni los ajustes de apertura y cierre.",
         "parameters": [
           {
@@ -2890,7 +2890,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2912,7 +2912,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2943,7 +2943,7 @@
         }
       },
       "post": {
-        "summary": "Create cash movement",
+        "summary": "Crear movimiento de caja",
         "description": "Registra un retiro o ingreso de efectivo en el turno abierto. Un retiro también queda como gasto en contabilidad. Queda registrado a nombre del usuario que conectó el MCP de administración y usa sus permisos, como en el PDV. Con un token de la API responde userRequired.",
         "parameters": [
           {
@@ -2968,7 +2968,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -2987,7 +2987,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3020,7 +3020,7 @@
     },
     "/tabs/{storeId}/shifts/active/close": {
       "post": {
-        "summary": "Close shift",
+        "summary": "Cerrar turno",
         "description": "Cierra el turno abierto del local. Todas las cajas deben estar cerradas y, según la configuración del local, las cuentas pagadas. Envía el resumen del turno por correo y completa las comandas pendientes en cocina. Queda registrado a nombre del usuario que conectó el MCP de administración y usa sus permisos, como en el PDV. Con un token de la API responde userRequired.",
         "parameters": [
           {
@@ -3035,7 +3035,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3054,7 +3054,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3087,7 +3087,7 @@
     },
     "/tabs/{websiteId}/ingredients": {
       "get": {
-        "summary": "Ingredients",
+        "summary": "Ingredientes del sitio",
         "parameters": [
           {
             "in": "path",
@@ -3100,7 +3100,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3144,7 +3144,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3177,7 +3177,7 @@
     },
     "/tabs/{storeId}/current-inventory": {
       "get": {
-        "summary": "Current inventory",
+        "summary": "Inventario actual",
         "parameters": [
           {
             "in": "path",
@@ -3237,7 +3237,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3265,7 +3265,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3359,7 +3359,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3403,7 +3403,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3458,7 +3458,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3477,7 +3477,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3534,7 +3534,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3553,7 +3553,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3586,7 +3586,7 @@
     },
     "/tabs/{storeId}/menu-costs": {
       "get": {
-        "summary": "Costos de menu",
+        "summary": "Costos de menú",
         "parameters": [
           {
             "in": "path",
@@ -3599,7 +3599,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3634,7 +3634,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3667,7 +3667,7 @@
     },
     "/tabs/{websiteId}/recipes": {
       "get": {
-        "summary": "Recipes",
+        "summary": "Recetas del sitio",
         "parameters": [
           {
             "in": "path",
@@ -3680,7 +3680,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3724,7 +3724,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3757,7 +3757,7 @@
     },
     "/tabs/{storeId}/accounting-movements/{accountingMovementId}": {
       "get": {
-        "summary": "Accounting Movement",
+        "summary": "Consultar movimiento contable",
         "parameters": [
           {
             "in": "path",
@@ -3778,7 +3778,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3797,7 +3797,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3830,7 +3830,7 @@
     },
     "/tabs/{storeId}/accounting-movements": {
       "get": {
-        "summary": "List accounting movements",
+        "summary": "Listar movimientos contables",
         "parameters": [
           {
             "in": "path",
@@ -3939,7 +3939,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -3983,7 +3983,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4016,7 +4016,7 @@
     },
     "/tabs/{storeId}/tab-payments": {
       "get": {
-        "summary": "List tab payments",
+        "summary": "Listar pagos de la cuenta",
         "parameters": [
           {
             "in": "path",
@@ -4098,7 +4098,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4142,7 +4142,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4257,7 +4257,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4301,7 +4301,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4355,7 +4355,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4374,7 +4374,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4407,7 +4407,7 @@
     },
     "/tabs/{storeId}/invoices": {
       "get": {
-        "summary": "List invoices",
+        "summary": "Listar boletas y facturas",
         "parameters": [
           {
             "in": "path",
@@ -4489,7 +4489,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4533,7 +4533,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4566,7 +4566,7 @@
     },
     "/tabs/{storeId}/invoices/{invoiceId}": {
       "get": {
-        "summary": "Get invoice",
+        "summary": "Obtener boleta o factura",
         "description": "Obtiene el detalle de una factura o documento tributario de PDV asociado al local indicado.",
         "parameters": [
           {
@@ -4588,7 +4588,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4607,7 +4607,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4640,7 +4640,7 @@
     },
     "/tabs/{storeId}/kds-locations": {
       "get": {
-        "summary": "List kitchen centers",
+        "summary": "Listar centros de cocina",
         "description": "Lista los centros de cocina configurados para un local.",
         "parameters": [
           {
@@ -4654,7 +4654,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4676,7 +4676,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4709,7 +4709,7 @@
     },
     "/tabs/{storeId}/kds-locations/{kdsLocationId}/orders": {
       "get": {
-        "summary": "List kitchen orders",
+        "summary": "Listar comandas de cocina",
         "description": "Lista las comandas procesadas por un centro de cocina, incluyendo sus tiempos operativos y productos asociados. La fecha se filtra por la entrada de la comanda al centro.",
         "parameters": [
           {
@@ -4800,7 +4800,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4844,7 +4844,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4877,7 +4877,7 @@
     },
     "/tabs/{storeId}/payment-methods": {
       "get": {
-        "summary": "List payment methods",
+        "summary": "Listar métodos de pago",
         "description": "Lista los medios de pago no eliminados de un local e indica si están deshabilitados.",
         "parameters": [
           {
@@ -4938,7 +4938,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -4982,7 +4982,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -5097,7 +5097,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -5141,7 +5141,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -5195,7 +5195,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -5214,7 +5214,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7333,11 +7333,11 @@
     },
     "/api/me": {
       "get": {
-        "summary": "Token info",
+        "summary": "Información del token",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7356,7 +7356,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7389,7 +7389,7 @@
     },
     "/adapters/order-get-mcd-v1/orders/{orderId}": {
       "get": {
-        "summary": "MCD order adapter v1",
+        "summary": "Adaptador de pedidos MCD v1",
         "description": "Obtiene una orden ecommerce de Justo y la transforma al formato de evento orderNew solicitado por MCD.",
         "parameters": [
           {
@@ -7404,7 +7404,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7423,7 +7423,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7456,7 +7456,7 @@
     },
     "/adapters/product-outage-mcd-v1/stores/{storeId}": {
       "post": {
-        "summary": "MCD product outage adapter v1",
+        "summary": "Adaptador de quiebres de stock MCD v1",
         "description": "Actualiza la disponibilidad temporal de productos u opciones MCD para un local específico. Status 2 los marca como agotados indefinidamente; status 1 los deja disponibles.",
         "parameters": [
           {
@@ -7481,7 +7481,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7500,7 +7500,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7533,7 +7533,7 @@
     },
     "/adapters/menu-put-mcd-v1/stores/{storeId}": {
       "put": {
-        "summary": "MCD menu adapter v1",
+        "summary": "Adaptador de menú MCD v1",
         "description": "Valida y acepta un menú MCD para un local específico. La carga se procesa de forma async; usa el jobId para consultar el estado.",
         "parameters": [
           {
@@ -7558,7 +7558,7 @@
         },
         "responses": {
           "202": {
-            "description": "Job accepted",
+            "description": "Trabajo aceptado",
             "content": {
               "application/json": {
                 "schema": {
@@ -7577,7 +7577,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7610,7 +7610,7 @@
     },
     "/adapters/jobs/{jobId}": {
       "get": {
-        "summary": "Adapter async job status",
+        "summary": "Estado de un trabajo asíncrono del adaptador",
         "description": "Obtiene el estado de un job async iniciado por un endpoint de adapters.",
         "parameters": [
           {
@@ -7625,7 +7625,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7644,7 +7644,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7677,10 +7677,10 @@
     },
     "/ecommerce/categories": {
       "get": {
-        "summary": "List categories",
+        "summary": "Listar categorías",
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7702,7 +7702,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7733,7 +7733,7 @@
         }
       },
       "post": {
-        "summary": "Create category",
+        "summary": "Crear categoría",
         "description": "Crea una categoría en la marca. Para que aparezca en la tienda debe tener productos disponibles.",
         "requestBody": {
           "required": true,
@@ -7747,7 +7747,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7766,7 +7766,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7799,7 +7799,7 @@
     },
     "/ecommerce/categories/{categoryId}": {
       "get": {
-        "summary": "Category",
+        "summary": "Consultar categoría",
         "parameters": [
           {
             "in": "path",
@@ -7813,7 +7813,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7832,7 +7832,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7863,7 +7863,7 @@
         }
       },
       "put": {
-        "summary": "Update category",
+        "summary": "Actualizar categoría",
         "parameters": [
           {
             "in": "path",
@@ -7887,7 +7887,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7906,7 +7906,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -7937,7 +7937,7 @@
         }
       },
       "delete": {
-        "summary": "Delete category",
+        "summary": "Eliminar categoría",
         "description": "Elimina la categoría y todas sus subcategorías de forma permanente. Los productos no se eliminan: sólo dejan de pertenecer a esas categorías.",
         "parameters": [
           {
@@ -7952,7 +7952,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -7971,7 +7971,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8004,11 +8004,11 @@
     },
     "/ecommerce/products": {
       "get": {
-        "summary": "List products",
+        "summary": "Listar productos",
         "description": "Lista productos de la marca autorizada con campos SEO y hasRichContent. Omite richContent para reducir el tamaño; consulta el detalle individual para obtener el HTML.",
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8030,7 +8030,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8061,7 +8061,7 @@
         }
       },
       "post": {
-        "summary": "Create product",
+        "summary": "Crear producto",
         "description": "Crea un producto con su precio y disponibilidad en cada menú. Requiere edición de productos habilitada en la marca. Las imágenes, SEO y contenido enriquecido se editan después con PUT /ecommerce/products/{productId}.\n\n**Cómo funcionan los menús y precios**\n\nUn menú es una lista de precios: dice qué productos se venden y a qué precio. En el administrador se llama *menú* y en la API *precio*: cada menú es un registro de `GET /ecommerce/prices`, y su `_id` es el `menuId` que aparece en `menus` de cada producto. Una marca puede tener varios menús, por ejemplo uno general, uno para un local y uno de almuerzo.\n\n**1. Cada pedido usa un solo menú.** Los menús no se mezclan: el cliente ve el precio y la disponibilidad que el producto tiene en el menú que se está usando.\n\n**2. Cómo se elige el menú en la tienda online.** Se revisan los menús habilitados de mayor a menor `priority` y se usa el primero que cumple todas estas condiciones:\n\n- `storesIds` está vacío o incluye el local del pedido. Mientras no se sepa el local, los menús con locales no aplican.\n- `channels` está vacío o incluye el canal del pedido. Si el cliente aún no elige cómo recibir el pedido, se considera delivery.\n- `schedule` está abierto a la hora de entrega menos el tiempo de preparación del local, o ahora si el pedido no es programado. El horario solo restringe si `availableAtPeriods` es `true`; si no, el menú aplica a toda hora, salvo los días cerrados (`closedDays`).\n- Faltan al menos `daysBefore` días de calendario para esa fecha.\n- `segmentIds` está vacío, o el cliente inició sesión y pertenece a alguna de esas audiencias.\n\nSi ningún menú cumple, se usa el menú por defecto (`isDefault`), aunque no cumpla sus condiciones. Si la marca no tiene menú por defecto, se usa el de mayor `priority`. Si la marca tiene un solo menú habilitado, se usa siempre.\n\n**3. Productos no disponibles.** Si el producto no está disponible en el menú que se usa, no aparece en la tienda. Si en el administrador tiene un mensaje de no disponible, aparece con ese mensaje, pero no se puede comprar. Un producto tampoco aparece si tiene un modificador obligatorio sin opciones disponibles en ese menú. Agotado (`out-of-stock`) es otra cosa: se marca por local, y el producto aparece como agotado, salvo que la marca active *Ocultar productos no disponibles o sin stock*: entonces los agotados no aparecen.\n\n**4. Cada menú tiene su propio precio.** Cambiar el precio en un menú no cambia los demás. Para cambiarlo en toda la marca, cámbialo en cada menú donde el producto está disponible. Para cambiarlo solo en un local, canal u horario, usa el punto 2 para saber qué menú se usa ahí.\n\n**5. Descuentos.** `discountPrice` es el precio final que paga el cliente, no un monto ni un porcentaje, y no puede ser mayor que el precio: si bajas `price` por debajo del descuento guardado, envía también `discountPrice`. Si es menor que el precio, la tienda muestra el precio normal tachado. En las respuestas viene como `discount`. Enviar `discountPrice` deja un solo descuento, y `null` lo quita. En el administrador se pueden guardar varios descuentos seguidos: en ese caso `discount` es el primero, pero el cliente paga el último.\n\n**6. Los cambios no son instantáneos.** La tienda se actualiza en segundo plano, y el menú elegido para cada cliente se guarda hasta 15 minutos, así que un cambio en las condiciones de un menú puede tardar ese tiempo en verse.",
         "requestBody": {
           "required": true,
@@ -8075,7 +8075,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8094,7 +8094,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8127,7 +8127,7 @@
     },
     "/ecommerce/products/{productId}": {
       "get": {
-        "summary": "Product",
+        "summary": "Consultar producto",
         "description": "Devuelve el producto de la marca autorizada, incluyendo seoTitle, seoDescription, seoImageURL, richContent sanitizado y richContentPosition. Los campos SEO son overrides guardados, no metadatos calculados. Un valor null indica generación automática. menus trae el precio y la disponibilidad en cada menú. Acepta ID Justo o externo.",
         "parameters": [
           {
@@ -8142,7 +8142,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8161,7 +8161,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8192,7 +8192,7 @@
         }
       },
       "put": {
-        "summary": "Update product",
+        "summary": "Actualizar producto",
         "description": "Requiere autorización admin de la marca y edición de productos habilitada. Actualiza sólo los campos enviados, sanitiza el HTML e invalida las cachés de publicación. Devuelve el producto guardado. En MCP, confirma los cambios con el usuario antes de ejecutar update_api_call.",
         "parameters": [
           {
@@ -8218,7 +8218,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8237,7 +8237,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8268,7 +8268,7 @@
         }
       },
       "delete": {
-        "summary": "Delete product",
+        "summary": "Eliminar producto",
         "description": "Elimina el producto: deja de mostrarse en la tienda y en los listados de la API, y se borran sus registros de agotado. Requiere edición de productos habilitada en la marca.",
         "parameters": [
           {
@@ -8283,7 +8283,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8302,7 +8302,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8335,7 +8335,7 @@
     },
     "/ecommerce/products/{productId}/menus/{menuId}": {
       "put": {
-        "summary": "Update product price in a menu",
+        "summary": "Actualizar precio de un producto en un menú",
         "description": "Cambia el precio, el precio con descuento o la disponibilidad del producto en un menú, sin modificar los demás menús. El precio actual en cada menú está en menus de GET /ecommerce/products/{productId}. Requiere edición de productos habilitada en la marca.\n\n**Cómo funcionan los menús y precios**\n\nUn menú es una lista de precios: dice qué productos se venden y a qué precio. En el administrador se llama *menú* y en la API *precio*: cada menú es un registro de `GET /ecommerce/prices`, y su `_id` es el `menuId` que aparece en `menus` de cada producto. Una marca puede tener varios menús, por ejemplo uno general, uno para un local y uno de almuerzo.\n\n**1. Cada pedido usa un solo menú.** Los menús no se mezclan: el cliente ve el precio y la disponibilidad que el producto tiene en el menú que se está usando.\n\n**2. Cómo se elige el menú en la tienda online.** Se revisan los menús habilitados de mayor a menor `priority` y se usa el primero que cumple todas estas condiciones:\n\n- `storesIds` está vacío o incluye el local del pedido. Mientras no se sepa el local, los menús con locales no aplican.\n- `channels` está vacío o incluye el canal del pedido. Si el cliente aún no elige cómo recibir el pedido, se considera delivery.\n- `schedule` está abierto a la hora de entrega menos el tiempo de preparación del local, o ahora si el pedido no es programado. El horario solo restringe si `availableAtPeriods` es `true`; si no, el menú aplica a toda hora, salvo los días cerrados (`closedDays`).\n- Faltan al menos `daysBefore` días de calendario para esa fecha.\n- `segmentIds` está vacío, o el cliente inició sesión y pertenece a alguna de esas audiencias.\n\nSi ningún menú cumple, se usa el menú por defecto (`isDefault`), aunque no cumpla sus condiciones. Si la marca no tiene menú por defecto, se usa el de mayor `priority`. Si la marca tiene un solo menú habilitado, se usa siempre.\n\n**3. Productos no disponibles.** Si el producto no está disponible en el menú que se usa, no aparece en la tienda. Si en el administrador tiene un mensaje de no disponible, aparece con ese mensaje, pero no se puede comprar. Un producto tampoco aparece si tiene un modificador obligatorio sin opciones disponibles en ese menú. Agotado (`out-of-stock`) es otra cosa: se marca por local, y el producto aparece como agotado, salvo que la marca active *Ocultar productos no disponibles o sin stock*: entonces los agotados no aparecen.\n\n**4. Cada menú tiene su propio precio.** Cambiar el precio en un menú no cambia los demás. Para cambiarlo en toda la marca, cámbialo en cada menú donde el producto está disponible. Para cambiarlo solo en un local, canal u horario, usa el punto 2 para saber qué menú se usa ahí.\n\n**5. Descuentos.** `discountPrice` es el precio final que paga el cliente, no un monto ni un porcentaje, y no puede ser mayor que el precio: si bajas `price` por debajo del descuento guardado, envía también `discountPrice`. Si es menor que el precio, la tienda muestra el precio normal tachado. En las respuestas viene como `discount`. Enviar `discountPrice` deja un solo descuento, y `null` lo quita. En el administrador se pueden guardar varios descuentos seguidos: en ese caso `discount` es el primero, pero el cliente paga el último.\n\n**6. Los cambios no son instantáneos.** La tienda se actualiza en segundo plano, y el menú elegido para cada cliente se guarda hasta 15 minutos, así que un cambio en las condiciones de un menú puede tardar ese tiempo en verse.",
         "parameters": [
           {
@@ -8369,7 +8369,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8388,7 +8388,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8435,7 +8435,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8454,7 +8454,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8485,10 +8485,10 @@
         }
       },
       "get": {
-        "summary": "List modifiers",
+        "summary": "Listar modificadores",
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8510,7 +8510,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8558,7 +8558,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8578,7 +8578,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8609,7 +8609,7 @@
         }
       },
       "get": {
-        "summary": "Modifier",
+        "summary": "Consultar modificador",
         "parameters": [
           {
             "in": "path",
@@ -8623,7 +8623,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8642,7 +8642,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8673,7 +8673,7 @@
         }
       },
       "put": {
-        "summary": "Update modifier",
+        "summary": "Actualizar modificador",
         "parameters": [
           {
             "in": "path",
@@ -8697,7 +8697,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8716,7 +8716,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8763,7 +8763,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8782,7 +8782,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8813,10 +8813,10 @@
         }
       },
       "get": {
-        "summary": "List modifier options",
+        "summary": "Listar opciones de modificador",
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8838,7 +8838,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8886,7 +8886,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8906,7 +8906,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -8937,7 +8937,7 @@
         }
       },
       "get": {
-        "summary": "Modifier option",
+        "summary": "Consultar opción de modificador",
         "parameters": [
           {
             "in": "path",
@@ -8951,7 +8951,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -8970,7 +8970,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9001,7 +9001,7 @@
         }
       },
       "put": {
-        "summary": "Update modifier option",
+        "summary": "Actualizar opción de modificador",
         "parameters": [
           {
             "in": "path",
@@ -9025,7 +9025,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9044,7 +9044,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9077,11 +9077,11 @@
     },
     "/ecommerce/prices": {
       "get": {
-        "summary": "List menus (prices)",
+        "summary": "Listar menús (precios)",
         "description": "**Cómo funcionan los menús y precios**\n\nUn menú es una lista de precios: dice qué productos se venden y a qué precio. En el administrador se llama *menú* y en la API *precio*: cada menú es un registro de `GET /ecommerce/prices`, y su `_id` es el `menuId` que aparece en `menus` de cada producto. Una marca puede tener varios menús, por ejemplo uno general, uno para un local y uno de almuerzo.\n\n**1. Cada pedido usa un solo menú.** Los menús no se mezclan: el cliente ve el precio y la disponibilidad que el producto tiene en el menú que se está usando.\n\n**2. Cómo se elige el menú en la tienda online.** Se revisan los menús habilitados de mayor a menor `priority` y se usa el primero que cumple todas estas condiciones:\n\n- `storesIds` está vacío o incluye el local del pedido. Mientras no se sepa el local, los menús con locales no aplican.\n- `channels` está vacío o incluye el canal del pedido. Si el cliente aún no elige cómo recibir el pedido, se considera delivery.\n- `schedule` está abierto a la hora de entrega menos el tiempo de preparación del local, o ahora si el pedido no es programado. El horario solo restringe si `availableAtPeriods` es `true`; si no, el menú aplica a toda hora, salvo los días cerrados (`closedDays`).\n- Faltan al menos `daysBefore` días de calendario para esa fecha.\n- `segmentIds` está vacío, o el cliente inició sesión y pertenece a alguna de esas audiencias.\n\nSi ningún menú cumple, se usa el menú por defecto (`isDefault`), aunque no cumpla sus condiciones. Si la marca no tiene menú por defecto, se usa el de mayor `priority`. Si la marca tiene un solo menú habilitado, se usa siempre.\n\n**3. Productos no disponibles.** Si el producto no está disponible en el menú que se usa, no aparece en la tienda. Si en el administrador tiene un mensaje de no disponible, aparece con ese mensaje, pero no se puede comprar. Un producto tampoco aparece si tiene un modificador obligatorio sin opciones disponibles en ese menú. Agotado (`out-of-stock`) es otra cosa: se marca por local, y el producto aparece como agotado, salvo que la marca active *Ocultar productos no disponibles o sin stock*: entonces los agotados no aparecen.\n\n**4. Cada menú tiene su propio precio.** Cambiar el precio en un menú no cambia los demás. Para cambiarlo en toda la marca, cámbialo en cada menú donde el producto está disponible. Para cambiarlo solo en un local, canal u horario, usa el punto 2 para saber qué menú se usa ahí.\n\n**5. Descuentos.** `discountPrice` es el precio final que paga el cliente, no un monto ni un porcentaje, y no puede ser mayor que el precio: si bajas `price` por debajo del descuento guardado, envía también `discountPrice`. Si es menor que el precio, la tienda muestra el precio normal tachado. En las respuestas viene como `discount`. Enviar `discountPrice` deja un solo descuento, y `null` lo quita. En el administrador se pueden guardar varios descuentos seguidos: en ese caso `discount` es el primero, pero el cliente paga el último.\n\n**6. Los cambios no son instantáneos.** La tienda se actualiza en segundo plano, y el menú elegido para cada cliente se guarda hasta 15 minutos, así que un cambio en las condiciones de un menú puede tardar ese tiempo en verse.",
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9103,7 +9103,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9136,7 +9136,7 @@
     },
     "/ecommerce/prices/{priceId}": {
       "get": {
-        "summary": "Menu (price)",
+        "summary": "Consultar menú (precio)",
         "description": "Devuelve un menú con las condiciones que deciden cuándo aplica. Los precios de cada producto en este menú están en menus de los productos.",
         "parameters": [
           {
@@ -9151,7 +9151,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9170,7 +9170,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9201,7 +9201,7 @@
         }
       },
       "put": {
-        "summary": "Update menu (price)",
+        "summary": "Actualizar menú (precio)",
         "description": "Cambia la configuración del menú. Cambiar priority, storesIds, channels, daysBefore o schedule cambia qué menú aplica en cada pedido y, con eso, los precios y productos que ven los clientes. Los precios de los productos se cambian en PUT /ecommerce/products/{productId}/menus/{menuId}.\n\n**Cómo funcionan los menús y precios**\n\nUn menú es una lista de precios: dice qué productos se venden y a qué precio. En el administrador se llama *menú* y en la API *precio*: cada menú es un registro de `GET /ecommerce/prices`, y su `_id` es el `menuId` que aparece en `menus` de cada producto. Una marca puede tener varios menús, por ejemplo uno general, uno para un local y uno de almuerzo.\n\n**1. Cada pedido usa un solo menú.** Los menús no se mezclan: el cliente ve el precio y la disponibilidad que el producto tiene en el menú que se está usando.\n\n**2. Cómo se elige el menú en la tienda online.** Se revisan los menús habilitados de mayor a menor `priority` y se usa el primero que cumple todas estas condiciones:\n\n- `storesIds` está vacío o incluye el local del pedido. Mientras no se sepa el local, los menús con locales no aplican.\n- `channels` está vacío o incluye el canal del pedido. Si el cliente aún no elige cómo recibir el pedido, se considera delivery.\n- `schedule` está abierto a la hora de entrega menos el tiempo de preparación del local, o ahora si el pedido no es programado. El horario solo restringe si `availableAtPeriods` es `true`; si no, el menú aplica a toda hora, salvo los días cerrados (`closedDays`).\n- Faltan al menos `daysBefore` días de calendario para esa fecha.\n- `segmentIds` está vacío, o el cliente inició sesión y pertenece a alguna de esas audiencias.\n\nSi ningún menú cumple, se usa el menú por defecto (`isDefault`), aunque no cumpla sus condiciones. Si la marca no tiene menú por defecto, se usa el de mayor `priority`. Si la marca tiene un solo menú habilitado, se usa siempre.\n\n**3. Productos no disponibles.** Si el producto no está disponible en el menú que se usa, no aparece en la tienda. Si en el administrador tiene un mensaje de no disponible, aparece con ese mensaje, pero no se puede comprar. Un producto tampoco aparece si tiene un modificador obligatorio sin opciones disponibles en ese menú. Agotado (`out-of-stock`) es otra cosa: se marca por local, y el producto aparece como agotado, salvo que la marca active *Ocultar productos no disponibles o sin stock*: entonces los agotados no aparecen.\n\n**4. Cada menú tiene su propio precio.** Cambiar el precio en un menú no cambia los demás. Para cambiarlo en toda la marca, cámbialo en cada menú donde el producto está disponible. Para cambiarlo solo en un local, canal u horario, usa el punto 2 para saber qué menú se usa ahí.\n\n**5. Descuentos.** `discountPrice` es el precio final que paga el cliente, no un monto ni un porcentaje, y no puede ser mayor que el precio: si bajas `price` por debajo del descuento guardado, envía también `discountPrice`. Si es menor que el precio, la tienda muestra el precio normal tachado. En las respuestas viene como `discount`. Enviar `discountPrice` deja un solo descuento, y `null` lo quita. En el administrador se pueden guardar varios descuentos seguidos: en ese caso `discount` es el primero, pero el cliente paga el último.\n\n**6. Los cambios no son instantáneos.** La tienda se actualiza en segundo plano, y el menú elegido para cada cliente se guarda hasta 15 minutos, así que un cambio en las condiciones de un menú puede tardar ese tiempo en verse.",
         "parameters": [
           {
@@ -9226,7 +9226,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9245,7 +9245,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9278,7 +9278,7 @@
     },
     "/ecommerce/coupons": {
       "get": {
-        "summary": "List ecommerce coupons",
+        "summary": "Listar cupones de ecommerce",
         "description": "Lista cupones ecommerce de la marca autorizada. Permite filtrar por texto y por locales. La data siempre queda limitada al website autorizado por el token.",
         "parameters": [
           {
@@ -9323,7 +9323,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9367,7 +9367,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9398,7 +9398,7 @@
         }
       },
       "post": {
-        "summary": "Create ecommerce coupon",
+        "summary": "Crear cupón de ecommerce",
         "description": "Crea un cupón ecommerce para la marca autorizada. Si se envía code, se crea también un primer código asociado.",
         "requestBody": {
           "required": true,
@@ -9420,7 +9420,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9439,7 +9439,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9472,7 +9472,7 @@
     },
     "/ecommerce/coupons/{couponId}": {
       "get": {
-        "summary": "Get ecommerce coupon",
+        "summary": "Obtener cupón de ecommerce",
         "description": "Obtiene un cupón ecommerce de la marca autorizada. Puede incluir sus códigos activos usando withCodes=true.",
         "parameters": [
           {
@@ -9495,7 +9495,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9529,7 +9529,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9560,7 +9560,7 @@
         }
       },
       "put": {
-        "summary": "Update ecommerce coupon",
+        "summary": "Actualizar cupón de ecommerce",
         "description": "Actualiza un cupón ecommerce de la marca autorizada. Solo puede modificar cupones del website autorizado.",
         "parameters": [
           {
@@ -9593,7 +9593,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9612,7 +9612,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9643,7 +9643,7 @@
         }
       },
       "patch": {
-        "summary": "Partially update ecommerce coupon",
+        "summary": "Actualizar parcialmente un cupón de ecommerce",
         "description": "Actualiza parcialmente un cupón ecommerce. Funciona igual que PUT, pero se documenta para integraciones que separan reemplazo y edición parcial.",
         "parameters": [
           {
@@ -9676,7 +9676,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9695,7 +9695,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9728,7 +9728,7 @@
     },
     "/ecommerce/coupons/{couponId}/codes": {
       "get": {
-        "summary": "List ecommerce coupon codes",
+        "summary": "Listar códigos de un cupón de ecommerce",
         "description": "Lista los códigos activos de un cupón ecommerce de la marca autorizada.",
         "parameters": [
           {
@@ -9771,7 +9771,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9815,7 +9815,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9846,7 +9846,7 @@
         }
       },
       "post": {
-        "summary": "Create ecommerce coupon codes",
+        "summary": "Crear códigos de un cupón de ecommerce",
         "description": "Crea uno o más códigos para un cupón ecommerce. Puede asociarlos a emails si useCodeWithEmail es true.",
         "parameters": [
           {
@@ -9900,7 +9900,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -9919,7 +9919,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -9950,7 +9950,7 @@
         }
       },
       "delete": {
-        "summary": "Delete ecommerce coupon codes",
+        "summary": "Eliminar códigos de un cupón de ecommerce",
         "description": "Elimina lógicamente uno o más códigos de un cupón ecommerce. No elimina el cupón.",
         "parameters": [
           {
@@ -9987,7 +9987,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10006,7 +10006,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -10082,7 +10082,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10343,7 +10343,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10438,7 +10438,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10551,7 +10551,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10609,7 +10609,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10667,7 +10667,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10724,7 +10724,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10743,7 +10743,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -10791,7 +10791,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10810,7 +10810,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -10857,7 +10857,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10876,7 +10876,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -10954,7 +10954,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10973,7 +10973,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11004,7 +11004,7 @@
         }
       },
       "get": {
-        "summary": "List menus",
+        "summary": "Listar menús",
         "parameters": [
           {
             "in": "query",
@@ -11018,7 +11018,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11040,7 +11040,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11088,7 +11088,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11108,7 +11108,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11139,7 +11139,7 @@
         }
       },
       "head": {
-        "summary": "Menu exists",
+        "summary": "Verificar si existe un menú",
         "parameters": [
           {
             "in": "path",
@@ -11153,7 +11153,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11172,7 +11172,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11203,7 +11203,7 @@
         }
       },
       "get": {
-        "summary": "Menu",
+        "summary": "Consultar menú",
         "parameters": [
           {
             "in": "path",
@@ -11226,7 +11226,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11245,7 +11245,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11276,7 +11276,7 @@
         }
       },
       "post": {
-        "summary": "Create menu",
+        "summary": "Crear menú",
         "parameters": [
           {
             "in": "path",
@@ -11308,7 +11308,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11327,7 +11327,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11358,7 +11358,7 @@
         }
       },
       "put": {
-        "summary": "Update menu",
+        "summary": "Actualizar menú",
         "parameters": [
           {
             "in": "path",
@@ -11394,7 +11394,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11413,7 +11413,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11444,7 +11444,7 @@
         }
       },
       "patch": {
-        "summary": "Partially update menu",
+        "summary": "Actualizar parcialmente un menú",
         "parameters": [
           {
             "in": "path",
@@ -11476,7 +11476,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11495,7 +11495,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11553,7 +11553,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11573,7 +11573,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11630,7 +11630,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11660,7 +11660,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11727,7 +11727,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11754,7 +11754,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11821,7 +11821,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11848,7 +11848,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -11915,7 +11915,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -11943,7 +11943,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12010,7 +12010,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12038,7 +12038,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12095,7 +12095,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12122,7 +12122,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12155,7 +12155,7 @@
     },
     "/ecommerce/orders": {
       "get": {
-        "summary": "List orders",
+        "summary": "Listar pedidos",
         "parameters": [
           {
             "in": "query",
@@ -12260,7 +12260,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12304,7 +12304,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12337,7 +12337,7 @@
     },
     "/ecommerce/orders/{orderId}": {
       "get": {
-        "summary": "Order",
+        "summary": "Consultar pedido",
         "parameters": [
           {
             "in": "path",
@@ -12351,7 +12351,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12370,7 +12370,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12403,7 +12403,7 @@
     },
     "/ecommerce/orders/{orderId}/accept": {
       "post": {
-        "summary": "Accept order",
+        "summary": "Aceptar pedido",
         "parameters": [
           {
             "in": "path",
@@ -12434,7 +12434,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12453,7 +12453,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12486,7 +12486,7 @@
     },
     "/ecommerce/orders/{orderId}/reject": {
       "post": {
-        "summary": "Reject order",
+        "summary": "Rechazar pedido",
         "parameters": [
           {
             "in": "path",
@@ -12520,7 +12520,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12539,7 +12539,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12572,7 +12572,7 @@
     },
     "/ecommerce/orders/{orderId}/preparing": {
       "post": {
-        "summary": "Mark order as preparing",
+        "summary": "Marcar pedido en preparación",
         "parameters": [
           {
             "in": "path",
@@ -12586,7 +12586,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12605,7 +12605,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12638,7 +12638,7 @@
     },
     "/ecommerce/orders/{orderId}/preparation-ready": {
       "post": {
-        "summary": "Mark order as prepared",
+        "summary": "Marcar pedido preparado",
         "parameters": [
           {
             "in": "path",
@@ -12652,7 +12652,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12671,7 +12671,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12704,7 +12704,7 @@
     },
     "/ecommerce/orders/{orderId}/cancel": {
       "post": {
-        "summary": "Cancel order",
+        "summary": "Cancelar pedido",
         "description": "Cancela un pedido ya aceptado y notifica al cliente con el motivo. Si se pagó en línea y la marca tiene devoluciones automáticas activas, se crea la devolución total; también se devuelven cupones y puntos usados. Los pedidos pendientes se rechazan con /reject. Si Justo gestiona el despacho, primero hay que cancelar el despacho.",
         "parameters": [
           {
@@ -12740,7 +12740,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12759,7 +12759,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12792,7 +12792,7 @@
     },
     "/ecommerce/orders/{orderId}/deliver-at": {
       "post": {
-        "summary": "Change order delivery time",
+        "summary": "Cambiar hora de entrega del pedido",
         "description": "Cambia la fecha y hora comprometida de entrega o retiro del pedido. Si Justo gestiona el despacho, también se reprograma. Si el pedido está pendiente y la nueva hora es más de 90 minutos después de ahora, queda como pedido programado. No aplica a pedidos completados o cancelados.",
         "parameters": [
           {
@@ -12833,7 +12833,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12852,7 +12852,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12885,7 +12885,7 @@
     },
     "/ecommerce/stores/{storeId}/products/{productId}/out-of-stock": {
       "post": {
-        "summary": "Set product out of stock",
+        "summary": "Marcar producto sin stock",
         "parameters": [
           {
             "in": "path",
@@ -12944,7 +12944,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -12963,7 +12963,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -12996,7 +12996,7 @@
     },
     "/ecommerce/stores/{storeId}/modifier-options/{modifierOptionId}/out-of-stock": {
       "post": {
-        "summary": "Set modifier option out of stock",
+        "summary": "Marcar opción de modificador sin stock",
         "parameters": [
           {
             "in": "path",
@@ -13055,7 +13055,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13074,7 +13074,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13107,7 +13107,7 @@
     },
     "/ecommerce/reviews": {
       "get": {
-        "summary": "List order reviews",
+        "summary": "Listar reseñas de pedidos",
         "description": "Lista las valoraciones de pedidos ecommerce de la marca autorizada: nota de la comida, nota del delivery, NPS, motivos, comentarios y preguntas personalizadas. Se ordenan de la más reciente a la más antigua. La data siempre queda limitada a la marca y a los locales de la autorización.",
         "parameters": [
           {
@@ -13165,7 +13165,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13209,7 +13209,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13242,10 +13242,10 @@
     },
     "/ecommerce/stores": {
       "get": {
-        "summary": "List stores",
+        "summary": "Listar locales",
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13267,7 +13267,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13312,7 +13312,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13331,7 +13331,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13364,7 +13364,7 @@
     },
     "/ecommerce/stores/{storeId}": {
       "get": {
-        "summary": "Store",
+        "summary": "Consultar local",
         "parameters": [
           {
             "in": "path",
@@ -13378,7 +13378,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13397,7 +13397,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13453,7 +13453,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13472,7 +13472,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13518,7 +13518,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13537,7 +13537,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13570,7 +13570,7 @@
     },
     "/ecommerce/stores/{storeId}/temporary-close": {
       "post": {
-        "summary": "Temporarily close store",
+        "summary": "Cerrar local temporalmente",
         "parameters": [
           {
             "in": "path",
@@ -13601,7 +13601,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13620,7 +13620,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13653,7 +13653,7 @@
     },
     "/ecommerce/stores/{storeId}/current-preparation-duration": {
       "post": {
-        "summary": "Update current preparation duration",
+        "summary": "Actualizar tiempo de preparación actual",
         "parameters": [
           {
             "in": "path",
@@ -13687,7 +13687,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13706,7 +13706,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13739,7 +13739,7 @@
     },
     "/ecommerce/stores/{storeId}/schedule": {
       "patch": {
-        "summary": "Update store schedule",
+        "summary": "Actualizar horario del local",
         "description": "Actualiza el horario del local: horario semanal, días cerrados y horarios especiales por fecha. Cada campo enviado reemplaza la lista guardada; los omitidos se conservan. Consulta el horario actual con GET /ecommerce/stores/{storeId}. Los cambios aplican de inmediato en la tienda y quedan registrados en el historial del local.",
         "parameters": [
           {
@@ -13764,7 +13764,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13783,7 +13783,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13816,7 +13816,7 @@
     },
     "/ecommerce/stores/{storeId}/out-of-stock": {
       "get": {
-        "summary": "List out of stock items",
+        "summary": "Listar productos sin stock",
         "description": "Lista los productos y opciones de modificador agotados en el local. Para reactivarlos, usa los endpoints out-of-stock del producto o de la opción con outOfStock false.",
         "parameters": [
           {
@@ -13831,7 +13831,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13853,7 +13853,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13901,7 +13901,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13923,7 +13923,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13979,7 +13979,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13998,7 +13998,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14065,7 +14065,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14084,7 +14084,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14139,7 +14139,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14164,7 +14164,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14212,7 +14212,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14234,7 +14234,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14290,7 +14290,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14309,7 +14309,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14376,7 +14376,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14395,7 +14395,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14450,7 +14450,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14475,7 +14475,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14523,7 +14523,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14545,7 +14545,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14601,7 +14601,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14620,7 +14620,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14687,7 +14687,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14706,7 +14706,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14761,7 +14761,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14786,7 +14786,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14834,7 +14834,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14853,7 +14853,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14911,7 +14911,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -14936,7 +14936,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -14994,7 +14994,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15019,7 +15019,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15077,7 +15077,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15102,7 +15102,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15160,7 +15160,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15185,7 +15185,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15223,7 +15223,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15260,7 +15260,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15306,7 +15306,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15340,7 +15340,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15388,7 +15388,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15422,7 +15422,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15478,7 +15478,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15512,7 +15512,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15558,7 +15558,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15592,7 +15592,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15630,7 +15630,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15667,7 +15667,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15713,7 +15713,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15747,7 +15747,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15795,7 +15795,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15829,7 +15829,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15885,7 +15885,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15919,7 +15919,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -15965,7 +15965,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -15999,7 +15999,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16037,7 +16037,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16074,7 +16074,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16120,7 +16120,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16154,7 +16154,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16202,7 +16202,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16236,7 +16236,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16292,7 +16292,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16326,7 +16326,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16382,7 +16382,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16416,7 +16416,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16454,7 +16454,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16491,7 +16491,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16537,7 +16537,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16571,7 +16571,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16619,7 +16619,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16653,7 +16653,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16709,7 +16709,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16743,7 +16743,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16789,7 +16789,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16823,7 +16823,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16861,7 +16861,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16898,7 +16898,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -16944,7 +16944,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -16978,7 +16978,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17026,7 +17026,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17060,7 +17060,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17116,7 +17116,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17150,7 +17150,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17196,7 +17196,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17230,7 +17230,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17278,7 +17278,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17315,7 +17315,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17371,7 +17371,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17405,7 +17405,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17462,7 +17462,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17496,7 +17496,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17561,7 +17561,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17595,7 +17595,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17650,7 +17650,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17684,7 +17684,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17732,7 +17732,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17766,7 +17766,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17814,7 +17814,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17848,7 +17848,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17886,7 +17886,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -17923,7 +17923,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -17981,7 +17981,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18015,7 +18015,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18072,7 +18072,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18106,7 +18106,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18171,7 +18171,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18205,7 +18205,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18262,7 +18262,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18296,7 +18296,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18354,7 +18354,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18388,7 +18388,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18445,7 +18445,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18479,7 +18479,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18544,7 +18544,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18578,7 +18578,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18635,7 +18635,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18669,7 +18669,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18727,7 +18727,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18761,7 +18761,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18818,7 +18818,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18852,7 +18852,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -18917,7 +18917,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -18951,7 +18951,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19008,7 +19008,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19042,7 +19042,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19122,7 +19122,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19159,7 +19159,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19215,7 +19215,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19249,7 +19249,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19306,7 +19306,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19340,7 +19340,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19405,7 +19405,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19439,7 +19439,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19496,7 +19496,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19530,7 +19530,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19587,7 +19587,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19621,7 +19621,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19679,7 +19679,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -19713,7 +19713,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -19750,7 +19750,7 @@
           "Ordering API"
         ],
         "operationId": "orderingMarketplaceRecommendations",
-        "summary": "List marketplace recommendations",
+        "summary": "Listar recomendaciones del marketplace",
         "description": "Lista restaurantes recomendados usando la dirección seleccionada del customer.",
         "security": [
           {
@@ -19779,7 +19779,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List marketplace recommendations",
+            "description": "Listar recomendaciones del marketplace",
             "content": {
               "application/json": {
                 "schema": {
@@ -19805,13 +19805,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -19822,7 +19822,7 @@
           "Ordering API"
         ],
         "operationId": "orderingMarketplaceSearch",
-        "summary": "Search marketplace restaurants",
+        "summary": "Buscar restaurantes en el marketplace",
         "description": "Busca restaurantes marketplace usando la dirección seleccionada del customer.",
         "security": [
           {
@@ -19869,7 +19869,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Search marketplace restaurants",
+            "description": "Buscar restaurantes en el marketplace",
             "content": {
               "application/json": {
                 "schema": {
@@ -19891,13 +19891,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -19908,7 +19908,7 @@
           "Ordering API"
         ],
         "operationId": "orderingGetWebsite",
-        "summary": "Get website data",
+        "summary": "Obtener datos del sitio",
         "description": "Obtiene datos públicos del website, incluyendo el menú por defecto.",
         "security": [
           {
@@ -19937,7 +19937,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get website data",
+            "description": "Obtener datos del sitio",
             "content": {
               "application/json": {
                 "schema": {
@@ -19959,13 +19959,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -19976,7 +19976,7 @@
           "Ordering API"
         ],
         "operationId": "orderingListWebsiteProducts",
-        "summary": "List website products",
+        "summary": "Listar productos del sitio",
         "description": "Lista productos, categorías y árbol usando el menú guardado en preferences.",
         "security": [
           {
@@ -20005,7 +20005,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List website products",
+            "description": "Listar productos del sitio",
             "content": {
               "application/json": {
                 "schema": {
@@ -20027,13 +20027,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20044,7 +20044,7 @@
           "Ordering API"
         ],
         "operationId": "orderingSearchWebsiteProducts",
-        "summary": "Search website products",
+        "summary": "Buscar productos del sitio",
         "description": "Busca productos usando el menú guardado en preferences del customer.",
         "security": [
           {
@@ -20082,7 +20082,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Search website products",
+            "description": "Buscar productos del sitio",
             "content": {
               "application/json": {
                 "schema": {
@@ -20104,13 +20104,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20121,7 +20121,7 @@
           "Ordering API"
         ],
         "operationId": "orderingGetWebsiteProduct",
-        "summary": "Get website product",
+        "summary": "Obtener producto del sitio",
         "description": "Obtiene el detalle de un producto, incluyendo disponibilidad y modificadores.",
         "security": [
           {
@@ -20159,7 +20159,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get website product",
+            "description": "Obtener producto del sitio",
             "content": {
               "application/json": {
                 "schema": {
@@ -20181,13 +20181,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20198,7 +20198,7 @@
           "Ordering API"
         ],
         "operationId": "orderingGetCustomer",
-        "summary": "Get ordering customer",
+        "summary": "Obtener cliente",
         "description": "Obtiene el customer propio de la app autenticada.",
         "security": [
           {
@@ -20218,7 +20218,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get ordering customer",
+            "description": "Obtener cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -20240,13 +20240,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       },
@@ -20255,7 +20255,7 @@
           "Ordering API"
         ],
         "operationId": "orderingUpsertCustomer",
-        "summary": "Create or update ordering customer",
+        "summary": "Crear o actualizar cliente",
         "description": "Crea o actualiza el customer propio de la app autenticada.",
         "security": [
           {
@@ -20286,7 +20286,7 @@
         },
         "responses": {
           "200": {
-            "description": "Create or update ordering customer",
+            "description": "Crear o actualizar cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -20308,13 +20308,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20325,7 +20325,7 @@
           "Ordering API"
         ],
         "operationId": "orderingListCustomerAddresses",
-        "summary": "List customer addresses",
+        "summary": "Listar direcciones del cliente",
         "description": "Lista direcciones reutilizables del customer en todos los websites.",
         "security": [
           {
@@ -20345,7 +20345,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List customer addresses",
+            "description": "Listar direcciones del cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -20371,13 +20371,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       },
@@ -20386,7 +20386,7 @@
           "Ordering API"
         ],
         "operationId": "orderingCreateCustomerAddress",
-        "summary": "Create customer address",
+        "summary": "Crear dirección del cliente",
         "description": "Crea una dirección reutilizable para el customer.",
         "security": [
           {
@@ -20417,7 +20417,7 @@
         },
         "responses": {
           "200": {
-            "description": "Create customer address",
+            "description": "Crear dirección del cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -20439,13 +20439,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20456,7 +20456,7 @@
           "Ordering API"
         ],
         "operationId": "orderingDeleteCustomerAddress",
-        "summary": "Delete customer address",
+        "summary": "Eliminar dirección del cliente",
         "description": "Elimina una dirección del customer.",
         "security": [
           {
@@ -20485,7 +20485,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete customer address",
+            "description": "Eliminar dirección del cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -20507,13 +20507,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20524,7 +20524,7 @@
           "Ordering API"
         ],
         "operationId": "orderingGetSelectedAddress",
-        "summary": "Get selected address",
+        "summary": "Obtener dirección seleccionada",
         "description": "Obtiene la dirección seleccionada globalmente para el customer.",
         "security": [
           {
@@ -20544,7 +20544,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get selected address",
+            "description": "Obtener dirección seleccionada",
             "content": {
               "application/json": {
                 "schema": {
@@ -20573,13 +20573,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       },
@@ -20588,7 +20588,7 @@
           "Ordering API"
         ],
         "operationId": "orderingSetSelectedAddress",
-        "summary": "Set selected address",
+        "summary": "Seleccionar dirección",
         "description": "Selecciona una dirección global del customer para reutilizarla en websites.",
         "security": [
           {
@@ -20619,7 +20619,7 @@
         },
         "responses": {
           "200": {
-            "description": "Set selected address",
+            "description": "Seleccionar dirección",
             "content": {
               "application/json": {
                 "schema": {
@@ -20641,13 +20641,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20658,7 +20658,7 @@
           "Ordering API"
         ],
         "operationId": "orderingGetCart",
-        "summary": "Get cart state",
+        "summary": "Obtener estado del carrito",
         "description": "Obtiene preferencias, dirección, local, horarios, medios de pago, términos publicados y carrito calculado. El integrador debe pedir aceptación de los términos antes de iniciar el flujo de compra.",
         "security": [
           {
@@ -20687,7 +20687,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get cart state",
+            "description": "Obtener estado del carrito",
             "content": {
               "application/json": {
                 "schema": {
@@ -20709,13 +20709,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20726,7 +20726,7 @@
           "Ordering API"
         ],
         "operationId": "orderingAddCartItem",
-        "summary": "Add cart item",
+        "summary": "Agregar producto al carrito",
         "description": "Agrega un producto al carrito del customer para el website.",
         "security": [
           {
@@ -20766,7 +20766,7 @@
         },
         "responses": {
           "200": {
-            "description": "Add cart item",
+            "description": "Agregar producto al carrito",
             "content": {
               "application/json": {
                 "schema": {
@@ -20788,13 +20788,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20805,7 +20805,7 @@
           "Ordering API"
         ],
         "operationId": "orderingUpdateCartItem",
-        "summary": "Update cart item",
+        "summary": "Actualizar producto del carrito",
         "description": "Actualiza cantidad, modificadores o comentario de un item del carrito. Si cambian comentario o modificadores, el cartItemId puede cambiar; usa el item retornado en la respuesta.",
         "security": [
           {
@@ -20854,7 +20854,7 @@
         },
         "responses": {
           "200": {
-            "description": "Update cart item",
+            "description": "Actualizar producto del carrito",
             "content": {
               "application/json": {
                 "schema": {
@@ -20876,13 +20876,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       },
@@ -20891,7 +20891,7 @@
           "Ordering API"
         ],
         "operationId": "orderingDeleteCartItem",
-        "summary": "Delete cart item",
+        "summary": "Eliminar producto del carrito",
         "description": "Elimina un item del carrito.",
         "security": [
           {
@@ -20929,7 +20929,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete cart item",
+            "description": "Eliminar producto del carrito",
             "content": {
               "application/json": {
                 "schema": {
@@ -20951,13 +20951,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -20968,7 +20968,7 @@
           "Ordering API"
         ],
         "operationId": "orderingUpdateCartPreferences",
-        "summary": "Update cart preferences",
+        "summary": "Actualizar preferencias del carrito",
         "description": "Actualiza local, tipo de entrega, horario, medio de pago, cupón y opciones de checkout como billing. La aceptación de términos debe gestionarla el integrador antes del flujo de compra.",
         "security": [
           {
@@ -21008,7 +21008,7 @@
         },
         "responses": {
           "200": {
-            "description": "Update cart preferences",
+            "description": "Actualizar preferencias del carrito",
             "content": {
               "application/json": {
                 "schema": {
@@ -21030,13 +21030,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -21047,7 +21047,7 @@
           "Ordering API"
         ],
         "operationId": "orderingListCartStores",
-        "summary": "List cart stores",
+        "summary": "Listar locales disponibles para el carrito",
         "description": "Lista locales disponibles según website, dirección y tipo de entrega.",
         "security": [
           {
@@ -21076,7 +21076,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List cart stores",
+            "description": "Listar locales disponibles para el carrito",
             "content": {
               "application/json": {
                 "schema": {
@@ -21102,13 +21102,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -21119,7 +21119,7 @@
           "Ordering API"
         ],
         "operationId": "orderingCreateOrder",
-        "summary": "Create order",
+        "summary": "Crear pedido",
         "description": "Crea una orden marketplace para el customer y website usando el estado guardado por Ordering API. El único body param es idempotencyKey; local, entrega, horario y pago salen de OrderPreferences, y billing, propina, cashAmount, orderParams, gift y meta salen de PATCH /cart/preferences. Si el medio de pago es online (paymentTypeIsIntegration), la respuesta incluye paymentGatewayUrl para que el cliente complete el pago.",
         "security": [
           {
@@ -21159,7 +21159,7 @@
         },
         "responses": {
           "200": {
-            "description": "Create order",
+            "description": "Crear pedido",
             "content": {
               "application/json": {
                 "schema": {
@@ -21181,13 +21181,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -21198,7 +21198,7 @@
           "Ordering API"
         ],
         "operationId": "orderingListCustomerOrders",
-        "summary": "List customer orders",
+        "summary": "Listar pedidos del cliente",
         "description": "Lista órdenes creadas por la app autenticada para el customer.",
         "security": [
           {
@@ -21236,7 +21236,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List customer orders",
+            "description": "Listar pedidos del cliente",
             "content": {
               "application/json": {
                 "schema": {
@@ -21258,13 +21258,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -21275,7 +21275,7 @@
           "Ordering API"
         ],
         "operationId": "orderingGetOrder",
-        "summary": "Get order",
+        "summary": "Obtener pedido",
         "description": "Obtiene una orden creada por la app autenticada.",
         "security": [
           {
@@ -21295,7 +21295,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get order",
+            "description": "Obtener pedido",
             "content": {
               "application/json": {
                 "schema": {
@@ -21317,13 +21317,13 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Solicitud inválida"
           },
           "401": {
-            "description": "Invalid bearer token"
+            "description": "Token bearer inválido"
           },
           "404": {
-            "description": "Resource not found"
+            "description": "Recurso no encontrado"
           }
         }
       }
@@ -21422,7 +21422,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21442,7 +21442,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21491,7 +21491,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21511,7 +21511,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21598,7 +21598,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21618,7 +21618,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21665,7 +21665,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21685,7 +21685,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21733,7 +21733,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21756,7 +21756,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21804,7 +21804,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21827,7 +21827,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21860,7 +21860,7 @@
     },
     "/royalty/coins-redeem-codes/{coinsRedeemCodeId}": {
       "get": {
-        "summary": "Redeem Code",
+        "summary": "Consultar código de canje",
         "parameters": [
           {
             "in": "path",
@@ -21873,7 +21873,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21892,7 +21892,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21923,7 +21923,7 @@
         }
       },
       "delete": {
-        "summary": "Redeem Code",
+        "summary": "Eliminar código de canje",
         "parameters": [
           {
             "in": "path",
@@ -21936,7 +21936,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -21955,7 +21955,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -21988,9 +21988,9 @@
     },
     "/royalty/coins-redeem-codes": {
       "post": {
-        "summary": "Redeem Code",
+        "summary": "Crear código de canje",
         "requestBody": {
-          "description": "Redeem Code Payload",
+          "description": "Datos del código de canje",
           "content": {
             "application/json": {
               "schema": {
@@ -22028,7 +22028,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -22047,7 +22047,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -23681,7 +23681,7 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "description": "JWT Token"
+        "description": "Token JWT"
       }
     },
     "schemas": {
@@ -24027,7 +24027,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Shift ID"
+            "description": "ID del turno"
           },
           "websiteId": {
             "type": "string",
@@ -24123,7 +24123,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Shift ID"
+            "description": "ID del turno"
           },
           "websiteId": {
             "type": "string",
@@ -42022,13 +42022,13 @@
             "oneOf": [
               {
                 "type": "string",
-                "description": "Payment method key asociado."
+                "description": "Key del método de pago asociado."
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Payment method key asociado."
+            "description": "Key del método de pago asociado."
           },
           "paymentType": {
             "oneOf": [

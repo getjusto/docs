@@ -9,7 +9,7 @@
       "post": {
         "summary": "Creada",
         "requestBody": {
-          "description": "Webhook Payload",
+          "description": "Payload del webhook",
           "content": {
             "application/json": {
               "schema": {
@@ -65,7 +65,7 @@
       "post": {
         "summary": "Lista para entrega",
         "requestBody": {
-          "description": "Webhook Payload",
+          "description": "Payload del webhook",
           "content": {
             "application/json": {
               "schema": {
@@ -121,7 +121,7 @@
       "post": {
         "summary": "Cerrada",
         "requestBody": {
-          "description": "Webhook Payload",
+          "description": "Payload del webhook",
           "content": {
             "application/json": {
               "schema": {
@@ -177,7 +177,7 @@
       "post": {
         "summary": "Pedido creado",
         "requestBody": {
-          "description": "Webhook Payload",
+          "description": "Payload del webhook",
           "content": {
             "application/json": {
               "schema": {
@@ -233,7 +233,7 @@
       "post": {
         "summary": "Estado de pedido actualizado",
         "requestBody": {
-          "description": "Webhook Payload",
+          "description": "Payload del webhook",
           "content": {
             "application/json": {
               "schema": {
@@ -346,7 +346,7 @@
       "post": {
         "summary": "Sincronización de saldo de cliente",
         "requestBody": {
-          "description": "Webhook Payload",
+          "description": "Payload del webhook",
           "content": {
             "application/json": {
               "schema": {
@@ -3030,7 +3030,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Shift ID"
+            "description": "ID del turno"
           },
           "websiteId": {
             "type": "string",
@@ -3126,7 +3126,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Shift ID"
+            "description": "ID del turno"
           },
           "websiteId": {
             "type": "string",

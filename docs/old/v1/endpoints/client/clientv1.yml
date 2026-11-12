@@ -43,7 +43,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/resultClient'
         '400':
-          description: Access token is missing or invalid 
+          description: Token de acceso ausente o inválido 
   /clients:
     post:
       tags:
@@ -97,7 +97,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/resultClient'
         '400':
-          description: Access token is missing or invalid 
+          description: Token de acceso ausente o inválido 
 
   /addPoints:
     post:
@@ -167,7 +167,7 @@ paths:
                             description: Teléfono del cliente.
                             example: "+573143015597"
         '400':
-          description: Access token is missing or invalid 
+          description: Token de acceso ausente o inválido 
 components:
   schemas:
     requiredemail:
