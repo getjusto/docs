@@ -10724,7 +10724,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10743,7 +10743,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -10791,7 +10791,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10810,7 +10810,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -10857,7 +10857,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -10876,7 +10876,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13312,7 +13312,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13331,7 +13331,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13453,7 +13453,7 @@
         },
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13472,7 +13472,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -13518,7 +13518,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The OpenAPI spec",
+            "description": "Respuesta exitosa",
             "content": {
               "application/json": {
                 "schema": {
@@ -13537,7 +13537,7 @@
             }
           },
           "400": {
-            "description": "Errors",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
