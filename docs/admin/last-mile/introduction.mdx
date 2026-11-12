@@ -129,7 +129,7 @@ Toda entrega de última milla tiene un código de entrega (`requiresDeliveryVeri
 
 ## Reintentos e idempotencia
 
-Crear la entrega es idempotente por cotización: si la respuesta no te llegó (timeout, error de red), reintenta con el mismo `quoteId` y los mismos datos, y recibirás la misma entrega, sin duplicarla. Si reintentas con otro `externalId` mientras la cotización se está aceptando, responde `409` con `bookingMismatch`. Si dos solicitudes con el mismo `quoteId` llegan a la vez, una crea la entrega y la otra responde `409` con `quoteBeingAccepted`; reintenta en unos segundos o consulta la cotización con [Obtener una cotización](/docs/admin/last-mile/get-quote). Si una creación quedó sin respuesta (timeout o error `500`), la cotización puede quedar en proceso hasta 5 minutos: después de eso, reintentar con el mismo `quoteId` devuelve la entrega si alcanzó a crearse, o la crea si no.
+Crear la entrega es idempotente por cotización: si la respuesta no te llegó (timeout, error de red), reintenta con el mismo `quoteId` y los mismos datos, y recibirás la misma entrega, sin duplicarla. Si reintentas con otro `externalId` u otro valor de `simulation` mientras la cotización se está aceptando, responde `409` con `bookingMismatch`. Si dos solicitudes con el mismo `quoteId` llegan a la vez, una crea la entrega y la otra responde `409` con `quoteBeingAccepted`; reintenta en unos segundos o consulta la cotización con [Obtener una cotización](/docs/admin/last-mile/get-quote). Si una creación quedó sin respuesta (timeout o error `500`), la cotización puede quedar en proceso hasta 5 minutos: después de eso, reintentar con el mismo `quoteId` devuelve la entrega si alcanzó a crearse, o la crea si no.
 
 Si la cotización venció, la creación responde `409` con `quoteExpired`. Pide una cotización nueva: el precio o la hora de retiro pueden haber cambiado.
 
@@ -163,11 +163,12 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | `quoteNotFound` | La cotización no existe o no es de tu cuenta. | Revisa el `quoteId`. |
 | `quoteExpired` | La cotización venció antes de aceptarla (`409`). | Pide una cotización nueva. |
 | `quoteBeingAccepted` | Otra solicitud está creando la entrega con la misma cotización (`409`). | Reintenta en unos segundos (hasta 5 minutos si la anterior quedó sin respuesta). |
-| `bookingMismatch` | Reintentaste con otro `externalId` mientras la cotización se estaba aceptando (`409`). | Reintenta con los mismos datos del primer intento. |
+| `bookingMismatch` | Reintentaste con otro `externalId` u otro valor de `simulation` mientras la cotización se estaba aceptando (`409`). | Reintenta con los mismos datos del primer intento. |
 | `externalIdAlreadyUsed` | El `externalId` ya se usó en una entrega creada desde otra cotización. | Usa un `externalId` distinto por envío. |
 | `storeAlreadyExists` | Ya tienes un local con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el local existente. |
 | `storeHasOpenDeliveries` | Intentaste eliminar un local con entregas en curso. | Espera a que terminen o cancélalas. |
 | `storeSells` | Intentaste eliminar por API un local que vende por delivery, retiro o consumo en el local. | Elimínalo desde el administrador. |
+| `invalidSimulation` | `simulation` trae un `scenario` o unos `timings` inválidos. El mensaje dice qué campo corregir. | Revisa los valores en [Probar la integración](/docs/admin/last-mile/test-deliveries). |
 | `simulationNotAllowed` | Enviaste `simulation` desde una cuenta activa. | Usa una cuenta de pruebas (ver [Probar la integración](/docs/admin/last-mile/test-deliveries)). |
 | `noPermissions` | La autorización no es de una marca, o está limitada a algunos locales e intentaste crear un local. | Usa una autorización de toda la cuenta. |
 

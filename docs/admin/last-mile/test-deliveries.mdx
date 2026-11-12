@@ -52,6 +52,8 @@ en una cuenta de pruebas.
 | `scenario` | Escenario de falla: `none` (por defecto), `driverCancels`, `notDelivered` o `returnToStore`. |
 | `timings` | Solo con `custom`. Segundos de cada paso (0 a 600): `acceptAfterSeconds`, `arriveAtPickupAfterSeconds`, `pickupAfterSeconds`, `arriveAtDropoffAfterSeconds` y `deliverAfterSeconds`. Lo que no envíes usa los tiempos de `auto`. |
 
+Si algún valor no es válido (un `scenario` que no existe, `timings` sin `mode: "custom"` o un tiempo fuera de rango), la creación responde `invalidSimulation` con el campo a corregir.
+
 No hay campo `group`: si Justo junta varios envíos de prueba en un mismo viaje, como haría con
 envíos reales, los lleva un mismo repartidor simulado.
 
