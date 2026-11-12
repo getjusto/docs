@@ -119,6 +119,10 @@ curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/deliveries \
   </Step>
 </Steps>
 
+## Probar sin repartidores reales
+
+Desde una cuenta de pruebas puedes crear envíos que atiende una flota simulada: recibes los mismos webhooks que con un envío real, sin cobro ni repartidores de verdad. Ver [Probar la integración](/docs/admin/last-mile/test-deliveries).
+
 ## Código de entrega
 
 Toda entrega de última milla tiene un código de entrega (`requiresDeliveryVerificationCode`). Al llegar al destino, el repartidor se lo pide a quien recibe y solo puede cerrar la entrega con el código correcto. Así el paquete se entrega a la persona que tiene el código. El código viene en la respuesta de [Crear un envío](/docs/admin/last-mile/create-delivery), en [Obtener una entrega](/docs/admin/delivery/get) y en el webhook [`deliveries.delivery.updated`](/docs/admin/last-mile/webhooks/delivery-updated). No lo compartas con el repartidor ni con el local.
@@ -163,6 +167,7 @@ Los errores responden con `success: false` y un objeto `error` con un código es
 | `storeAlreadyExists` | Ya tienes un local con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el local existente. |
 | `storeHasOpenDeliveries` | Intentaste eliminar un local con entregas en curso. | Espera a que terminen o cancélalas. |
 | `storeSells` | Intentaste eliminar por API un local que vende por delivery, retiro o consumo en el local. | Elimínalo desde el administrador. |
+| `simulationNotAllowed` | Enviaste `simulation` desde una cuenta activa. | Usa una cuenta de pruebas (ver [Probar la integración](/docs/admin/last-mile/test-deliveries)). |
 | `noPermissions` | La autorización no es de una marca, o está limitada a algunos locales e intentaste crear un local. | Usa una autorización de toda la cuenta. |
 
 Si tu cuenta usa saldo prepago y no alcanza para la entrega, o la cuenta tiene pagos pendientes, la creación de la entrega falla con un mensaje que explica cómo resolverlo.

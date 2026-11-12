@@ -513,7 +513,8 @@
 					"pages": [
 						"docs/admin/last-mile/quote",
 						"docs/admin/last-mile/get-quote",
-						"docs/admin/last-mile/create-delivery"
+						"docs/admin/last-mile/create-delivery",
+						"docs/admin/last-mile/test-deliveries"
 					]
 				},
 				{

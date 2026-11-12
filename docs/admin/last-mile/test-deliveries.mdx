@@ -1,0 +1,81 @@
+---
+title: "Probar la integración"
+description: "Crea envíos de prueba que atiende una flota de repartidores simulada"
+---
+
+Antes de despachar paquetes reales puedes probar tu integración de punta a punta: cotizar, crear
+la entrega, recibir los webhooks de cada cambio de estado y la ubicación del repartidor, y manejar
+los casos de falla. Para eso, al [crear el envío](/docs/admin/last-mile/create-delivery) agregas el
+campo `simulation`: la entrega se crea igual que una real, pero en vez de ofrecerse a repartidores de
+verdad la atiende una **flota simulada**.
+
+<Note>
+  Un envío de prueba nunca se cobra, no exige saldo prepago y nunca se ofrece a un repartidor real.
+  Las cotizaciones tampoco se cobran: puedes cotizar todo lo que necesites, con o sin simulación.
+</Note>
+
+## Qué necesitas
+
+- **Una cuenta de pruebas.** El modo simulación solo está disponible para cuentas que todavía no
+  están activas en Justo. Si tu cuenta ya opera, pide a tu contacto en Justo una **cuenta de
+  pruebas**: una cuenta inactiva con sus propios locales. Con una cuenta activa, `simulation`
+  responde `simulationNotAllowed`.
+- **Un token de esa cuenta** con el permiso `admin`, igual que en producción (ver
+  [Autenticación](/docs/main/authentication)).
+- **Un local de retiro** en la cuenta de pruebas. Lo creas con
+  [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store).
+- **El simulador encendido en la zona del local.** Justo lo habilita por zona; si no está encendido,
+  la entrega se queda buscando repartidor.
+
+## Cómo se pide
+
+Cotiza como siempre y, al crear el envío, agrega `simulation`:
+
+```bash
+curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/deliveries \
+  -H "Authorization: Bearer $JUSTO_TOKEN_PRUEBAS" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "quoteId": "lmq-6f3a91c2d4e8b7a1",
+    "receiver": {"name": "Camila Rojas", "phone": "+56912345678"},
+    "simulation": {"mode": "auto"}
+  }'
+```
+
+La respuesta es la de un envío real: la cotización aceptada en `quote` y la entrega en `delivery`,
+con `isDev: true` y el objeto `simulation` que pediste. Sin `simulation` el envío es real, también
+en una cuenta de pruebas.
+
+| Campo | Qué hace |
+| --- | --- |
+| `mode` | `auto` (tiempos por defecto) o `custom` (tú defines los tiempos en `timings`). Obligatorio. |
+| `scenario` | Escenario de falla: `none` (por defecto), `driverCancels`, `notDelivered` o `returnToStore`. |
+| `timings` | Solo con `custom`. Segundos de cada paso (0 a 600): `acceptAfterSeconds`, `arriveAtPickupAfterSeconds`, `pickupAfterSeconds`, `arriveAtDropoffAfterSeconds` y `deliverAfterSeconds`. Lo que no envíes usa los tiempos de `auto`. |
+
+No hay campo `group`: si Justo junta varios envíos de prueba en un mismo viaje, como haría con
+envíos reales, los lleva un mismo repartidor simulado.
+
+## Qué pasa después
+
+El repartidor simulado acepta, aparece cerca del local y avanza **en línea recta** reportando su
+GPS cada 30 segundos, retira, viaja hasta el cliente y entrega. Recibes los mismos webhooks
+[`deliveries.delivery.updated`](/docs/admin/last-mile/webhooks/delivery-updated) que con un envío
+real, con `isDev: true` para que los distingas. También puedes consultar el estado con
+[Obtener una entrega](/docs/admin/delivery/get) y cancelar con
+[Cancelar una entrega](/docs/admin/delivery/cancel).
+
+El repartidor simulado sale apenas creas la entrega, sin esperar la hora de retiro cotizada: así la
+prueba dura minutos, no horas. Con `mode: "auto"` un envío completo toma unos 4 a 6 minutos.
+
+Los escenarios de falla, los tiempos de cada paso y los límites de envíos simultáneos son los mismos
+de los [despachos de prueba](/docs/old/v2/endpoints/deliveries/testDispatches).
+
+## Recorrido sugerido
+
+1. Crea un local de retiro en tu cuenta de pruebas.
+2. Cotiza un envío y crea la entrega con `simulation: {"mode": "auto"}`. Revisa que lleguen los
+   webhooks `active`, `delivering` y `done`, con la ubicación del repartidor entre medio.
+3. Repite con `scenario: "driverCancels"`, `"notDelivered"` y `"returnToStore"`, y revisa que tu
+   sistema maneje cada caso.
+4. Cancela un envío de prueba en curso con [Cancelar una entrega](/docs/admin/delivery/cancel).
+5. Cuando todo funcione, usa el token de tu cuenta real y quita `simulation`.
