@@ -54,9 +54,6 @@ en una cuenta de pruebas.
 
 Si algún valor no es válido (un `scenario` que no existe, `timings` sin `mode: "custom"` o un tiempo fuera de rango), la creación responde `invalidSimulation` con el campo a corregir.
 
-No hay campo `group`: si Justo junta varios envíos de prueba en un mismo viaje, como haría con
-envíos reales, los lleva un mismo repartidor simulado.
-
 ## Qué pasa después
 
 El repartidor simulado acepta, aparece cerca del local y avanza **en línea recta** reportando su
@@ -72,7 +69,7 @@ El repartidor simulado sale apenas creas la entrega, sin esperar la hora de reti
 prueba dura minutos, no horas. Con `mode: "auto"` un envío completo toma unos 4 a 6 minutos.
 
 Los escenarios de falla, los tiempos de cada paso y los límites de envíos simultáneos son los mismos
-de los [despachos de prueba](/docs/old/v2/endpoints/deliveries/testDispatches).
+de los [despachos de prueba](/docs/admin/delivery/test-dispatches).
 
 ## Recorrido sugerido
 

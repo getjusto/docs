@@ -34819,7 +34819,7 @@
               "mode"
             ],
             "additionalProperties": false,
-            "description": "Entrega de prueba atendida por la flota simulada de Justo: no se ofrece a repartidores reales ni se cobra, y dispara los mismos webhooks que una entrega real. Solo está disponible para marcas que todavía no están activas; si tu marca ya opera, pide a Justo un website de pruebas (si no, responde `simulationNotAllowed`). Si Justo junta varias entregas de prueba en un mismo viaje, las lleva un mismo repartidor simulado. El simulador se habilita por zona.",
+            "description": "Entrega de prueba atendida por la flota simulada de Justo: no se ofrece a repartidores reales ni se cobra, y dispara los mismos webhooks que una entrega real. Solo está disponible para cuentas que todavía no están activas; si tu cuenta ya opera, pide a Justo una cuenta de pruebas (si no, responde `simulationNotAllowed`). Justo habilita el simulador por zona.",
             "properties": {
               "mode": {
                 "type": "string",
