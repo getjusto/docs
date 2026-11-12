@@ -34812,6 +34812,65 @@
           "externalId": {
             "type": "string",
             "description": "Tu identificador del envío. Reemplaza el enviado en la cotización."
+          },
+          "simulation": {
+            "type": "object",
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": false,
+            "description": "Entrega de prueba atendida por la flota simulada de Justo: no se ofrece a repartidores reales ni se cobra, y dispara los mismos webhooks que una entrega real. Solo está disponible para cuentas que todavía no están activas; si tu cuenta ya opera, pide a Justo una cuenta de pruebas (si no, responde `simulationNotAllowed`). Justo habilita el simulador por zona.",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "custom"
+                ],
+                "description": "auto: un repartidor simulado acepta, viaja en línea recta reportando su GPS cada 30 segundos, retira y entrega por sí solo. custom: igual, con la duración de cada paso que envíes en timings."
+              },
+              "scenario": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "driverCancels",
+                  "notDelivered",
+                  "returnToStore"
+                ],
+                "description": "Escenario de falla. driverCancels: el repartidor libera la entrega antes de retirar y la toma otro. notDelivered: no se pudo entregar y se cierra como no entregada. returnToStore: no se pudo entregar y el paquete vuelve al local."
+              },
+              "timings": {
+                "type": "object",
+                "description": "Solo con mode custom. Segundos de cada paso (0 a 600); lo que no envíes usa los tiempos de auto.",
+                "properties": {
+                  "acceptAfterSeconds": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 600
+                  },
+                  "arriveAtPickupAfterSeconds": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 600
+                  },
+                  "pickupAfterSeconds": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 600
+                  },
+                  "arriveAtDropoffAfterSeconds": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 600
+                  },
+                  "deliverAfterSeconds": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 600
+                  }
+                }
+              }
+            }
           }
         },
         "example": {
