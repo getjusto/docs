@@ -455,6 +455,9 @@
 					"pages": [
 						"docs/ecommerce/endpoints/stores/list-stores",
 						"docs/ecommerce/endpoints/stores/get-store",
+						"docs/ecommerce/endpoints/stores/create-store",
+						"docs/ecommerce/endpoints/stores/update-store",
+						"docs/ecommerce/endpoints/stores/delete-store",
 						"docs/ecommerce/endpoints/stores/temporary-close-store",
 						"docs/ecommerce/endpoints/stores/update-current-preparation-duration",
 						"docs/ecommerce/endpoints/stores/update-store-schedule"
@@ -497,6 +500,27 @@
 						"docs/admin/delivery/create",
 						"docs/admin/delivery/test-dispatches",
 						"docs/admin/delivery/cancel"
+					]
+				}
+			]
+		},
+		{
+			"group": "Última milla",
+			"version": "v3",
+			"pages": [
+				"docs/admin/last-mile/introduction",
+				{
+					"group": "Envíos",
+					"pages": [
+						"docs/admin/last-mile/quote",
+						"docs/admin/last-mile/get-quote",
+						"docs/admin/last-mile/create-delivery"
+					]
+				},
+				{
+					"group": "Webhooks",
+					"pages": [
+						"docs/admin/last-mile/webhooks/delivery-updated"
 					]
 				}
 			]

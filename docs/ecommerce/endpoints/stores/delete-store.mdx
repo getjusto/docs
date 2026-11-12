@@ -1,0 +1,8 @@
+---
+title: "Eliminar un local de retiro"
+openapi: delete /ecommerce/stores/{storeId}
+---
+
+Elimina un local creado con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store). Después de eliminarlo ya no se puede cotizar desde él, pero su historial de entregas se conserva.
+
+Solo se pueden eliminar por API los locales que no venden: si el local vende por delivery, retiro o consumo en el local, responde `storeSells` y debes eliminarlo desde el administrador. Tampoco se puede eliminar mientras tenga entregas en curso (`storeHasOpenDeliveries`): espera a que terminen o cancélalas con [Cancelar una entrega](/docs/admin/delivery/cancel).

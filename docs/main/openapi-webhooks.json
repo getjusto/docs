@@ -280,6 +280,68 @@
         }
       }
     },
+    "/deliveries.delivery.updated": {
+      "post": {
+        "summary": "Entrega sin pedido actualizada",
+        "requestBody": {
+          "description": "Webhook Payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "El tipo de webhook.",
+                    "type": "string",
+                    "enum": [
+                      "deliveries.delivery.updated"
+                    ],
+                    "const": "deliveries.delivery.updated"
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "Se envía cuando una entrega sin pedido cambia de estado (asignada, en retiro, en camino, entregada o cancelada) o cuando cambia la información del repartidor. Las entregas creadas desde una cotización de última milla traen `lastMileQuoteId`. Dos eventos de la misma entrega pueden llegar desordenados (por ejemplo, `pending` y `canceled` al cancelar): quédate con el de `occurredAt` más reciente.",
+                    "properties": {
+                      "delivery": {
+                        "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+                      },
+                      "occurredAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Momento en que Justo registró este estado de la entrega. Úsalo para ordenar los eventos de una misma entrega y descartar los que lleguen atrasados."
+                      }
+                    }
+                  },
+                  "websiteId": {
+                    "type": "string",
+                    "description": "ID de la marca."
+                  },
+                  "storeId": {
+                    "type": "string",
+                    "description": "ID del local."
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "format": "date-time",
+                    "description": "Fecha en que se generó el evento."
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "description": "ID único del evento."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/client.balance.syncClientBalance": {
       "post": {
         "summary": "Sincronización de saldo de cliente",
@@ -4246,6 +4308,131 @@
             "description": "Lista de ingredientes incluidos en la merma."
           }
         }
+      },
+      "tabsStockRoomTransfer": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID de la transferencia."
+          },
+          "storeId": {
+            "type": "string",
+            "description": "ID del local."
+          },
+          "code": {
+            "type": "string",
+            "description": "Código de la transferencia."
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de creación."
+          },
+          "comments": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Comentario de la transferencia."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "completed"
+            ],
+            "description": "Estado de la transferencia. Solo completed confirma ambos movimientos."
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredientId": {
+                  "type": "string"
+                },
+                "ingredientName": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "unitOfMeasurement": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "fromStockRoomId": {
+                  "type": "string"
+                },
+                "toStockRoomId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ingredientId",
+                "quantity",
+                "fromStockRoomId",
+                "toStockRoomId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "storeId",
+          "code",
+          "date",
+          "status",
+          "ingredients"
+        ]
+      },
+      "tabsCreateStockRoomTransferInput": {
+        "type": "object",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "ingredients": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredientId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "fromStockRoomId": {
+                  "type": "string"
+                },
+                "toStockRoomId": {
+                  "type": "string"
+                },
+                "conversionName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ingredientId",
+                "quantity",
+                "fromStockRoomId",
+                "toStockRoomId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ingredients"
+        ]
       },
       "tabsCreateTabInput": {
         "type": "object",
@@ -13255,6 +13442,436 @@
           "force": false
         }
       },
+      "apiLastMileAddressInput": {
+        "type": "object",
+        "description": "Dirección. Puedes mandarla en una sola línea (`line`, por ejemplo \"Av. Providencia 1234, depto 501, Providencia\") o por campos. Las coordenadas son opcionales: si no vienen, Justo ubica la dirección. Si no la puede ubicar con certeza, la cotización responde `addressNotFound`.",
+        "required": [
+          "countryCode"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "line": {
+            "type": "string",
+            "description": "Dirección completa en una línea: calle, número, unidad y comuna."
+          },
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y número. Obligatorio si no envías `line`."
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina, piso o block."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Comuna, localidad o municipio."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región, estado o departamento."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Código postal."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "País en ISO 3166-1 alfa-2 (CL, CO, MX, PE…)."
+          },
+          "location": {
+            "type": "object",
+            "required": [
+              "lat",
+              "lng"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud.",
+                "example": -33.4290115
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud.",
+                "example": -70.6211027
+              }
+            },
+            "description": "Coordenadas, si ya las tienes. Se usan tal cual, sin geocodificar."
+          }
+        },
+        "example": {
+          "line": "Av. Apoquindo 4500, Las Condes",
+          "countryCode": "CL"
+        }
+      },
+      "apiLastMileAddress": {
+        "type": "object",
+        "properties": {
+          "streetAddress": {
+            "type": "string",
+            "description": "Calle y número."
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento, oficina, piso o block."
+          },
+          "locality": {
+            "type": "string",
+            "description": "Comuna o localidad."
+          },
+          "region": {
+            "type": "string",
+            "description": "Región o estado."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "País en ISO 3166-1 alfa-2."
+          },
+          "location": {
+            "type": "object",
+            "required": [
+              "lat",
+              "lng"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "lat": {
+                "type": "number",
+                "description": "Latitud.",
+                "example": -33.4290115
+              },
+              "lng": {
+                "type": "number",
+                "description": "Longitud.",
+                "example": -70.6211027
+              }
+            },
+            "description": "Coordenadas usadas para la distancia y el precio."
+          }
+        }
+      },
+      "apiLastMilePackage": {
+        "type": "object",
+        "description": "Paquete a despachar. Según su peso y sus medidas, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete necesita un auto, el local debe tener `acceptsCar: true` y el precio incluye un recargo fijo por auto.",
+        "required": [
+          "weightKg",
+          "lengthCm",
+          "widthCm",
+          "heightCm",
+          "valueAmount"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "weightKg": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Peso en kilos."
+          },
+          "lengthCm": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Largo en centímetros."
+          },
+          "widthCm": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Ancho en centímetros."
+          },
+          "heightCm": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Alto en centímetros."
+          },
+          "valueAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Valor declarado del contenido, en la moneda del país del local."
+          },
+          "description": {
+            "type": "string",
+            "description": "Qué contiene, por ejemplo \"Caja de chocolates\"."
+          }
+        },
+        "example": {
+          "weightKg": 1.2,
+          "lengthCm": 30,
+          "widthCm": 20,
+          "heightCm": 10,
+          "valueAmount": 25990
+        }
+      },
+      "apiLastMileQuoteInput": {
+        "type": "object",
+        "required": [
+          "toAddress",
+          "package"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "storeId": {
+            "type": "string",
+            "description": "Local desde donde sale el paquete (ID Justo o tu externalId). Ver GET /stores y POST /stores."
+          },
+          "storeIds": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string"
+            },
+            "description": "Varios locales candidatos (por ejemplo, los que tienen stock). Justo cotiza desde el más cercano al destino que esté abierto para el retiro, según el horario del local (PATCH /ecommerce/stores/{storeId}/schedule). Sin storeId ni storeIds, considera todos los locales de la cuenta que piden despachos."
+          },
+          "toAddress": {
+            "$ref": "#/components/schemas/apiLastMileAddressInput"
+          },
+          "package": {
+            "$ref": "#/components/schemas/apiLastMilePackage"
+          },
+          "pickupAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Desde cuándo el paquete está listo para retirarse. Si no lo envías, desde ahora."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Tu identificador del envío. Se copia a la entrega y evita duplicados si reintentas la creación."
+          }
+        },
+        "example": {
+          "storeIds": [
+            "bodega-providencia",
+            "bodega-las-condes"
+          ],
+          "toAddress": {
+            "line": "Av. Apoquindo 4500, depto 1203, Las Condes",
+            "countryCode": "CL"
+          },
+          "package": {
+            "weightKg": 1.2,
+            "lengthCm": 30,
+            "widthCm": 20,
+            "heightCm": 10,
+            "valueAmount": 25990
+          },
+          "pickupAt": "2026-11-03T13:00:00.000Z",
+          "externalId": "FL-000123"
+        }
+      },
+      "apiLastMileQuote": {
+        "type": "object",
+        "description": "Cotización guardada. Garantiza el precio y la hora de retiro hasta `expiresAt`. Para crear la entrega envía su `id` a POST /last-mile/deliveries antes de que venza.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID de la cotización.",
+            "example": "lmq-0193..."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "accepting",
+              "accepted",
+              "expired"
+            ],
+            "description": "`open`: se puede aceptar. `accepting`: se está creando la entrega. `accepted`: ya tiene entrega (`deliveryId`). `expired`: venció sin aceptarse."
+          },
+          "expiresAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Hasta cuándo se puede aceptar."
+          },
+          "pickupAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Hora de retiro que Justo asegura, en el local y dentro de su horario. Si cotizaste sin `pickupAt` y aceptas varios minutos después, se corre en la misma medida: la hora definitiva viene al crear la entrega."
+          },
+          "estimatedDeliveryAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Hora estimada de entrega en el destino."
+          },
+          "store": {
+            "type": "object",
+            "description": "Local elegido: el más cercano al destino entre los candidatos abiertos.",
+            "properties": {
+              "storeId": {
+                "type": "string",
+                "description": "ID Justo del local."
+              },
+              "name": {
+                "type": "string",
+                "description": "Nombre del local."
+              }
+            }
+          },
+          "fromAddress": {
+            "$ref": "#/components/schemas/apiLastMileAddress"
+          },
+          "toAddress": {
+            "$ref": "#/components/schemas/apiLastMileAddress"
+          },
+          "package": {
+            "$ref": "#/components/schemas/apiLastMilePackage"
+          },
+          "vehicleType": {
+            "type": "string",
+            "enum": [
+              "moto",
+              "car"
+            ],
+            "description": "Tipo de vehículo que puede transportar el paquete."
+          },
+          "distanceMeters": {
+            "type": "integer",
+            "description": "Distancia por calle del local al destino."
+          },
+          "price": {
+            "type": "number",
+            "description": "Precio sin impuestos. Si el paquete necesita auto, incluye el recargo fijo por auto."
+          },
+          "priceWithTax": {
+            "type": "number",
+            "description": "Precio con impuestos: lo que se factura."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Moneda (CLP, COP, MXN, PEN…)."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Tu identificador del envío."
+          },
+          "deliveryId": {
+            "type": "string",
+            "description": "Entrega creada desde esta cotización."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-01-01T00:00:00.000Z",
+            "format": "date-time",
+            "description": "Fecha de la cotización."
+          }
+        }
+      },
+      "apiLastMileDeliveryInput": {
+        "type": "object",
+        "required": [
+          "quoteId",
+          "receiver"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "quoteId": {
+            "type": "string",
+            "description": "ID de una cotización vigente (POST /last-mile/quotes)."
+          },
+          "receiver": {
+            "type": "object",
+            "required": [
+              "name",
+              "phone"
+            ],
+            "additionalProperties": false,
+            "description": "Quién recibe el paquete.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Nombre."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Teléfono con código de país, por ejemplo +56912345678."
+              }
+            }
+          },
+          "sender": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Contacto en el local. Por defecto, el nombre y el teléfono del local.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Nombre."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Teléfono con código de país."
+              }
+            }
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Indicaciones para el repartidor."
+          },
+          "extendedAddress": {
+            "type": "string",
+            "description": "Departamento u oficina, si no venía en la dirección cotizada."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Tu identificador del envío. Reemplaza el enviado en la cotización."
+          }
+        },
+        "example": {
+          "quoteId": "lmq-0193...",
+          "receiver": {
+            "name": "Camila Rojas",
+            "phone": "+56912345678"
+          },
+          "instructions": "Dejar en conserjería"
+        }
+      },
+      "apiLastMileDeliveryResult": {
+        "type": "object",
+        "properties": {
+          "quote": {
+            "$ref": "#/components/schemas/apiLastMileQuote"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/apiDeliveryWithoutOrder"
+          }
+        }
+      },
+      "apiStoreInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre del local. Único en tu cuenta."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Tu identificador del local. Sirve como storeId en el resto de la API."
+          },
+          "phone": {
+            "type": "string",
+            "description": "Teléfono de contacto para el repartidor."
+          },
+          "acceptsCar": {
+            "type": "boolean",
+            "description": "Permite que Justo envíe un repartidor en auto a este local. Actívalo si despachas paquetes que no caben en una moto: sin él, esos paquetes no se pueden cotizar (`vehicleNotAvailable`). Por defecto false."
+          },
+          "address": {
+            "$ref": "#/components/schemas/apiLastMileAddressInput"
+          }
+        },
+        "example": {
+          "name": "Bodega Providencia",
+          "externalId": "bodega-providencia",
+          "phone": "+56222222222",
+          "acceptsCar": true,
+          "address": {
+            "line": "Av. Providencia 1234, Providencia",
+            "countryCode": "CL"
+          }
+        }
+      },
       "apiMenuEntityCreateInput": {
         "type": "object",
         "additionalProperties": false,
@@ -15236,6 +15853,14 @@
           "trackingURL": {
             "type": "string",
             "description": "URL de tracking público de la entrega."
+          },
+          "requiresDeliveryVerificationCode": {
+            "type": "string",
+            "description": "Código de entrega que el destinatario debe decirle al repartidor para que pueda cerrar la entrega. Las entregas de última milla siempre lo traen: entrégaselo a tu cliente."
+          },
+          "lastMileQuoteId": {
+            "type": "string",
+            "description": "ID de la cotización de última milla desde la que se creó la entrega (POST /last-mile/deliveries)."
           },
           "createdAt": {
             "type": "string",

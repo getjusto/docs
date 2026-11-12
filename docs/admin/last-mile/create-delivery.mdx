@@ -1,0 +1,10 @@
+---
+title: "Crear un envío"
+openapi: post /admin/last-mile/deliveries
+---
+
+Acepta una cotización vigente y crea la entrega con el precio y la hora de retiro cotizados, sin recalcular nada. Envía el `quoteId` y los datos de quien recibe en `receiver` (nombre y teléfono con código de país). El contacto en el local de retiro (`sender`) usa por defecto el nombre y el teléfono del local.
+
+La entrega se cobra a tu cuenta de integrador. Si tu cuenta usa saldo prepago, debe alcanzar para cubrirla. La respuesta incluye la cotización aceptada en `quote` (con `status: "accepted"`, el `deliveryId` y la hora de retiro definitiva) y la entrega en `delivery`, con el mismo formato que [Obtener una entrega](/docs/admin/delivery/get). La entrega trae el código de entrega (`requiresDeliveryVerificationCode`) que tu cliente debe decirle al repartidor para recibir el paquete: entrégaselo.
+
+Puedes reintentar sin riesgo con los mismos datos: la misma cotización siempre devuelve la misma entrega. Si reintentas con otro `externalId` mientras la cotización se está aceptando, responde `409` con `bookingMismatch`. Si la cotización venció responde `409` con `quoteExpired`, y si otra solicitud la está aceptando en ese momento, `409` con `quoteBeingAccepted`. Para seguir la entrega usa [Obtener una entrega](/docs/admin/delivery/get), el webhook [`deliveries.delivery.updated`](/docs/admin/last-mile/webhooks/delivery-updated) y [Cancelar una entrega](/docs/admin/delivery/cancel).

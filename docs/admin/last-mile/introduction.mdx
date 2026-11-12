@@ -1,0 +1,229 @@
+---
+title: Última milla
+description: 'Pide la flota de Justo para despachar paquetes desde tus locales'
+---
+
+La API de última milla permite que un integrador (una plataforma logística, un agregador de flotas o una marca con bodegas propias) pida la flota de Justo para llevar paquetes desde sus puntos de retiro hasta la dirección de sus clientes.
+
+El flujo tiene tres pasos: registras tus **locales de retiro**, **cotizas** cada envío y **creas la entrega** desde la cotización. Justo ubica la dirección, te asegura una hora de retiro y envía a un repartidor que pueda transportar el paquete. Las entregas se facturan a tu cuenta de integrador, no a las marcas o clientes que atiendes.
+
+Las cotizaciones y los envíos están bajo `https://api.service.getjusto.com/v3/admin/last-mile`; los locales se administran con los endpoints de [Locales](/docs/ecommerce/endpoints/stores/list-stores) (`/v3/ecommerce/stores`). Todos se autentican con el token de tu aplicación en el header `Authorization: Bearer <token>` (ver [Autenticación](/docs/main/authentication)). La autorización debe tener el permiso `admin` sobre tu cuenta de integrador.
+
+## Conceptos
+
+### Local
+
+Los paquetes salen desde los locales de tu cuenta, los mismos locales que usa el resto de Justo. Un local de retiro puede ser una bodega, una tienda o un centro de distribución. Lo creas con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store): queda habilitado solo para pedir despachos, con una dirección, un teléfono de contacto y la opción `acceptsCar`. Activa `acceptsCar` si despachas paquetes que no caben en una moto: permite que Justo envíe un repartidor en auto a ese local.
+
+Puedes identificar un local con el ID que le asigna Justo (`storeId`) o con tu propio identificador (`externalId`). Ambos sirven en cualquier parámetro `storeId` de la API.
+
+### Cotización
+
+Una cotización calcula el precio y la hora de retiro de un paquete desde uno de tus locales hasta una dirección, y queda guardada con un `id`. Mientras no venza (`expiresAt`, 20 minutos por defecto), Justo **garantiza el precio y la hora de retiro** cotizados: al crear la entrega no se recalcula nada.
+
+Si envías varios locales candidatos en `storeIds` (por ejemplo, los que tienen stock del producto), Justo cotiza desde el más cercano al destino que esté abierto para el retiro. Sin `storeId` ni `storeIds` considera todos los locales de tu cuenta que piden despachos. La distancia se mide por calle y no puede superar los 20 km.
+
+### Horario de atención de los locales
+
+Justo solo promete retiros cuando el local está abierto. Un local creado con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store) parte abierto siempre; configura su horario semanal, sus días cerrados y sus horarios especiales con [Actualizar el horario del local](/docs/ecommerce/endpoints/stores/update-store-schedule). Si ningún local candidato está abierto para el retiro, la cotización responde `storeClosed` y el mensaje dice cuándo abre el más cercano: vuelve a cotizar con un `pickupAt` desde esa hora.
+
+### Hora de retiro
+
+Cada cotización trae un `pickupAt`: la hora de retiro que Justo te asegura. Si al cotizar envías `pickupAt`, indicas desde cuándo el paquete está listo y el retiro queda desde esa hora; si no lo envías, desde ahora.
+
+<Info>
+  Si cotizas sin `pickupAt` y aceptas varios minutos después, la hora de retiro se corre en la misma medida. La hora definitiva viene en `quote.pickupAt` de la respuesta al crear la entrega.
+</Info>
+
+### Vehículo
+
+Con el peso y las medidas del paquete, Justo envía un repartidor en un vehículo que pueda transportarlo. Si el paquete no cabe en una moto, se despacha en auto: el local debe tener `acceptsCar: true` (si no, la cotización responde `vehicleNotAvailable`) y el precio incluye un recargo fijo por auto, que ya viene en la cotización. Un paquete que no cabe en un auto no se puede despachar por esta API (`packageTooLarge`).
+
+### Paquetes de alto valor
+
+Declara siempre el valor real del contenido en `package.valueAmount`, en la moneda del país del local. Justo usa ese valor para cuidar los envíos de mayor valor.
+
+## Flujo de un envío
+
+<Steps>
+  <Step title="Crea tus locales de retiro">
+    Registra cada punto de retiro una sola vez con [Crear un local de retiro](/docs/ecommerce/endpoints/stores/create-store). Usa tu propio `externalId` para no tener que guardar el ID de Justo. Si tu cuenta ya tiene locales con dirección y despachos habilitados, puedes cotizar desde ellos sin crear nada.
+
+```bash
+curl -X POST https://api.service.getjusto.com/v3/ecommerce/stores \
+  -H "Authorization: Bearer $JUSTO_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Bodega Providencia",
+    "externalId": "bodega-providencia",
+    "phone": "+56222222222",
+    "acceptsCar": true,
+    "address": {"line": "Av. Providencia 1234, Providencia", "countryCode": "CL"}
+  }'
+```
+  </Step>
+  <Step title="Cotiza el envío">
+    [Cotiza](/docs/admin/last-mile/quote) el paquete hasta la dirección del cliente. Guarda el `id` de la cotización.
+
+```bash
+curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/quotes \
+  -H "Authorization: Bearer $JUSTO_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "storeIds": ["bodega-providencia", "bodega-las-condes"],
+    "toAddress": {"line": "Av. Apoquindo 4500, depto 1203, Las Condes", "countryCode": "CL"},
+    "package": {"weightKg": 1.2, "lengthCm": 30, "widthCm": 20, "heightCm": 10, "valueAmount": 25990},
+    "pickupAt": "2026-11-03T13:00:00.000Z",
+    "externalId": "FL-000123"
+  }'
+```
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "lmq-6f3a91c2d4e8b7a1",
+    "status": "open",
+    "expiresAt": "2026-11-03T12:40:00.000Z",
+    "pickupAt": "2026-11-03T13:15:00.000Z",
+    "estimatedDeliveryAt": "2026-11-03T13:42:00.000Z",
+    "store": {"storeId": "Xb7kQ2mN9pL4tR8sW", "name": "Bodega Providencia"},
+    "vehicleType": "moto",
+    "distanceMeters": 4870,
+    "price": 3500,
+    "priceWithTax": 4165,
+    "currency": "CLP",
+    "externalId": "FL-000123"
+  }
+}
+```
+  </Step>
+  <Step title="Crea la entrega desde la cotización">
+    Cuando tu cliente confirma la compra, [crea la entrega](/docs/admin/last-mile/create-delivery) con el `quoteId` antes de `expiresAt`. Justo usa el precio y la hora de retiro cotizados.
+
+```bash
+curl -X POST https://api.service.getjusto.com/v3/admin/last-mile/deliveries \
+  -H "Authorization: Bearer $JUSTO_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "quoteId": "lmq-6f3a91c2d4e8b7a1",
+    "receiver": {"name": "Camila Rojas", "phone": "+56912345678"},
+    "instructions": "Dejar en conserjería"
+  }'
+```
+
+    La respuesta trae la cotización aceptada en `quote` (con `status: "accepted"` y el `deliveryId`) y la entrega creada en `delivery`.
+  </Step>
+  <Step title="Entrega el código de entrega a tu cliente">
+    La entrega trae `requiresDeliveryVerificationCode`: el código que tu cliente debe decirle al repartidor al recibir el paquete. Sin ese código el repartidor no puede cerrar la entrega. Muéstraselo a tu cliente en el seguimiento o envíaselo en un mensaje.
+  </Step>
+</Steps>
+
+## Código de entrega
+
+Toda entrega de última milla tiene un código de entrega (`requiresDeliveryVerificationCode`). Al llegar al destino, el repartidor se lo pide a quien recibe y solo puede cerrar la entrega con el código correcto. Así el paquete se entrega a la persona que tiene el código. El código viene en la respuesta de [Crear un envío](/docs/admin/last-mile/create-delivery), en [Obtener una entrega](/docs/admin/delivery/get) y en el webhook [`deliveries.delivery.updated`](/docs/admin/last-mile/webhooks/delivery-updated). No lo compartas con el repartidor ni con el local.
+
+## Reintentos e idempotencia
+
+Crear la entrega es idempotente por cotización: si la respuesta no te llegó (timeout, error de red), reintenta con el mismo `quoteId` y los mismos datos, y recibirás la misma entrega, sin duplicarla. Si reintentas con otro `externalId` mientras la cotización se está aceptando, responde `409` con `bookingMismatch`. Si dos solicitudes con el mismo `quoteId` llegan a la vez, una crea la entrega y la otra responde `409` con `quoteBeingAccepted`; reintenta en unos segundos o consulta la cotización con [Obtener una cotización](/docs/admin/last-mile/get-quote). Si una creación quedó sin respuesta (timeout o error `500`), la cotización puede quedar en proceso hasta 5 minutos: después de eso, reintentar con el mismo `quoteId` devuelve la entrega si alcanzó a crearse, o la crea si no.
+
+Si la cotización venció, la creación responde `409` con `quoteExpired`. Pide una cotización nueva: el precio o la hora de retiro pueden haber cambiado.
+
+Si envías `externalId`, Justo también lo usa para evitar duplicados. No reutilices el mismo `externalId` para envíos distintos.
+
+## Errores
+
+Los errores responden con `success: false` y un objeto `error` con un código estable (`error.error`) y un mensaje en español (`error.message`). Los errores de validación y de negocio responden `400`; los conflictos de la cotización, `409`.
+
+```json
+{
+  "success": false,
+  "error": {
+    "error": "distanceTooLong",
+    "message": "El destino quedó ubicado en \"Av. Apoquindo 4500, Las Condes\" (-33.41300, -70.58500), a 23.4 km del local más cercano; el máximo es 20 km. Si la dirección no es esa, revísala o envía toAddress.location"
+  }
+}
+```
+
+| Código | Cuándo ocurre | Qué hacer |
+| --- | --- | --- |
+| `invalidBody` | Falta un campo obligatorio, un campo tiene un formato inválido o enviaste un campo desconocido. | Corrige la request según el mensaje. |
+| `addressNotFound` | Justo no pudo ubicar la dirección de destino con certeza. | Revisa la dirección o envía las coordenadas en `location`. |
+| `invalidAddress` | El destino está en otro país que el local, o no se pudo registrar la dirección del local. | Revisa `countryCode` y la dirección. |
+| `storeNotFound` | Ninguno de los locales indicados existe en tu cuenta, tiene dirección y pide despachos. | Revisa los IDs con [Listar locales](/docs/ecommerce/endpoints/stores/list-stores). |
+| `storeClosed` | Ningún local candidato está abierto para el retiro, o aceptaste tarde y el local ya no está abierto a la nueva hora de retiro. El mensaje dice cuándo abre el local. | Cotiza con un `pickupAt` desde esa hora o revisa el horario del local. |
+| `distanceTooLong` | La distancia por calle entre el retiro y el destino supera los 20 km. El mensaje dice dónde quedó ubicado el destino. | Revisa la dirección o cotiza desde un local más cercano. |
+| `packageTooLarge` | El paquete supera la capacidad de un auto. | Divide el envío en paquetes más chicos. |
+| `vehicleNotAvailable` | El paquete necesita auto y el local no acepta despachos en auto. | Activa `acceptsCar` en el local o cotiza desde otro local. |
+| `noTariff` | No hay una tarifa de despachos configurada para ese local. | Contacta a Justo. |
+| `quoteNotFound` | La cotización no existe o no es de tu cuenta. | Revisa el `quoteId`. |
+| `quoteExpired` | La cotización venció antes de aceptarla (`409`). | Pide una cotización nueva. |
+| `quoteBeingAccepted` | Otra solicitud está creando la entrega con la misma cotización (`409`). | Reintenta en unos segundos (hasta 5 minutos si la anterior quedó sin respuesta). |
+| `bookingMismatch` | Reintentaste con otro `externalId` mientras la cotización se estaba aceptando (`409`). | Reintenta con los mismos datos del primer intento. |
+| `externalIdAlreadyUsed` | El `externalId` ya se usó en una entrega creada desde otra cotización. | Usa un `externalId` distinto por envío. |
+| `storeAlreadyExists` | Ya tienes un local con ese nombre o ese `externalId`. | Usa otro nombre o actualiza el local existente. |
+| `storeHasOpenDeliveries` | Intentaste eliminar un local con entregas en curso. | Espera a que terminen o cancélalas. |
+| `storeSells` | Intentaste eliminar por API un local que vende por delivery, retiro o consumo en el local. | Elimínalo desde el administrador. |
+| `noPermissions` | La autorización no corresponde a una cuenta, o está limitada a algunos locales e intentaste crear un local. | Usa una autorización de toda la cuenta. |
+
+Si tu cuenta usa saldo prepago y no alcanza para la entrega, o la cuenta tiene pagos pendientes, la creación de la entrega falla con un mensaje que explica cómo resolverlo.
+
+## Seguimiento de la entrega
+
+La entrega creada es una [entrega sin pedido](/docs/admin/introduction) de Justo Delivery, así que se sigue con los mismos endpoints. Usa el `delivery._id` que recibiste al crearla:
+
+- [Obtener una entrega](/docs/admin/delivery/get) (`GET /admin/deliveries/{deliveryId}`): estado, repartidor, última ubicación, link de seguimiento (`trackingURL`) y fotos de retiro y entrega.
+- [Cancelar una entrega](/docs/admin/delivery/cancel) (`POST /admin/deliveries/{deliveryId}/cancel`).
+- Webhook [Entrega sin pedido actualizada](/docs/admin/last-mile/webhooks/delivery-updated) (`deliveries.delivery.updated`): Justo te avisa cada vez que la entrega cambia de estado o de repartidor. Las entregas creadas desde una cotización traen `lastMileQuoteId`, para que las cruces con tus cotizaciones.
+
+## Formatos de dirección
+
+Las direcciones (`toAddress` al cotizar y `address` del local) siempre llevan `countryCode` (ISO 3166-1 alfa-2: `CL`, `CO`, `MX`, `PE`…) y se pueden enviar de tres formas:
+
+<CodeGroup>
+
+```json En una línea
+{
+  "line": "Av. Apoquindo 4500, depto 1203, Las Condes",
+  "countryCode": "CL"
+}
+```
+
+```json Por campos
+{
+  "streetAddress": "Av. Apoquindo 4500",
+  "extendedAddress": "Depto 1203",
+  "locality": "Las Condes",
+  "region": "Región Metropolitana",
+  "countryCode": "CL"
+}
+```
+
+```json Con coordenadas
+{
+  "streetAddress": "Av. Apoquindo 4500",
+  "extendedAddress": "Depto 1203",
+  "countryCode": "CL",
+  "location": {"lat": -33.4130, "lng": -70.5850}
+}
+```
+
+</CodeGroup>
+
+- **En una línea** (`line`): calle, número, unidad y comuna en un solo texto. Es la forma más simple si tu sistema guarda la dirección como texto libre.
+- **Por campos**: `streetAddress` (calle y número) es obligatorio si no envías `line`. Agrega `locality` y `region` para evitar ambigüedades entre comunas o ciudades con calles del mismo nombre.
+- **Con coordenadas** (`location`): si ya las tienes (por ejemplo, de un pin en el mapa), Justo las usa tal cual, sin geocodificar. Es la opción más precisa.
+
+Sin coordenadas, Justo ubica la dirección. La cotización devuelve las coordenadas que usó en `toAddress.location`. Si la dirección no se puede ubicar con certeza, la cotización responde `addressNotFound`.
+
+El departamento u oficina (`extendedAddress`) no cambia el precio. Si no lo tenías al cotizar, puedes enviarlo al crear la entrega.
+
+## Configuración de tu cuenta
+
+Justo configura para tu cuenta:
+
+- **Vigencia de las cotizaciones**: cuánto dura una cotización antes de vencer (20 minutos por defecto).
+- **Precio**: la tarifa acordada con tu cuenta, por ejemplo por tramos de distancia.
+- **Saldo prepago**: si tus entregas se descuentan de un saldo prepago que debe alcanzar al crear cada entrega.
+
+Para cambiar alguno de estos valores, contacta a tu ejecutivo de Justo.
