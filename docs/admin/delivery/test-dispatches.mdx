@@ -12,14 +12,14 @@ los mismos webhooks, así que puedes probar tu integración de punta a punta, in
 falla.
 
 <Note>
-  Un despacho de prueba nunca se cobra, no exige saldo prepago, nunca se ofrece a un repartidor
-  real y nunca se terceriza a un operador logístico.
+  Un despacho de prueba nunca se cobra, no exige saldo prepago y nunca se ofrece a un repartidor
+  real.
 </Note>
 
 ## Quién puede usarlo
 
 Los despachos de prueba están disponibles **solo para marcas que todavía no están activas** en
-Justo. Si tu marca ya opera, pide a tu contacto en Justo un **website de pruebas**: una marca
+Justo. Si tu marca ya opera, pide a tu contacto en Justo una **cuenta de pruebas**: una cuenta
 inactiva con su propio local, pensada para esto. Una marca activa que envía `simulation` recibe un
 error explícito.
 
@@ -34,7 +34,7 @@ Es la misma llamada de [Crear entrega sin pedido](/docs/admin/delivery/create), 
 ```bash cURL
 curl --request POST \
   --url https://api.service.getjusto.com/v3/admin/deliveries \
-  --header 'Authorization: Bearer <token-de-tu-website-de-pruebas>' \
+  --header 'Authorization: Bearer <token-de-tu-cuenta-de-pruebas>' \
   --header 'Content-Type: application/json' \
   --data '{
     "storeId": "<local-de-pruebas>",
@@ -104,7 +104,7 @@ aceptado, igual que una entrega real. Una vez aceptada ya no se puede cancelar.
 - `stack`: el primer despacho con la `key` sale normalmente; los siguientes se le suman a ese mismo
   repartidor mientras siga en ruta.
 
-La `key` la eliges tú y solo agrupa despachos de tu propio website.
+La `key` la eliges tú y solo agrupa despachos de tu propia cuenta.
 
 ## Límites
 
@@ -112,4 +112,4 @@ La `key` la eliges tú y solo agrupa despachos de tu propio website.
   pasas, el despacho nuevo espera buscando repartidor hasta que termine alguno; no se rechaza.
 - Un despacho de prueba que no termina en una hora se cierra solo. Si la simulación falla, se
   cierra como no entregado: tu integración siempre recibe un estado final.
-- Los webhooks de los despachos de prueba llegan a las mismas URLs configuradas para tu website.
+- Los webhooks de los despachos de prueba llegan a las mismas URLs configuradas para tu cuenta.
