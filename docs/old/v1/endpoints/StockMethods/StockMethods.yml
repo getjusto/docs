@@ -114,7 +114,7 @@ paths:
                         description: Fecha de creación.
                         example: 2020-07-29T14:14:33.347Z
         '401':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /deleteOutOfStockItem:
     post:
@@ -152,7 +152,7 @@ paths:
                     description: Resultado de la operación (true si se eliminó con éxito).
                     example: true
         '401':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /deleteOutOfStockItems:
     post:
@@ -214,7 +214,7 @@ paths:
                           type: string
                           description: Mensaje de error.
         '401':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /outOfStockItems:
     post:
@@ -287,7 +287,7 @@ paths:
                         "until": "tomorrow"
                         "untilDate": "2021-07-12T10:00:00.000Z"
         '401':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /setOutOfStockItems:
     post:
@@ -474,7 +474,7 @@ paths:
                               items:
                                 type: string             
         '401':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /updateStock:
     post:

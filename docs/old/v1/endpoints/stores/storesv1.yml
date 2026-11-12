@@ -32,7 +32,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/resultStore'
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /store: 
     post:
@@ -66,7 +66,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/resultStore'
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /updateStoreInformation:
     post:
@@ -120,7 +120,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/resultStore'
         '400':
-          description: Access token is missing or invalid
+          description: Token de acceso ausente o inválido
 
   /temporaryCloseStore:
     post:
@@ -158,7 +158,7 @@ paths:
                     data:
                       $ref: '#/components/schemas/resultStore'
           '400':
-            description: Access token is missing or invalid
+            description: Token de acceso ausente o inválido
 
   /updateStoreSchedule:
     post:
@@ -231,7 +231,7 @@ paths:
                     data:
                       $ref: '#/components/schemas/resultStore'
           '400':
-            description: Access token is missing or invalid
+            description: Token de acceso ausente o inválido
 
   /setStoreCurrentPreparationDuration:
     post:
@@ -268,7 +268,7 @@ paths:
                     data:
                       $ref: '#/components/schemas/resultStore'
           '400':
-            description: Access token is missing or invalid
+            description: Token de acceso ausente o inválido
             
 components:
   securitySchemes:
