@@ -60,7 +60,9 @@ envíos reales, los lleva un mismo repartidor simulado.
 El repartidor simulado acepta, aparece cerca del local y avanza **en línea recta** reportando su
 GPS cada 30 segundos, retira, viaja hasta el cliente y entrega. Recibes los mismos webhooks
 [`deliveries.delivery.updated`](/docs/admin/last-mile/webhooks/delivery-updated) que con un envío
-real, con `isDev: true` para que los distingas. También puedes consultar el estado con
+real, con `isDev: true` para que los distingas. Los webhooks llegan en cada cambio de estado; la
+ubicación del repartidor entre un estado y otro la consultas con
+[Obtener una entrega](/docs/admin/delivery/get). También puedes consultar el estado con
 [Obtener una entrega](/docs/admin/delivery/get) y cancelar con
 [Cancelar una entrega](/docs/admin/delivery/cancel).
 
@@ -74,8 +76,10 @@ de los [despachos de prueba](/docs/old/v2/endpoints/deliveries/testDispatches).
 
 1. Crea un local de retiro en tu cuenta de pruebas.
 2. Cotiza un envío y crea la entrega con `simulation: {"mode": "auto"}`. Revisa que lleguen los
-   webhooks `active`, `delivering` y `done`, con la ubicación del repartidor entre medio.
+   webhooks `active`, `delivering` y `done`. Mientras viaja, consulta su ubicación con
+   [Obtener una entrega](/docs/admin/delivery/get).
 3. Repite con `scenario: "driverCancels"`, `"notDelivered"` y `"returnToStore"`, y revisa que tu
    sistema maneje cada caso.
-4. Cancela un envío de prueba en curso con [Cancelar una entrega](/docs/admin/delivery/cancel).
+4. Cancela un envío de prueba antes de que lo acepte un repartidor, con
+   [Cancelar una entrega](/docs/admin/delivery/cancel). Una vez aceptado ya no se puede cancelar.
 5. Cuando todo funcione, usa el token de tu cuenta real y quita `simulation`.
