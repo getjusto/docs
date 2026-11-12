@@ -13444,7 +13444,7 @@
       },
       "apiLastMileAddressInput": {
         "type": "object",
-        "description": "Dirección. Puedes mandarla en una sola línea (`line`, por ejemplo \"Av. Providencia 1234, depto 501, Providencia\") o por campos. Las coordenadas son opcionales: si no vienen, Justo la ubica con su geocodificador propio y, si no la encuentra con certeza, con AWS y luego con Google. Si nadie la encuentra, la cotización responde `addressNotFound`.",
+        "description": "Dirección. Puedes mandarla en una sola línea (`line`, por ejemplo \"Av. Providencia 1234, depto 501, Providencia\") o por campos. Las coordenadas son opcionales: si no vienen, Justo ubica la dirección. Si no la puede ubicar con certeza, la cotización responde `addressNotFound`.",
         "required": [
           "countryCode"
         ],
@@ -13547,18 +13547,7 @@
                 "example": -70.6211027
               }
             },
-            "description": "Coordenadas usadas para la ruta y el precio."
-          },
-          "geocoder": {
-            "type": "string",
-            "enum": [
-              "store",
-              "client",
-              "trailrune",
-              "aws",
-              "google"
-            ],
-            "description": "Quién obtuvo las coordenadas: `store` (dirección del local), `client` (las enviaste tú), `trailrune` (geocodificador de Justo), `aws` o `google`."
+            "description": "Coordenadas usadas para la distancia y el precio."
           }
         }
       },
